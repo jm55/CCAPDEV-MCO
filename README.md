@@ -6,9 +6,10 @@ The web application must have the capabilities of a CRUDS application.
 ### Features required for all web applications:
 1. Log-in and Log-out
 2. Register
-### CRUDS
-1. Create
-2. Read
-3. Update
-4. Delete
-5. Search
+### CRUDS (Simplified)
+1. Create - Create web content
+2. Read - Read web content
+3. Update - Update web content
+4. Delete - Delete web content
+5. Search - Search web content
+### Web App Description
