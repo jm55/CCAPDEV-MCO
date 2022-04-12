@@ -1,0 +1,33 @@
+html{
+    background-image: url("../img/divisoria.jpg");
+}
+
+#login{
+    background-color: var(--primary);
+    color: white;
+    position: relative;
+    max-width: 30em;    
+    position: relative;
+    margin-left: auto;
+    margin-right: auto;
+    height: max-content;
+    font-size: 14px;
+}
+
+#loginform{
+    display: grid;
+    margin-bottom: 2%;
+}
+
+#buttons{
+    display: grid;
+    row-gap: 10px;
+    margin-top: 10%;
+}
+
+#banner-title{
+    font-size: 5vh;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+}

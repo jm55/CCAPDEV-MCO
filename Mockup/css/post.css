@@ -1,0 +1,115 @@
+.postdp{
+    width: 32px;
+    height: 32px;
+}
+
+.post{
+    background-color: var(--primary);
+    display: block;
+    min-width: 15em;
+    max-width: 25em;
+    height: fit-content;
+    margin: auto auto 20px auto;
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+
+.timeline{
+    display: block;
+}
+
+.post_user{
+    display: flex;
+    column-gap: 10px;
+}
+
+.username{
+    margin-top: auto;
+    margin-bottom: auto;
+    font-weight: bold;
+}
+
+.post_content{
+    display: block;
+}
+
+.post_description{
+    display: flex;
+    color: white;
+}
+
+.post_description_text{
+    font-size: 14px;
+}
+
+.post_gallery{
+    display: flex;
+}
+
+.post_image{
+    margin-left: auto;
+    margin-right: auto;
+    width: 90%;
+    max-width: 400px;
+    aspect-ratio: 1/1;
+}
+
+.post_list{
+    margin-bottom: 10px;
+    color: white;
+    font-weight: bold;
+    min-width: 20em;
+    max-width: 40%;
+    font-size: 14px;
+}
+
+.post_table{
+    margin-top: 10px;
+    margin-bottom: 10px;
+    text-align: left;
+    font-weight: normal !important;
+}
+
+.post_footer{
+    margin-top: 10px;
+    display: inline;
+}
+
+.likes{
+    color: white;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.comment{
+    position: relative;
+    margin-top: 10px;
+    width: 100%;
+}
+
+.interact{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    font-size: 14px;
+}
+
+.interact > .button{
+    min-width: 4em;
+    width: 6em;
+    max-width: 6em;
+    min-height: 3em;
+    max-height: 3em;
+}
+
+#comment-text{
+    width: 70%;
+}
+
+#submit-comment{
+    width: 30%;
+}
+
+#link{
+    font-weight: bold;
+}

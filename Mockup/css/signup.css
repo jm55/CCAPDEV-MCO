@@ -1,0 +1,59 @@
+html{
+    background-image: url("../img/divisoria.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+#gender>option{
+    background-color: var(--primary);
+}
+
+#gender{
+    min-height: 40px;
+    border-radius: 16px;
+}
+
+#signup{ /*Same CSS code from login.css*/
+    background-color: var(--primary);
+    color: white;
+    position: relative;
+    font-size: 14px;
+    max-width: 30em;
+    position: relative;
+    margin-left: auto;
+    margin-right: auto;
+    height: max-content;
+}
+
+#signupform{  /*Same CSS code from login.css*/
+    display: grid;
+    margin-bottom: 2%;
+}
+
+#profilepic{
+    width: 128px;
+    height: 128px;
+
+}
+
+#bio{
+    resize: vertical;
+    min-height: 20vh;
+}
+
+#buttons{
+    display: grid;
+    row-gap: 10px;
+    margin-top: 4%;
+}
+
+#banner-title{
+    font-size: 5vh;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+}
+
+#section-title{
+    text-align: center;
+}
