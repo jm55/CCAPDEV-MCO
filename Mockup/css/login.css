@@ -1,5 +1,9 @@
+:root{
+    --default_image: url("../img/divisoria.jpg");
+}
+
 html{
-    background-image: url("../img/divisoria.jpg");
+    background-image: var(--default_image);
 }
 
 #login{
@@ -17,6 +21,7 @@ html{
 #loginform{
     display: grid;
     margin-bottom: 2%;
+    row-gap: 10px;
 }
 
 #buttons{

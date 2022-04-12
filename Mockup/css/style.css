@@ -13,6 +13,8 @@
     --text-select: 00838F;
 
     --textfield: rgba(255,255,255,30%);
+
+    --default_image: url("../img/divisoria.jpg");
 }
 
 html{
@@ -53,7 +55,7 @@ button{
     font-family: inherit;
     color:white;
     cursor: pointer;
-    font-size: 14px;
+    font-size: 14px !important;
     height: 5vh;
 }
 
@@ -89,6 +91,10 @@ table{
     color: var(--text);
 }
 
+label{
+    font-weight: bold;
+}
+
 .button{ /*for <input type="button" class="button"/>*/
     border-radius: 16px;
     border: none;
@@ -96,7 +102,7 @@ table{
     font-family: inherit;
     color:white;
     cursor: pointer;
-    font-size: 14px;
+    font-size: 14px !important;
     height: 5vh;
 }
 

@@ -28,12 +28,12 @@ html{
 #signupform{  /*Same CSS code from login.css*/
     display: grid;
     margin-bottom: 2%;
+    row-gap: 10px;
 }
 
 #profilepic{
     width: 128px;
     height: 128px;
-
 }
 
 #bio{
