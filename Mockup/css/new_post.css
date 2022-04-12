@@ -90,4 +90,5 @@
     display: grid;
     width: 100%;
     row-gap: 10px;
+    font-size: 14px;
 }
