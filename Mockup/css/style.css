@@ -12,7 +12,8 @@
     --text-hover:  #0097A7;
     --text-select: 00838F;
 
-    --textfield: rgba(255,255,255,30%);
+    --textbox: rgba(255,255,255,30%);
+    --textbox-focus: rgba(255,255,255,20%);
 
     --default_image: url("../img/divisoria.jpg");
 }
@@ -127,6 +128,10 @@ label{
     padding-right: 2%;
 }
 
+.textfield:focus{
+    background-color: var(--textbox-focus);
+}
+
 textarea{
     border-radius: 16px;
     background-color: rgba(255,255,255,30%);
@@ -140,6 +145,10 @@ textarea{
     padding-right: 2%;
     padding-top: 2%;
     padding-bottom: 2%;
+}
+
+textarea:focus{
+    background: var(--textbox-focus);
 }
 
 .card{

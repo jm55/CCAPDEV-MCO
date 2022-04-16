@@ -9,7 +9,7 @@
     min-width: 15em;
     max-width: 25em;
     height: fit-content;
-    margin: auto auto 20px auto;
+    margin: auto auto 20px auto; /*points to bottom*/
     padding-top: 20px;
     padding-bottom: 20px;
 }
