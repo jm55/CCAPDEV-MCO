@@ -23,6 +23,7 @@ html{
     background-size: cover;
     background-repeat: no-repeat;
     background-size: auto;  
+    background-color: whitesmoke;
 }
 
 select{
