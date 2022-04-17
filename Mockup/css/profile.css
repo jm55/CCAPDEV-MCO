@@ -13,12 +13,14 @@ html{
 }
 
 .timeline{
-    display: flex !important;
-    column-gap: 20px !important;
+    display: flex;
+    flex-direction: row;
+    column-gap: 10px !important;
     row-gap: 10px !important;
     margin-left: auto;
     margin-right: auto;
-    width: 60%;
+    width: 70%;
+
 }
 
 #banner-title{

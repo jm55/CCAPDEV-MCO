@@ -24,23 +24,7 @@ html{
     background-repeat: no-repeat;
     background-size: auto;  
     background-color: whitesmoke;
-}
-
-select{
-    background-color: var(--primary); /*600*/
-    color: var(--text);
-    font-family: inherit;
-    border-radius: 16px;
-    padding-left: 10px;
-    padding-right: 10px;
-}
-
-select:hover{
-    background-color: var(--primary-hover) !important; /*700*/
-}
-
-select:focus{
-    background-color: var(--primary-select); /*700*/
+    scroll-behavior: smooth;
 }
 
 footer{
@@ -50,8 +34,8 @@ footer{
     margin-top: 2%;
 }
 
-button{
-    border-radius: 16px;
+button, .button, select{
+    border-radius: 10px;
     border: none;
     background-color: var(--primary-button); /*600*/
     font-family: inherit;
@@ -61,11 +45,15 @@ button{
     height: 5vh;
 }
 
-button:hover{
+select{
+    padding-left: 8px;
+}
+
+button:hover, .button:hover, select:hover{
     background-color: var(--primary-hover); /*700*/
 }
 
-button:active{
+button:active, .button:active, select:focus{
     background-color: var(--primary-select); /*800*/
 }
 
@@ -97,29 +85,10 @@ label{
     font-weight: bold;
 }
 
-.button{ /*for <input type="button" class="button"/>*/
-    border-radius: 16px;
-    border: none;
-    background-color: var(--primary-button); /*600*/
-    font-family: inherit;
-    color:white;
-    cursor: pointer;
-    font-size: 14px !important;
-    height: 5vh;
-}
-
-.button:hover{ /*for <input type="button" class="button"/>*/
-    background-color: var(--primary-hover); /*700*/
-}
-
-.button:active{ /*for <input type="button" class="button"/>*/
-    background-color: var(--primary-select); /*800*/
-}
-
 .textfield{
-    border-radius: 16px;
+    border-radius: 10px;
     background-color: rgba(255,255,255,30%);
-    color:#FFFF;
+    color: var(--text);
     vertical-align: middle;
     border: none;
     font-family: inherit;
@@ -134,9 +103,9 @@ label{
 }
 
 textarea{
-    border-radius: 16px;
+    border-radius: 10px;
     background-color: rgba(255,255,255,30%);
-    color:#FFFF;
+    color: var(--text);
     vertical-align: middle;
     border: none;
     font-family: inherit;
@@ -153,7 +122,7 @@ textarea:focus{
 }
 
 .card{
-    border-radius: 16px;
+    border-radius: 10px;
     padding-top: 1%;
     padding-bottom: 1%;
     padding-left: 2%;
@@ -162,8 +131,7 @@ textarea:focus{
 
 .profilepic{
     border-radius: 50%;
-    border-color: black;
-    border: 2px;
+    border: none;
 }
 
 .profilepic:hover{
@@ -180,4 +148,5 @@ textarea:focus{
     position: relative;
     margin-bottom: 2%;
     max-height: fit-content;
+    z-index: 100;
 }

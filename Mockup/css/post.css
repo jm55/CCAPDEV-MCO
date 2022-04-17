@@ -6,10 +6,9 @@
 .post{
     background-color: var(--primary);
     display: block;
-    min-width: 15em;
     max-width: 25em;
-    height: fit-content;
-    margin: auto auto 20px auto; /*points to bottom*/
+    height: max-content;
+    margin: 0px auto 20px auto; /*points to bottom*/
     padding-top: 20px;
     padding-bottom: 20px;
 }
@@ -21,12 +20,14 @@
 .post_user{
     display: flex;
     column-gap: 10px;
+    width: fit-content;
 }
 
 .username{
     margin-top: auto;
     margin-bottom: auto;
     font-weight: bold;
+    font-size: 16px;
 }
 
 .post_content{
@@ -46,7 +47,7 @@
     display: flex;
 }
 
-.post_image{
+.post_gallery > img{
     margin-left: auto;
     margin-right: auto;
     width: 90%;
@@ -56,7 +57,7 @@
 
 .post_list{
     margin-bottom: 10px;
-    color: white;
+    color: var(--text);
     font-weight: bold;
     min-width: 20em;
     max-width: 40%;
@@ -76,14 +77,14 @@
 }
 
 .likes{
-    color: white;
+    color: var(--text);
     font-weight: bold;
     font-size: 14px;
 }
 
 .comment{
-    position: relative;
     margin-top: 10px;
+    margin-left: 10px;
     width: 100%;
 }
 
@@ -100,6 +101,20 @@
     max-width: 6em;
     min-height: 3em;
     max-height: 3em;
+}
+
+.comment_list{
+    margin-top: 10px;
+    margin-right: 20px;
+}
+
+.comment_list > label, .comment > p{
+    color: var(--text);
+}
+
+.comment > p{
+    font-size: 14px;
+    margin-left: 10px;
 }
 
 #comment-text{
