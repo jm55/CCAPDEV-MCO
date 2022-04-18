@@ -150,3 +150,52 @@ textarea:focus{
     max-height: fit-content;
     z-index: 100;
 }
+
+#menu{
+    display: flex;
+    height: fit-content;
+    margin-top: 0%;
+}
+
+#categories{
+    min-width: 8em;
+    width: 8em;
+    max-width: 8em;
+    min-height: 3em;
+    max-height: 3em;
+    margin-right: 10px;
+    font-size: small;
+    background-color: var(--primary-button);
+}
+
+#profile-pic{
+    margin: auto auto auto auto;
+    position: relative;
+    width: inherit;
+    height: inherit;
+}
+
+#userbutton{
+    margin: auto auto auto auto;
+    position: relative;
+    width: 64px;
+    height: 64px;
+}
+
+#banner-left{
+    width: 80%;
+    display: flex;
+}
+
+#banner-right{
+    width: 20%;
+    display: flex;
+}
+
+#banner-title{
+    text-align: left;
+    font-size: 2em !important;
+    font-weight: bold;
+    margin-top: 0em;
+    margin-bottom: 10px;
+}
