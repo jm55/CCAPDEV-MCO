@@ -1,22 +1,23 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Profile Settings - Budol Finds</title>
-        <link rel="stylesheet" href="css/style.css">
-        <link rel="stylesheet" href="css/profile_settings.css">
+        <title>Signup - Budol Finds</title>
+        <link rel="stylesheet" href="../css/style.css">
+        <link rel="stylesheet" href="../css/signup.css">
     </head>
 
     <body>
+        <script src="../js/signup.js"></script> 
+
         <header id="" class="card brand_banner">
             <h1 id="banner-title">Budol Finds</h1>
-            <h2 id="section-title">Profile Settings</h2>
+            <h2 id="section-title">Signup</h2>
         </header>
-
-        <div id="profile-info" class="card">
-            <h1>Profile Info</h1>
+        
+        <div id="signup" class="card">
             <form id="signupform">
                 <label>Profile Pic:</label>
-                <input id="profilepic" type="image" class="profilepic" src="img/default/grid_test.png" alt="Profile Picture" /> <!--Derived from https://stackoverflow.com/a/3381621-->
+                <input id="profilepic" type="image" class="profilepic" src="../img/default/grid_test.png" alt="Profile Picture" /> <!--Derived from https://stackoverflow.com/a/3381621-->
                 <label>Username*:</label>
                 <input id="username" type="text" class="textfield" /> 
                 <label>Password*:</label>
@@ -31,17 +32,17 @@
                 <input id="lname" type="text" class="textfield" />
                 <label>Gender*:</label>
                 <select id="gender">
+                    <option value=""></option>
                     <option value="M">M</option>
                     <option value="F">F</option>
-                    <option value="O">O</option>
+                    <option value="LGBT">LGBT</option>
                 </select>
-                <label>Bio:</label>
+                <label>Bio (255 character limit):</label>
                 <textarea id="bio" name="bio"> </textarea>
-                <h1>Profile Settings</h1>
-                <p>[OTHER CONFIGURATION]</p>
                 <div id="buttons">
-                    <input type="button" value="Save" class="button" />
-                    <input type="button" value="Cancel" class="button" />
+                    <input type="button" value="Signup" id="signup-btn" class="button" onclick="getSignup()"/>
+                    <input type="button" value="Clear" id="clear-btn" class="button" onclick="clearSignup()"/>
+                    <input type="button" value="Login" id="login-btn" class="button" onclick="loginRedirect()"/>
                 </div>
             </form>
         </div>

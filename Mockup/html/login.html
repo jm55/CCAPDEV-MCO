@@ -2,11 +2,12 @@
 <html>
     <head>
         <title>Login - Budol Finds</title>
-        <link rel="stylesheet" href="css/style.css">
-        <link rel="stylesheet" href="css/login.css">
+        <link rel="stylesheet" href="../css/style.css">
+        <link rel="stylesheet" href="../css/login.css">
     </head>
 
     <body>
+        <script src="../js/login.js"></script>
         <header id="" class="card brand_banner">
             <h1 id="banner-title">Budol Finds</h1>
         </header>
@@ -14,12 +15,12 @@
         <div id="login" class="card">
             <form id="loginform">
                 <label>Username:</label>
-                <input type="text" class="textfield" /> 
+                <input type="text" id="username" class="textfield" /> 
                 <label>Password:</label>
-                <input type="password" class="textfield" />
+                <input type="password" id="password" class="textfield" />
                 <div id="buttons">
-                    <input type="button" value="Login" class="button" />
-                    <input type="button" value="Signup" class="button" />
+                    <input type="button" value="Login" class="button" onclick="login()"/>
+                    <input type="button" value="Signup" class="button" onclick="redirectSignup()"/>
                 </div>
             </form>
         </div>

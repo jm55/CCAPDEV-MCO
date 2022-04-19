@@ -1,21 +1,22 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Signup - Budol Finds</title>
-        <link rel="stylesheet" href="css/style.css">
-        <link rel="stylesheet" href="css/signup.css">
+        <title>Profile Settings - Budol Finds</title>
+        <link rel="stylesheet" href="../css/style.css">
+        <link rel="stylesheet" href="../css/profile_settings.css">
     </head>
 
     <body>
         <header id="" class="card brand_banner">
             <h1 id="banner-title">Budol Finds</h1>
-            <h2 id="section-title">Signup</h2>
+            <h2 id="section-title">Profile Settings</h2>
         </header>
-        
-        <div id="signup" class="card">
+
+        <div id="profile-info" class="card">
+            <h1>Profile Info</h1>
             <form id="signupform">
                 <label>Profile Pic:</label>
-                <input id="profilepic" type="image" class="profilepic" src="img/default/grid_test.png" alt="Profile Picture" /> <!--Derived from https://stackoverflow.com/a/3381621-->
+                <input id="profilepic" type="image" class="profilepic" src="../img/default/grid_test.png" alt="Profile Picture" /> <!--Derived from https://stackoverflow.com/a/3381621-->
                 <label>Username*:</label>
                 <input id="username" type="text" class="textfield" /> 
                 <label>Password*:</label>
@@ -36,8 +37,11 @@
                 </select>
                 <label>Bio:</label>
                 <textarea id="bio" name="bio"> </textarea>
+                <h1>Profile Settings</h1>
+                <p>[OTHER CONFIGURATION]</p>
                 <div id="buttons">
-                    <input type="button" value="Signup" class="button" />
+                    <input type="button" value="Save" class="button" />
+                    <input type="button" value="Cancel" class="button" />
                 </div>
             </form>
         </div>
