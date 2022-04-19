@@ -14,13 +14,12 @@ html{
 
 .timeline{
     display: flex;
+    flex-wrap: wrap;
     flex-direction: row;
-    column-gap: 10px !important;
-    row-gap: 10px !important;
+    column-gap: 10px;
     margin-left: auto;
     margin-right: auto;
-    width: 70%;
-
+    width: 100%;
 }
 
 #banner-title{
