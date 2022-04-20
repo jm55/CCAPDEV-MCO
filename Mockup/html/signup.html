@@ -37,9 +37,8 @@
                     <option value="F">F</option>
                     <option value="LGBT">LGBT</option>
                 </select>
-                <label>Bio (255 character limit):</label>
-                <textarea id="bio" name="bio"> </textarea>
-                <div id="buttons">
+                <label id="bio-counter">Bio (255 character(s) remaining):</label>
+                <textarea id="bio" name="bio" onkeyup="bioCount()" value=""></textarea>
                     <input type="button" value="Signup" id="signup-btn" class="button" onclick="getSignup()"/>
                     <input type="button" value="Clear" id="clear-btn" class="button" onclick="clearSignup()"/>
                     <input type="button" value="Login" id="login-btn" class="button" onclick="loginRedirect()"/>

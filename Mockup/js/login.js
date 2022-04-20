@@ -7,9 +7,13 @@ function redirectSignup(){
 
 //Conducts login logic
 function login(){
-    console.log("Parsing credentials");
     var uname = document.getElementById("username").value;
     var pwrd = document.getElementById("password").value;
+
+    if(uname.length === 0 && pwrd.length === 0) //invalidate entry if no credentials were presented/inputted
+        return null;
+
+    console.log("Parsing credentials");
     alert("!Temporary ACK!\nCredentials: " + uname +"=>" + pwrd);
 
     //PROCESS FOR PROPER LOGGING IN OF USER

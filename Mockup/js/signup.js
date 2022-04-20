@@ -34,3 +34,13 @@ function clearSignup(){
 function loginRedirect(){
     window.location.href = "../html/login.html";
 }
+
+function bioCount(){
+    var n = 255-document.getElementById("bio").value.length;
+    if(n < 0){
+        alert("You have exceeded 255 characters for the bio.");
+        console.log("bio limit exceeded!");
+    }       
+    let s = "Bio (" + n + " character(s) remaining):";
+    document.getElementById("bio-counter").innerHTML = s;
+}
