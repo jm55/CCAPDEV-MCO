@@ -4,11 +4,11 @@
         <title>Signup - Budol Finds</title>
         <link rel="stylesheet" href="../css/style.css">
         <link rel="stylesheet" href="../css/signup.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+        <script src="../js/signup.js"></script>
     </head>
 
     <body>
-        <script src="../js/signup.js"></script> 
-
         <header id="" class="card brand_banner">
             <h1 id="banner-title">Budol Finds</h1>
             <h2 id="section-title">Signup</h2>
@@ -37,11 +37,12 @@
                     <option value="F">F</option>
                     <option value="LGBT">LGBT</option>
                 </select>
-                <label id="bio-counter">Bio (255 character(s) remaining):</label>
-                <textarea id="bio" name="bio" onkeyup="bioCount()" value=""></textarea>
-                    <input type="button" value="Signup" id="signup-btn" class="button" onclick="getSignup()"/>
-                    <input type="button" value="Clear" id="clear-btn" class="button" onclick="clearSignup()"/>
-                    <input type="button" value="Login" id="login-btn" class="button" onclick="loginRedirect()"/>
+                <label>Bio:</label>
+                <textarea id="bio" name="bio" value=""></textarea>
+                <label style="text-align:right;" id="bio-counter"></label>
+                <input type="button" value="Signup" id="signup-btn" class="button"/>
+                <input type="button" value="Clear" id="clear-btn" class="button"/>
+                <input type="button" value="Login" id="login-btn" class="button"/>
                 </div>
             </form>
         </div>

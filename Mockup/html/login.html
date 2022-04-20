@@ -4,10 +4,11 @@
         <title>Login - Budol Finds</title>
         <link rel="stylesheet" href="../css/style.css">
         <link rel="stylesheet" href="../css/login.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+        <script src="../js/login.js"></script>
     </head>
 
     <body>
-        <script src="../js/login.js"></script>
         <header id="" class="card brand_banner">
             <h1 id="banner-title">Budol Finds</h1>
         </header>
@@ -19,8 +20,8 @@
                 <label>Password:</label>
                 <input type="password" id="password" class="textfield" />
                 <div id="buttons">
-                    <input type="button" value="Login" class="button" onclick="login()"/>
-                    <input type="button" value="Signup" class="button" onclick="redirectSignup()"/>
+                    <input type="button" id="login-btn" value="Login" class="button"/>
+                    <input type="button" id="signup-btn" value="Signup" class="button"/>
                 </div>
             </form>
         </div>

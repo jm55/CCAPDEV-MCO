@@ -1,5 +1,17 @@
 console.log("login.js loaded!");
 
+$(document).ready(()=>{
+    console.log("jquery.js");
+
+    $("#signup-btn").click(()=>{
+        redirectSignup();
+    });
+
+    $("#login-btn").click(()=>{
+        login();
+    });
+});
+
 //Redirects user to signup page.
 function redirectSignup(){
     window.location.href = "../html/signup.html"
@@ -7,8 +19,8 @@ function redirectSignup(){
 
 //Conducts login logic
 function login(){
-    var uname = document.getElementById("username").value;
-    var pwrd = document.getElementById("password").value;
+    var uname = $("#username").val();
+    var pwrd = $("#password").val();
 
     if(uname.length === 0 && pwrd.length === 0) //invalidate entry if no credentials were presented/inputted
         return null;

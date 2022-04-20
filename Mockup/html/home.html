@@ -5,6 +5,9 @@
         <link rel="stylesheet" href="../css/style.css">
         <link rel="stylesheet" href="../css/home.css">
         <link rel="stylesheet" href="../css/post.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+        <script src="../js/banner.js"></script>
+        <script src="../js/home.js"></script>
     </head>
 
     <body>
@@ -13,11 +16,11 @@
                 <div>
                     <p id="banner-title">Budol Finds</p>
                     <div class="menu">
-                        <button id="home" class="menu_button">Home</button>
-                        <button id="post" class="menu_button">Post</button>
-                        <button id="search" class="menu_button">Search</button>
+                        <button id="home-btn" class="menu_button">Home</button>
+                        <button id="new-post-btn" class="menu_button">Post</button>
+                        <button id="search-btn" class="menu_button">Search</button>
                         <select id="categories"> <!--Same categories from Shopee-->
-                            <option value="home">Category</option>
+                            <option value="">Category</option>
                             <option value="Audio">Audio</option>
                             <option value="Babies&Kids">Babies & Kids</option>
                             <option value="Cameras">Cameras</option>
@@ -54,7 +57,7 @@
 
         <div class="timeline">
             
-            <div class="post card"> <!--POST 1-->  
+            <div id="post-1" class="post card"> <!--POST 1-->  
                 <a href="">
                     <span class="post_user">
                         <img src="../img/default/grid_test.png" class="postdp profilepic"><p class="username">gordon.ramsay</p>
@@ -84,12 +87,12 @@
                 </div>
                 <div class="post_footer">
                     <div class="likes">
-                        <p class="likecounter">NaN likes</p>
+                        <p class="likecounter">0 likes</p>
                     </div>
                     <form class="interact">
                         <input type="button" class="button" id="like-button" value="Like">
                         <input type="button" class="button" id="share-button" value="Share">
-                        <input type="text" class="textfield" id="comment-text"/>
+                        <input type="text" class="textfield" id="comment-text">
                         <input type="submit" class="button" value="Comment"/>
                     </form>
                     <div class="comment_list">
@@ -120,7 +123,7 @@
                 </div>
             </div>
             
-            <div class="post card"> <!--POST 2-->
+            <div id="post-2" class="post card"> <!--POST 2-->
                 <a href="">
                     <span class="post_user">
                         <img src="../img/default/grid_test.png" class="postdp profilepic"><p class="username">hololive.fan</p>
@@ -150,7 +153,7 @@
                 </div>
                 <div class="post_footer">
                     <div class="likes">
-                        <p class="likecounter">NaN likes</p>
+                        <p class="likecounter">0 likes</p>
                     </div>
                     <form class="interact">
                         <input type="button" class="button" id="like-button" value="Like">
@@ -161,7 +164,7 @@
                 </div>
             </div>
 
-            <div class="post card"> <!--POST 3-->
+            <div id="post-3" class="post card"> <!--POST 3-->
                 <a href="">
                     <span class="post_user">
                         <img src="../img/default/grid_test.png" class="postdp profilepic"><p class="username">network.guy</p>
@@ -191,7 +194,7 @@
                 </div>
                 <div class="post_footer">
                     <div class="likes">
-                        <p class="likecounter">NaN likes</p>
+                        <p class="likecounter">0 likes</p>
                     </div>
                     <form class="interact">
                         <input type="button" class="button" id="like-button" value="Like">
@@ -202,7 +205,7 @@
                 </div>
             </div>
 
-            <div class="post card"> <!--POST 4-->   
+            <div id="post-4" class="post card"> <!--POST 4-->   
                 <a href="">
                     <span class="post_user">
                         <img src="../img/default/grid_test.png" class="postdp profilepic"><p class="username">hololive.fan</p>
@@ -232,7 +235,7 @@
                 </div>
                 <div class="post_footer">
                     <div class="likes">
-                        <p class="likecounter">NaN likes</p>
+                        <p class="likecounter">0 likes</p>
                     </div>
                     <form class="interact">
                         <input type="button" class="button" id="like-button" value="Like">
