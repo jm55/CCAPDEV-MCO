@@ -19,4 +19,21 @@ $(document).ready(()=>{
         console.log("#userbutton clicked");
         window.location.href = "../html/profile.html";
     });
+    $("#logout-btn").click(()=>{
+        console.log("#logout-btn clicked");
+        if(logOut()){
+            console.log("logOut() returned true");
+            window.location.href = "../html/login.html";
+        }
+        else{
+            console.log("logOut() returned false");
+            return null;
+        }
+    });
 });
+
+function logOut(){
+    alert("!Temporary!\nLOGOUT ACK")
+    console.log("Logging out user...");
+    return true;
+}
