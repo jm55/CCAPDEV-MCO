@@ -1,5 +1,6 @@
 console.log("login.js loaded!");
 
+/**"Main" */
 $(document).ready(()=>{
     console.log("jquery.js");
 
@@ -12,12 +13,17 @@ $(document).ready(()=>{
     });
 });
 
-//Redirects user to signup page.
+/**
+ * Redirects user to signup.html
+ */
 function redirectSignup(){
     window.location.href = "../html/signup.html"
 }
 
-//Conducts login logic
+/**
+ * Process entire login process
+ * @returns Null if user credentials are invalid, redirects user to home otherwise.
+ */
 function login(){
     var uname = $("#username").val();
     var pwrd = $("#password").val();

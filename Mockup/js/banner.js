@@ -19,6 +19,10 @@ $(document).ready(()=>{
         console.log("#userbutton clicked");
         window.location.href = "../html/profile.html";
     });
+    $("#account-settings-btn").click(()=>{
+        console.log("#account-settings-btn clicked");
+        window.location.href = "../html/profile_settings.html"
+    });
     $("#logout-btn").click(()=>{
         console.log("#logout-btn clicked");
         if(logOut()){
@@ -32,8 +36,14 @@ $(document).ready(()=>{
     });
 });
 
+/**
+ * Logout protocols
+ * @returns Return true if successfully logged out, false if otherwise.
+ */
 function logOut(){
-    alert("!Temporary!\nLOGOUT ACK")
+    //[LOGOUT PROCEDURE HERE]
+
+    alert("!Temporary!\nLOGOUT ACK");
     console.log("Logging out user...");
     return true;
 }

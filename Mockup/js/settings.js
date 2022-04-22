@@ -1,23 +1,17 @@
-console.log("signup.js loaded!");
+console.log("settings.js loaded");
 
 var idlist = [];
 
-/**
- * "Main" function at onload of page
- */
 $(document).ready(()=>{
-    idlist = gatherInputIDs("signupform"); //For automated gathering of input IDs from signupform
-    //console.log("idlist:\n" + idlist); //idlist validation
-    
+    idlist = gatherInputIDs("profileform");
+    console.log(idlist);
+
     $("#bio-counter").text("0/255");
-    $("#signup-btn").click(()=>{
+    $("#save").click(()=>{
         getInputs();
     });
-    $("#login-btn").click(()=>{
-        loginRedirect();
-    });
-    $("#clear-btn").click(()=>{
-        clearSignup();
+    $("#cancel").click(()=>{
+        window.location.href = "../html/profile.html";
     });
     $("#bio").keyup(()=>{
         console.log("bio keyup");
@@ -31,7 +25,7 @@ $(document).ready(()=>{
      * @param formID Form ID that would be used for gathering inputIDs.
      * @returns Array of input IDs which include input types (except button), textarea, and select.
      */
-function gatherInputIDs(formID){
+ function gatherInputIDs(formID){
     let signupInputs = [$("#" + formID).children("input").toArray(), $("#" + formID).children("textarea").toArray(), $("#" + formID).children("select").toArray()];
     let collection = [];
     for(s of signupInputs){
@@ -47,8 +41,8 @@ function gatherInputIDs(formID){
  * Retrieves inputted signup data from signupform.
  * @returns Key-Value pair of all IDs available from @var idlist;
  */
-function getInputs(){
-    console.log("getSignup()!");
+ function getInputs(){
+    console.log("getInputs()!");
     var collection = [];
     let p = "";
     for(i of idlist){
@@ -79,7 +73,7 @@ function getInputs(){
  * @param ids (Optional) you can specify the list ids to be cleared, uses idlist by default.
  * @returns 0 as basic confirmation.
  */
-function clearSignup(ids = idlist){
+ function clearSignup(ids = idlist){
     console.log("clearSignup()!");
     for(i of ids)
         $("#"+i).val("");
@@ -87,21 +81,14 @@ function clearSignup(ids = idlist){
 }
 
 /**
- * Redirects user to login page.
- */
-function loginRedirect(){
-    window.location.href = "../html/login.html";
-}
-
-/**
  * Counts the length value of an text.
  * @param limit (Optional) Text length limit. Default: 255 characters.
  * @param alert (Optional) Enable or disable alert pop-ups. Default: true.
  */
-function textCount(limit=255, alert=true){
+ function textCount(limit=255, alert=true){
     let n = $("#bio").val().length;
     let s = n + "/" + limit;
-    $("#bio-counter").text(s);
+    $("#bio-counter ").text(s);
     if(limit-n < 0)
         if(alert)
             alert("You have exceeded " + limit + " of characters.");   
