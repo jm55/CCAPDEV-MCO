@@ -14,35 +14,35 @@
         </header>
         
         <div id="signup" class="card">
-            <form id="signupform">
+            <form name="signupform" id="signupform">
                 <label>Profile Pic:</label>
-                <img id="profilepic" src="../img/default/grid_test.png" class="profilepic" alt="Profile Picture">
-                <input id="profilepic-select" type="file" accept="image/*" alt="Profile Picture"> <!--Derived from https://stackoverflow.com/a/3381621 and https://www.w3schools.com/tags/att_input_accept.asp-->
+                <img name="profilepic" id="profilepic" src="../img/default/default_dp.png" class="profilepic" alt="Profile Picture">
+                <input name="profilepic-select" id="profilepic-select" type="file" accept="image/*" alt="Profile Picture" required> <!--Derived from https://stackoverflow.com/a/3381621 and https://www.w3schools.com/tags/att_input_accept.asp-->
                 <label>Username*:</label>
-                <input id="username" type="text" class="textfield" /> 
+                <input name="username" id="username" type="text" class="textfield" /> 
                 <label>Password*:</label>
-                <input id="new_password" type="password" class="textfield" />
+                <input name="password_a" id="password_a" type="password" class="textfield" />
                 <label>Repeat Password*:</label>
-                <input id="new_password2" type="password" class="textfield" />
+                <input name="password_b" id="password_b" type="password" class="textfield" />
                 <label>Email*:</label>
-                <input id="email" type="email" class="textfield" />
+                <input name="email" id="email" type="email" class="textfield" />
                 <label>First Name*:</label>
-                <input id="fname" type="text" class="textfield" />
+                <input name="fname" id="fname" type="text" class="textfield" />
                 <label>Middle Name:</label>
-                <input id="mname" type="text" class="textfield" />
+                <input name="mname" id="mname" type="text" class="textfield" />
                 <label>Last Name*:</label>
-                <input id="lname" type="text" class="textfield" />
+                <input name="lname" id="lname" type="text" class="textfield" />
                 <label>Gender*:</label>
-                <select id="gender">
+                <select name="gender" id="gender">
                     <option value=""></option>
                     <option value="M">M</option>
                     <option value="F">F</option>
-                    <option value="LGBT">LGBT</option>
+                    <option value="LGBTQ">LGBTQ</option>
                 </select>
                 <label>Bio:</label>
                 <textarea id="bio" name="bio" value=""></textarea>
                 <label style="text-align:right;" id="bio-counter"></label>
-                <input type="button" value="Signup" id="signup-btn" class="button"/>
+                <input type="submit" value="Signup" id="signup-btn" class="button"/>
                 <input type="button" value="Clear" id="clear-btn" class="button"/>
                 <input type="button" value="Login" id="login-btn" class="button"/>
                 </div>
