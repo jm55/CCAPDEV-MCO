@@ -9,9 +9,6 @@ $(document).ready(()=>{
         console.log("#post-btn clicked");
         window.location.href = "../html/post.html";
     });
-    $("#search-btn").click(()=>{
-        console.log("#search-btn clicked");
-    });
     $("#categories").on("change", ()=>{
         console.log("categories selected value changed: " + $("#categories").val());
     });

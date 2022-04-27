@@ -22,6 +22,11 @@ html{
     width: 100%;
 }
 
+.profile{
+    margin-left: auto;
+    margin-right: auto;
+}
+
 #banner-title{
     text-align: left;
     font-size: 2em !important;

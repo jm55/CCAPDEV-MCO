@@ -14,7 +14,7 @@ var submitClicked = false;
  * @param {string} bio Biography
  * @param {string} profilepic ProfilePic (string? or blob? NOT YET SURE)
  */
-const User = function(username, password, email, fname, mname, lname, gender, bio, profilepic){
+const User = function(username, password="", email, fname, mname, lname, gender, bio, profilepic){
     this.username = username;
     this.password = password;
     this.email = email;
@@ -25,6 +25,9 @@ const User = function(username, password, email, fname, mname, lname, gender, bi
     this.bio = bio;
     this.profilepic = profilepic; //TO BE UPDATED TO POINT TO DIRECTORY AT '../img/dp/<username>.jpg'; BY CURRENT DESIGN, IF USERNAME WAS CHANGED, THE DP WILL BE SAVED AGAIN AS NEW FILE WITH NEW FILENAME (I.E. USERNAME)
     this.formal_name = lname + ", " + fname + " " + mname[0,1];
+    function setPassword(password){
+        this.password = password;
+    }
 }
 
 /*

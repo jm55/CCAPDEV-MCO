@@ -12,13 +12,52 @@
 
     --text: #E0F7FA;
     --text-link: #E0F7FA;
-    --text-hover:  #0097A7;
+    --text-hover:  #080808;
     --text-select: 00838F;
 
     --textbox: rgba(255,255,255,30%);
-    --textbox-focus: rgba(255,255,255,20%);
+    --textbox-hover: rgba(255,255,255,20%);
 
     --default_image: url("../img/divisoria.jpg");
+}
+
+::-webkit-scrollbar{
+    width: 15px;
+    background-color: var(--textbox-hover);
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb{
+    width: 15px;
+    background-color: var(--primary-button);
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover{
+    background-color: var(--primary-hover);
+}
+
+::-webkit-scrollbar-thumb:active{
+    background-color: var(--primary-select);
+}
+
+::-webkit-file-upload-button{
+    border-radius: 10px;
+    border: none;
+    background-color: var(--primary-button); /*600*/
+    font-family: inherit !important;
+    color:white;
+    cursor: pointer;    
+    font-size: 14px !important;
+    height: 5vh;
+}
+
+::-webkit-file-upload-button:hover{
+    background-color: var(--primary-hover); /*700*/
+}
+
+::-webkit-file-upload-button:active{
+    background-color: var(--primary-select); /*800*/
 }
 
 html{
@@ -56,7 +95,7 @@ button:hover, .button:hover, select:hover{
     background-color: var(--primary-hover); /*700*/
 }
 
-button:active, .button:active, select:focus{
+button:active, .button:active, select:hover{
     background-color: var(--primary-select); /*800*/
 }
 
@@ -101,8 +140,8 @@ label{
     padding-right: 2%;
 }
 
-.textfield:focus{
-    background-color: var(--textbox-focus);
+.textfield:hover{
+    background-color: var(--textbox-hover);
 }
 
 textarea{
@@ -120,8 +159,8 @@ textarea{
     padding-bottom: 2%;
 }
 
-textarea:focus{
-    background: var(--textbox-focus);
+textarea:hover{
+    background: var(--textbox-hover);
 }
 
 .card{
@@ -149,7 +188,7 @@ textarea:focus{
     background-color: var(--primary);
     color: var(--text);
     position: relative;
-    margin-bottom: 2%;
+    margin-bottom: 10px;
     max-height: fit-content;
     z-index: 100;
 }

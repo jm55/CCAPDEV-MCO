@@ -2,6 +2,10 @@ html{
     background-color: #e5e5e5;
 }
 
+body{
+    overflow: hidden;
+}
+
 .menu_button{
     min-width: 6em;
     width: 6em;
@@ -25,4 +29,10 @@ html{
     padding-top: 20px;
     padding-bottom: 20px;
     padding-left: 20px;
+}
+
+.container{
+    display: flex;
+    height: 75vh;
+    margin-bottom: 10px;
 }
