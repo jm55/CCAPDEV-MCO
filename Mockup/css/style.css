@@ -191,12 +191,34 @@ textarea:hover{
     margin-bottom: 10px;
     max-height: fit-content;
     z-index: 100;
+
+    display: flex;
+    position: sticky;
+    top: 0%;
+    max-height: 6em;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    padding-left: 20px;
 }
 
-#menu{
+.menu{
+    position: relative;
     display: flex;
-    height: fit-content;
-    margin-top: 0%;
+    width: 100%;
+}
+
+.menu_button{
+    min-width: 6em;
+    width: 6em;
+    max-width: 6em;
+    min-height: 3em;
+    max-height: 3em;
+    margin-right: 10px;
+    font-size: small;
+}
+
+#search-txt{
+    margin-right: 10px;
 }
 
 #categories{
@@ -226,7 +248,7 @@ textarea:hover{
 
 #banner-left{
     width: 80%;
-    display: flex;
+    display: block;
 }
 
 #banner-right{

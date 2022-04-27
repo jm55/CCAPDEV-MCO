@@ -6,21 +6,6 @@ body{
     overflow: hidden;
 }
 
-.menu_button{
-    min-width: 6em;
-    width: 6em;
-    max-width: 6em;
-    min-height: 3em;
-    max-height: 3em;
-    margin-right: 10px;
-    font-size: small;
-}
-
-.menu{
-    display: inline-block;
-    max-width: max-content;
-}
-
 .home_header{
     display: flex;
     position: sticky;
@@ -33,6 +18,5 @@ body{
 
 .container{
     display: flex;
-    height: 75vh;
-    margin-bottom: 10px;
+    height: 76vh;
 }
