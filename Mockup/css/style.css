@@ -19,6 +19,10 @@
     --textbox-hover: rgba(255,255,255,20%);
 
     --default_image: url("../img/divisoria.jpg");
+
+    --font-size-normal: 12px;
+    --font-size-large: 14px;
+    --font-size-header: 3em;
 }
 
 ::-webkit-scrollbar{
@@ -48,7 +52,7 @@
     font-family: inherit !important;
     color:white;
     cursor: pointer;    
-    font-size: 14px !important;
+    font-size: 12px !important;
     height: 5vh;
 }
 
@@ -83,12 +87,14 @@ button, .button, select{
     font-family: inherit;
     color:white;
     cursor: pointer;
-    font-size: 14px !important;
+    font-size: var(--font-size-large) !important;
+    font-weight: 600;
     height: 5vh;
 }
 
 select{
     padding-left: 8px;
+    font-size: var(--font-size-normal);
 }
 
 button:hover, .button:hover, select:hover{
@@ -116,11 +122,23 @@ a:active {
     color: var(--text-select); /*800*/
 }
 
+p{
+    color: var(--text);
+}
+
+label{
+    color: var(--text);
+}
+
 table{
     width: 100%;
     border-spacing: 0px;
     border: none;
     color: var(--text);
+}
+
+td{
+    font-size: var(--font-size-normal);
 }
 
 label{
@@ -135,9 +153,9 @@ label{
     border: none;
     font-family: inherit;
     height: 40px;
-    font-size: 14px;
-    padding-left: 2%;
-    padding-right: 2%;
+    font-size: 12px;
+    padding-left: 10px;
+    padding-right: 10px;
 }
 
 .textfield:hover{
@@ -152,7 +170,7 @@ textarea{
     border: none;
     font-family: inherit;
     height: 40px;
-    font-size: 14px;
+    font-size: 12px;
     padding-left: 2%;
     padding-right: 2%;
     padding-top: 2%;
@@ -221,7 +239,7 @@ textarea:hover{
     margin-right: 10px;
 }
 
-#categories{
+.menu_categories{
     min-width: 8em;
     width: 8em;
     max-width: 8em;

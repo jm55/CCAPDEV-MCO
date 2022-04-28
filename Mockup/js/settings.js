@@ -177,7 +177,7 @@ function loginRedirect(){
 /*
 ===================================================================================
 
-TRANSFERRABLE METHODS
+TRANSFERRABLE/GLOBAL METHODS
 
 METHODS THAT CAN BE USED FOR OTHER JS FILES SINCE ITS QUITE GENERAL PURPOSE BY DESIGN
 

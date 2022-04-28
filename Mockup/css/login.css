@@ -6,7 +6,7 @@ html{
     background-image: var(--default_image);
 }
 
-#login{
+.login{
     background-color: var(--primary);
     color: white;
     position: relative;
@@ -15,23 +15,24 @@ html{
     margin-left: auto;
     margin-right: auto;
     height: max-content;
-    font-size: 14px;
+    font-size: var(--font-size-normal);
 }
 
-#loginform{
+.loginform{
     display: grid;
     margin-bottom: 2%;
     row-gap: 10px;
 }
 
-#buttons{
+.login-buttons{
     display: grid;
     row-gap: 10px;
     margin-top: 10%;
 }
 
-#banner-title{
-    font-size: 5vh;
+.banner_title{
+    font-size: var(--font-size-header);
+    font-family: inherit;
     margin-left: auto;
     margin-right: auto;
     text-align: center;

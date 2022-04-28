@@ -1,0 +1,80 @@
+<!--USED FOR PAGE ELEMENT PROTOTYPING-->
+
+<!DOCTYPE html>
+
+<html>
+
+    <head>
+        <title>[TEST] - Budol Finds</title>
+        <link rel="stylesheet" href="../../css/style.css">
+        <link rel="stylesheet" href="../../css/home.css">
+        <link rel="stylesheet" href="../../css/post.css">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        <script src="../../js/post.js"></script>
+        <script src="../../js/home.js"></script>
+    </head>
+
+    <body style="overflow: auto;">
+        
+        <div id="post-1" class="post card"> <!--BUILD POST ID BASED ON POST NUMBER/HASH-->
+            <a href="">
+                <span class="post_user">
+                    <img src="../../img/default/default_dp.png" class="postdp profilepic" alt="Profile Picture"><p class="username">gordon.ramsay</p> <!--BUILD IMG SRC AND P<USERNAME> TEXT BASED ON POST USER DATA-->
+                </span>
+            </a>
+            <div class="post_content">
+                <div class="post_description">
+                    <p class="post_description_text"> <!--BUILD TEXT BASED ON POST DESCRIPTION-->
+                        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+                    </p>
+                </div>
+                <div class="post_list">
+                    Link(s):
+                    <table class="post_table">
+                        <tr>
+                            <td class="item_label">Pepper Shaker</td> <!--BUILD TEXT BASED ON POST LABEL DATA-->
+                            <td class="item_link"> <a href=""> Shopee </a></td> <!--BUILD TEXT AND A'S HREF BASED ON POST LINK DATA-->
+                        </tr>
+                    </table>
+                </div>
+                <div class="post_list">
+                    <p>
+                        Categories: 
+                        <a href="" class="post_category"> Home & Living</a> <!--BUILD HREF VALUE AT JS BASED ON POST CATEGORY-->
+                    </p>
+                </div>
+                <div class="post_image_div">
+                    <img src="../../img/products/product1.jpg" class="post_image"> <!--BUILD SRC VALUE AT JS BASED ON POST IMG DATA/DIRECTORY-->
+                </div>
+            </div>
+            <div class="post_footer">
+                <div class="likes">
+                    <p class="likecounter">0 likes</p> <!--BUILD TEXT VALUE AT JS BASED ON POST LIKE COUNT-->
+                </div>
+                <form class="interact">
+                    <input type="button" class="button" id="like-button" value="Like">
+                    <input type="button" class="button" id="share-button" value="Share">
+                    <input type="button" class="button" id="report-button" value="Report">
+                    <input type="text" class="textfield comment_textfield" id=""> <!--BUILD ID VALUE AT JS BASED ON USER AND COMMENT OBJECT DATA--->
+                    <input type="submit" class="button" value="Comment"/>
+                </form>
+                <div class="comment_list">
+                    <label>Comments</label>
+                    <div class="comment_div"> <!--SINGLE COMMENT BLOCK - REPETITIVE-->
+                        <a href="" class="username">username1</a> <!--BUILD HREF VALUE AT JS BASED ON COMMENT OBJECT DATA--->
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, 
+                            sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
+                            Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris 
+                            nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in 
+                            reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. 
+                            Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia 
+                            deserunt mollit anim id est laborum.
+                        </p> <!--BUILD TEXT VALUE AT JS BASED ON COMMENT OBJECT DATA--->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </body>
+
+</html>

@@ -5,7 +5,7 @@ var submitClicked = false;
 /**
  * User Profile or User Object
  * @param {string} username Username
- * @param {string} password Password (Refers to password_b at signup and settings)
+ * @param {string} password Password (Refers to password_b at signup.html and settings.html; RECOMMENDED TO BE IN HASH FORM)
  * @param {string} email Email
  * @param {string} fname First Name
  * @param {string} mname Middle Name
@@ -15,13 +15,13 @@ var submitClicked = false;
  * @param {string} profilepic ProfilePic (string? or blob? NOT YET SURE)
  */
 const User = function(username, password="", email, fname, mname, lname, gender, bio, profilepic){
-    this.username = username;
-    this.password = password;
-    this.email = email;
-    this.fname = fname;
-    this.mname = mname;
-    this.lname = lname;
-    this.gender = gender;
+    this.username = username.trim();
+    this.password = password.trim(); //RECOMMENDED IF HASH
+    this.email = email.trim();
+    this.fname = fname.trim();
+    this.mname = mname.trim();
+    this.lname = lname.trim();
+    this.gender = gender.trim();
     this.bio = bio;
     this.profilepic = profilepic; //TO BE UPDATED TO POINT TO DIRECTORY AT '../img/dp/<username>.jpg'; BY CURRENT DESIGN, IF USERNAME WAS CHANGED, THE DP WILL BE SAVED AGAIN AS NEW FILE WITH NEW FILENAME (I.E. USERNAME)
     this.formal_name = lname + ", " + fname + " " + mname[0,1];
@@ -124,9 +124,11 @@ function validateInputs(){
             errMessage("validateInputs",  f[0] + " not filled")
             validity = false;
         }else{
+            var trimmedVal = f[1].trim();
+
             //CHECK EMAIL IF IT CONTAINS AT LEAST AN @
             if(f[0] == "email"){
-                if(!f[1].includes("@")){
+                if(!trimmedVal.includes("@")){
                     errMessage("validateInputs", "Invalid email");
                     validity = false;
                 }
@@ -134,10 +136,10 @@ function validateInputs(){
             
             //CHECK PASSWORD IF SAME, RECOMMENDED TO BE HASHED BEFORE COMPARING
             if(f[0] == "password_a"){
-                prevHash = hash(f[1]);
+                prevHash = hash(trimmedVal);
             }
             if(f[0] == "password_b"){
-                if(prevHash != hash(f[1])){
+                if(prevHash != hash(trimmedVal)){
                     errMessage("validateInputs", "Mismatched passwords");
                     validity = false;
                 }
@@ -145,7 +147,7 @@ function validateInputs(){
                 
             //CHECK BIO IF AT 255 CHAR AT MOST
             if(f[0] == "bio")
-                if(f[1].length > 255){ //BIO CHAR LIMIT
+                if(trimmedVal.length > 255){ //BIO CHAR LIMIT
                     errMessage("validateInputs", "Bio char limit exceeded");
                     validity = false;
                 }
@@ -177,7 +179,7 @@ function loginRedirect(){
 /*
 ===================================================================================
 
-TRANSFERRABLE METHODS
+TRANSFERRABLE/GLOBAL METHODS
 
 METHODS THAT CAN BE USED FOR OTHER JS FILES SINCE ITS QUITE GENERAL PURPOSE BY DESIGN
 

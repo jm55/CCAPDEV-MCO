@@ -46,14 +46,13 @@ function login(){
         if(f[1].length === 0)
             $("#" + f[0]).css("background-color", "var(--warning-light)");
         else
-            c.push(f[1]);
+            c.push(f[1].trim());    
 
     //PROCESS FOR PROPER LOGGING IN OF USER
     if(sampleAuth(c[0], c[1]))
         window.location.href = "../html/home.html";
-    else{
-        
-    }
+    else
+        errMessage("login","Authentication Failed");
 }
 
 /**
@@ -75,6 +74,8 @@ function sampleAuth(uname, pwrd){
     return false;
 }
 
+
+
 /**
  * Simple Hash Function (for emulation purposes)
  * Reference: https://gist.github.com/iperelivskiy/4110988
@@ -95,4 +96,14 @@ function sampleAuth(uname, pwrd){
         }
     }
     return String(a);
+}
+
+/**
+ * Prints err message on console
+ * Use for silent invalid input messages
+ * @param {string} functionName Name of function that called this. Don't include '()'
+ * @param {string} msg Details of error
+ */
+ function errMessage(functionName, msg){
+    console.log(functionName + "(): ", msg);
 }

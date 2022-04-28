@@ -5,7 +5,7 @@
         <link rel="stylesheet" href="../css/style.css">
         <link rel="stylesheet" href="../css/home.css">
         <link rel="stylesheet" href="../css/post.css">
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
         <script src="../js/banner.js"></script>
         <script src="../js/home.js"></script>
     </head>
@@ -16,9 +16,7 @@
                 <p id="banner-title"><a id="logo-btn">Budol Finds</a></p>
                 <div class="menu">
                     <button id="home-btn" class="menu_button">Home</button>
-                    <input id="search-txt" class="textfield" />
-                    <button id="search-btn" class="menu_button">Search</button>
-                    <select id="categories"> <!--Same categories from Shopee-->
+                    <select id="categories" name="categories" class="menu_categories"> <!--Same categories from Shopee-->
                         <option value="">Category</option>
                         <option value="Audio">Audio</option>
                         <option value="Babies&Kids">Babies & Kids</option>
@@ -46,6 +44,9 @@
                         <option value="Women'sBags">Women's Bags</option>
                         <option value="Women'sShoes">Women's Shoes</option>
                     </select>
+                    <input id="search-txt" name="search-txt" class="textfield" />
+                    <button id="search-btn" class="menu_button">Search</button>
+                    
                 </div>
             </div>
             <div id="banner-right">
@@ -56,11 +57,11 @@
         <div class="container">
             
             <div class="card new_post">
-                <form name="new-post-form" id="new-post-form">
+                <form name="new-post-form" id="new-post-form" class="new_post_form">
                     <label>Post Content:</label>
                     <textarea id="post-content" class="new_post_description"></textarea>
                     <label>Category:</label>
-                    <select id="post-category"> <!--Same categories from Shopee-->
+                    <select id="new-post-category" name="new-post-category"> <!--Same categories from Shopee-->
                         <option value="">Category</option>
                         <option value="Audio">Audio</option>
                         <option value="Babies&Kids">Babies & Kids</option>
@@ -93,7 +94,7 @@
                     <label>Link:</label>
                     <input id="link" type="text" class="textfield">
                     <label>Image:</label>
-                    <!--<img id="new-post-image" class="new_post_image" src="" alt="">-->
+                    <!--BUILD VIA JS IF FILE SELECTED: <img id="new-post-image" class="new_post_image" src="" alt="">-->
                     <input id="img-btn" type="file" accept="image/*"/>
                     <div class="interact">
                         <input id="post-btn" type="button" class="button" value="Post">
@@ -102,66 +103,8 @@
                 </form>
             </div>
 
-            <div class="timeline">
-
-                <div id="post-1" class="post card"> <!--POST 1-->  
-                    <a href="">
-                        <span class="post_user">
-                            <img src="../img/default/default_dp.png" class="postdp profilepic" alt="Profile Picture"><p class="username">gordon.ramsay</p>
-                        </span>
-                    </a>
-                    <div class="post_content">
-                        <div class="post_description">
-                            <p class="post_description_text">
-                                "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
-                            </p>
-                        </div>
-                        <div class="post_list">
-                            Link(s):
-                            <table class="post_table">
-                                <tr>
-                                    <td>Pepper Shaker</td>
-                                    <td><a href="https://shopee.ph/Pepper-Grinder-Pepper-Mill-5-8-10-inch-Wooden-manual-Salt-Spice-Grinding-glass-Bottle-Kitchen-Tools-i.416001436.9373618118?sp_atk=e67149da-a80a-4726-b9be-74c8bb372939">Shopee</a></td>
-                                </tr>
-                            </table>
-                        </div>
-                        <div class="post_list">
-                            <p>Categories: <a href="">Home & Living</a></p>
-                        </div>
-                        <div class="post_gallery">
-                            <img src="../img/products/product1.jpg" class="post_image">
-                        </div>
-                    </div>
-                    <div class="post_footer">
-                        <div class="likes">
-                            <p class="likecounter">0 likes</p>
-                        </div>
-                        <form class="interact">
-                            <input type="button" class="button" id="like-button" value="Like">
-                            <input type="button" class="button" id="share-button" value="Share">
-                            <input type="button" class="button" id="report-button" value="Report">
-                            <input type="text" class="textfield" id="comment-text">
-                            <input type="submit" class="button" value="Comment"/>
-                        </form>
-                        <div class="comment_list">
-                            <label>Comments</label>
-                            <div class="comment">
-                                <span>
-                                    <a href="" class="username">username1</a>
-                                </span>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, 
-                                    sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
-                                    Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris 
-                                    nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in 
-                                    reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. 
-                                    Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia 
-                                    deserunt mollit anim id est laborum.
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-    
+            <div class="timeline">   
+                <!--FILL CONTENT USING JS-->
             </div> <!--END OF TIMELINE-->
         </div>
 
