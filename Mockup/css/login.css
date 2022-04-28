@@ -31,7 +31,6 @@ html{
 }
 
 .banner_title{
-    font-size: var(--font-size-header);
     font-family: inherit;
     margin-left: auto;
     margin-right: auto;

@@ -97,6 +97,10 @@ select{
     font-size: var(--font-size-normal);
 }
 
+select > option{
+    background-color: var(--primary);
+}
+
 button:hover, .button:hover, select:hover{
     background-color: var(--primary-hover); /*700*/
 }
@@ -207,16 +211,18 @@ textarea:hover{
     color: var(--text);
     position: relative;
     margin-bottom: 10px;
-    max-height: fit-content;
+    max-height: fit-content !important;
     z-index: 100;
-
     display: flex;
     position: sticky;
     top: 0%;
     max-height: 6em;
     padding-top: 20px;
-    padding-bottom: 20px;
     padding-left: 20px;
+}
+
+.wsection{
+    display: block !important;
 }
 
 .menu{
@@ -264,17 +270,17 @@ textarea:hover{
     height: 64px;
 }
 
-#banner-left{
+.banner_left{
     width: 80%;
     display: block;
 }
 
-#banner-right{
+.banner_right{
     width: 20%;
     display: flex;
 }
 
-#banner-title{
+.banner_title{
     text-align: left;
     font-size: 2em !important;
     font-weight: bold;

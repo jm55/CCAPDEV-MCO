@@ -1,50 +1,49 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Profile Settings - Budol Finds</title>
+        <title>Signup - Budol Finds</title>
         <link rel="stylesheet" href="../css/style.css">
-        <link rel="stylesheet" href="../css/profile_settings.css">
+        <link rel="stylesheet" href="../css/signup.css">
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
         <script src="../js/settings.js"></script>
-    </head>
-
+        </head>
     <body>
-        <header id="" class="card brand_banner">
-            <h1 id="banner-title"><a id="logo-btn">Budol Finds</a></h1>
-            <h2 id="section-title">Profile Settings</h2>
+        <header id="" class="card brand_banner wsection">
+            <h1 class="banner_title"><a href="">Budol Finds</a></h1>
+            <h2 class="section_title">Profile Details</h2>
         </header>
-
-        <div id="profile-info" class="card">
-            <h1>Profile Info</h1>
-            <form id="profileform">
+        
+        <div class="signup card">
+            <form name="profileform" id="signupform" class="profileform">
                 <label>Profile Pic:</label>
-                <img id="profilepic" src="../img/default/grid_test.png" class="profilepic" alt="Profile Picture">
-                <input id="profilepic-select" type="file" accept="image/*" alt="Profile Picture"> <!--Derived from https://stackoverflow.com/a/3381621 and https://www.w3schools.com/tags/att_input_accept.asp-->
+                <img name="profilepic" id="profilepic" src="../img/default/default_dp.png" class="profilepic" alt="Profile Picture">
+                <input name="profilepic-select" id="profilepic-select" type="file" accept="image/*" alt="Profile Picture" required> <!--Derived from https://stackoverflow.com/a/3381621 and https://www.w3schools.com/tags/att_input_accept.asp-->
                 <label>Username*:</label>
-                <input id="username" type="text" class="textfield" /> 
+                <input name="username" id="username" type="text" class="textfield" /> 
                 <label>Password*:</label>
-                <input id="new_password" type="password" class="textfield" />
+                <input name="password_a" id="password_a" type="password" class="textfield" />
                 <label>Repeat Password*:</label>
-                <input id="new_password2" type="password" class="textfield" />
+                <input name="password_b" id="password_b" type="password" class="textfield" />
+                <label>Email*:</label>
+                <input name="email" id="email" type="email" class="textfield" />
                 <label>First Name*:</label>
-                <input id="fname" type="text" class="textfield" />
+                <input name="fname" id="fname" type="text" class="textfield" />
                 <label>Middle Name:</label>
-                <input id="mname" type="text" class="textfield" />
+                <input name="mname" id="mname" type="text" class="textfield" />
                 <label>Last Name*:</label>
-                <input id="lname" type="text" class="textfield" />
+                <input name="lname" id="lname" type="text" class="textfield" />
                 <label>Gender*:</label>
-                <select id="gender">
+                <select name="gender" id="gender" class="gender">
                     <option value=""></option>
                     <option value="M">M</option>
                     <option value="F">F</option>
-                    <option value="LGBT">LGBT</option>
+                    <option value="LGBTQ">LGBTQ</option>
                 </select>
                 <label>Bio:</label>
-                <textarea id="bio" value=""></textarea>
+                <textarea id="bio" name="bio" value=""></textarea>
                 <label style="text-align:right;" id="bio-counter"></label>
-                <div id="buttons">
-                    <input type="button" id="save" value="Save" class="button" />
-                    <input type="button" id="cancel" value="Cancel" class="button" />
+                <input type="submit" value="Save" id="save-btn" class="button"/>
+                <input type="button" value="Cancel" id="cancel-btn" class="button"/>
                 </div>
             </form>
         </div>

@@ -2,48 +2,7 @@ console.log("signup.js loaded!");
 
 var submitClicked = false;
 
-/**
- * User Profile or User Object
- * @param {string} username Username
- * @param {string} password Password (Refers to password_b at signup.html and settings.html; RECOMMENDED TO BE IN HASH FORM)
- * @param {string} email Email
- * @param {string} fname First Name
- * @param {string} mname Middle Name
- * @param {string} lname Last Name
- * @param {string} gender Gender
- * @param {string} bio Biography
- * @param {string} profilepic ProfilePic (string? or blob? NOT YET SURE)
- */
-const User = function(username, password="", email, fname, mname, lname, gender, bio, profilepic){
-    this.username = username.trim();
-    this.password = password.trim(); //RECOMMENDED IF HASH
-    this.email = email.trim();
-    this.fname = fname.trim();
-    this.mname = mname.trim();
-    this.lname = lname.trim();
-    this.gender = gender.trim();
-    this.bio = bio;
-    this.profilepic = profilepic; //TO BE UPDATED TO POINT TO DIRECTORY AT '../img/dp/<username>.jpg'; BY CURRENT DESIGN, IF USERNAME WAS CHANGED, THE DP WILL BE SAVED AGAIN AS NEW FILE WITH NEW FILENAME (I.E. USERNAME)
-    this.formal_name = lname + ", " + fname + " " + mname[0,1];
-    function setPassword(password){
-        this.password = password;
-    }
-}
-
-/*
-===================================================================================
-
-FUNCTION SPECIFIC METHODS
-
-METHODS THAT CAN ONLY BE USED TO SIMILAR CODE SETUP (THIS SPECIFICALLY FOR BOTH SIGNUP.JS AND SETTINGS.JS)
-
-===================================================================================
-*/
-
-/**
- * MAIN FUNCTION
- */
-$(document).ready(()=>{
+ $(document).ready(()=>{
     $("#bio-counter").text("0/255"); //default max value for bio characters
 
     $("#signup-btn").click((e)=>{
@@ -53,8 +12,11 @@ $(document).ready(()=>{
         p = null // User object
         
         updateColor();
-        if(validateInputs())
+        if(validateSignupInputs())
             p = createUser();
+
+        console.log("New User Object: ");
+        console.log(p);
     });
     $("#login-btn").click(()=>{
         loginRedirect();
@@ -62,11 +24,11 @@ $(document).ready(()=>{
     $("#clear-btn").click(()=>{
         clearSignup();
     });
-    $("#bio").keyup(()=>{
+    $("#bio").keydown(()=>{
         updateTextCount();
     });
-    
     $("#profilepic-select").on("change", ()=>{
+        console.log("image change");
         refreshDP();
     });
     $("input").keyup((e)=>{
@@ -82,11 +44,20 @@ $(document).ready(()=>{
     });
 });
 
+
+/*
+===================================================================================
+
+FUNCTION SPECIFIC METHODS
+
+===================================================================================
+*/
+
 /**
  * Refreshes displayed User picture if file is selected; Uses tempURL/blobURL as placeholder for file
  */
 function refreshDP(){
-    var file = getInputFile("profilepic-select")
+    var file = getInputFile("profilepic-select");
     if(file) //check if it exists
         $("#profilepic").attr("src",getTempURL(file));
     else
@@ -99,56 +70,56 @@ function refreshDP(){
  * @returns User object with the inputs inputted by the user.
  */
 function createUser(){
+    var list = [];
     let username = document.getElementById("username").value;
-    let password = document.getElementById("password_b").value; //RECOMMENDED TO STORE OR USE IN HASH BUT OH WELL
+    let password = hash(document.getElementById("password_b").value); //HASHED EQUIVALENT
     let email = document.getElementById("email").value;
     let fname = document.getElementById("fname").value;
     let mname = document.getElementById("mname").value;
     let lname = document.getElementById("lname").value;
     let gender = document.getElementById("gender").value;
     let bio = document.getElementById("bio").value;
-    let profilepic = getTempURL(getInputFile("profilepic-select"));//TEMPORARILY USING BLOBURL
-    return new User(username, password, email, fname, mname, lname, gender, bio, profilepic);
+    let profilepic = getTempURL(getInputFile("profilepic-select")); //TEMPORARILY USING BLOBURL
+
+    return new User(username,password,email,fname, mname, lname, gender,bio, profilepic);
 }
 
 /**
  * Retrieves inputted signup data from signupform.
  * @returns Key-Value pair of all IDs available from @var idlist;
  */
-function validateInputs(){
+function validateSignupInputs(){
     var form = new FormData(document.forms.signupform);
     var validity = true;
     var prevHash = "";
     for(f of form){
         if(f[1].length == 0 && (f[0] != "bio" || f[0] != "profilepic-select")){
-            errMessage("validateInputs",  f[0] + " not filled")
+            errMessage("validateSignupInputs",  f[0] + " not filled")
             validity = false;
         }else{
-            var trimmedVal = f[1].trim();
-
             //CHECK EMAIL IF IT CONTAINS AT LEAST AN @
             if(f[0] == "email"){
-                if(!trimmedVal.includes("@")){
-                    errMessage("validateInputs", "Invalid email");
+                if(!f[1].includes("@")){
+                    errMessage("validateSignupInputs", "Invalid email");
                     validity = false;
                 }
             } 
             
             //CHECK PASSWORD IF SAME, RECOMMENDED TO BE HASHED BEFORE COMPARING
             if(f[0] == "password_a"){
-                prevHash = hash(trimmedVal);
+                prevHash = hash(f[1]);
             }
             if(f[0] == "password_b"){
-                if(prevHash != hash(trimmedVal)){
-                    errMessage("validateInputs", "Mismatched passwords");
+                if(prevHash != hash(f[1])){
+                    errMessage("validateSignupInputs", "Mismatched passwords");
                     validity = false;
                 }
             }
                 
             //CHECK BIO IF AT 255 CHAR AT MOST
             if(f[0] == "bio")
-                if(trimmedVal.length > 255){ //BIO CHAR LIMIT
-                    errMessage("validateInputs", "Bio char limit exceeded");
+                if(f[1].length > 255){ //BIO CHAR LIMIT
+                    errMessage("validateSignupInputs", "Bio char limit exceeded");
                     validity = false;
                 }
         }   
@@ -180,8 +151,6 @@ function loginRedirect(){
 ===================================================================================
 
 TRANSFERRABLE/GLOBAL METHODS
-
-METHODS THAT CAN BE USED FOR OTHER JS FILES SINCE ITS QUITE GENERAL PURPOSE BY DESIGN
 
 ===================================================================================
 */
@@ -235,7 +204,7 @@ function errMessage(functionName, msg){
 }
 
 /**
- * Simple Hash Function (for emulation purposes)
+ * Simple Hash Function (For Emulation Purposes)
  * Reference: https://gist.github.com/iperelivskiy/4110988
  * @param {string} s String to be hashed
  * @returns Numeric hash string equivalent of s
@@ -276,4 +245,41 @@ function errMessage(functionName, msg){
  */
 function changeBGColor(id, color){
     document.getElementById(id).style.backgroundColor = color;
+}
+
+
+/*
+===================================================================================
+
+OBJECTS
+
+===================================================================================
+*/
+
+
+/**
+ * User Profile or User Object
+ * @param {string} username Username
+ * @param {string} password Password (Refers to password_b at signup and settings)
+ * @param {string} email Email
+ * @param {string} fname First Name
+ * @param {string} mname Middle Name
+ * @param {string} lname Last Name
+ * @param {string} gender Gender
+ * @param {string} bio Biography
+ * @param {string} profilepic ProfilePic (string? or blob? NOT YET SURE)
+ */
+ const User = function(username, password="", email, fname, mname, lname, gender, bio="", profilepic=""){
+    this.username = username;
+    this.password = password;
+    this.email = email;
+    this.fname = fname;
+    this.mname = mname;
+    this.lname = lname;
+    this.gender = gender;
+    this.bio = bio;
+    this.profilepic = profilepic; //TO BE UPDATED TO POINT TO SERVER DIRECTORY AT '../img/dp/<username>.jpg'; BY CURRENT DESIGN, IF USERNAME WAS CHANGED, THE DP WILL BE SAVED AGAIN AS NEW FILE WITH NEW FILENAME (I.E. USERNAME)
+    this.formal_name = lname + ", " + fname + " " + mname.substring(0,1);
+
+    //IF A CLASS, ADD FUNCTION TO SAVE URL/BLOB AS FILE TO SERVER AT '../img/dp/<username>.jpg'
 }

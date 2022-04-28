@@ -4,16 +4,12 @@ html{
     background-repeat: no-repeat;
 }
 
-#gender>option{
-    background-color: var(--primary);
-}
-
-#gender{
+.gender{
     min-height: 40px;
     border-radius: 16px;
 }
 
-#signup{ /*Same CSS code from login.css*/
+.signup, .profile{ /*Same CSS code from login.css*/
     background-color: var(--primary);
     color: white;
     position: relative;
@@ -25,7 +21,7 @@ html{
     height: max-content;
 }
 
-#signupform{  /*Same CSS code from login.css*/
+.signupform, .profileform{  /*Same CSS code from login.css*/
     display: grid;
     margin-bottom: 2%;
     row-gap: 10px;
@@ -47,13 +43,13 @@ html{
     margin-top: 4%;
 }
 
-#banner-title{
-    font-size: 5vh;
+.banner_title{
+    font-family: inherit;
     margin-left: auto;
     margin-right: auto;
     text-align: center;
 }
 
-#section-title{
+.section_title{
     text-align: center;
 }

@@ -46,7 +46,7 @@ function login(){
         if(f[1].length === 0)
             $("#" + f[0]).css("background-color", "var(--warning-light)");
         else
-            c.push(f[1].trim());    
+            c.push(f[1]);    
 
     //PROCESS FOR PROPER LOGGING IN OF USER
     if(sampleAuth(c[0], c[1]))

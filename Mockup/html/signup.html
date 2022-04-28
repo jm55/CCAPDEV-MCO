@@ -8,13 +8,13 @@
         <script src="../js/signup.js"></script>
         </head>
     <body>
-        <header id="" class="card brand_banner">
-            <h1 id="banner-title">Budol Finds</h1>
-            <h2 id="section-title">Signup</h2>
+        <header id="" class="card brand_banner wsection">
+            <h1 class="banner_title"><a href="">Budol Finds</a></h1>
+            <h2 class="section_title">Signup</h2>
         </header>
         
-        <div id="signup" class="card">
-            <form name="signupform" id="signupform">
+        <div class="signup card">
+            <form name="signupform" id="signupform" class="signupform">
                 <label>Profile Pic:</label>
                 <img name="profilepic" id="profilepic" src="../img/default/default_dp.png" class="profilepic" alt="Profile Picture">
                 <input name="profilepic-select" id="profilepic-select" type="file" accept="image/*" alt="Profile Picture" required> <!--Derived from https://stackoverflow.com/a/3381621 and https://www.w3schools.com/tags/att_input_accept.asp-->
@@ -33,7 +33,7 @@
                 <label>Last Name*:</label>
                 <input name="lname" id="lname" type="text" class="textfield" />
                 <label>Gender*:</label>
-                <select name="gender" id="gender">
+                <select name="gender" id="gender" class="gender">
                     <option value=""></option>
                     <option value="M">M</option>
                     <option value="F">F</option>

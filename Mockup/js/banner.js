@@ -1,13 +1,11 @@
 console.log("banner.js loaded");
 
+currentUser = null;
+
 $(document).ready(()=>{
     $("#home-btn").click(()=>{
         console.log("#home-btn clicked");
         window.location.href = "../html/home.html";
-    });
-    $("#new-post-btn").click(()=>{
-        console.log("#post-btn clicked");
-        window.location.href = "../html/post.html";
     });
     $("#categories").on("change", ()=>{
         console.log("categories selected value changed: " + $("#categories").val());
@@ -22,7 +20,7 @@ $(document).ready(()=>{
     });
     $("#logout-btn").click(()=>{
         console.log("#logout-btn clicked");
-        if(logOut()){
+        if(logout(currentUser)){
             console.log("logOut() returned true");
             window.location.href = "../html/login.html";
         }
@@ -37,10 +35,6 @@ $(document).ready(()=>{
  * Logout protocols
  * @returns Return true if successfully logged out, false if otherwise.
  */
-function logOut(){
-    //[LOGOUT PROCEDURE HERE]
-
-    alert("!Temporary!\nLOGOUT ACK");
-    console.log("Logging out user...");
+function logout(curentUser){
     return true;
 }
