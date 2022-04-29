@@ -60,8 +60,11 @@ function refreshDP(){
     var file = getInputFile("profilepic-select");
     if(file) //check if it exists
         $("#profilepic").attr("src",getTempURL(file));
-    else
+    else{
+        $("#profilepic").attr("src","../img/default/default_dp.png");
         errMessage("refreshDP", "Error with file");
+    }
+        
 }
 
 /**
@@ -134,8 +137,11 @@ function validateSignupInputs(){
  */
 function clearSignup(){
     var form = new FormData(document.forms.signupform);
-    for(f of form)
+    for(f of form){
         $("#" + f[0]).val("");
+    }
+    refreshDP();
+        
     submitClicked = false;
 }
 

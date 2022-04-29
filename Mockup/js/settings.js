@@ -125,6 +125,11 @@ function saveProfile(){
     return saved;
 }
 
+/**
+ * TODO
+ * Loads user to profile inputs
+ * @param {User} user 
+ */
 function loadUser(user){
     console.log("loadUser");
     console.log(user);
@@ -142,7 +147,7 @@ function loadUser(user){
 /**
  * Refreshes displayed User picture if file is selected; Uses tempURL/blobURL as placeholder for file
  */
-function refreshDP(){
+ function refreshDP(){
     var file = getInputFile("profilepic-select");
     if(file) //check if it exists
         $("#profilepic").attr("src",getTempURL(file));

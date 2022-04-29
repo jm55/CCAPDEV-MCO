@@ -30,19 +30,21 @@
  * @param {*} postid  Post ID
  * @param {*} datetime Date and Time of Post; Default: new Date()
  */
-const Post = function(user, description="", 
-                    category="", label="", link="", imgblob=null, imgurl="", 
-                    like=0, report=0, comment=[], 
-                    posthash="", postid=-1, datetime = new Date()){
+ const Post = function(user, description="", 
+                        category="", label="", link="", imgblob=null, imgurl="", 
+                        like=0, report=0, comment=[], 
+                        posthash="", postid=-1, datetime = new Date()){
     this.user = user;
     this.description = description;
     this.category = category;
-    this.imgblob = blob;
-    this.imgurl = url;
+    this.imgblob = imgblob;
+    this.imgurl = imgurl;
     this.like = like;
     this.report = report;
     this.comment = comment;
     this.posthash = posthash;
     this.postid = postid;
     this.datetime = datetime;
+    this.label = label;
+    this.link = link;
 }

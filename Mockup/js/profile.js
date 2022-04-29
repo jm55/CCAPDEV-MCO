@@ -12,24 +12,25 @@ OBJECTS
  * @param {*} user User of the Post 
  * @param {*} description Description of the Post
  * @param {*} category Category of Post Item
+ * @param {*} label Label of product in post item
+ * @param {*} link Link of product in post item
  * @param {*} imgblob Image in blob type
  * @param {*} imgurl Image in URLtype
  * @param {*} like Number of likes; Default: 0
- * @param {*} report Report objects (Can be converted to report counts if needed)
+ * @param {*} report Report count
  * @param {*} comment Comment objects
  * @param {*} posthash Post hash (identifier for post)
  * @param {*} postid  Post ID
  * @param {*} datetime Date and Time of Post; Default: new Date()
  */
  const Post = function(user, description="", 
-                    category="", imgblob=null, imgurl="", 
-                    like=0, report=[], comment=[], 
-                    posthash="", postid=-1, datetime = new Date())
- {
+                    category="", label="", link="", imgblob=null, imgurl="", 
+                    like=0, report=0, comment=[], 
+                    posthash="", postid=-1, datetime = new Date()){
     this.user = user;
     this.description = description;
     this.category = category;
-    this.imgblob = blob;
+    this.imgblob = imgblob;
     this.imgurl = url;
     this.like = like;
     this.report = report;
@@ -89,8 +90,7 @@ SAMPLE SCRIPTED DATA
 ===================================================================================
 */
 
-var users = [];
-var posts = []
+var posts = []; //Posts that are owned by currentUser;
 var comments = [];
 var currentUser = null;
 var testComment = null;
@@ -137,16 +137,13 @@ $(document).ready(()=>{
             filterBySearch(getSearch());
     });
 
-    /**
-     * TODO: Do filterByCategory();
-     * Similar principle as getSearch() and filterBySearch(); hopefully.
-     * 
-     * Can be triggered by this:
-     *      $("#categories").on("change", (e)=>{
-     *          console.log("Category Filter Changed: " + $("#categories").val());
-     *      });
-     */
-
+    $("#categories").on("change", (e)=>{
+        console.log("Category Filter Changed: " + $("#categories").val());
+        /**
+         * TODO: Do filterByCategory();
+         * Similar principle as getSearch() and filterBySearch(); hopefully.
+         */ 
+    });
 
 });
 
@@ -184,6 +181,7 @@ FUNCTION SPECIFIC METHODS
  */
 function getSearch(){
     var searchVal = $("#search-txt").val();
+    console.log(searchVal.split(" "));
     return searchVal.split(" ");
 }
 
