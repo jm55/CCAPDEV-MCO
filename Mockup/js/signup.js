@@ -72,7 +72,7 @@ function refreshDP(){
 function createUser(){
     var list = [];
     let username = document.getElementById("username").value;
-    let password = hash(document.getElementById("password_b").value); //HASHED EQUIVALENT
+    let password = hash(document.getElementById("password_b").value); //RECOMMENDED TO BE IN HASH
     let email = document.getElementById("email").value;
     let fname = document.getElementById("fname").value;
     let mname = document.getElementById("mname").value;

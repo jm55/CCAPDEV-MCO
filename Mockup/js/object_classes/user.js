@@ -27,9 +27,9 @@
  * @param {string} bio Biography
  * @param {string} profilepic ProfilePic (string? or blob? NOT YET SURE)
  */
- const User = function(username, password="", email, fname, mname, lname, gender, bio="", profilepic=""){
+ const User = function(username, password="", email, fname, mname="", lname, gender, bio="", profilepic=""){
     this.username = username;
-    this.password = password;
+    this.password = password; //acts more as a passhash than a password
     this.email = email;
     this.fname = fname;
     this.mname = mname;

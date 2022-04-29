@@ -19,18 +19,20 @@
  * @param {*} user User of the Post 
  * @param {*} description Description of the Post
  * @param {*} category Category of Post Item
+ * @param {*} label Label of product in post item
+ * @param {*} link Link of product in post item
  * @param {*} imgblob Image in blob type
  * @param {*} imgurl Image in URLtype
  * @param {*} like Number of likes; Default: 0
- * @param {*} report Report objects (Can be converted to report counts if needed)
+ * @param {*} report Report count
  * @param {*} comment Comment objects
  * @param {*} posthash Post hash (identifier for post)
  * @param {*} postid  Post ID
  * @param {*} datetime Date and Time of Post; Default: new Date()
  */
 const Post = function(user, description="", 
-                    category="", imgblob=null, imgurl="", 
-                    like=0, report=[], comment=[], 
+                    category="", label="", link="", imgblob=null, imgurl="", 
+                    like=0, report=0, comment=[], 
                     posthash="", postid=-1, datetime = new Date()){
     this.user = user;
     this.description = description;

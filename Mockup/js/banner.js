@@ -1,14 +1,13 @@
 console.log("banner.js loaded");
 
-currentUser = null;
+/**
+ * ONLY CONTAINS REDIRECTS AND NOT SEARCH/FILTERS
+ */
 
 $(document).ready(()=>{
     $("#home-btn").click(()=>{
         console.log("#home-btn clicked");
         window.location.href = "../html/home.html";
-    });
-    $("#categories").on("change", ()=>{
-        console.log("categories selected value changed: " + $("#categories").val());
     });
     $("#userbutton").click(()=>{
         console.log("#userbutton clicked");

@@ -1,4 +1,5 @@
-console.log("home.js loaded");
+console.log("profile.js");
+
 /*
 ===================================================================================
 
@@ -87,6 +88,7 @@ SAMPLE SCRIPTED DATA
 
 ===================================================================================
 */
+
 var users = [];
 var posts = []
 var comments = [];
@@ -96,19 +98,16 @@ var testComment = null;
 /**
  * TODO
  */
-function autoFill(){ 
+ function autoFill(){ 
     //FOR ALL TODOs, GO TO FOLDER 'sample_data' FOR ALL CSVs THAT YOU CAN USE EXCEL WITH FOR A MUCH EASIER BUILDING, BUT REMEMBER TO ADD "" IF OBJECTS ARE TYPEOF STRINGS
-
-    //TODO: Build at least 3-5 users and push each to users[] (via User())
-    //Parameters (and its defaults) are as follows: username, password="", email, fname, mname="", lname, gender, bio="", profilepic=""
 
     //TODO: Build at least 2 posts per user and push each to posts[] (via Post())
     //Parameters (and its defaults) are as follows: user, description="", category="", label="", link="", imgblob=null, imgurl="", like=0, report=0, comment=[], posthash="", postid=-1, datetime = new Date()
     //Set imgblob as null for now
-    //For posthash, use hash(string). Example shown below. Hopefully no hash-collision will occur.
+    //For posthash, use hash(string). Example shown below. Hopefully, no hash-collision will occur.
     //Set your own post datetime as: new Date(year, month, day, hour, minute). 
     //Image Directory & Filename: "../img/post/<username>_<posthash>_product.jpg"
-    let samplehash = hash("username" + "description");
+    let samplehash = hash("username" + "description" + "datetime");
 
     //TODO: Build comment list at any amount you'd like and push each to comments[] (via Comment())
     //Parameters: user, comment_text, posthash, timedate=new Date()
@@ -119,43 +118,13 @@ function autoFill(){
     displayPosts(posts); //Hopefully by this call, users[], posts[], and comments[] are already filled.
 }
 
-/*MAIN*/
-
-var newPostClicked = false;
-
+/* MAIN */
 $(document).ready(()=>{
     currentUser = new User("dlsu","237392540","dlsu@mail.com","De La Salle", "University", "Manila", "M", "Animo La Salle", "../img/dp/dlsu_dp.jpg"); //SAMPLE LOGGED IN USER
     console.log("currentUser");
     console.log(currentUser);
     $("#profile-pic").attr("src", currentUser.profilepic);
 
-    autoFill(); //FILLS WINDOW WITH DEMO CONTENT
-
-    $("#new-post-btn").click((e)=>{
-        newPostClicked = true;
-        updateColor();
-        if(validateNewPost())
-            createPost();
-        else 
-            console.log("New Post Data Incomplete");
-    });
-
-    $("#new-post-img-select").on("change",()=>{
-        console.log("new-post-img");
-        refreshNewPostImage();
-    });
-
-    $("#new-post-cancel-btn").click((e)=>{
-        //TODO: DELETE VALUE INPUTS OF #new-post-form (Name: newPostForm) including input new-post-img-select
-        updateColor(true); //Restores text box for value triggered input BG color.
-    });
-
-    $("#new-post-form").change((e)=>{
-        if(newPostClicked)
-            updateColor();
-    });
-
-    
 
     $("#search-btn").click((e)=>{
         e.preventDefault();
@@ -178,20 +147,7 @@ $(document).ready(()=>{
      *      });
      */
 
-    /**
-     * TODO: Add/implement dynamic event listeners on dynamically rendered elements/'objects'.
-     * 
-     * A video sample: https://www.youtube.com/watch?v=X8h7PgkM4QQ 
-     * 
-     * Each 'post card' and its children element (except for most sub-divs) has an attached 
-     * posthash at the end of each ids to act as identifier if needed. 
-     * 
-     * Just like liking a post on FB only counts for that post
-     *  
-     * (I honestly don't know how it works just yet) 
-     * 
-     * Maybe sir has the "answer" on MC2 once we've figured it out.
-     */
+
 });
 
 /*
@@ -207,7 +163,7 @@ FUNCTION SPECIFIC METHODS
  * @param {list} searchList Keywords used for filtering posts
  * @returns Filtered Posts by Search value
  */
-function filterBySearch(searchList){
+ function filterBySearch(searchList){
     var filteredPosts = [];
     /**
      * TODO: Implement filter for searching
@@ -305,62 +261,6 @@ function buildPostComments(postComments){
     return filteredComments;
 }
 
-/**
- * Refreshes New Post Image Element
- * Either shows the element if an image (if there exists a selected file) or not (if otherwise).
- */
-function refreshNewPostImage(){
-    var file = getInputFile("new-post-img-select");
-    if(file){ //check if it exists
-        document.getElementById("new-post-image").style.display = "block";
-        $("#new-post-image").attr("src",getTempURL(file));
-    }else{
-        document.getElementById("new-post-image").style.display = "none";
-        $("#new-post-image").attr("src",getTempURL(file));
-        errMessage("refreshDP", "Error with file");
-    }
-}
-
-/**
- * Creates a single Post object
- * @returns Post object
- */
-function createPost(){
-    //user, description="", category="", label="", link="", imgblob=null, imgurl="", like=0, report=0, comment=[], posthash="", postid=-1, datetime = new Date()
-    let user = currentUser;
-    let description = document.getElementById("new-post-content").value;
-    let category = document.getElementById("new-post-category").value;
-    let imgblob = null;
-    let imgurl = getTempURL(getInputFile("new-post-img-select"));
-    let label = document.getElementById("new-post-label").value;
-    let link = document.getElementById("new-post-link").value;
-    let posthash = hash(user.username+description);
-    let postid = posts.length + 1;
-    let comments = [];
-    let report = 0;
-    let datetime = new Date();
-    var p = new Post(user, description,category, imgblob, imgurl, label, report, comments, posthash, postid, new Date());
-    console.log(p);
-    return p;
-}
-
-/**
- * Checks contents of newPostForm for invalidity (i.e. empty input).
- * @returns True if a valid post, false if otherwise
- */
-function validateNewPost(){
-    var form = new FormData(document.forms.newPostForm);
-    var validity = true;
-    for(f of form){
-        if(f[0] == "new-post-img-select")
-            if(!getInputFile("new-post-img-select"))
-                validity = false;
-        else if(f[1].length == 0)
-            validity = false;
-    }
-    return validity;
-}
-
 /*
 ===================================================================================
 
@@ -368,77 +268,6 @@ TRANSFERRABLE/GLOBAL METHODS
 
 ===================================================================================
 */
-
-
-/**
- * Updates background colors of inputs found on specified form.
- * Form specified: document.forms.newPostForm
- * @param {boolean} restore Set true if will set all input BG color as normal, otherwise it will mark empty inputs as red. Default as false
- */
- function updateColor(restore=false){
-    if(restore){
-        for(f of new FormData(document.forms.newPostForm))
-            if(f[0] != "new-post-img-select")
-                changeBGColor(f[0], "var(--textbox)");
-            else
-            changeBGColor(f[0], "none");
-    }else{
-        for(f of new FormData(document.forms.newPostForm)){
-            if(f[1] == "")
-                changeBGColor(f[0], "var(--warning-light)");
-            else if(!getInputFile("new-post-img-select"))
-                changeBGColor(f[0], "var(--warning-light)");
-            else
-                if(f[0] != "new-post-img-select")
-                    changeBGColor(f[0], "var(--textbox)");
-                else
-                    changeBGColor(f[0], "var(--primary)");
-        }
-    }
-    
-}
-/**
- * Changes the background color of an element, given its ID.
- * @param {string} id ID of target element
- * @param {string} color Background color of target element
- */
-function changeBGColor(id, color){
-    document.getElementById(id).style.backgroundColor = color;
-}
-
-/**
- * Prints err message on console
- * Use for silent invalid input messages
- * @param {string} functionName Name of function that called this. Don't include '()'
- * @param {string} msg Details of error
- */
- function errMessage(functionName, msg){
-    console.log(functionName + "(): ", msg);
-}
-
-/**
- * Get a TempURL for use for displaying images even if file is not yet sent to server.
- * Recommended to be used with getInputFile();
- * @param {File} file 
- * @returns Temporary blobURL (cache?) for file specified
- */
- function getTempURL(file){
-    if(file)
-        return URL.createObjectURL(file);
-    return "";
-}
-
-/**
- * Retrieves the file object pointed to by and id-specified <input type="file"> element.
- * @param {string} id ID of input element
- * @returns First file available pointed by the element ID.
- */
- function getInputFile(id){
-    //Reference: https://stackoverflow.com/a/15792918 & https://stackoverflow.com/a/4459419
-    var inputFile = document.getElementById(id); //Get inputFile element
-    var files = inputFile.files; //Get files of input
-    return files[0]; //Returns only the first file
-}
 
 /**
  * SAVE BLOB OBJECT AS FILE TO SPECIFIED PATH

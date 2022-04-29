@@ -1,12 +1,59 @@
 console.log("settings.js loaded!");
 
+/*
+===================================================================================
+
+OBJECTS
+
+===================================================================================
+*/
+
+
+/**
+ * User Profile or User Object
+ * @param {string} username Username
+ * @param {string} password Password (Refers to password_b at signup and settings)
+ * @param {string} email Email
+ * @param {string} fname First Name
+ * @param {string} mname Middle Name
+ * @param {string} lname Last Name
+ * @param {string} gender Gender
+ * @param {string} bio Biography
+ * @param {string} profilepic ProfilePic (string? or blob? NOT YET SURE)
+ */
+ const User = function(username, password="", email, fname, mname, lname, gender, bio="", profilepic=""){
+    this.username = username;
+    this.password = password;
+    this.email = email;
+    this.fname = fname;
+    this.mname = mname;
+    this.lname = lname;
+    this.gender = gender;
+    this.bio = bio;
+    this.profilepic = profilepic; //TO BE UPDATED TO POINT TO SERVER DIRECTORY AT '../img/dp/<username>.jpg'; BY CURRENT DESIGN, IF USERNAME WAS CHANGED, THE DP WILL BE SAVED AGAIN AS NEW FILE WITH NEW FILENAME (I.E. USERNAME)
+    this.formal_name = lname + ", " + fname + " " + mname.substring(0,1);
+
+    //IF A CLASS, ADD FUNCTION TO SAVE URL/BLOB AS FILE TO SERVER AT '../img/dp/<username>.jpg'
+}
+
+
+/*
+===================================================================================
+
+FOR DEMONSTRATION PURPOSES
+SAMPLE SCRIPTED DATA
+
+===================================================================================
+*/
 var currentUser = null; // = new User();
 
-var submitClicked = false;
 
+/* MAIN */
+var submitClicked = false;
  $(document).ready(()=>{
     $("#bio-counter").text("0/255"); //default max value for bio characters
 
+    currentUser = new User("dlsu","237392540","dlsu@mail.com","De La Salle", "University", "Manila", "M", "Animo La Salle", "../img/dp/dlsu_dp.jpg"); //SAMPLE LOGGED IN USER
     loadUser(currentUser);
 
     $("#signup-btn").click((e)=>{
@@ -22,8 +69,12 @@ var submitClicked = false;
         console.log("New User Object: ");
         console.log(p);
     });
-    $("#save-btn").click(()=>{
-        //TODO:
+    $("#save-btn").click((e)=>{
+        e.preventDefault();
+        if(saveProfile())
+            console.log("Updating currentUser to server..."); //Superficial lang hehehehe;
+        else
+            console.log("currentUser !updated");   
     });
     $("#cancel-btn").click(()=>{
         homeRedirect();
@@ -57,12 +108,34 @@ FUNCTION SPECIFIC METHODS
 ===================================================================================
 */
 
+/**
+ * @returns True if saved, false if otherwise
+ */
+function saveProfile(){
+    var saved = false;
+    /**
+     * TODO:
+     * 1.0  Collect all input data from signupform
+     * 1.1  Check if #password_a and #password_b are matched
+     * 1.2  Check if hash(#password_b.val) == currentUser.password
+     * 1.3  If hashes !matched, skip process let it return saved as false.
+     * 2.   If matched, update currentUser using inputs (Remember: password must be hashed)
+     * 2.2  Print created object to console for verification (optional)
+     */
+    return saved;
+}
+
 function loadUser(user){
     console.log("loadUser");
+    console.log(user);
     if(user){
-        //TODO: ASSEMBLE DATA FROM USER OBJECT TO PAGE ELEMENTS
-
-        //LEAVE PASSWORD B EMPTY, LET THE USER TYPE IT IN, IT SERVES AS AUTHENTICATION
+        /**
+         * TODO: BUILD CONTENTS ON profileform BASED ON DATA FOUND 
+         * IN THE GIVEN USER OBJECT.
+         * 
+         * DO SKIP PLACING VALUE OF BOTH PASSWORDS (SINCE IT IS HASHED) FOR
+         * AUTHENTIC ACTION PURPOSES (I.E. YOU CAN ONLY SAVE THE CHANGES IF YOU KNOW THE PASSWORD)
+         */
     }
 }
 
@@ -254,41 +327,4 @@ function errMessage(functionName, msg){
  */
 function changeBGColor(id, color){
     document.getElementById(id).style.backgroundColor = color;
-}
-
-
-/*
-===================================================================================
-
-OBJECTS
-
-===================================================================================
-*/
-
-
-/**
- * User Profile or User Object
- * @param {string} username Username
- * @param {string} password Password (Refers to password_b at signup and settings)
- * @param {string} email Email
- * @param {string} fname First Name
- * @param {string} mname Middle Name
- * @param {string} lname Last Name
- * @param {string} gender Gender
- * @param {string} bio Biography
- * @param {string} profilepic ProfilePic (string? or blob? NOT YET SURE)
- */
- const User = function(username, password="", email, fname, mname, lname, gender, bio="", profilepic=""){
-    this.username = username;
-    this.password = password;
-    this.email = email;
-    this.fname = fname;
-    this.mname = mname;
-    this.lname = lname;
-    this.gender = gender;
-    this.bio = bio;
-    this.profilepic = profilepic; //TO BE UPDATED TO POINT TO SERVER DIRECTORY AT '../img/dp/<username>.jpg'; BY CURRENT DESIGN, IF USERNAME WAS CHANGED, THE DP WILL BE SAVED AGAIN AS NEW FILE WITH NEW FILENAME (I.E. USERNAME)
-    this.formal_name = lname + ", " + fname + " " + mname.substring(0,1);
-
-    //IF A CLASS, ADD FUNCTION TO SAVE URL/BLOB AS FILE TO SERVER AT '../img/dp/<username>.jpg'
 }
