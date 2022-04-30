@@ -8,7 +8,7 @@ OBJECTS
 */
 /**
  * Post Object
- * @param {string} username Username of the postee
+ * @param {User} user Username of the postee
  * @param {string} description Description of the Post
  * @param {string} category Category of Post Item
  * @param {string} label Label of product in post item
@@ -98,7 +98,11 @@ var testComment = null;
 /**
  * TODO
  */
-function autoFill(){ 
+function autoFill(){
+    console.log("autoFill()");
+    var user0 = new User("dlsu","237392540","dlsu@mail.com","De La Salle", "University", "Manila", "M", "Animo La Salle", "../img/dp/dlsu_dp.webp"); //SAMPLE LOGGED IN USER
+    users.push(user0);
+
     //FOR ALL TODOs, GO TO FOLDER 'sample_data' FOR ALL CSVs THAT YOU CAN USE EXCEL WITH FOR A MUCH EASIER BUILDING, BUT REMEMBER TO ADD "" IF OBJECTS ARE TYPEOF STRINGS
 
     //TODO: Build at least 3-5 users and push each to users[] (via User())
@@ -108,6 +112,7 @@ function autoFill(){
     var user3 = new User("morita_haruka","190602232","morita.haruka@mail.com","Haruka","Yuzuki","Morita","F","Incurable bacon fan. Food nerd. Award-winning social media expert. Certified zombie maven. Friendly travel geek.","../img/dp/morita.haruka.webp");
     var user4 = new User("bogomolov_natalya","14670803","bogomolov.natalya@mail.com","Natalya","Yulia","Bogomolov","F","Tv expert. Extreme reader. Pop culture geek. Bacon guru. General explorer. Student. Organizer.","../img/dp/bogomolov.natalya.webp");
 
+    users.push(user1,user2,user3,user4);
 
     //TODO: Build at least 2 posts per user and push each to posts[] (via Post())
     //Parameters (and its defaults) are as follows: user, description="", category="", label="", link="", imgblob=null, imgurl="", like=0, report=0, comment=[], posthash="", postid=-1, datetime = new Date()
@@ -131,7 +136,12 @@ function autoFill(){
 var newPostClicked = false;
 
 $(document).ready(()=>{
-    currentUser = new User("dlsu","237392540","dlsu@mail.com","De La Salle", "University", "Manila", "M", "Animo La Salle", "../img/dp/dlsu_dp.webp"); //SAMPLE LOGGED IN USER
+    autoFill();
+    console.log(users);
+    console.log();
+    
+    //SETTING CURRENT USER
+    currentUser = users[0];
     console.log("currentUser");
     console.log(currentUser);
     $("#profile-pic").attr("src", currentUser.profilepic);

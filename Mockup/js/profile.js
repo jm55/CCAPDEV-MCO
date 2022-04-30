@@ -9,7 +9,7 @@ OBJECTS
 */
 /**
  * Post Object
- * @param {string} username Username of the postee
+ * @param {User} user Username of the postee
  * @param {string} description Description of the Post
  * @param {string} category Category of Post Item
  * @param {string} label Label of product in post item
