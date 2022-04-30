@@ -136,6 +136,7 @@ function autoFill(){
 var newPostClicked = false;
 
 $(document).ready(()=>{
+    //COMMENCE SAMPLE DATA IN BACKGROUND
     autoFill();
     console.log(users);
     console.log();
@@ -145,8 +146,6 @@ $(document).ready(()=>{
     console.log("currentUser");
     console.log(currentUser);
     $("#profile-pic").attr("src", currentUser.profilepic);
-
-    autoFill(); //FILLS WINDOW WITH DEMO CONTENT
 
     $("#new-post-btn").click((e)=>{
         var newPost = null;
