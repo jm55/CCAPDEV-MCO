@@ -26,8 +26,9 @@
  * @param {string} gender Gender
  * @param {string} bio Biography
  * @param {string} profilepic ProfilePic (string? or blob? NOT YET SURE)
+ * @param {Date} dateCreated Used as reference values for hashing userID. Defaults to new Date() but can be set as constant when prototyping users.
  */
- const User = function(username, password="", email, fname, mname="", lname, gender, bio="", profilepic=""){
+ const User = function(username, password="", email, fname, mname="", lname, gender, bio="", profilepic="", dateCreated=new Date()){
     this.username = username;
     this.password = password; //acts more as a passhash than a password
     this.email = email;
@@ -38,6 +39,7 @@
     this.bio = bio;
     this.profilepic = profilepic; //TO BE UPDATED TO POINT TO SERVER DIRECTORY AT '../img/dp/<username>.jpg'; BY CURRENT DESIGN, IF USERNAME WAS CHANGED, THE DP WILL BE SAVED AGAIN AS NEW FILE WITH NEW FILENAME (I.E. USERNAME)
     this.formal_name = lname + ", " + fname + " " + mname.substring(0,1);
+    this.userID = hash(this.username+dateCreated.toString); //hash() must be on the same area as User constructor; DON'T IMPLEMENT FOR PHASE 1 JUST YET
 
     //IF A CLASS, ADD FUNCTION TO SAVE URL/BLOB AS FILE TO SERVER AT '../img/dp/<username>.jpg'
 }
