@@ -8,19 +8,19 @@ OBJECTS
 */
 /**
  * Post Object
- * @param {*} user User of the Post 
- * @param {*} description Description of the Post
- * @param {*} category Category of Post Item
- * @param {*} label Label of product in post item
- * @param {*} link Link of product in post item
+ * @param {string} username Username of the postee
+ * @param {string} description Description of the Post
+ * @param {string} category Category of Post Item
+ * @param {string} label Label of product in post item
+ * @param {string} link Link of product in post item
  * @param {*} imgblob Image in blob type
- * @param {*} imgurl Image in URLtype
- * @param {*} like Number of likes; Default: 0
- * @param {*} report Report count
- * @param {*} comment Comment objects
- * @param {*} posthash Post hash (identifier for post)
- * @param {*} postid  Post ID
- * @param {*} datetime Date and Time of Post; Default: new Date()
+ * @param {string} imgurl Image in URLtype
+ * @param {Number} like Number of likes; Default: 0
+ * @param {Number} report Report count
+ * @param {list} comment Comment objects
+ * @param {string} posthash Post hash (identifier for post)
+ * @param {string} postid  Post ID
+ * @param {Date} datetime Date and Time of Post; Default: new Date()
  */
  const Post = function(user, description="", 
                         category="", label="", link="", imgblob=null, imgurl="", 
@@ -40,7 +40,6 @@ OBJECTS
     this.label = label;
     this.link = link;
 }
-
 /**
  * User Profile or User Object
  * @param {string} username Username
@@ -70,10 +69,10 @@ OBJECTS
 
 /**
  * Comment Object
- * @param {*} user User that posted the comment
- * @param {*} comment_text Content of comment
- * @param {*} posthash Post that it is attached to 
- * @param {*} timedate Date and time of the comment posted
+ * @param {User} user User that posted the comment
+ * @param {string} comment_text Content of comment
+ * @param {string} posthash Post that it is attached to 
+ * @param {Date} timedate Date and time of the comment posted
  */
  const Comment = function(user, comment_text, posthash, timedate=new Date()){
     this.user = user;
@@ -104,6 +103,11 @@ function autoFill(){
 
     //TODO: Build at least 3-5 users and push each to users[] (via User())
     //Parameters (and its defaults) are as follows: username, password="", email, fname, mname="", lname, gender, bio="", profilepic=""
+    var user1 = new User("dijkstra_boro", "127609433", "dijkstra.boro@mail.com", "Boro","Vitek","Dijkstra","M","Food specialist. Music junkie. Reader. Professional tv fanatic. Introvert. Coffee aficionado. Bacon fan. Web advocate.","../img/dp/dijkstra.boro.webp");
+    var user2 = new User("skinner_thomas","122665614","skinner.thomas@mail.com","Thomas","Dwain","Skinner","M","Pop culture ninja. Coffee enthusiast. Evil introvert. Social media scholar. Unapologetic internet geek. Tv fan.","../img/dp/skinner.thomas.webp");
+    var user3 = new User("morita_haruka","190602232","morita.haruka@mail.com","Haruka","Yuzuki","Morita","F","Incurable bacon fan. Food nerd. Award-winning social media expert. Certified zombie maven. Friendly travel geek.","../img/dp/morita.haruka.webp");
+    var user4 = new User("bogomolov_natalya","14670803","bogomolov.natalya@mail.com","Natalya","Yulia","Bogomolov","F","Tv expert. Extreme reader. Pop culture geek. Bacon guru. General explorer. Student. Organizer.","../img/dp/bogomolov.natalya.webp");
+
 
     //TODO: Build at least 2 posts per user and push each to posts[] (via Post())
     //Parameters (and its defaults) are as follows: user, description="", category="", label="", link="", imgblob=null, imgurl="", like=0, report=0, comment=[], posthash="", postid=-1, datetime = new Date()
@@ -127,7 +131,7 @@ function autoFill(){
 var newPostClicked = false;
 
 $(document).ready(()=>{
-    currentUser = new User("dlsu","237392540","dlsu@mail.com","De La Salle", "University", "Manila", "M", "Animo La Salle", "../img/dp/dlsu_dp.jpg"); //SAMPLE LOGGED IN USER
+    currentUser = new User("dlsu","237392540","dlsu@mail.com","De La Salle", "University", "Manila", "M", "Animo La Salle", "../img/dp/dlsu_dp.webp"); //SAMPLE LOGGED IN USER
     console.log("currentUser");
     console.log(currentUser);
     $("#profile-pic").attr("src", currentUser.profilepic);

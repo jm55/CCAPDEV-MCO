@@ -16,19 +16,19 @@
 
 /**
  * Post Object
- * @param {*} user User of the Post 
- * @param {*} description Description of the Post
- * @param {*} category Category of Post Item
- * @param {*} label Label of product in post item
- * @param {*} link Link of product in post item
+ * @param {string} username Username of the postee
+ * @param {string} description Description of the Post
+ * @param {string} category Category of Post Item
+ * @param {string} label Label of product in post item
+ * @param {string} link Link of product in post item
  * @param {*} imgblob Image in blob type
- * @param {*} imgurl Image in URLtype
- * @param {*} like Number of likes; Default: 0
- * @param {*} report Report count
- * @param {*} comment Comment objects
- * @param {*} posthash Post hash (identifier for post)
- * @param {*} postid  Post ID
- * @param {*} datetime Date and Time of Post; Default: new Date()
+ * @param {string} imgurl Image in URLtype
+ * @param {Number} like Number of likes; Default: 0
+ * @param {Number} report Report count
+ * @param {list} comment Comment objects
+ * @param {string} posthash Post hash (identifier for post)
+ * @param {string} postid  Post ID
+ * @param {Date} datetime Date and Time of Post; Default: new Date()
  */
  const Post = function(user, description="", 
                         category="", label="", link="", imgblob=null, imgurl="", 

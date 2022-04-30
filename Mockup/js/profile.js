@@ -9,35 +9,37 @@ OBJECTS
 */
 /**
  * Post Object
- * @param {*} user User of the Post 
- * @param {*} description Description of the Post
- * @param {*} category Category of Post Item
- * @param {*} label Label of product in post item
- * @param {*} link Link of product in post item
+ * @param {string} username Username of the postee
+ * @param {string} description Description of the Post
+ * @param {string} category Category of Post Item
+ * @param {string} label Label of product in post item
+ * @param {string} link Link of product in post item
  * @param {*} imgblob Image in blob type
- * @param {*} imgurl Image in URLtype
- * @param {*} like Number of likes; Default: 0
- * @param {*} report Report count
- * @param {*} comment Comment objects
- * @param {*} posthash Post hash (identifier for post)
- * @param {*} postid  Post ID
- * @param {*} datetime Date and Time of Post; Default: new Date()
+ * @param {string} imgurl Image in URLtype
+ * @param {Number} like Number of likes; Default: 0
+ * @param {Number} report Report count
+ * @param {list} comment Comment objects
+ * @param {string} posthash Post hash (identifier for post)
+ * @param {string} postid  Post ID
+ * @param {Date} datetime Date and Time of Post; Default: new Date()
  */
  const Post = function(user, description="", 
-                    category="", label="", link="", imgblob=null, imgurl="", 
-                    like=0, report=0, comment=[], 
-                    posthash="", postid=-1, datetime = new Date()){
+                        category="", label="", link="", imgblob=null, imgurl="", 
+                        like=0, report=0, comment=[], 
+                        posthash="", postid=-1, datetime = new Date()){
     this.user = user;
     this.description = description;
     this.category = category;
     this.imgblob = imgblob;
-    this.imgurl = url;
+    this.imgurl = imgurl;
     this.like = like;
     this.report = report;
     this.comment = comment;
     this.posthash = posthash;
     this.postid = postid;
     this.datetime = datetime;
+    this.label = label;
+    this.link = link;
 }
 
 /**
@@ -69,10 +71,10 @@ OBJECTS
 
 /**
  * Comment Object
- * @param {*} user User that posted the comment
- * @param {*} comment_text Content of comment
- * @param {*} posthash Post that it is attached to 
- * @param {*} timedate Date and time of the comment posted
+ * @param {User} user User that posted the comment
+ * @param {string} comment_text Content of comment
+ * @param {string} posthash Post that it is attached to 
+ * @param {Date} timedate Date and time of the comment posted
  */
  const Comment = function(user, comment_text, posthash, timedate=new Date()){
     this.user = user;
@@ -120,7 +122,7 @@ var testComment = null;
 
 /* MAIN */
 $(document).ready(()=>{
-    currentUser = new User("dlsu","237392540","dlsu@mail.com","De La Salle", "University", "Manila", "M", "Animo La Salle", "../img/dp/dlsu_dp.jpg"); //SAMPLE LOGGED IN USER
+    currentUser = new User("dlsu","237392540","dlsu@mail.com","De La Salle", "University", "Manila", "M", "Animo La Salle", "../img/dp/dlsu_dp.webp"); //SAMPLE LOGGED IN USER
     console.log("currentUser");
     console.log(currentUser);
     $("#profile-pic").attr("src", currentUser.profilepic);

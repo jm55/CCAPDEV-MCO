@@ -53,7 +53,7 @@ var submitClicked = false;
  $(document).ready(()=>{
     $("#bio-counter").text("0/255"); //default max value for bio characters
 
-    currentUser = new User("dlsu","237392540","dlsu@mail.com","De La Salle", "University", "Manila", "M", "Animo La Salle", "../img/dp/dlsu_dp.jpg"); //SAMPLE LOGGED IN USER
+    currentUser = new User("dlsu","237392540","dlsu@mail.com","De La Salle", "University", "Manila", "M", "Animo La Salle", "../img/dp/dlsu_dp.webp"); //SAMPLE LOGGED IN USER
     loadUser(currentUser);
 
     $("#signup-btn").click((e)=>{
