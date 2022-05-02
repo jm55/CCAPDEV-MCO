@@ -18,10 +18,11 @@
     
         <div id="login" class="login card">
             <form id="loginform" name="loginform" class="loginform">
-                <label>Username:</label>
+                <label for="username">Username:</label>
                 <input type="text" name="username" id="username" class="textfield" /> 
-                <label>Password:</label>
+                <label for="password">Password:</label>
                 <input type="password" name="password" id="password" class="textfield" />
+                <div id="errorText"></div>
                 <div class="login-buttons">
                     <input type="submit" id="login-btn" value="Login" class="button"/>
                     <input type="button" id="signup-btn" value="Signup" class="button"/>

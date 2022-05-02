@@ -75,8 +75,10 @@ html{
 footer{
     background-color: var(--primary);
     color: var(--text);
-    position: sticky;
-    margin-top: 2%;
+    position: fixed;
+    bottom: 2%;
+    right: 2%;
+    width: 92%;
 }
 
 button, .button, select{
@@ -88,7 +90,7 @@ button, .button, select{
     cursor: pointer;
     font-size: var(--font-size-large) !important;
     font-weight: 600;
-    height: 5vh;
+    height: 35px;
 }
 
 select{

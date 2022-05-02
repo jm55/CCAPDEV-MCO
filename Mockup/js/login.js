@@ -42,18 +42,50 @@ function redirectSignup(){
  * @returns Null if user credentials are invalid, redirects user to home otherwise.
  */
 function login(){
+    let formData = new FormData(document.forms.loginform)
+
+    for (let f of formData){
+        $("#" + f[0]).css("background-color", "rgba(255,255,255,30%)");
+    }
+
     c = [];
-    for(f of new FormData(document.forms.loginform))
+    for(let f of formData)
         if(f[1].length === 0)
             $("#" + f[0]).css("background-color", "var(--warning-light)");
         else
-            c.push(f[1]);    
+            c.push(f[1]);
 
-    //PROCESS FOR PROPER LOGGING IN OF USER
-    if(sampleAuth(c[0], c[1]))
-        window.location.href = "../html/home.html";
-    else
-        errMessage("login","Authentication Failed");
+    //counts empty inputs
+    let counter = 0;
+    for(let x of formData){
+        if(x[1] == ""){
+            counter++;
+        }
+    }
+
+    if(counter === 0){
+        //PROCESS FOR PROPER LOGGING IN OF USER
+        if(sampleAuth(c[0], c[1]))
+            window.location.href = "../html/home.html";
+        else{
+            for(let f of formData){
+                $("#" + f[0]).css("background-color", "var(--warning-light)");
+            }
+            errMessage("login","Authentication Failed");
+        }
+    }
+    else if(counter === 2){
+        errMessage("login", "Username and password are missing.")
+    }
+    else{
+        if($("#username").val() == ""){
+            errMessage("login", "Username is missing.");
+        }
+        else{
+            errMessage("login", "Password is missing.");
+        }
+    }
+    
 }
 
 /**
@@ -106,5 +138,6 @@ function sampleAuth(uname, pwrd){
  * @param {string} msg Details of error
  */
  function errMessage(functionName, msg){
+    $("#errorText").text("* " + msg);
     console.log(functionName + "(): ", msg);
 }
