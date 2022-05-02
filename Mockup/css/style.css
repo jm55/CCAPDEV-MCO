@@ -11,7 +11,6 @@
     --warning-dark: #ab000d;
 
     --text: #E0F7FA;
-    --text-link: #E0F7FA;
     --text-hover:  #080808;
     --text-select: 00838F;
 
@@ -147,6 +146,10 @@ td{
 
 label{
     font-weight: bold;
+}
+
+img{
+    border-radius: 4px;
 }
 
 .textfield{

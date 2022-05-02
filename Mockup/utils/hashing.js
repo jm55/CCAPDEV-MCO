@@ -1,7 +1,7 @@
 //Online Execution: https://www.programiz.com/javascript/online-compiler/
 
-var username = "uname";
-var description = "descrip";
+var username = "posthash2";
+var description = "";
 
 console.log("Hash: " + hash(username + description));
 

@@ -1,4 +1,5 @@
 console.log("login.js loaded!");
+alert("====Test Credentials====\nUsername: dlsu\nPassword: manila");
 
 var sampleKeys = [{"username":"dlsu","password":"manila"},
                   {"username":"leni","password":"robredo"}];
