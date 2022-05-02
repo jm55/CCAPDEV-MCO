@@ -212,7 +212,11 @@ $(document).ready(()=>{
 
     $("#search-btn").click((e)=>{
         e.preventDefault();
-        var filteredPosts = filterBySearch(posts,getSearch());
+        var filteredPosts = [];
+        if(!testDataMode)
+            filteredPosts = filterBySearch(posts,getSearch());
+        else
+            filteredPosts = filterBySearch(testPost, getSearch());            
         resetTimeline();
         displayPosts(filteredPosts,comments);
     });
@@ -291,7 +295,7 @@ function filterBySearch(postList, searchList){
     */
     for(p of postList){
         for(s of searchList){
-            if(p.description.includes(s)){
+            if(p.description.toLowerCase().includes(s.toLowerCase())){
                 filteredPosts.unshift(p);
             }
         }
@@ -447,8 +451,6 @@ function resetTimeline(){
     
     $(post_card).append(post_content);
     $(post_card).append(footer);
-
-    console.log(post_card);
 
     return post_card;
 }
