@@ -185,10 +185,13 @@ $(document).ready(()=>{
         if(validateNewPost()){
             newPost = createPost();
             newPostClicked = false;
-            
             posts.unshift(newPost);
             resetTimeline();
-            displayPosts(posts);
+
+            if(testDataMode)
+                displayPosts(posts.concat(testPost));
+            else
+                displayPosts(posts);
         }
         else 
             console.log("New Post Data Incomplete");
@@ -216,7 +219,7 @@ $(document).ready(()=>{
         if(!testDataMode)
             filteredPosts = filterBySearch(posts,getSearch());
         else
-            filteredPosts = filterBySearch(testPost, getSearch());            
+            filteredPosts = filterBySearch(testPost.concat(posts), getSearch());            
         resetTimeline();
         displayPosts(filteredPosts,comments);
     });
