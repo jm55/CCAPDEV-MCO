@@ -142,10 +142,18 @@ function clearSignup(){
     var form = new FormData(document.forms.signupform);
     for(f of form){
         $("#" + f[0]).val("");
-        changeBGColor(f[0], "var(--textbox)");
+        if(f[0] == "profilepic-select"){
+            changeBGColor(f[0], "var(--primary)");
+        }
+        else if(f[0] == "gender"){
+            changeBGColor(f[0], "var(--primary-button)");
+        }
+        else{
+            changeBGColor(f[0], "var(--textbox)");
+        }
     }
     refreshDP();
-        
+
     submitClicked = false;
 }
 
