@@ -22,7 +22,7 @@
  * @param {Date} datetime Date and time of the comment posted
  */
  const Comment = function(user, comment_text, posthash, datetime=new Date()){
-    this.user = user;
+    this.user = user; //userID
     this.comment_text = comment_text;
     this.posthash = posthash;
     this.datetime = datetime;

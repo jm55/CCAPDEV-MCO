@@ -34,7 +34,7 @@
                         category="", label="", link="", imgblob=null, imgurl="", 
                         like=0, report=0, comment=[], 
                         posthash="", postid=-1, datetime = new Date()){
-    this.user = user;
+    this.user = user; //to be replaced by userID
     this.description = description;
     this.category = category;
     this.imgblob = imgblob;

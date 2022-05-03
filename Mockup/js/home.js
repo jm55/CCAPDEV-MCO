@@ -94,9 +94,6 @@ var users = [];
 var posts = [];
 var comments = [];
 var currentUser = null;
-var testComment = null;
-var testPost = null;
-var testDataMode = true;
 
 /**
  * TODO
@@ -123,13 +120,15 @@ function autoFill(){
     //For posthash, use hash(string). Example shown below. Hopefully no hash-collision will occur.
     //Set your own post datetime as: new Date(year, month, day, hour, minute). 
     //Image Directory & Filename: "../img/post/<username>_<posthash>_product.jpg"
-    let samplehash = hash("username" + "description");
+    //Fill posts = [];
+    posts = testPost.concat(posts); //DISABLE IF NOT USING testPost[]
 
     //TODO: Build comment list at any amount you'd like and push each to comments[] (via Comment())
     //Parameters: user, comment_text, posthash, timedate=new Date()
     //Make sure that posthash can be found on at least a post of posts[].
-    for(c of comments) //You may delete this once you've verified matching hashes.
-        console.log(c);
+    //Fill comments = [];
+    var testComment = [new Comment(users[1], "This is a comment", "179889061", new Date()), new Comment(users[2], "This is a comment 2", "179889061", new Date()), new Comment(users[0], "いいねスマホ―", "209406227", new Date())];
+    comments = testComment.concat(comments); //DISABLE IF NOT USING testComment[]
 }
 
 /*MAIN*/
@@ -156,28 +155,12 @@ $(document).ready(()=>{
     console.log(currentUser);
     $("#profile-pic").attr("src", currentUser.profilepic);
 
-    /**
-     * 
-     * TESTING DISPLAYING OF POSTS AND COMMENTS
-     * USING SMALL TEST DATA
-     * 
-     * ASSUMES AUTOFILL() WORKS
-     * 
-     * testDataMode is found above autoFill(), set it as true if you want to use the sample test data for testing.
-     */
-    if(testDataMode){
-        testComment = [new Comment(users[1], "This is a comment", "179889061", new Date()), new Comment(users[2], "This is a comment 2", "179889061", new Date()), new Comment(users[0], "いいねスマホ―", "209406227", new Date())];
-        testPost = [new Post(users[0], "A test button", "Test Category A", "Test Label", "Test Link", null, "https://www.ondemandcmo.com/wp-content/uploads/2016/03/canstockphoto22402523-arcos-creator.com_-1024x1024.jpg", 999, 0, testComment, "179889061", "postid", new Date(2022, 05, 01, 14, 20, 17)), new Post(users[2], "A Samsung M12", "Test Category B", "Test Label 2", "Test Link 2", null, "https://cf.shopee.ph/file/8de631b49ed3341cfad085f9be5582c9", 999, 0, testComment, "209406227", "postid", new Date(2022, 05, 01, 14, 20, 17))];
-        console.log("testData:");
-        console.log(testComment);
-        console.log(testPost);
-        displayPosts(testPost, testComment);
-    }else{
-        displayPosts(posts, comments);
-    }
+    console.log(users);
+    console.log(posts);
+    console.log(comments);
+    displayPosts(posts, comments);
 
     //EVENTLISTERNERS / ACTIONLISTENERS
-
     $("#new-post-btn").click((e)=>{
         var newPost = null;
         newPostClicked = true;
@@ -187,11 +170,7 @@ $(document).ready(()=>{
             newPostClicked = false;
             posts.unshift(newPost);
             resetTimeline();
-
-            if(testDataMode)
-                displayPosts(posts.concat(testPost));
-            else
-                displayPosts(posts);
+            displayPosts(posts);
         }
         else 
             console.log("New Post Data Incomplete");
@@ -215,12 +194,9 @@ $(document).ready(()=>{
 
     $("#search-btn").click((e)=>{
         e.preventDefault();
-        var filteredPosts = [];
-        if(!testDataMode)
-            filteredPosts = filterBySearch(posts,getSearch());
-        else
-            filteredPosts = filterBySearch(testPost.concat(posts), getSearch());            
+        var filteredPosts = filterBySearch(posts,getSearch());
         resetTimeline();
+        //Call sortbydate to filteredPosts or if getsearch() is empty then just display posts[] instead of filteredPosts[]
         displayPosts(filteredPosts,comments);
     });
 
@@ -479,53 +455,98 @@ function resetTimeline(){
     var comment = document.createElement("input");
     var submit = document.createElement("button");
 
-    //Setting className();
-    $(post_footer).addClass("post_footer");
-    $(likes_div).addClass("likes")
-    $(interact).addClass("interact");
-    $(likecounter).addClass("likecounter");
-    $(post_timedate).addClass("post_timedate");
-    $(likeBtn).addClass("button");
-    $(shareBtn).addClass("button");
-    $(reportBtn).addClass("button");
-    $(comment).addClass("textfield");
-    $(comment).addClass("comment_textfield");
-    $(submit).addClass("button");
+    {
+        //Setting className();
+        $(post_footer).addClass("post_footer");
+        $(likes_div).addClass("likes")
+        $(interact).addClass("interact");
+        $(likecounter).addClass("likecounter");
+        $(post_timedate).addClass("post_timedate");
+        $(likeBtn).addClass("button");
+        $(shareBtn).addClass("button");
+        $(reportBtn).addClass("button");
+        $(comment).addClass("textfield");
+        $(comment).addClass("comment_textfield");
+        $(submit).addClass("button");
+        
+        //Adding IDs&names
+        //IDs
+        $(interact).attr("id","interact#" + singlePost.posthash);
+        $(likeBtn).attr("id","like-button#" + singlePost.posthash);
+        $(shareBtn).attr("id","share-button#" + singlePost.posthash);
+        $(reportBtn).attr("id","report-button#" + singlePost.posthash);
+        $(comment).attr("id","comment#" + singlePost.posthash);
+        $(submit).attr("id","submit-comment#" + singlePost.posthash);
+        //names
+        $(interact).attr("name","interact#" + singlePost.posthash);
+        $(likeBtn).attr("name","likeBtn#" + singlePost.posthash);
+        $(shareBtn).attr("name","shareBtn#" + singlePost.posthash);
+        $(reportBtn).attr("name","reportBtn#" + singlePost.posthash);
+        $(comment).attr("name","comment#" + singlePost.posthash);
+        $(submit).attr("name","submitComment#" + singlePost.posthash);
+
+        //Adding innerHTML
+        $(likecounter).text(singlePost.like + " likes");
+        $(post_timedate).text("Posted: " + singlePost.datetime.toDateString());
+        $(likeBtn).text("Like");
+        $(shareBtn).text("Share");
+        $(reportBtn).text("Report");
+        $(submit).text("Comment");
+
+        //APPENDING
+        $(likes_div).append(likecounter);
+        $(likes_div).append(post_timedate);
+        $(interact).append(likeBtn);
+        $(interact).append(shareBtn);
+        $(interact).append(reportBtn);
+        $(interact).append(comment);
+        $(interact).append(submit);
+        $(post_footer).append(likes_div);
+        $(post_footer).append(interact);
+    }
     
-    //Adding IDs&names
-    //IDs
-    $(interact).attr("id","interact#" + singlePost.posthash);
-    $(likeBtn).attr("id","like-button#" + singlePost.posthash);
-    $(shareBtn).attr("id","share-button#" + singlePost.posthash);
-    $(reportBtn).attr("id","report-button#" + singlePost.posthash);
-    $(comment).attr("id","comment#" + singlePost.posthash);
-    $(submit).attr("id","submit-comment#" + singlePost.posthash);
-    //names
-    $(interact).attr("name","interact#" + singlePost.posthash);
-    $(likeBtn).attr("name","likeBtn#" + singlePost.posthash);
-    $(shareBtn).attr("name","shareBtn#" + singlePost.posthash);
-    $(reportBtn).attr("name","reportBtn#" + singlePost.posthash);
-    $(comment).attr("name","comment#" + singlePost.posthash);
-    $(submit).attr("name","submitComment#" + singlePost.posthash);
+    likeBtn.addEventListener("click", function(e){
+        e.preventDefault();
 
-    //Adding innerHTML
-    $(likecounter).text(singlePost.like + " likes");
-    $(post_timedate).text("Posted: " + singlePost.datetime.toDateString());
-    $(likeBtn).text("Like");
-    $(shareBtn).text("Share");
-    $(reportBtn).text("Report");
-    $(submit).text("Comment");
+        //Get post index to post
+        var thisIndex = -1;
+        thisIndex = searchPostIndex(posts, singlePost.posthash);
 
-    //APPENDING
-    $(likes_div).append(likecounter);
-    $(likes_div).append(post_timedate);
-    $(interact).append(likeBtn);
-    $(interact).append(shareBtn);
-    $(interact).append(reportBtn);
-    $(interact).append(comment);
-    $(interact).append(submit);
-    $(post_footer).append(likes_div);
-    $(post_footer).append(interact);
+        var like_val = parseInt(posts[thisIndex].like);
+        //Check state of like button
+        if(likeBtn.innerHTML == "Like"){ //Increment Like and set state as Liked
+            //Get & set like value of post
+            like_val++;
+            likeBtn.innerHTML = "Liked";
+            
+        }else{ //Decrement Like and set state as Like
+            like_val--;
+            likeBtn.innerHTML = "Like";
+        }
+
+        //Update like display
+        posts[thisIndex].like = like_val; //UPDATE ACTUAL OBJECT IN LIST
+        likecounter.innerHTML = parseInt(posts[thisIndex].like) + " likes";
+    });
+
+    shareBtn.addEventListener("click", function(e){
+        e.preventDefault();
+        alert("Temporary\nPastes a URL to clipboard that links to post.\nPost Hash: " + singlePost.posthash);
+    });
+
+    reportBtn.addEventListener("click", (e)=>{
+        e.preventDefault();
+        console.log("reportBtn Clicked @ " + singlePost.posthash);
+        alert("Temporary\nReport Object will be created as supposed to earlier data design considerations of just counting the reports done on the post.\nPost Hash: " + singlePost.posthash);
+    });
+
+    submit.addEventListener("click", (e)=>{
+        e.preventDefault();
+        var comment_val = $(comment).val();
+        var commentObj = new Comment(currentUser, comment_val, singlePost.posthash, new Date());
+        console.log("submit(Comment) Clicked @ " + singlePost.posthash + " contains: ");
+        console.log(commentObj);
+    }); 
 
     $(post_footer).append(comments); //Appends comment list
 
@@ -618,6 +639,20 @@ function refreshNewPostImage(){
         $("#new-post-image").attr("src",getTempURL(file));
         errMessage("refreshDP", "Error with file");
     }
+}
+
+/**
+ * Searches the given thisPostHash on the given postList.
+ * @param {list} postList 
+ * @param {string} thisPostHash
+ * @returns The index of the post that matches the thisPostHash given. Returns -1 if not found.
+ */
+function searchPostIndex(postList, thisPostHash){
+    for(var p = 0; p < postList.length; p++){
+        if(postList[p].posthash == thisPostHash)
+            return p;
+    }
+    return -1;
 }
 
 /**
