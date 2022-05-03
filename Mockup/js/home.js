@@ -121,6 +121,7 @@ function autoFill(){
     //Set your own post datetime as: new Date(year, month, day, hour, minute). 
     //Image Directory & Filename: "../img/post/<username>_<posthash>_product.jpg"
     //Fill posts = [];
+    var testPost = [new Post(users[0], "A test button", "Test Category A", "Test Label", "Test Link", null, "https://www.ondemandcmo.com/wp-content/uploads/2016/03/canstockphoto22402523-arcos-creator.com_-1024x1024.jpg", 999, 0, testComment, "179889061", "postid", new Date(2022, 05, 01, 14, 20, 17)), new Post(users[2], "A Samsung M12", "Test Category B", "Test Label 2", "Test Link 2", null, "https://cf.shopee.ph/file/8de631b49ed3341cfad085f9be5582c9", 999, 0, testComment, "209406227", "postid", new Date(2022, 05, 01, 14, 20, 17))];
     posts = testPost.concat(posts); //DISABLE IF NOT USING testPost[]
 
     //TODO: Build comment list at any amount you'd like and push each to comments[] (via Comment())
