@@ -215,21 +215,6 @@ $(document).ready(()=>{
          * Call resetTimeline() prior to 
          */ 
     });
-
-    /**
-     * TODO: Add/implement dynamic event listeners on dynamically rendered elements/'objects'.
-     * 
-     * A video sample: https://www.youtube.com/watch?v=X8h7PgkM4QQ 
-     * 
-     * Each 'post card' and its children element (except for most sub-divs) has an attached 
-     * posthash at the end of each ids to act as identifier if needed. 
-     * 
-     * Just like liking a post on FB only counts for that post
-     *  
-     * (I honestly don't know how it works just yet) 
-     * 
-     * Maybe sir has the "answer" on MC2 once we've figured it out.
-     */
 });
 
 /*
@@ -263,16 +248,6 @@ function sortByDate(postList, descending=true){
  */
 function filterBySearch(postList, searchList){
     var filteredPosts = [];
-    /**
-     * TODO: Implement filter for searching
-     * posts with keywords listed on searchList;
-     * 
-     * Iterate on every post and check if post.description.contains(s[i]) where
-     * s is every keyword on searchList[].
-     * 
-     * If it contains a listed keyword, append to filteredPosts[]
-     * 
-    */
     for(p of postList){
         for(s of searchList){
             if(p.description.toLowerCase().includes(s.toLowerCase())){
@@ -294,10 +269,6 @@ function filterBySearch(postList, searchList){
 }
 
 /**
- * TODO
- * Iteratively posts specified in postList
- * Both parameter objects must be 'linked' or 'matching' each other.
- * 
  * The order or manner to which the posts are displayed is dependent on the 
  * sorting or filtering done on the postList given on the parameter.
  * @param {list} postList Contains all list of posts that will be used.
@@ -317,10 +288,6 @@ function filterBySearch(postList, searchList){
  * @param {list} postComments 
  */
 function displayPost(singlePost, postComments){
-    /**
-     * TODO: Build a 'post card' object. Use buildPostCard(singlePost, postComments);
-     * Append built 'post card' object to div class timeline
-     */
     $(".timeline").append(buildPostCard(singlePost, postComments));
 }
 
@@ -365,80 +332,81 @@ function resetTimeline(){
         var post_image_div = document.createElement("div");
             var post_image = document.createElement("img");
         //Footer
+    {
+        //Adding classes
+        $(post_card).addClass("post");
+        $(post_card).addClass("card");
+        $(post_header).addClass("post_header");
+        $(post_user).addClass("post_user");
+        $(postdp).addClass("postdp");
+        $(postdp).addClass("profilepic");
+        $(username).addClass("username");
+        $(post_content).addClass("post_content");
+        $(post_description).addClass("post_description");
+        $(post_description_text).addClass("post_description_text");
+        $(post_list).addClass("post_list");
+        $(post_table).addClass("post_table");
+        $(item_label).addClass("item_label");
+        $(item_link).addClass("item_link");
+        $(category_link).addClass("item_category_link");
+        $(post_image_div).addClass("post_image_div");
+        $(post_image).addClass("post_image");
+
+        //Adding hrefs
+        $(username).attr("href",""); //user link of singlePost.user
+        $(category_link_a).attr("href",""); //link to category
+
+        //Adding inner text
+        $(username).text(singlePost.user.username);
+        $(post_description_text).text(singlePost.description);
+        $(item_label).text(singlePost.label);
+        $(item_link).text(singlePost.link);
+        $(category).text("Category: ");
+        $(category_link_a).text(singlePost.category);
+
+        //Adding image srcs
+        $(post_image).attr("src", singlePost.imgurl);
+        $(postdp).attr("src", singlePost.user.profilepic);
+
+        //Add other attributes
+        $(postdp).attr("alt","Profile Picture");
+        //$(post_image).attr("loading", "lazy");
+
+        //APPENDING
+        //Header
+        $(post_user).append(postdp);
+        $(post_user).append(username);
+        $(post_header).append(post_user); //Complete
+        //Content: post_description
+        $(post_description).append(post_description_text); //Complete
+        //Content: post_list
+        $(item_link).append(item_link_a);
+        $(tr0).append(item_label);
+        $(tr0).append(item_link);
+        $(category_link).append(category_link_a);
+        $(tr1).append(category);
+        $(tr1).append(category_link);
+        $(post_table).append(tr0);
+        $(post_table).append(tr1); //Complete
+        //Content: post_image_div
+        $(post_image_div).append(post_image); //Complete
+        //Content: post_content
+        $(post_content).append(post_header);
+        $(post_content).append(post_description);
+        $(post_content).append(post_table);
+        $(post_content).append(post_image_div);
+        
+        $(post_card).append(post_content);
+        $(post_card).append(footer);
+
+    }
     
-    //Adding classes
-    $(post_card).addClass("post");
-    $(post_card).addClass("card");
-    $(post_header).addClass("post_header");
-    $(post_user).addClass("post_user");
-    $(postdp).addClass("postdp");
-    $(postdp).addClass("profilepic");
-    $(username).addClass("username");
-    $(post_content).addClass("post_content");
-    $(post_description).addClass("post_description");
-    $(post_description_text).addClass("post_description_text");
-    $(post_list).addClass("post_list");
-    $(post_table).addClass("post_table");
-    $(item_label).addClass("item_label");
-    $(item_link).addClass("item_link");
-    $(category_link).addClass("item_category_link");
-    $(post_image_div).addClass("post_image_div");
-    $(post_image).addClass("post_image");
-
-    //Adding hrefs
-    $(username).attr("href",""); //user link of singlePost.user
-    $(category_link_a).attr("href",""); //link to category
-
-    //Adding inner text
-    $(username).text(singlePost.user.username);
-    $(post_description_text).text(singlePost.description);
-    $(item_label).text(singlePost.label);
-    $(item_link).text(singlePost.link);
-    $(category).text("Category: ");
-    $(category_link_a).text(singlePost.category);
-
-    //Adding image srcs
-    $(post_image).attr("src", singlePost.imgurl);
-    $(postdp).attr("src", singlePost.user.profilepic);
-
-    //Add other attributes
-    $(postdp).attr("alt","Profile Picture");
-    //$(post_image).attr("loading", "lazy");
-
-    //APPENDING
-    //Header
-    $(post_user).append(postdp);
-    $(post_user).append(username);
-    $(post_header).append(post_user); //Complete
-    //Content: post_description
-    $(post_description).append(post_description_text); //Complete
-    //Content: post_list
-    $(item_link).append(item_link_a);
-    $(tr0).append(item_label);
-    $(tr0).append(item_link);
-    $(category_link).append(category_link_a);
-    $(tr1).append(category);
-    $(tr1).append(category_link);
-    $(post_table).append(tr0);
-    $(post_table).append(tr1); //Complete
-    //Content: post_image_div
-    $(post_image_div).append(post_image); //Complete
-    //Content: post_content
-    $(post_content).append(post_header);
-    $(post_content).append(post_description);
-    $(post_content).append(post_table);
-    $(post_content).append(post_image_div);
-    
-    $(post_card).append(post_content);
-    $(post_card).append(footer);
-
     return post_card;
 }
 
 /**
  * Builds the upper portion of the post_footer including the post_footer itself.
- * @param {Post} post Post object that will be used to build the post_footer
- * @param {list} postComments List of comments that'll be used for the comment_list section of the footer.
+ * @param {Post} post Post object that will be used to build the post_footer.
  * @returns Footer element that will be used by a postCard element.
  */
  function buildPostFooter(singlePost){
@@ -506,6 +474,7 @@ function resetTimeline(){
         $(post_footer).append(interact);
     }
     
+    // EVENTLISTENERS FOR FOOTER BUTTONS
     likeBtn.addEventListener("click", function(e){
         e.preventDefault();
 
@@ -532,6 +501,7 @@ function resetTimeline(){
 
     shareBtn.addEventListener("click", function(e){
         e.preventDefault();
+        console.log("shareBtn Clicked @ " + singlePost.posthash);
         alert("Temporary\nPastes a URL to clipboard that links to post.\nPost Hash: " + singlePost.posthash);
     });
 
@@ -547,9 +517,13 @@ function resetTimeline(){
         var commentObj = new Comment(currentUser, comment_val, singlePost.posthash, new Date());
         console.log("submit(Comment) Clicked @ " + singlePost.posthash + " contains: ");
         console.log(commentObj);
-    }); 
 
-    $(post_footer).append(comments); //Appends comment list
+        /**
+         * TODO: 
+         * 1. Add commentObj to comments[]
+         * 2. Display to comment_list of this post
+         */
+    }); 
 
     return post_footer;
 }
@@ -606,18 +580,14 @@ function buildPostComment(post, postComment){
 
 
 /**
- * TODO
  * Gets comments from comments[] that match the given posthash.
- * @param {post} post Post reference for finding comments related to it.
+ * @param {Post} post Post reference for finding comments related to it.
+ * @param {list} commentList List of comments to sift through.
  * @returns List of filtered comments specified by post.
  */
  function getCommentsToPost(post, commentList){
     var postHash = post.posthash; //CAN BE SWITCHED TO 
     var filteredComments = [];
-    /**
-     * TODO: Iterate through comments[] and push all matching comments to
-     * filteredComments[] using the posthash given. 
-     */
     if(typeof(commentList) != "undefined") //NOT THE BEST FIX BUT IT'LL WORK
         for(c of commentList){
             if(c.posthash ==  postHash)
@@ -749,7 +719,7 @@ function changeBGColor(id, color){
  * @param {string} msg Details of error
  */
  function errMessage(functionName, msg){
-    console.log(functionName + "(): ", msg);
+    console.error(functionName + "(): ", msg);
 }
 
 /**

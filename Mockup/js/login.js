@@ -139,5 +139,5 @@ function sampleAuth(uname, pwrd){
  */
  function errMessage(functionName, msg){
     $("#errorText").text("* " + msg);
-    console.log(functionName + "(): ", msg);
+    console.error(functionName + "(): ", msg);
 }
