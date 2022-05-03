@@ -24,6 +24,9 @@ var submitClicked = false;
     $("#clear-btn").click(()=>{
         clearSignup();
     });
+    $("#bio").keyup(()=>{
+        updateTextCount();
+    });
     $("#bio").keydown(()=>{
         updateTextCount();
     });
@@ -139,6 +142,7 @@ function clearSignup(){
     var form = new FormData(document.forms.signupform);
     for(f of form){
         $("#" + f[0]).val("");
+        changeBGColor(f[0], "var(--textbox)");
     }
     refreshDP();
         
