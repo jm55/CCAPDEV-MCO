@@ -12,8 +12,10 @@ var submitClicked = false;
         p = null // User object
         
         updateColor();
-        if(validateSignupInputs())
+        if(validateSignupInputs()){
             p = createUser();
+            window.location.href = "../html/home.html";
+        }
 
         console.log("New User Object: ");
         console.log(p);
@@ -121,13 +123,13 @@ function validateSignupInputs(){
                     validity = false;
                 }
             }
-                
-            //CHECK BIO IF AT 255 CHAR AT MOST
-            if(f[0] == "bio")
-                if(f[1].length > 255){ //BIO CHAR LIMIT
-                    errMessage("validateSignupInputs", "Bio char limit exceeded");
+            
+            if(f[0] == "profilepic-select"){
+                if(getInputFile("profilepic-select") == null){
+                    errMessage("validateSignupInputs", "No Profile Picture Set");
                     validity = false;
                 }
+            }
         }   
     }
     return validity;
