@@ -54,3 +54,9 @@ html{
 .section_title{
     text-align: center;
 }
+
+.errorText{
+    font-size: 12px;
+    color: red;
+    float: right;
+}

@@ -63,8 +63,10 @@ FUNCTION SPECIFIC METHODS
  */
 function refreshDP(){
     var file = getInputFile("profilepic-select");
-    if(file) //check if it exists
+    if(file){ //check if it exists
         $("#profilepic").attr("src",getTempURL(file));
+        $("#error-profilepic-select").text("");
+    }
     else{
         $("#profilepic").attr("src","../img/default/default_dp.png");
         errMessage("refreshDP", "Error with file");
@@ -109,6 +111,8 @@ function validateSignupInputs(){
             if(f[0] == "email"){
                 if(!f[1].includes("@")){
                     errMessage("validateSignupInputs", "Invalid email");
+                    $("#error-" + f[0]).text("* Invalid email address");
+                    changeBGColor(f[0], "var(--warning-light)");
                     validity = false;
                 }
             } 
@@ -120,6 +124,8 @@ function validateSignupInputs(){
             if(f[0] == "password_b"){
                 if(prevHash != hash(f[1])){
                     errMessage("validateSignupInputs", "Mismatched passwords");
+                    $("#error-" + f[0]).text("* Passwords do not match");
+                    changeBGColor(f[0], "var(--warning-light)");
                     validity = false;
                 }
             }
@@ -127,6 +133,7 @@ function validateSignupInputs(){
             if(f[0] == "profilepic-select"){
                 if(getInputFile("profilepic-select") == null){
                     errMessage("validateSignupInputs", "No Profile Picture Set");
+                    $("#error-" + f[0]).text("* No Profile Picture set");
                     validity = false;
                 }
             }
@@ -144,6 +151,7 @@ function clearSignup(){
     var form = new FormData(document.forms.signupform);
     for(f of form){
         $("#" + f[0]).val("");
+        ($("#error-" + f[0])).css("display", "none");
         if(f[0] == "profilepic-select"){
             changeBGColor(f[0], "var(--primary)");
         }
@@ -166,6 +174,47 @@ function loginRedirect(){
     window.location.href = "../html/login.html";
 }
 
+/**
+ * Sets the error message with the passed id back to its default value.
+ * @param id ID of the error message to change, minue the "error-" part.
+ */
+function setDefaultErrorMessage(id){
+    let errorMessage;
+    switch(id){
+        case "profilepic-select": 
+            errorMessage = "* Upload a Profile Picture";
+            break;
+        case "username":
+            errorMessage = "* Enter a username";
+            break;
+        case "password_a":
+            errorMessage = "* Enter a password";
+            break;
+        case "password_b":
+            errorMessage = "* Confirm your password";
+            break;
+        case "email":
+            errorMessage = "* Enter your email";
+            break;
+        case "fname":
+            errorMessage = "* Enter your first name";
+            break;
+        case "mname":
+            errorMessage = "* Enter your middle name";
+            break;
+        case "lname":
+            errorMessage = "* Enter your last name";
+            break;
+        case "gender":
+            errorMessage = "* Select a gender";
+            break;
+        case "bio":
+            errorMessage = "* Enter a bio";
+            break;
+
+    }
+    $("#error-" + id).text(errorMessage);
+}
 
 /*
 ===================================================================================
@@ -250,11 +299,15 @@ function errMessage(functionName, msg){
  */
  function updateColor(){
     for(f of new FormData(document.forms.signupform)){
-        if(!(f[0]=="bio" || f[0]=="profilepic-select")){
-            if(f[1] == "")
+        if(!(f[0]=="profilepic-select")){
+            if(f[1] == ""){
                 changeBGColor(f[0], "var(--warning-light)");
-            else
+                setDefaultErrorMessage(f[0]);
+            }
+            else{
                 changeBGColor(f[0], "var(--textbox)");
+                $("#error-" + f[0]).text("");
+            }
         }
     }
 }
@@ -266,7 +319,6 @@ function errMessage(functionName, msg){
 function changeBGColor(id, color){
     document.getElementById(id).style.backgroundColor = color;
 }
-
 
 /*
 ===================================================================================
