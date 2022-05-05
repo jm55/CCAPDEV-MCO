@@ -15,7 +15,7 @@ html{
 
 #profile-info{ /*Same CSS code from login.css*/
     background-color: var(--primary);
-    color: white;
+    color: var(--text);
     position: relative;
     font-size: 12px;
     max-width: 30em;

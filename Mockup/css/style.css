@@ -1,10 +1,13 @@
 @import url('https://fonts.googleapis.com/css2?family=Open+Sans&display=swap');
 
 :root{
-    --primary: #00897B;
-    --primary-button: #00796B;
-    --primary-hover: #00695C;
-    --primary-select: #004D40;
+    --background: #C3886D;
+    --background-dark: #BA7656;
+
+    --primary: rgb(164, 103, 74);
+    --primary-button: #915b42;
+    --primary-hover: #87553e;
+    --primary-select: #65402e;
 
     --warning-background: #e53735;
     --warning-light: #ff6e60;   
@@ -22,18 +25,20 @@
     --font-size-normal: 12px;
     --font-size-large: 14px;
     --font-size-header: 3em;
+
+    --border-radius: 10px;
 }
 
 ::-webkit-scrollbar{
     width: 15px;
     background-color: var(--textbox-hover);
-    border-radius: 10px;
+    border-radius: var(--border-radius);
 }
 
 ::-webkit-scrollbar-thumb{
     width: 15px;
     background-color: var(--primary-button);
-    border-radius: 10px;
+    border-radius: var(--border-radius);
 }
 
 ::-webkit-scrollbar-thumb:hover{
@@ -45,7 +50,7 @@
 }
 
 ::-webkit-file-upload-button{
-    border-radius: 10px;
+    border-radius: var(--border-radius);
     border: none;
     background-color: var(--primary-button); /*600*/
     font-family: inherit !important;
@@ -82,7 +87,7 @@ footer{
 }
 
 button, .button, select{
-    border-radius: 10px;
+    border-radius: var(--border-radius);
     border: none;
     background-color: var(--primary-button); /*600*/
     font-family: inherit;
@@ -155,7 +160,7 @@ img{
 }
 
 .textfield{
-    border-radius: 10px;
+    border-radius: var(--border-radius);
     background-color: rgba(255,255,255,30%);
     color: var(--text);
     vertical-align: middle;
@@ -172,7 +177,7 @@ img{
 }
 
 textarea{
-    border-radius: 10px;
+    border-radius: var(--border-radius);
     background-color: rgba(255,255,255,30%);
     color: var(--text);
     vertical-align: middle;
@@ -191,7 +196,7 @@ textarea:hover{
 }
 
 .card{
-    border-radius: 10px;
+    border-radius: var(--border-radius);
     padding-top: 1%;
     padding-bottom: 1%;
     padding-left: 2%;
