@@ -10,7 +10,7 @@ body{
 header.card_brand_banner{
     position: sticky;
     top: 0px;
-    width: 100%;
+    width: 99%;
 }
 
 div.upper_banner{
@@ -47,7 +47,7 @@ div.lower_banner{
 
 span.span_banner-title{
     color: var(--text);
-    font-size: 60px;
+    font-size: 35px;
     justify-content:left;
     margin-right: auto;
     padding-left: 5px;

@@ -135,9 +135,25 @@ function saveProfile(){
      * 2.   If matched, update currentUser using inputs (Remember: password must be hashed)
      * 2.2  Print created object to console for verification (optional)
      */
+
+    // var inputUsername = document.getElementById('username');
+    // var inputPasswordA = document.getElementById('password_a');
+    // var inputPasswordB = document.getElementById('password_b');
+    // var inputEmail = document.getElementById('email');
+    // var inputFName = document.getElementById('fname');
+    // var inputLName = document.getElementById('lname');
+    // var inputGender = document.getElementById('gender');
+    // var inputBio = document.getElementById('bio');
+
+    // if (inputPasswordA === inputPasswordB) {
+        
+    // }
+
+
     alert("Function saves current input data for user and retains any single-set values such as userID. Any retained data won't be changed\nUserID: " + currentUser.userID);
     return saved;
 }
+
 
 /**
  * TODO
