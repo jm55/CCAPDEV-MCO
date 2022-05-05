@@ -92,59 +92,44 @@ SAMPLE SCRIPTED DATA
 ===================================================================================
 */
 var users = [];
-var posts = [];
+var posts = []; //USER OBJECT IN POSTS ARE TEMPORARY, WILL BE REPLACED WITH USERID FOR FLEXIBLE USER ADDRESSING
 var comments = [];
 var currentUser = null;
 
 /**
  * TODO
  */
-function autoFill(){
+ function autoFill(){
     console.log("autoFill()");
     var user0 = new User("dlsu","237392540","dlsu@mail.com","De La Salle", "University", "Manila", "M", "Animo La Salle", "../img/dp/dlsu_dp.webp"); //SAMPLE LOGGED IN USER
-    users.push(user0);
-
-    //FOR ALL TODOs, GO TO FOLDER 'sample_data' FOR ALL CSVs THAT YOU CAN USE EXCEL WITH FOR A MUCH EASIER BUILDING, BUT REMEMBER TO ADD "" IF OBJECTS ARE TYPEOF STRINGS
-
-    //TODO: Build at least 3-5 users and push each to users[] (via User())
-    //Parameters (and its defaults) are as follows: username, password="", email, fname, mname="", lname, gender, bio="", profilepic=""
     var user1 = new User("dijkstra_boro", hash("dijkstra_boro"), "dijkstra.boro@mail.com", "Boro","Vitek","Dijkstra","M","Food specialist. Music junkie. Reader. Professional tv fanatic. Introvert. Coffee aficionado. Bacon fan. Web advocate.","../img/dp/dijkstra_boro.webp");
     var user2 = new User("skinner_thomas",hash("skinner_thomas"),"skinner.thomas@mail.com","Thomas","Dwain","Skinner","M","Pop culture ninja. Coffee enthusiast. Evil introvert. Social media scholar. Unapologetic internet geek. Tv fan.","../img/dp/skinner_thomas.webp");
     var user3 = new User("morita_haruka",hash("morita_haruka"),"morita.haruka@mail.com","Haruka","Yuzuki","Morita","F","Incurable bacon fan. Food nerd. Award-winning social media expert. Certified zombie maven. Friendly travel geek.","../img/dp/morita_haruka.webp");
     var user4 = new User("bogomolov_natalya",hash("bogomolov_natalya"),"bogomolov.natalya@mail.com","Natalya","Yulia","Bogomolov","F","Tv expert. Extreme reader. Pop culture geek. Bacon guru. General explorer. Student. Organizer.","../img/dp/bogomolov_natalya.webp");
+    users.push(user0, user1,user2,user3,user4);
 
-    users.push(user1,user2,user3,user4);
-
-    //TODO: Build at least 2 posts per user and push each to posts[] (via Post())
-    //Parameters (and its defaults) are as follows: user, description="", category="", label="", link="", imgblob=null, imgurl="", like=0, report=0, comment=[], posthash="", postid=-1, datetime = new Date()
-    //Set imgblob as null for now
-    //For posthash, use hash(string). Use hash(<userID>+<description>). Hopefully no hash-collision will occur. But for now just place random yet unique numbers as posthash.
-    //Set your own post datetime as: new Date(year, month, day, hour, minute). 
-    //Image Directory & Filename: "../img/post_img/<posthash>.<file ext.>". You could go like: "../img/post_img"/" + hash(<userID>+<description>) + ".webp". But for now just use your specified posthash
-    //Fill posts = [];
-    
     posts.push(new Post(users[1], "This is a Samsung A02 Phone", "Mobiles&Gadgets", "Samsung Store via Shopee Mall", "https://shopee.ph/Samsung-Galaxy-A22-5G-i.57465664.13101179266?sp_atk=d646e37a-e2ea-46ad-bcee-96f2edf3e9d2&xptdk=d646e37a-e2ea-46ad-bcee-96f2edf3e9d2",null, "../img/post_img/42069.webp", 100, 0, [], "42069", new Date(2022, 3, 29)));
     posts.push(new Post(users[3], "This is a JBL Go 2 Speaker Priced at ₱199 - ₱599", "Audio", "techplus_galaxy via Shopee", "https://shopee.ph/Original-JBL-GO-2-Portable-Wireless-Bluetooth-Speaker-Waterproof-Mini-Outdoor-Speakers-Sport-Bass-i.323538985.14170356872?sp_atk=a1909e3c-6d3e-4d79-afaa-fd232505f29c&xptdk=a1909e3c-6d3e-4d79-afaa-fd232505f29c",null, "../img/post_img/12345.webp", 10, 0, [], "12345", new Date(2022, 3, 20)));
-    posts.push(new Post(users[4], "My go-to lip balm at only P200!", "Makeup&Fragrances", "Shopee Mall", "https://shopee.ph/Stained-Glossy-Balm-Pink-i.272491104.15215744268?sp_atk=c23cad31-d0c3-4697-99a0-a6ed79eaa9c3&xptdk=c23cad31-d0c3-4697-99a0-a6ed79eaa9c3", null, "../img/post_img/08191.png", 5, 0, [], "08191", new Date(2022, 3, 18)));
-    posts.push(new Post(users[2], "The cutest Ghibli stickers! Only P85 each", "Hobies&Stationery", "Pomelo Paints Co on Shopee", "https://shopee.ph/Studio-Ghibli-(Totoro)-Inspired-Vinyl-Journal-Deco-Sticker-Sheet-pomelo-paints-co.-i.6630353.14848177754?xptdk=39ee076a-4724-4298-9c09-15f27d9384b7", null, "../img/post_img/10228.png", 20, 0, [], "10228", new Date(2022, 3, 15)));
-    posts.push(new Post(users[1], "For P1,600, great quality and fun to use", "Mobiles&Gadgets", "ziepk shop via Shopee", "https://shopee.ph/Paperang-P1-Portable-Phone-Wireless-Connection-Paper-Printer-i.87773654.1508928633?sp_atk=405518e8-7d5e-4c01-85e0-288824bd895b&xptdk=405518e8-7d5e-4c01-85e0-288824bd895b", null, "../img/post_img/78695.png", 3, 0, [], "78695", new Date(2022, 3, 14)));
-    posts.push(new Post(users[2], "Ready to rock out with these Air Force 2. Best P370 spent.", "Men'sShoes", "Shopee", "https://shopee.ph/Air-Force-2-Running-Sneakers-shoes-For-Men-And-women-K55-i.49770780.4468970194?sp_atk=c11abc37-ad7e-43ed-9df0-66d1dfa4bf3c&xptdk=c11abc37-ad7e-43ed-9df0-66d1dfa4bf3c", null, "../img/post_img/16181.png", 23, 0, [], "16181", new Date(2022, 3, 12)));
-    posts.push(new Post(users[3], "This air fryer never disappoints. Got this for P1,300", "HomeAppliances", "electronicdigtal on Shopee", "https://shopee.ph/Air-fryer-6.5L-4.5L15L-Touch-screen-multifunction-fully-automatic-Frying-pan-kitchen-appliances-oven-i.426804848.8948486646?sp_atk=57ca0368-3045-42ac-999e-3d6a64ee4652&xptdk=57ca0368-3045-42ac-999e-3d6a64ee4652", null, "../img/post_img/16334.png", 12, 0, [], "16334", new Date(2022, 3, 10)));
-    posts.push(new Post(users[4], "Just in time for summer. Got this cute inflatable for just P30", "Sports&Travel", "micah.shop on Shopee", "https://shopee.ph/Spot-cartoon-single-layer-inflatable-swimming-ring-life-buoy-i.38222881.1797533401?sp_atk=4faffeab-fade-4652-9fca-1545b4356745&xptdk=4faffeab-fade-4652-9fca-1545b4356745", null, "../img/post_img/74547.png", 8, 0, [], "74547", new Date(2022, 3, 10)));
-    //var testPost = [new Post(users[0], "A test button", "Test Category A", "Test Label", "Test Link", null, "https://www.ondemandcmo.com/wp-content/uploads/2016/03/canstockphoto22402523-arcos-creator.com_-1024x1024.jpg", 999, 0, testComment, "179889061", "postid", new Date(2022, 05, 01, 14, 20, 17)), new Post(users[2], "A Samsung M12", "Test Category B", "Test Label 2", "Test Link 2", nu00ll, "https://cf.shopee.ph/file/8de631b49ed3341cfad085f9be5582c9", 999, 0, testComment, "209406227", "postid", new Date(2022, 05, 01, 14, 20, 17))];
-    //posts = testPost.concat(posts); //DISABLE IF NOT USING testPost[]
+    posts.push(new Post(users[4], "My go-to lip balm at only P200!", "Makeup&Fragrances", "Shopee Mall", "https://shopee.ph/Stained-Glossy-Balm-Pink-i.272491104.15215744268?sp_atk=c23cad31-d0c3-4697-99a0-a6ed79eaa9c3&xptdk=c23cad31-d0c3-4697-99a0-a6ed79eaa9c3", null, "../img/post_img/08191.webp", 5, 0, [], "08191", new Date(2022, 3, 18)));
+    posts.push(new Post(users[2], "The cutest Ghibli stickers! Only P85 each", "Hobies&Stationery", "Pomelo Paints Co on Shopee", "https://shopee.ph/Studio-Ghibli-(Totoro)-Inspired-Vinyl-Journal-Deco-Sticker-Sheet-pomelo-paints-co.-i.6630353.14848177754?xptdk=39ee076a-4724-4298-9c09-15f27d9384b7", null, "../img/post_img/10228.webp", 20, 0, [], "10228", new Date(2022, 3, 15)));
+    posts.push(new Post(users[1], "For P1,600, great quality and fun to use", "Mobiles&Gadgets", "ziepk shop via Shopee", "https://shopee.ph/Paperang-P1-Portable-Phone-Wireless-Connection-Paper-Printer-i.87773654.1508928633?sp_atk=405518e8-7d5e-4c01-85e0-288824bd895b&xptdk=405518e8-7d5e-4c01-85e0-288824bd895b", null, "../img/post_img/78695.webp", 3, 0, [], "78695", new Date(2022, 3, 14)));
+    posts.push(new Post(users[2], "Ready to rock out with these Air Force 2. Best P370 spent.", "Men'sShoes", "Shopee", "https://shopee.ph/Air-Force-2-Running-Sneakers-shoes-For-Men-And-women-K55-i.49770780.4468970194?sp_atk=c11abc37-ad7e-43ed-9df0-66d1dfa4bf3c&xptdk=c11abc37-ad7e-43ed-9df0-66d1dfa4bf3c", null, "../img/post_img/16181.webp", 23, 0, [], "16181", new Date(2022, 3, 12)));
+    posts.push(new Post(users[3], "This air fryer never disappoints. Got this for P1,300", "HomeAppliances", "electronicdigtal on Shopee", "https://shopee.ph/Air-fryer-6.5L-4.5L15L-Touch-screen-multifunction-fully-automatic-Frying-pan-kitchen-appliances-oven-i.426804848.8948486646?sp_atk=57ca0368-3045-42ac-999e-3d6a64ee4652&xptdk=57ca0368-3045-42ac-999e-3d6a64ee4652", null, "../img/post_img/16334.webp", 12, 0, [], "16334", new Date(2022, 3, 10)));
+    posts.push(new Post(users[4], "Just in time for summer. Got this cute inflatable for just P30", "Sports&Travel", "micah.shop on Shopee", "https://shopee.ph/Spot-cartoon-single-layer-inflatable-swimming-ring-life-buoy-i.38222881.1797533401?sp_atk=4faffeab-fade-4652-9fca-1545b4356745&xptdk=4faffeab-fade-4652-9fca-1545b4356745", null, "../img/post_img/74547.webp", 8, 0, [], "74547", new Date(2022, 3, 10)));
+    posts.push(new Post(users[0], "Get your latest Team DLSU Merch at SCHOOLSPIRIT from Shopee for just P450", "Men'sApparel", "shoolspirit on Shopee","https://shopee.ph/La-Salle-Team-DLSU-Shirt-(Unisex)-i.110479407.14750117688?sp_atk=368b0794-f747-4e2b-8edc-bd1475f1646b&xptdk=368b0794-f747-4e2b-8edc-bd1475f1646b", null, "../img/post_img/61619111.webp",1911,0,[],"61619111",new Date(2021,5,19)));
+    posts.push(new Post(users[0], "Get your latest Green Stallions Merch at EpicClothingWear from Shopee for just P450", "Men'sApparel", "EpicClothingWear on Shopee","https://shopee.ph/DE-LA-SALLE-UNIVERSITY-SHIRT-i.58444376.1375379701", null, "../img/post_img/61619112.webp", 1911, 0, [], "61619112", new Date(2021,5,19)));
 
-    //TODO: Build comment list at any amount you'd like and push each to comments[] (via Comment())
-    //Parameters: user, comment_text, posthash, timedate=new Date()
-    //Make sure that posthash can be found on at least a post of posts[].
-    //Fill comments = [];
     comments.push(new Comment(users[0], "Hi, this is a nice speaker!", "12345",new Date()));
     comments.push(new Comment(users[2], "A cheap phone, nice!", "42069",new Date()));
-    comments.push(new Comment(users[3], "いいねスマホ", "42069",new Date()));
-
-    //var testComment = [new Comment(users[1], "This is a comment", "179889061", new Date()), new Comment(users[2], "This is a comment 2", "179889061", new Date()), new Comment(users[0], "いいねスマホ―", "209406227", new Date())];
-    //comments = testComment.concat(comments); //DISABLE IF NOT USING testComment[]
+    comments.push(new Comment(users[1], "I'd like to buy 1", "61619112",new Date()));
+    comments.push(new Comment(users[2], "Take my moneyyyy", "61619111",new Date()));
+    comments.push(new Comment(users[3], "Ahhhhhh", "61619111",new Date()));
+    comments.push(new Comment(users[4], "DLSU Animo Lasalle", "61619111",new Date()));
+    comments.push(new Comment(users[1], "Animo Lasalle", "61619112",new Date()));
+    comments.push(new Comment(users[2], "WHOOOOOOO Finally!!!!", "61619112",new Date()));
+    comments.push(new Comment(users[2], "Time to beat the summer heat for my kids!", "74547",new Date()));
 }
+
 
 /*MAIN*/
 
@@ -217,17 +202,18 @@ $(document).ready(()=>{
 
     $("#search-txt").keyup((e)=>{
         e.preventDefault();
-        if(e.key=="Enter")
-            filterBySearch(getSearch());
+        if(e.key=="Enter"){
+            var filteredPosts = filterBySearch(posts,getSearch());
+            resetTimeline();
+            //Call sortbydate to filteredPosts or if getsearch() is empty then just display posts[] instead of filteredPosts[]
+            displayPosts(filteredPosts, comments);
+        }
     });
 
     $("#categories").on("change", (e)=>{
-        console.log("Category Filter Changed: " + $("#categories").val());
-        /**
-         * TODO: Do filterByCategory();
-         * 
-         * Call resetTimeline() prior to 
-         */ 
+        var filteredPosts = filterByCategory(posts, $("#categories").val());
+        resetTimeline();
+        displayPosts(filteredPosts, comments);
     });
 });
 
@@ -239,10 +225,27 @@ FUNCTION SPECIFIC METHODS
 ===================================================================================
 */
 
+
+
+/**
+ * Filters posts by list of keywords on search
+ * @param {list} postList List of posts to be filtered
+ * @param {string} category Target category for filtering
+ * @returns Filtered Posts by Search value
+ */
+ function filterByCategory(postList, category){
+    var filteredPosts = [];
+    for(p of postList){
+        if(p.category.toLowerCase().includes(category.toLowerCase()))
+            filteredPosts.unshift(p);
+    }
+   return filteredPosts;
+}
+
 function displayCurrentUser(){
     /**
      *  <div class="my_account">
-            <span><a id="userbutton"><img id="profile-pic" class="profilepic" src="../img/default/default_dp.png" alt="User Profile Picture"></a></span>
+            <span><a id="userbutton"><img id="profile-pic" class="profilepic" src="../img/default/default_dp.webp" alt="User Profile Picture"></a></span>
             <span id="userfullname"> [Username] </span>
             <span> | </span>
             <span> <a href="../html/profile.html" id="myaccount">My Account</a> </span>
@@ -296,7 +299,6 @@ function filterBySearch(postList, searchList){
  */
  function getSearch(){
     var searchVal = $("#search-txt").val();
-    console.log(searchVal.split(" "));
     return searchVal.split(" ");
 }
 
