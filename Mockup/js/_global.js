@@ -119,3 +119,17 @@ function errMessage(functionName, msg){
 function changeBGColor(id, color){
     document.getElementById(id).style.backgroundColor = color;
 }
+
+/**
+ * Returns the user object from the given userList 
+ * using the userID as the target reference.
+ * @param {*} userID 
+ * @param {*} userList 
+ * @returns User object that equates to userID from userList. Returns null if no match is found.
+ */
+ function getUser(userID, userList){
+    for(u of userList)
+        if(userID == u.userID)
+            return u;
+    return null;
+}

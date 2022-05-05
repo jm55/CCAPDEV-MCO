@@ -8,34 +8,32 @@ OBJECTS
 */
 /**
  * Post Object
- * @param {User} user Username of the postee
+ * @param {User} user Username of the postee //To be replaced with UserID in the future
  * @param {string} description Description of the Post
+ * @param {string} posthash Post hash of the post
  * @param {string} category Category of Post Item
  * @param {string} label Label of product in post item
  * @param {string} link Link of product in post item
- * @param {*} imgblob Image in blob type
+ * @param {*} imgblob Image in blob type //NULL 
  * @param {string} imgurl Image in URLtype
  * @param {Number} like Number of likes; Default: 0
- * @param {Number} report Report count
+ * @param {Number]} report Report count //TO BE REPLACED BY A Report object
  * @param {list} comment Comment objects
- * @param {string} posthash Post hash (identifier for post)
- * @param {string} postid  Post ID
  * @param {Date} datetime Date and Time of Post; Default: new Date()
  */
  const Post = function(user, description="", 
                         category="", label="", link="", imgblob=null, imgurl="", 
                         like=0, report=0, comment=[], 
-                        posthash="", postid=-1, datetime = new Date()){
-    this.user = user;
+                        posthash="", datetime = new Date()){
+    this.user = user; //to be replaced by userID
     this.description = description;
+    this.posthash = posthash;
     this.category = category;
     this.imgblob = imgblob;
     this.imgurl = imgurl;
     this.like = like;
     this.report = report;
     this.comment = comment;
-    this.posthash = posthash;
-    this.postid = postid;
     this.datetime = datetime;
     this.label = label;
     this.link = link;
@@ -51,11 +49,12 @@ OBJECTS
  * @param {string} gender Gender
  * @param {string} bio Biography
  * @param {string} profilepic ProfilePic (string? or blob? NOT YET SURE)
- * @param {Date} dateCreated TO ADD IN THE FUTURE; USED FOR CREATING USERID VIA HASH
+ * @param {Date} dateCreated Used as reference values for hashing userID. Defaults to new Date() but can be set as constant when prototyping users.
+ * @param {string} userID Identifier for user, leave as null by default if a new account.
  */
- const User = function(username, password="", email, fname, mname="", lname, gender, bio="", profilepic=""){
+ const User = function(username, password="", email, fname, mname="", lname, gender, bio="", profilepic="", dateCreated=new Date(), userID=null){
     this.username = username;
-    this.password = password;
+    this.password = password; //acts more as a passhash than a password
     this.email = email;
     this.fname = fname;
     this.mname = mname;
@@ -64,8 +63,10 @@ OBJECTS
     this.bio = bio;
     this.profilepic = profilepic; //TO BE UPDATED TO POINT TO SERVER DIRECTORY AT '../img/dp/<username>.jpg'; BY CURRENT DESIGN, IF USERNAME WAS CHANGED, THE DP WILL BE SAVED AGAIN AS NEW FILE WITH NEW FILENAME (I.E. USERNAME)
     this.formal_name = lname + ", " + fname + " " + mname.substring(0,1);
-    //TO ADD IN THE FUTURE => this.userID = hash(this.username+dateCreated.toString())
-
+    if(userID == null)
+        this.userID = hash(this.username+dateCreated.toString); //hash() must be on the same area as User constructor; DON'T IMPLEMENT FOR PHASE 1 JUST YET
+    else
+        this.userID = userID;
     //IF A CLASS, ADD FUNCTION TO SAVE URL/BLOB AS FILE TO SERVER AT '../img/dp/<username>.jpg'
 }
 /**
@@ -73,10 +74,10 @@ OBJECTS
  * @param {User} user User that posted the comment
  * @param {string} comment_text Content of comment
  * @param {string} posthash Post that it is attached to 
- * @param {Date} timedate Date and time of the comment posted
+ * @param {Date} datetime Date and time of the comment posted
  */
  const Comment = function(user, comment_text, posthash, datetime=new Date()){
-    this.user = user;
+    this.user = user; //userID
     this.comment_text = comment_text;
     this.posthash = posthash;
     this.datetime = datetime;
@@ -107,29 +108,37 @@ function autoFill(){
 
     //TODO: Build at least 3-5 users and push each to users[] (via User())
     //Parameters (and its defaults) are as follows: username, password="", email, fname, mname="", lname, gender, bio="", profilepic=""
-    var user1 = new User("dijkstra_boro", "127609433", "dijkstra.boro@mail.com", "Boro","Vitek","Dijkstra","M","Food specialist. Music junkie. Reader. Professional tv fanatic. Introvert. Coffee aficionado. Bacon fan. Web advocate.","../img/dp/dijkstra_boro.webp");
-    var user2 = new User("skinner_thomas","122665614","skinner.thomas@mail.com","Thomas","Dwain","Skinner","M","Pop culture ninja. Coffee enthusiast. Evil introvert. Social media scholar. Unapologetic internet geek. Tv fan.","../img/dp/skinner_thomas.webp");
-    var user3 = new User("morita_haruka","190602232","morita.haruka@mail.com","Haruka","Yuzuki","Morita","F","Incurable bacon fan. Food nerd. Award-winning social media expert. Certified zombie maven. Friendly travel geek.","../img/dp/morita_haruka.webp");
-    var user4 = new User("bogomolov_natalya","14670803","bogomolov.natalya@mail.com","Natalya","Yulia","Bogomolov","F","Tv expert. Extreme reader. Pop culture geek. Bacon guru. General explorer. Student. Organizer.","../img/dp/bogomolov_natalya.webp");
+    var user1 = new User("dijkstra_boro", hash("dijkstra_boro"), "dijkstra.boro@mail.com", "Boro","Vitek","Dijkstra","M","Food specialist. Music junkie. Reader. Professional tv fanatic. Introvert. Coffee aficionado. Bacon fan. Web advocate.","../img/dp/dijkstra_boro.webp");
+    var user2 = new User("skinner_thomas",hash("skinner_thomas"),"skinner.thomas@mail.com","Thomas","Dwain","Skinner","M","Pop culture ninja. Coffee enthusiast. Evil introvert. Social media scholar. Unapologetic internet geek. Tv fan.","../img/dp/skinner_thomas.webp");
+    var user3 = new User("morita_haruka",hash("morita_haruka"),"morita.haruka@mail.com","Haruka","Yuzuki","Morita","F","Incurable bacon fan. Food nerd. Award-winning social media expert. Certified zombie maven. Friendly travel geek.","../img/dp/morita_haruka.webp");
+    var user4 = new User("bogomolov_natalya",hash("bogomolov_natalya"),"bogomolov.natalya@mail.com","Natalya","Yulia","Bogomolov","F","Tv expert. Extreme reader. Pop culture geek. Bacon guru. General explorer. Student. Organizer.","../img/dp/bogomolov_natalya.webp");
 
     users.push(user1,user2,user3,user4);
 
     //TODO: Build at least 2 posts per user and push each to posts[] (via Post())
     //Parameters (and its defaults) are as follows: user, description="", category="", label="", link="", imgblob=null, imgurl="", like=0, report=0, comment=[], posthash="", postid=-1, datetime = new Date()
     //Set imgblob as null for now
-    //For posthash, use hash(string). Example shown below. Hopefully no hash-collision will occur.
+    //For posthash, use hash(string). Use hash(<userID>+<description>). Hopefully no hash-collision will occur. But for now just place random yet unique numbers as posthash.
     //Set your own post datetime as: new Date(year, month, day, hour, minute). 
-    //Image Directory & Filename: "../img/post/<username>_<posthash>_product.jpg"
+    //Image Directory & Filename: "../img/post_img/<posthash>.<file ext.>". You could go like: "../img/post_img"/" + hash(<userID>+<description>) + ".webp". But for now just use your specified posthash
     //Fill posts = [];
-    var testPost = [new Post(users[0], "A test button", "Test Category A", "Test Label", "Test Link", null, "https://www.ondemandcmo.com/wp-content/uploads/2016/03/canstockphoto22402523-arcos-creator.com_-1024x1024.jpg", 999, 0, testComment, "179889061", "postid", new Date(2022, 05, 01, 14, 20, 17)), new Post(users[2], "A Samsung M12", "Test Category B", "Test Label 2", "Test Link 2", null, "https://cf.shopee.ph/file/8de631b49ed3341cfad085f9be5582c9", 999, 0, testComment, "209406227", "postid", new Date(2022, 05, 01, 14, 20, 17))];
-    posts = testPost.concat(posts); //DISABLE IF NOT USING testPost[]
+    
+    posts.push(new Post(users[3], "This is a JBL Go 2 Speaker Priced at ₱199 - ₱599", "Audio", "techplus_galaxy via Shopee", "https://shopee.ph/Original-JBL-GO-2-Portable-Wireless-Bluetooth-Speaker-Waterproof-Mini-Outdoor-Speakers-Sport-Bass-i.323538985.14170356872?sp_atk=a1909e3c-6d3e-4d79-afaa-fd232505f29c&xptdk=a1909e3c-6d3e-4d79-afaa-fd232505f29c",null, "../img/post_img/12345.webp", 10, 0, [], "12345", new Date(2019, 5-1, 5)));
+    posts.push(new Post(users[1], "This is a Samsung A02 Phone", "Mobiles&Gadgets", "Samsung Store via Shopee Mall", "https://shopee.ph/Samsung-Galaxy-A22-5G-i.57465664.13101179266?sp_atk=d646e37a-e2ea-46ad-bcee-96f2edf3e9d2&xptdk=d646e37a-e2ea-46ad-bcee-96f2edf3e9d2",null, "../img/post_img/42069.webp", 100, 0, [], "42069", new Date(2022, 3-1, 5)));
+    
+    //var testPost = [new Post(users[0], "A test button", "Test Category A", "Test Label", "Test Link", null, "https://www.ondemandcmo.com/wp-content/uploads/2016/03/canstockphoto22402523-arcos-creator.com_-1024x1024.jpg", 999, 0, testComment, "179889061", "postid", new Date(2022, 05, 01, 14, 20, 17)), new Post(users[2], "A Samsung M12", "Test Category B", "Test Label 2", "Test Link 2", null, "https://cf.shopee.ph/file/8de631b49ed3341cfad085f9be5582c9", 999, 0, testComment, "209406227", "postid", new Date(2022, 05, 01, 14, 20, 17))];
+    //posts = testPost.concat(posts); //DISABLE IF NOT USING testPost[]
 
     //TODO: Build comment list at any amount you'd like and push each to comments[] (via Comment())
     //Parameters: user, comment_text, posthash, timedate=new Date()
     //Make sure that posthash can be found on at least a post of posts[].
     //Fill comments = [];
-    var testComment = [new Comment(users[1], "This is a comment", "179889061", new Date()), new Comment(users[2], "This is a comment 2", "179889061", new Date()), new Comment(users[0], "いいねスマホ―", "209406227", new Date())];
-    comments = testComment.concat(comments); //DISABLE IF NOT USING testComment[]
+    comments.push(new Comment(users[0], "Hi, this is a nice speaker!", "12345",new Date()));
+    comments.push(new Comment(users[2], "A cheap phone, nice!", "42069",new Date()));
+    comments.push(new Comment(users[3], "いいねスマホ", "42069",new Date()));
+
+    //var testComment = [new Comment(users[1], "This is a comment", "179889061", new Date()), new Comment(users[2], "This is a comment 2", "179889061", new Date()), new Comment(users[0], "いいねスマホ―", "209406227", new Date())];
+    //comments = testComment.concat(comments); //DISABLE IF NOT USING testComment[]
 }
 
 /*MAIN*/
@@ -641,11 +650,10 @@ function createPost(){
     let link = document.getElementById("new-post-link").value;
     let like = 0;
     let posthash = hash(user.username+description);
-    let postid = posts.length + 1;
     let comments = [];
     let report = 0;
     let datetime = new Date();
-    var p = new Post(user,description,category,label,link,imgblob,imgurl,like,report,comments,posthash,postid,datetime);
+    var p = new Post(user,description,category,label,link,imgblob,imgurl,like,report,comments,posthash,datetime);
     console.log(p);
     return p;
 }
