@@ -151,7 +151,7 @@ function clearSignup(){
     var form = new FormData(document.forms.signupform);
     for(f of form){
         $("#" + f[0]).val("");
-        ($("#error-" + f[0])).css("display", "none");
+        ($("#error-" + f[0])).text("");
         if(f[0] == "profilepic-select"){
             changeBGColor(f[0], "var(--primary)");
         }
