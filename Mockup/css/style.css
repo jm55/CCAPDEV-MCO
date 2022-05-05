@@ -257,9 +257,9 @@ textarea:hover{
 }
 
 .menu_categories{
-    min-width: 8em;
+    min-width: 15em;
     width: 8em;
-    max-width: 8em;
+    max-width: 15em;
     min-height: 3em;
     max-height: 3em;
     margin-right: 10px;

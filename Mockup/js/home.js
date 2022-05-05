@@ -128,6 +128,16 @@ var currentUser = null;
     comments.push(new Comment(users[1], "Animo Lasalle", "61619112",new Date()));
     comments.push(new Comment(users[2], "WHOOOOOOO Finally!!!!", "61619112",new Date()));
     comments.push(new Comment(users[2], "Time to beat the summer heat for my kids!", "74547",new Date()));
+    comments.push(new Comment(users[3], "Mine broke after just a few uses :(", "78695", new Date()));
+    comments.push(new Comment(users[2], "The seller was rude when I was trying to place an order", "78695", new Date()));
+    comments.push(new Comment(users[4], "Just placed an order for this! TY", "16334", new Date()));
+    comments.push(new Comment(users[1], "Is this really better than the OG frying with oil???", "16334", new Date()));
+    comments.push(new Comment(users[2], "Aw man, the black one is sold out...", "16334", new Date()));
+
+
+
+
+
 }
 
 
@@ -181,10 +191,7 @@ $(document).ready(()=>{
         refreshNewPostImage();
     });
 
-    $("#new-post-cancel-btn").click((e)=>{
-        //TODO: DELETE VALUE INPUTS OF #new-post-form (Name: newPostForm) including input new-post-img-select
-        //Call refreshNewPostImage(); after clearing input vals
-        
+    $("#new-post-cancel-btn").click((e)=>{   
         var inputPostDesc = document.getElementById('new-post-content');
         inputPostDesc.value = '';
 
