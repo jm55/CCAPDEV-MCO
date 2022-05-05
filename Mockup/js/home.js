@@ -163,7 +163,7 @@ $(document).ready(()=>{
     currentUser = users[0];
     console.log("currentUser");
     console.log(currentUser);
-    $("#profile-pic").attr("src", currentUser.profilepic);
+    displayCurrentUser();
 
     console.log(users);
     console.log(posts);
@@ -233,6 +233,24 @@ FUNCTION SPECIFIC METHODS
 
 ===================================================================================
 */
+
+function displayCurrentUser(){
+    /**
+     *  <div class="my_account">
+            <span><a id="userbutton"><img id="profile-pic" class="profilepic" src="../img/default/default_dp.png" alt="User Profile Picture"></a></span>
+            <span id="userfullname"> [Username] </span>
+            <span> | </span>
+            <span> <a href="../html/profile.html" id="myaccount">My Account</a> </span>
+            <span> | </span>
+            <span> <a id="logout">Logout</a> </span>
+        </div>
+     */
+
+    $("#profile-pic").attr("src", currentUser.profilepic);
+    $("#userfullname").text(currentUser.formal_name);
+    $("#myaccount").attr("href", "../html/profile.html");
+    $("#logout-btn").attr("href","../html/login.html");
+}
 
 /**
  * Sorts the given list of posts by date 
@@ -586,7 +604,6 @@ function buildPostComment(post, postComment){
 
     return comment_div;
 }
-
 
 /**
  * Gets comments from comments[] that match the given posthash.
