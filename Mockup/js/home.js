@@ -111,7 +111,7 @@ var currentUser = null;
     posts.push(new Post(users[1], "This is a Samsung A02 Phone", "Mobiles&Gadgets", "Samsung Store via Shopee Mall", "https://shopee.ph/Samsung-Galaxy-A22-5G-i.57465664.13101179266?sp_atk=d646e37a-e2ea-46ad-bcee-96f2edf3e9d2&xptdk=d646e37a-e2ea-46ad-bcee-96f2edf3e9d2",null, "../img/post_img/42069.webp", 100, 0, [], "42069", new Date(2022, 3, 29)));
     posts.push(new Post(users[3], "This is a JBL Go 2 Speaker Priced at ₱199 - ₱599", "Audio", "techplus_galaxy via Shopee", "https://shopee.ph/Original-JBL-GO-2-Portable-Wireless-Bluetooth-Speaker-Waterproof-Mini-Outdoor-Speakers-Sport-Bass-i.323538985.14170356872?sp_atk=a1909e3c-6d3e-4d79-afaa-fd232505f29c&xptdk=a1909e3c-6d3e-4d79-afaa-fd232505f29c",null, "../img/post_img/12345.webp", 10, 0, [], "12345", new Date(2022, 3, 20)));
     posts.push(new Post(users[4], "My go-to lip balm at only P200!", "Makeup&Fragrances", "Shopee Mall", "https://shopee.ph/Stained-Glossy-Balm-Pink-i.272491104.15215744268?sp_atk=c23cad31-d0c3-4697-99a0-a6ed79eaa9c3&xptdk=c23cad31-d0c3-4697-99a0-a6ed79eaa9c3", null, "../img/post_img/08191.webp", 5, 0, [], "08191", new Date(2022, 3, 18)));
-    posts.push(new Post(users[2], "The cutest Ghibli stickers! Only P85 each", "Hobies&Stationery", "Pomelo Paints Co on Shopee", "https://shopee.ph/Studio-Ghibli-(Totoro)-Inspired-Vinyl-Journal-Deco-Sticker-Sheet-pomelo-paints-co.-i.6630353.14848177754?xptdk=39ee076a-4724-4298-9c09-15f27d9384b7", null, "../img/post_img/10228.webp", 20, 0, [], "10228", new Date(2022, 3, 15)));
+    posts.push(new Post(users[2], "The cutest Ghibli stickers! Only P85 each", "Hobbies&Stationery", "Pomelo Paints Co on Shopee", "https://shopee.ph/Studio-Ghibli-(Totoro)-Inspired-Vinyl-Journal-Deco-Sticker-Sheet-pomelo-paints-co.-i.6630353.14848177754?xptdk=39ee076a-4724-4298-9c09-15f27d9384b7", null, "../img/post_img/10228.webp", 20, 0, [], "10228", new Date(2022, 3, 15)));
     posts.push(new Post(users[1], "For P1,600, great quality and fun to use", "Mobiles&Gadgets", "ziepk shop via Shopee", "https://shopee.ph/Paperang-P1-Portable-Phone-Wireless-Connection-Paper-Printer-i.87773654.1508928633?sp_atk=405518e8-7d5e-4c01-85e0-288824bd895b&xptdk=405518e8-7d5e-4c01-85e0-288824bd895b", null, "../img/post_img/78695.webp", 3, 0, [], "78695", new Date(2022, 3, 14)));
     posts.push(new Post(users[2], "Ready to rock out with these Air Force 2. Best P370 spent.", "Men'sShoes", "Shopee", "https://shopee.ph/Air-Force-2-Running-Sneakers-shoes-For-Men-And-women-K55-i.49770780.4468970194?sp_atk=c11abc37-ad7e-43ed-9df0-66d1dfa4bf3c&xptdk=c11abc37-ad7e-43ed-9df0-66d1dfa4bf3c", null, "../img/post_img/16181.webp", 23, 0, [], "16181", new Date(2022, 3, 12)));
     posts.push(new Post(users[3], "This air fryer never disappoints. Got this for P1,300", "HomeAppliances", "electronicdigtal on Shopee", "https://shopee.ph/Air-fryer-6.5L-4.5L15L-Touch-screen-multifunction-fully-automatic-Frying-pan-kitchen-appliances-oven-i.426804848.8948486646?sp_atk=57ca0368-3045-42ac-999e-3d6a64ee4652&xptdk=57ca0368-3045-42ac-999e-3d6a64ee4652", null, "../img/post_img/16334.webp", 12, 0, [], "16334", new Date(2022, 3, 10)));
@@ -184,6 +184,25 @@ $(document).ready(()=>{
     $("#new-post-cancel-btn").click((e)=>{
         //TODO: DELETE VALUE INPUTS OF #new-post-form (Name: newPostForm) including input new-post-img-select
         //Call refreshNewPostImage(); after clearing input vals
+        
+        var inputPostDesc = document.getElementById('new-post-content');
+        inputPostDesc.value = '';
+
+        var inputPostCat = document.getElementById('new-post-category');
+        inputPostCat.value = '';
+
+        var inputPostLab = document.getElementById('new-post-label');
+        inputPostLab.value = '';
+
+        var inputPostLink = document.getElementById('new-post-link');
+        inputPostLink.value = '';
+
+        var inputPostImgSel = document.getElementById('new-post-img-select');
+        inputPostImgSel.value = '';
+
+        var inputPostImg = document.getElementById('new-post-image');
+        refreshNewPostImage();
+
         updateColor(true); //Restores text box for value triggered input BG color.
     });
 

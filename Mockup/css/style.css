@@ -3,6 +3,7 @@
 :root{
     --background: #C3886D;
     --background-dark: #BA7656;
+    --background-content-area: #e5d7c4; 
 
     --primary: rgb(164, 103, 74);
     --primary-button: #915b42;
@@ -13,7 +14,7 @@
     --warning-light: #ff6e60;   
     --warning-dark: #ab000d;
 
-    --text: #E0F7FA;
+    --text: #ffffff;
     --text-hover:  #080808;
     --text-select: 00838F;
 

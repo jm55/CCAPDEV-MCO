@@ -11,7 +11,7 @@
 
 .post{
     background-color: var(--primary);
-    width: 25em;
+    width: 40em;
     height: max-content;
     margin: 0px auto 20px auto; /*points to bottom*/
     padding-top: 20px;
@@ -41,7 +41,7 @@
     margin-top: auto;
     margin-bottom: auto;
     font-weight: bold;
-    font-size: 16px;
+    font-size: 15px;
 }
 
 .post_content{
@@ -54,7 +54,7 @@
 }
 
 .post_description_text{
-    font-size: 12px;
+    font-size: 15px;
 }
 
 .post_image_div{
@@ -101,7 +101,7 @@ td > a{
 }
 
 .comment_textfield{
-    width: 70%;
+    width: 82%;
 }
 
 .post_timedate{

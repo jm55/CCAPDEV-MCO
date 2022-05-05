@@ -1,32 +1,10 @@
-/* html{
-    background-color: #e5e5e5;
-}
-
-body{
-    overflow: hidden;
-}
-
-.home_header{
-    display: flex;
-    position: sticky;
-    top: 0%;
-    max-height: 6em;
-    padding-top: 20px;
-    padding-bottom: 20px;
-    padding-left: 20px;
-}
-
-.container{
-    display: flex;
-    height: 76vh;
-} */
-
 html{
     background-color: var(--background);
 }
 
 body{
     overflow: hidden;
+    width: 100vw;
 }
 
 header.card_brand_banner{
@@ -87,8 +65,8 @@ div.container{
     display: flex;
     /* height: 76vh; */
     max-height: 90vh;
-    background-color: var(--background);
-    max-width: 1500px;
+    background-color: #e5d7c4;
+    max-width: 1400px;
     justify-content: center;
     margin-left: auto;
     margin-right: auto;
