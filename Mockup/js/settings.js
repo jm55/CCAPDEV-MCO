@@ -64,11 +64,13 @@ var submitClicked = false;
 
     $("#save-btn").click((e)=>{
         e.preventDefault();
-        if(validateProfileInputs())
-            if(saveProfile(currentUser))
-                console.log("Updating currentUser to server..."); //Superficial lang hehehehe;
-            else
-                console.log("currentUser !updated");
+        if(validateProfileInputs()){
+            updatedUser = saveProfile(currentUser);
+            if(updatedUser){
+                currentUser = updatedUser;
+                updatedUser = null;
+            }
+        }   
         updateColor();  
     });
     $("#cancel-btn").click(()=>{
@@ -78,7 +80,6 @@ var submitClicked = false;
         updateTextCount();
     });
     $("#profilepic-select").on("change", ()=>{
-        console.log("image change");
         refreshDP();
     });
     $("input").keyup((e)=>{
@@ -112,10 +113,10 @@ function displayCurrentUser(){
 
 /**
  * @param {User} user User profile to be modified
- * @returns True if saved, false if otherwise
+ * @returns User object when saved to server, null if not saved
  */
 function saveProfile(user){
-    var saved = false;
+    var updatedUser = null;
 
     user.username = document.getElementById("username").value;
     user.email = document.getElementById("email").value;
@@ -124,18 +125,21 @@ function saveProfile(user){
     user.lname = document.getElementById("lname").value;
     user.gender = document.getElementById("gender").value;
     user.bio = document.getElementById("bio").value;
-    user.profilepic = getTempURL(getInputFile("profilepic-select")); //TEMPORARILY USING BLOBURL
+    
+    let URL = getTempURL(getInputFile("profilepic-select"));
+    if(URL)
+        user.profilepic = URL; //TEMPORARILY USING BLOBURL
     
     if(document.getElementById("password_b").value.length > 0)
         user.password = hash(document.getElementById("password_b").value); //RECOMMENDED TO BE IN HASH
     else
         user.password = hash(document.getElementById("password_current").value); //RECOMMENDED TO BE IN HASH
     
-    console.log(user);
-    saved = true;
+    if(true){
+        updatedUser = user;
+    }
 
-    alert("Function saves current input data for user and retains any single-set values such as userID. Any retained data won't be changed\nUserID: " + currentUser.userID);
-    return saved;
+    return updatedUser;
 }
 
 
@@ -145,8 +149,6 @@ function saveProfile(user){
  * @param {User} user 
  */
 function loadUser(user){
-    console.log("loadUser");
-    console.log(user);
     if(user){
         $("#username").val(user.username);
         $("#email").val(user.email);
@@ -245,7 +247,6 @@ function validateProfileInputs(){
                 validity = false;
             }
     }
-    console.log(validity);
     return validity;
 }
 
@@ -337,7 +338,10 @@ function updateTextCount(limit=255, alert=true){
  * @returns Temporary blobURL (cache?) for file specified
  */
 function getTempURL(file){
-    return URL.createObjectURL(file);
+    let tempURL = "";
+    if(file)
+        tempURL = URL.createObjectURL(file);
+    return tempURL;
 }
 
 /**
