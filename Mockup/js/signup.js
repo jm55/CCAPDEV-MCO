@@ -14,11 +14,10 @@ var submitClicked = false;
         updateColor();
         if(validateSignupInputs()){
             p = createUser();
+            console.log("New User Object: ");
+            console.log(p);
             window.location.href = "../html/home.html";
         }
-
-        console.log("New User Object: ");
-        console.log(p);
     });
     $("#login-btn").click(()=>{
         loginRedirect();
@@ -80,7 +79,6 @@ function refreshDP(){
  * @returns User object with the inputs inputted by the user.
  */
 function createUser(){
-    var list = [];
     let username = document.getElementById("username").value;
     let password = hash(document.getElementById("password_b").value); //RECOMMENDED TO BE IN HASH
     let email = document.getElementById("email").value;
@@ -103,9 +101,11 @@ function validateSignupInputs(){
     var validity = true;
     var prevHash = "";
     for(f of form){
-        if(f[1].length == 0 && (f[0] != "bio" || f[0] != "profilepic-select")){
-            errMessage("validateSignupInputs",  f[0] + " not filled")
-            validity = false;
+        if(f[1].length == 0){
+            if(f[0] != "bio" && f[0] != "profilepic-select"){
+                errMessage("validateSignupInputs",  f[0] + " not filled")
+                validity = false;
+            }
         }else{
             //CHECK EMAIL IF IT CONTAINS AT LEAST AN @
             if(f[0] == "email"){

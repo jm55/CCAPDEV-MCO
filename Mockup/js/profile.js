@@ -25,7 +25,7 @@ OBJECTS
  const Post = function(user, description="", 
                         category="", label="", link="", imgblob=null, imgurl="", 
                         like=0, report=0, comment=[], 
-                        posthash="", postid=-1, datetime = new Date()){
+                        posthash="", datetime = new Date()){
     this.user = user; //to be replaced by userID
     this.description = description;
     this.posthash = posthash;
@@ -117,7 +117,7 @@ function autoFill(){
     
     //ALL POSTS COLLECTED ARE DONE BY BACKEND PROCESSING
     posts.push(new Post(users[0], "Get your latest Team DLSU Merch at SCHOOLSPIRIT from Shopee for just P450", "Men'sApparel", "shoolspirit on Shopee","https://shopee.ph/La-Salle-Team-DLSU-Shirt-(Unisex)-i.110479407.14750117688?sp_atk=368b0794-f747-4e2b-8edc-bd1475f1646b&xptdk=368b0794-f747-4e2b-8edc-bd1475f1646b", null, "../img/post_img/61619111.webp",1911,0,[],"61619111",new Date(2021,5,19)));
-    posts.push(new Post(users[0], "Get your latest Green Stallions Merch at EpicClothingWear from Shopee for just P450", "Men'sApparel", "EpicClothingWear on Shopee","https://shopee.ph/DE-LA-SALLE-UNIVERSITY-SHIRT-i.58444376.1375379701", null, "../img/post_img/61619112.webp", 1911, 0, [], "61619112", new Date(2021,5,19)));
+    posts.push(new Post(users[0], "Get your latest Green Stallions Merch at EpicClothingWear from Shopee for just P450", "Men'sApparel", "EpicClothingWear on Shopee","https://shopee.ph/DE-LA-SALLE-UNIVERSITY-SHIRT-i.58444376.1375379701", null, "../img/post_img/61619112.webp", 1911, 0, [], "61619112",new Date(2020,5,19)));
 
     //ALL COMMNENTS ARE DONE BY BACKEND PROCESSING
     comments.push(new Comment(users[1], "I'd like to buy 1", "61619112",new Date()));
@@ -141,8 +141,8 @@ $(document).ready(()=>{
     $("#search-btn").click((e)=>{
         e.preventDefault();
         var filteredPosts = filterBySearch(posts,getSearch());
+        sortByDate(filteredPosts);
         resetTimeline();
-        //Call sortbydate to filteredPosts or if getsearch() is empty then just display posts[] instead of filteredPosts[]
         displayPosts(filteredPosts,comments);
     });
 
@@ -150,14 +150,15 @@ $(document).ready(()=>{
         e.preventDefault();
         if(e.key=="Enter"){
             var filteredPosts = filterBySearch(posts,getSearch());
+            sortByDate(filteredPosts);
             resetTimeline();
-            //Call sortbydate to filteredPosts or if getsearch() is empty then just display posts[] instead of filteredPosts[]
             displayPosts(filteredPosts);
         }
     });
 
     $("#categories").on("change", (e)=>{
         var filteredPosts = filterByCategory(posts, $("#categories").val());
+        sortByDate(filteredPosts);
         resetTimeline();
         displayPosts(filteredPosts, comments);
     });
@@ -171,6 +172,22 @@ FUNCTION SPECIFIC METHODS
 
 ===================================================================================
 */
+
+/**
+ * Sorts the given list of posts by date 
+ * @param {list} postList Post list to be sorted
+ * @param {Boolean} descending Sorts the given postList on a descending order by default (true), set as false if otherwise.
+ * @returns Sorted post list by date whether descending or ascending.
+ */ 
+ function sortByDate(postList, descending=true){
+    var sortedPosts = [];
+    if(descending){
+        sortedPosts = postList.sort((a, b) => (a.datetime < b.datetime) ? 1 : (a.datetime === b.datetime) ? ((a.datetime < b.datetime) ? 1 : -1) : -1 );        
+    }else{
+        sortedPosts = postList.sort((a, b) => (a.datetime > b.datetime) ? 1 : (a.datetime === b.datetime) ? ((a.datetime > b.datetime) ? 1 : -1) : -1 );
+    }
+    return sortedPosts;
+}
 
 /**
  * Filters posts by list of keywords on search

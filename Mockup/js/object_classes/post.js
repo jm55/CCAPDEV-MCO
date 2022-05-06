@@ -25,14 +25,14 @@
  * @param {*} imgblob Image in blob type //NULL 
  * @param {string} imgurl Image in URLtype
  * @param {Number} like Number of likes; Default: 0
- * @param {Number]} report Report count //TO BE REPLACED BY A Report object
+ * @param {Number} report Report count //TO BE REPLACED BY A Report object
  * @param {list} comment Comment objects
  * @param {Date} datetime Date and Time of Post; Default: new Date()
  */
  const Post = function(user, description="", 
                         category="", label="", link="", imgblob=null, imgurl="", 
                         like=0, report=0, comment=[], 
-                        posthash="", postid=-1, datetime = new Date()){
+                        posthash="", datetime = new Date()){
     this.user = user; //to be replaced by userID
     this.description = description;
     this.posthash = posthash;

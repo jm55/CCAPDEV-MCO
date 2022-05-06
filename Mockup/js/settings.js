@@ -62,25 +62,14 @@ var submitClicked = false;
     loadUser(currentUser);
     displayCurrentUser();
 
-    $("#signup-btn").click((e)=>{
-        e.preventDefault();
-        
-        submitClicked = true;
-        p = null // User object
-        
-        updateColor();
-        if(validateSignupInputs())
-            p = createUser();
-
-        console.log("New User Object: ");
-        console.log(p);
-    });
     $("#save-btn").click((e)=>{
         e.preventDefault();
-        if(saveProfile())
-            console.log("Updating currentUser to server..."); //Superficial lang hehehehe;
-        else
-            console.log("currentUser !updated");   
+        if(validateProfileInputs())
+            if(saveProfile(currentUser))
+                console.log("Updating currentUser to server..."); //Superficial lang hehehehe;
+            else
+                console.log("currentUser !updated");
+        updateColor();  
     });
     $("#cancel-btn").click(()=>{
         homeRedirect();
@@ -100,7 +89,7 @@ var submitClicked = false;
         if(submitClicked)
             updateColor();
     });
-    $("#signup-btn").keyup((e)=>{
+    $("#save-btn").keyup((e)=>{
         updateColor();
     });
 });
@@ -122,33 +111,28 @@ function displayCurrentUser(){
 }
 
 /**
+ * @param {User} user User profile to be modified
  * @returns True if saved, false if otherwise
  */
-function saveProfile(){
+function saveProfile(user){
     var saved = false;
-    /**
-     * TODO:
-     * 1.0  Collect all input data from signupform
-     * 1.1  Check if #password_a and #password_b are matched
-     * 1.2  Check if hash(#password_b.val) == currentUser.password
-     * 1.3  If hashes !matched, skip process let it return saved as false.
-     * 2.   If matched, update currentUser using inputs (Remember: password must be hashed)
-     * 2.2  Print created object to console for verification (optional)
-     */
 
-    // var inputUsername = document.getElementById('username');
-    // var inputPasswordA = document.getElementById('password_a');
-    // var inputPasswordB = document.getElementById('password_b');
-    // var inputEmail = document.getElementById('email');
-    // var inputFName = document.getElementById('fname');
-    // var inputLName = document.getElementById('lname');
-    // var inputGender = document.getElementById('gender');
-    // var inputBio = document.getElementById('bio');
-
-    // if (inputPasswordA === inputPasswordB) {
-        
-    // }
-
+    user.username = document.getElementById("username").value;
+    user.email = document.getElementById("email").value;
+    user.fname = document.getElementById("fname").value;
+    user.mname = document.getElementById("mname").value;
+    user.lname = document.getElementById("lname").value;
+    user.gender = document.getElementById("gender").value;
+    user.bio = document.getElementById("bio").value;
+    user.profilepic = getTempURL(getInputFile("profilepic-select")); //TEMPORARILY USING BLOBURL
+    
+    if(document.getElementById("password_b").value.length > 0)
+        user.password = hash(document.getElementById("password_b").value); //RECOMMENDED TO BE IN HASH
+    else
+        user.password = hash(document.getElementById("password_current").value); //RECOMMENDED TO BE IN HASH
+    
+    console.log(user);
+    saved = true;
 
     alert("Function saves current input data for user and retains any single-set values such as userID. Any retained data won't be changed\nUserID: " + currentUser.userID);
     return saved;
@@ -191,7 +175,6 @@ function loadUser(user){
  * @returns User object with the inputs inputted by the user.
  */
 function createUser(){
-    var list = [];
     let username = document.getElementById("username").value;
     let password = hash(document.getElementById("password_b").value); //HASHED EQUIVALENT
     let email = document.getElementById("email").value;
@@ -209,43 +192,102 @@ function createUser(){
  * Retrieves inputted signup data from profileform.
  * @returns Key-Value pair of all IDs available from @var idlist;
  */
-function validateSignupInputs(){
+function validateProfileInputs(){
     var form = new FormData(document.forms.profileform);
     var validity = true;
-    var prevHash = "";
-    for(f of form){
-        if(f[1].length == 0 && (f[0] != "bio" || f[0] != "profilepic-select")){
-            errMessage("validateSignupInputs",  f[0] + " not filled")
-            validity = false;
-        }else{
-            //CHECK EMAIL IF IT CONTAINS AT LEAST AN @
-            if(f[0] == "email"){
-                if(!f[1].includes("@")){
-                    errMessage("validateSignupInputs", "Invalid email");
+    var validCurrentPassword = false;
+    var newPasswordA = "";
+    for(f of form){ 
+        if(f[1].length == 0){
+            if(f[0] != "bio" && f[0] != "profilepic-select" && f[0] != "password_a" && f[0] != "password_b"){
+                errMessage("validateSignupInputs",  f[0] + " not filled")
+                validity = false;
+            }
+        }
+        //CHECK EMAIL IF IT CONTAINS AT LEAST AN @
+        if(f[0] == "email"){
+            if(!f[1].includes("@")){
+                errMessage("validateSignupInputs", "Invalid email");
+                validity = false;
+            }
+        } 
+        
+        //CHECK PASSWORD IF SAME, RECOMMENDED TO BE HASHED BEFORE COMPARING
+        if(f[0] == "password_current"){
+            if(currentUser.password == hash(f[1])){
+                validCurrentPassword = true;
+            }
+            else{
+                validity = false;
+                alert("incorrect currentPassword");
+            }
+        }
+
+        //CHECK IF THERE IS AN ATTEMPT FOR NEW PASSWORD
+        if(f[0] == "password_a" && f[1].length != 0 && validCurrentPassword){
+            newPasswordA = hash(f[1]);
+        }
+        if(f[0] == "password_b" && validCurrentPassword && newPasswordA){
+            if(f[1].length != 0){
+                if(hash(f[1]) != newPasswordA && validCurrentPassword){
                     validity = false;
+                    alert("New Passwords mismatch, please try again");
                 }
-            } 
+            }else{
+                validity = false;
+            }
+        }
             
-            //CHECK PASSWORD IF SAME, RECOMMENDED TO BE HASHED BEFORE COMPARING
-            if(f[0] == "password_a"){
-                prevHash = hash(f[1]);
+        //CHECK BIO IF AT 255 CHAR AT MOST
+        if(f[0] == "bio")
+            if(f[1].length > 255){ //BIO CHAR LIMIT
+                errMessage("validateSignupInputs", "Bio char limit exceeded");
+                validity = false;
             }
-            if(f[0] == "password_b"){
-                if(prevHash != hash(f[1])){
-                    errMessage("validateSignupInputs", "Mismatched passwords");
-                    validity = false;
-                }
-            }
-                
-            //CHECK BIO IF AT 255 CHAR AT MOST
-            if(f[0] == "bio")
-                if(f[1].length > 255){ //BIO CHAR LIMIT
-                    errMessage("validateSignupInputs", "Bio char limit exceeded");
-                    validity = false;
-                }
-        }   
     }
+    console.log(validity);
     return validity;
+}
+
+/**
+ * Sets the error message with the passed id back to its default value.
+ * @param id ID of the error message to change, minue the "error-" part.
+ */
+ function setDefaultErrorMessage(id){
+    let errorMessage;
+    switch(id){
+        case "profilepic-select": 
+            errorMessage = "* Upload a Profile Picture";
+            break;
+        case "username":
+            errorMessage = "* Enter a username";
+            break;
+        case "password_current":
+            errorMessage = "* Wrong current password";
+            break;
+        case "password_b":
+            errorMessage = "* Confirm your new password";
+            break;
+        case "email":
+            errorMessage = "* Enter your email";
+            break;
+        case "fname":
+            errorMessage = "* Enter your first name";
+            break;
+        case "mname":
+            errorMessage = "* Enter your middle name";
+            break;
+        case "lname":
+            errorMessage = "* Enter your last name";
+            break;
+        case "gender":
+            errorMessage = "* Select a gender";
+            break;
+        case "bio":
+            errorMessage = "* Enter a bio";
+            break;
+    }
+    $("#error-" + id).text(errorMessage);
 }
 
 /**
@@ -346,12 +388,22 @@ function errMessage(functionName, msg){
  * Carried over from HO3 trigges a scan of the form specified (unfortunately, it is hardcoded)
  */
  function updateColor(){
-    for(f of new FormData(document.forms.signupform)){
-        if(!(f[0]=="bio" || f[0]=="profilepic-select")){
-            if(f[1] == "")
+    var newPasswordA = false; //TO BE USED IF TO FLAG PASSWORD_B
+    for(f of new FormData(document.forms.profileform)){
+        if(f[0] == "password_a" && f[1].length > 0) //NEW PASSWORD_A WAS SET
+            newPasswordA = true;
+        if(!(f[0]=="bio" || f[0]=="profilepic-select" || f[0]=="password_a")){
+            if(newPasswordA && f[1] == ""){
                 changeBGColor(f[0], "var(--warning-light)");
-            else
+                setDefaultErrorMessage(f[0]);
+            }
+            else if(f[1] == "" && f[0] != "password_b"){
+                changeBGColor(f[0], "var(--warning-light)");
+                setDefaultErrorMessage(f[0]);
+            }else{
                 changeBGColor(f[0], "var(--textbox)");
+                $("#error-" + f[0]).text("");
+            }
         }
     }
 }

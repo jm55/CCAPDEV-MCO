@@ -117,7 +117,7 @@ var currentUser = null;
     posts.push(new Post(users[3], "This air fryer never disappoints. Got this for P1,300", "HomeAppliances", "electronicdigtal on Shopee", "https://shopee.ph/Air-fryer-6.5L-4.5L15L-Touch-screen-multifunction-fully-automatic-Frying-pan-kitchen-appliances-oven-i.426804848.8948486646?sp_atk=57ca0368-3045-42ac-999e-3d6a64ee4652&xptdk=57ca0368-3045-42ac-999e-3d6a64ee4652", null, "../img/post_img/16334.webp", 12, 0, [], "16334", new Date(2022, 3, 10)));
     posts.push(new Post(users[4], "Just in time for summer. Got this cute inflatable for just P30", "Sports&Travel", "micah.shop on Shopee", "https://shopee.ph/Spot-cartoon-single-layer-inflatable-swimming-ring-life-buoy-i.38222881.1797533401?sp_atk=4faffeab-fade-4652-9fca-1545b4356745&xptdk=4faffeab-fade-4652-9fca-1545b4356745", null, "../img/post_img/74547.webp", 8, 0, [], "74547", new Date(2022, 3, 10)));
     posts.push(new Post(users[0], "Get your latest Team DLSU Merch at SCHOOLSPIRIT from Shopee for just P450", "Men'sApparel", "shoolspirit on Shopee","https://shopee.ph/La-Salle-Team-DLSU-Shirt-(Unisex)-i.110479407.14750117688?sp_atk=368b0794-f747-4e2b-8edc-bd1475f1646b&xptdk=368b0794-f747-4e2b-8edc-bd1475f1646b", null, "../img/post_img/61619111.webp",1911,0,[],"61619111",new Date(2021,5,19)));
-    posts.push(new Post(users[0], "Get your latest Green Stallions Merch at EpicClothingWear from Shopee for just P450", "Men'sApparel", "EpicClothingWear on Shopee","https://shopee.ph/DE-LA-SALLE-UNIVERSITY-SHIRT-i.58444376.1375379701", null, "../img/post_img/61619112.webp", 1911, 0, [], "61619112", new Date(2021,5,19)));
+    posts.push(new Post(users[0], "Get your latest Green Stallions Merch at EpicClothingWear from Shopee for just P450", "Men'sApparel", "EpicClothingWear on Shopee","https://shopee.ph/DE-LA-SALLE-UNIVERSITY-SHIRT-i.58444376.1375379701", null, "../img/post_img/61619112.webp", 1911, 0, [], "61619112", new Date(2020,5,19)));
 
     comments.push(new Comment(users[0], "Hi, this is a nice speaker!", "12345",new Date()));
     comments.push(new Comment(users[2], "A cheap phone, nice!", "42069",new Date()));
@@ -134,10 +134,7 @@ var currentUser = null;
     comments.push(new Comment(users[1], "Is this really better than the OG frying with oil???", "16334", new Date()));
     comments.push(new Comment(users[2], "Aw man, the black one is sold out...", "16334", new Date()));
 
-
-
-
-
+    posts = sortByDate(posts);
 }
 
 
@@ -222,7 +219,7 @@ $(document).ready(()=>{
         e.preventDefault();
         var filteredPosts = filterBySearch(posts,getSearch());
         resetTimeline();
-        //Call sortbydate to filteredPosts or if getsearch() is empty then just display posts[] instead of filteredPosts[]
+        sortByDate(filteredPosts);
         displayPosts(filteredPosts,comments);
     });
 
@@ -231,7 +228,7 @@ $(document).ready(()=>{
         if(e.key=="Enter"){
             var filteredPosts = filterBySearch(posts,getSearch());
             resetTimeline();
-            //Call sortbydate to filteredPosts or if getsearch() is empty then just display posts[] instead of filteredPosts[]
+            sortByDate(filteredPosts);
             displayPosts(filteredPosts, comments);
         }
     });
@@ -239,6 +236,7 @@ $(document).ready(()=>{
     $("#categories").on("change", (e)=>{
         var filteredPosts = filterByCategory(posts, $("#categories").val());
         resetTimeline();
+        sortByDate(filteredPosts);
         displayPosts(filteredPosts, comments);
     });
 });
@@ -269,17 +267,6 @@ FUNCTION SPECIFIC METHODS
 }
 
 function displayCurrentUser(){
-    /**
-     *  <div class="my_account">
-            <span><a id="userbutton"><img id="profile-pic" class="profilepic" src="../img/default/default_dp.webp" alt="User Profile Picture"></a></span>
-            <span id="userfullname"> [Username] </span>
-            <span> | </span>
-            <span> <a href="../html/profile.html" id="myaccount">My Account</a> </span>
-            <span> | </span>
-            <span> <a id="logout">Logout</a> </span>
-        </div>
-     */
-
     $("#profile-pic").attr("src", currentUser.profilepic);
     $("#userfullname").text(currentUser.formal_name);
     $("#myaccount").attr("href", "../html/profile.html");
@@ -295,9 +282,9 @@ function displayCurrentUser(){
 function sortByDate(postList, descending=true){
     var sortedPosts = [];
     if(descending){
-        //Sort in descending order (latest to earliest)
+        sortedPosts = postList.sort((a, b) => (a.datetime < b.datetime) ? 1 : (a.datetime === b.datetime) ? ((a.datetime < b.datetime) ? 1 : -1) : -1 );        
     }else{
-        //Sort in ascending order (earliest to latest)
+        sortedPosts = postList.sort((a, b) => (a.datetime > b.datetime) ? 1 : (a.datetime === b.datetime) ? ((a.datetime > b.datetime) ? 1 : -1) : -1 );
     }
     return sortedPosts;
 }
@@ -458,6 +445,8 @@ function resetTimeline(){
         
         $(post_card).append(post_content);
         $(post_card).append(footer);
+
+        $(post_card).attr("posthash", singlePost.posthash);
 
     }
     
