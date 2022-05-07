@@ -100,7 +100,6 @@ var currentUser = null;
  * TODO
  */
  function autoFill(){
-    console.log("autoFill()");
     var user0 = new User("dlsu","237392540","dlsu@mail.com","De La Salle", "University", "Manila", "M", "Animo La Salle", "../img/dp/dlsu_dp.webp"); //SAMPLE LOGGED IN USER
     var user1 = new User("dijkstra_boro", hash("dijkstra_boro"), "dijkstra.boro@mail.com", "Boro","Vitek","Dijkstra","M","Food specialist. Music junkie. Reader. Professional tv fanatic. Introvert. Coffee aficionado. Bacon fan. Web advocate.","../img/dp/dijkstra_boro.webp");
     var user2 = new User("skinner_thomas",hash("skinner_thomas"),"skinner.thomas@mail.com","Thomas","Dwain","Skinner","M","Pop culture ninja. Coffee enthusiast. Evil introvert. Social media scholar. Unapologetic internet geek. Tv fan.","../img/dp/skinner_thomas.webp");
@@ -145,11 +144,9 @@ var newPostClicked = false;
 $(document).ready(()=>{
     //COMMENCE SAMPLE DATA IN BACKGROUND
     autoFill();
-    console.log(users);
-
-    //Show Categories; Reference: https://stackoverflow.com/a/590219
-    var options = $('#new-post-category');
-    var list = []
+    
+    //SHOW ITEM CATEGORIES; Reference: https://stackoverflow.com/a/590219
+    let list = [];
     $("#new-post-category option").each(function(){
         list.push($(this).val());
     });
@@ -158,8 +155,6 @@ $(document).ready(()=>{
     
     //SETTING CURRENT USER
     currentUser = users[0];
-    console.log("currentUser");
-    console.log(currentUser);
     displayCurrentUser();
 
     console.log(users);
@@ -180,11 +175,10 @@ $(document).ready(()=>{
             displayPosts(posts);
         }
         else 
-            console.log("New Post Data Incomplete");
+            errMessage("","New Post Data Incomplete");
     });
 
     $("#new-post-img-select").on("change",()=>{
-        console.log("new-post-img");
         refreshNewPostImage();
     });
 
@@ -248,8 +242,6 @@ FUNCTION SPECIFIC METHODS
 
 ===================================================================================
 */
-
-
 
 /**
  * Filters posts by list of keywords on search
@@ -322,7 +314,6 @@ function filterBySearch(postList, searchList){
  * @param {list} commentList Contains all comments for posts in postList
  */
  function displayPosts(postList, commentList){
-    console.log("displayPosts");
     for(p of postList){
         var filteredComments = getCommentsToPost(p, commentList);
         $(".timeline").append(buildPostCard(p, filteredComments));
@@ -343,6 +334,16 @@ function displayPost(singlePost, postComments){
  */
 function resetTimeline(){
     $(".timeline").empty();
+}
+
+/**
+ * Inserts a comment to the target commentlist of a post.
+ * Used for inserting new comments
+ * @param {Comment} comment Comment object to be added on the post that the comment's posthash points to.
+ */
+function insertNewComment(comment){
+    var targetElement = $('.comment_list[posthash="'+ comment.posthash + '"]');
+    targetElement.append(buildPostComment(comment));
 }
 
 /**
@@ -550,29 +551,19 @@ function resetTimeline(){
 
     shareBtn.addEventListener("click", function(e){
         e.preventDefault();
-        console.log("shareBtn Clicked @ " + singlePost.posthash);
         alert("Temporary\nPastes a URL to clipboard that links to post.\nPost Hash: " + singlePost.posthash);
     });
 
     reportBtn.addEventListener("click", (e)=>{
         e.preventDefault();
-        console.log("reportBtn Clicked @ " + singlePost.posthash);
         alert("Temporary\nReport Object will be created as supposed to earlier data design considerations of just counting the reports done on the post.\nPost Hash: " + singlePost.posthash);
     });
 
     submit.addEventListener("click", (e)=>{
         e.preventDefault();
-        var comment_val = $(comment).val();
-        var commentObj = new Comment(currentUser, comment_val, singlePost.posthash, new Date());
-        console.log("submit(Comment) Clicked @ " + singlePost.posthash + " contains: ");
-        console.log(commentObj);
-
-        /**
-         * TODO: 
-         * 1. Add commentObj to comments[]
-         * 2. Display to comment_list of this post
-         */
-    }); 
+        comments.push(new Comment(currentUser, $(comment).val(), singlePost.posthash, new Date()));
+        insertNewComment(comments[comments.length-1]);
+    });
 
     return post_footer;
 }
@@ -586,21 +577,21 @@ function resetTimeline(){
 function buildPostComments(post, postComments){
     var comment_list = document.createElement("div"); //HOLDS ALL COMMENTS
     $(comment_list).addClass("comment_list");
+    $(comment_list).attr("posthash",post.posthash);
 
     //Iterate through all postComments and append to comment_list
     for(p of postComments)
-        $(comment_list).append(buildPostComment(post, p)); //uses buildPostComment() for each comments
+        $(comment_list).append(buildPostComment(p)); //uses buildPostComment() for each comments
 
     return comment_list;
 }
 
 /**
  * Builds a single post comment element
- * @param {string} postHash 
  * @param {Comment} postComment 
  * @returns A comment element that contains the comment specified on the parameters
  */
-function buildPostComment(post, postComment){
+function buildPostComment(postComment){
     var comment_div = document.createElement("div");
     var commenter = document.createElement("a");
     var comment = document.createElement("p");
@@ -693,7 +684,6 @@ function createPost(){
     let report = 0;
     let datetime = new Date();
     var p = new Post(user,description,category,label,link,imgblob,imgurl,like,report,comments,posthash,datetime);
-    console.log(p);
     return p;
 }
 
