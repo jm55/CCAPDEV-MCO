@@ -258,6 +258,9 @@ FUNCTION SPECIFIC METHODS
    return filteredPosts;
 }
 
+/**
+ * Displays the currentUser object to the page user identfier elements.
+ */
 function displayCurrentUser(){
     $("#profile-pic").attr("src", currentUser.profilepic);
     $("#userfullname").text(currentUser.formal_name);

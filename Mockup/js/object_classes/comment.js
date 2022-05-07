@@ -16,7 +16,7 @@
 
 /**
  * Comment Object
- * @param {User} user User that posted the comment
+ * @param {string} userID UserID of the User that posted the comment
  * @param {string} comment_text Content of comment
  * @param {string} posthash Post that it is attached to 
  * @param {Date} datetime Date and time of the comment posted

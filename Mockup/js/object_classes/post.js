@@ -16,7 +16,7 @@
 
 /**
  * Post Object
- * @param {User} user Username of the postee //To be replaced with UserID in the future
+ * @param {string} userID UserID of the the User of the post
  * @param {string} description Description of the Post
  * @param {string} posthash Post hash of the post
  * @param {string} category Category of Post Item
@@ -29,11 +29,11 @@
  * @param {list} comment Comment objects
  * @param {Date} datetime Date and Time of Post; Default: new Date()
  */
- const Post = function(user, description="", 
+ const Post = function(userID, description="", 
                         category="", label="", link="", imgblob=null, imgurl="", 
                         like=0, report=0, comment=[], 
                         posthash="", datetime = new Date()){
-    this.user = user; //to be replaced by userID
+    this.userID = userID;
     this.description = description;
     this.posthash = posthash;
     this.category = category;

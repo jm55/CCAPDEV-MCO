@@ -87,7 +87,6 @@ OBJECTS
     this.datetime = datetime;
 }
 
-
 /*
 ===================================================================================
 
@@ -100,6 +99,7 @@ var users = [] //TEMPORARY SINCE EACH COMMENT REQUIRES A USER OBJECT WHICH SHOUL
 var posts = []; //Posts that are owned by currentUser;
 var comments = [];
 var currentUser = null;
+var targetUser = null; //THE ACCOUNT THAT THE USER ACTUALLY VIEWS; SINCE IT MAY NOT BE NECESSARILY THE SAME AS THE LOGGED IN USER
 var testComment = null;
 
 function autoFill(){
@@ -169,6 +169,8 @@ $(document).ready(()=>{
 ===================================================================================
 
 FUNCTION SPECIFIC METHODS
+
+MOST ARE DEREIVED FROM FUNCTIONS FOUND IN home.js
 
 ===================================================================================
 */
@@ -266,6 +268,16 @@ function displayPost(singlePost, postComments){
  */
 function resetTimeline(){
     $(".timeline").empty();
+}
+
+/**
+ * Inserts a comment to the target commentlist of a post.
+ * Used for inserting new comments
+ * @param {Comment} comment Comment object to be added on the post that the comment's posthash points to.
+ */
+ function insertNewComment(comment){
+    var targetElement = $('.comment_list[posthash="'+ comment.posthash + '"]');
+    targetElement.append(buildPostComment(comment));
 }
 
 /**
@@ -369,6 +381,8 @@ function resetTimeline(){
         $(post_card).append(post_content);
         $(post_card).append(footer);
 
+        $(post_card).attr("posthash", singlePost.posthash);
+
     }
     
     return post_card;
@@ -471,29 +485,19 @@ function resetTimeline(){
 
     shareBtn.addEventListener("click", function(e){
         e.preventDefault();
-        console.log("shareBtn Clicked @ " + singlePost.posthash);
         alert("Temporary\nPastes a URL to clipboard that links to post.\nPost Hash: " + singlePost.posthash);
     });
 
     reportBtn.addEventListener("click", (e)=>{
         e.preventDefault();
-        console.log("reportBtn Clicked @ " + singlePost.posthash);
         alert("Temporary\nReport Object will be created as supposed to earlier data design considerations of just counting the reports done on the post.\nPost Hash: " + singlePost.posthash);
     });
 
     submit.addEventListener("click", (e)=>{
         e.preventDefault();
-        var comment_val = $(comment).val();
-        var commentObj = new Comment(currentUser, comment_val, singlePost.posthash, new Date());
-        console.log("submit(Comment) Clicked @ " + singlePost.posthash + " contains: ");
-        console.log(commentObj);
-
-        /**
-         * TODO: 
-         * 1. Add commentObj to comments[]
-         * 2. Display to comment_list of this post
-         */
-    }); 
+        comments.push(new Comment(currentUser, $(comment).val(), singlePost.posthash, new Date()));
+        insertNewComment(comments[comments.length-1]);
+    });
 
     return post_footer;
 }
@@ -504,24 +508,24 @@ function resetTimeline(){
  * @param {list} postComments 
  * @returns div object class="comment_list" with child comment objects 
  */
-function buildPostComments(post, postComments){
+ function buildPostComments(post, postComments){
     var comment_list = document.createElement("div"); //HOLDS ALL COMMENTS
     $(comment_list).addClass("comment_list");
+    $(comment_list).attr("posthash",post.posthash);
 
     //Iterate through all postComments and append to comment_list
     for(p of postComments)
-        $(comment_list).append(buildPostComment(post, p)); //uses buildPostComment() for each comments
+        $(comment_list).append(buildPostComment(p)); //uses buildPostComment() for each comments
 
     return comment_list;
 }
 
 /**
  * Builds a single post comment element
- * @param {string} postHash 
  * @param {Comment} postComment 
  * @returns A comment element that contains the comment specified on the parameters
  */
-function buildPostComment(post, postComment){
+function buildPostComment(postComment){
     var comment_div = document.createElement("div");
     var commenter = document.createElement("a");
     var comment = document.createElement("p");
@@ -547,7 +551,6 @@ function buildPostComment(post, postComment){
 
     return comment_div;
 }
-
 /**
  * Gets comments from comments[] that match the given posthash.
  * @param {Post} post Post reference for finding comments related to it.
