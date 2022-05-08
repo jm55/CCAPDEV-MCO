@@ -607,6 +607,7 @@ function buildPostComment(postComment){
     $(comment_div).addClass("comment_div");
     $(commenter).addClass("username");
     $(comment_date).addClass("comment_date");
+    $(comment).addClass("comment_body");
 
     //Href for username
     $(commenter).attr("href",""); //TO BE UPDATED WITH THE USER LINK

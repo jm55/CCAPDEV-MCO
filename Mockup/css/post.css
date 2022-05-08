@@ -134,16 +134,15 @@ td > a{
     width: 100%;
     display: block;
     font-size: 12px;
+    background-color: var(--background-dark);
+    padding: 5px;
+    border-radius: 10px;
 }
 
 .comment_timedate{
     font-size: var(--font-size-normal);
     text-align: right;
     background-color: aqua;
-}
-
-.comment_div > p, .comment_div > a{
-    font-size: 12px;
 }
 
 .input[type="submit"]{
