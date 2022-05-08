@@ -564,8 +564,11 @@ function insertNewComment(comment){
 
     submit.addEventListener("click", (e)=>{
         e.preventDefault();
-        comments.push(new Comment(currentUser, $(comment).val(), singlePost.posthash, new Date()));
-        insertNewComment(comments[comments.length-1]);
+        if($(comment).val() != ""){
+            comments.push(new Comment(currentUser, $(comment).val(), singlePost.posthash, new Date()));
+            insertNewComment(comments[comments.length-1]);
+            $(comment).val("");
+        }
     });
 
     return post_footer;
