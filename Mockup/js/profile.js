@@ -281,6 +281,20 @@ function resetTimeline(){
 }
 
 /**
+ * Searches the given thisPostHash on the given postList.
+ * @param {list} postList 
+ * @param {string} thisPostHash
+ * @returns The index of the post that matches the thisPostHash given. Returns -1 if not found.
+ */
+ function searchPostIndex(postList, thisPostHash){
+    for(var p = 0; p < postList.length; p++){
+        if(postList[p].posthash == thisPostHash)
+            return p;
+    }
+    return -1;
+}
+
+/**
  * Build a single 'post card' element
  * @param {Post} singlePost 
  * @param {list} postComments 
@@ -390,7 +404,7 @@ function resetTimeline(){
 
 /**
  * Builds the upper portion of the post_footer including the post_footer itself.
- * @param {Post} post Post object that will be used to build the post_footer.
+ * @param {Post} singlePost Post object that will be used to build the post_footer.
  * @returns Footer element that will be used by a postCard element.
  */
  function buildPostFooter(singlePost){
@@ -404,7 +418,10 @@ function resetTimeline(){
     //INTERACTs
     var likeBtn = document.createElement("button");
     var shareBtn = document.createElement("button");
-    var reportBtn = document.createElement("button");
+    //EDIT* AND DELETE POST
+    var editBtn = document.createElement("button");
+    var deleteBtn = document.createElement("button");
+    //COMMENT
     var comment = document.createElement("input");
     var submit = document.createElement("button");
 
@@ -417,7 +434,8 @@ function resetTimeline(){
         $(post_timedate).addClass("post_timedate");
         $(likeBtn).addClass("button");
         $(shareBtn).addClass("button");
-        $(reportBtn).addClass("button");
+        $(editBtn).addClass("button");
+        $(deleteBtn).addClass("button");
         $(comment).addClass("textfield");
         $(comment).addClass("comment_textfield");
         $(submit).addClass("button");
@@ -427,14 +445,16 @@ function resetTimeline(){
         $(interact).attr("id","interact#" + singlePost.posthash);
         $(likeBtn).attr("id","like-button#" + singlePost.posthash);
         $(shareBtn).attr("id","share-button#" + singlePost.posthash);
-        $(reportBtn).attr("id","report-button#" + singlePost.posthash);
+        $(editBtn).attr("id","edit-button#" + singlePost.posthash);
+        $(deleteBtn).attr("id","delete-button#" + singlePost.posthash);
         $(comment).attr("id","comment#" + singlePost.posthash);
         $(submit).attr("id","submit-comment#" + singlePost.posthash);
         //names
         $(interact).attr("name","interact#" + singlePost.posthash);
         $(likeBtn).attr("name","likeBtn#" + singlePost.posthash);
         $(shareBtn).attr("name","shareBtn#" + singlePost.posthash);
-        $(reportBtn).attr("name","reportBtn#" + singlePost.posthash);
+        $(editBtn).attr("name","editBtn#" + singlePost.posthash);
+        $(deleteBtn).attr("name","deleteBtn#" + singlePost.posthash);
         $(comment).attr("name","comment#" + singlePost.posthash);
         $(submit).attr("name","submitComment#" + singlePost.posthash);
 
@@ -443,7 +463,8 @@ function resetTimeline(){
         $(post_timedate).text("Posted: " + singlePost.datetime.toDateString());
         $(likeBtn).text("Like");
         $(shareBtn).text("Share");
-        $(reportBtn).text("Report");
+        $(editBtn).text("Edit");
+        $(deleteBtn).text("Delete");
         $(submit).text("Comment");
 
         //APPENDING
@@ -451,7 +472,9 @@ function resetTimeline(){
         $(likes_div).append(post_timedate);
         $(interact).append(likeBtn);
         $(interact).append(shareBtn);
-        $(interact).append(reportBtn);
+        //$(interact).append(reportBtn);
+        $(interact).append(editBtn);
+        $(interact).append(deleteBtn);
         $(interact).append(comment);
         $(interact).append(submit);
         $(post_footer).append(likes_div);
@@ -463,8 +486,7 @@ function resetTimeline(){
         e.preventDefault();
 
         //Get post index to post
-        var thisIndex = -1;
-        thisIndex = searchPostIndex(posts, singlePost.posthash);
+        var thisIndex = searchPostIndex(posts, singlePost.posthash);
 
         var like_val = parseInt(posts[thisIndex].like);
         //Check state of like button
@@ -488,9 +510,26 @@ function resetTimeline(){
         alert("Temporary\nPastes a URL to clipboard that links to post.\nPost Hash: " + singlePost.posthash);
     });
 
-    reportBtn.addEventListener("click", (e)=>{
+    editBtn.addEventListener("click", (e)=>{
         e.preventDefault();
-        alert("Temporary\nReport Object will be created as supposed to earlier data design considerations of just counting the reports done on the post.\nPost Hash: " + singlePost.posthash);
+        var thisIndex = searchPostIndex(posts, singlePost.posthash);
+        console.log("edit post[" + thisIndex + "]: " + singlePost.posthash);
+        //ROUTE TO EDIT POST PAGE
+    });
+
+    deleteBtn.addEventListener("click", (e)=>{
+        e.preventDefault();
+        var thisIndex = searchPostIndex(posts, singlePost.posthash);
+        console.log("delete post[" + thisIndex + "]: " + singlePost.posthash);
+        if(confirm("Delete this post?")){
+            posts.splice(thisIndex, 1);
+            console.log("post: " + singlePost.posthash + " deleted!");
+            //UPDATE CONTENTS OF DATABASE FOLLOWING THE REMOVAL OF POST POINTED BY ITS POSTHASH
+            resetTimeline();
+            displayPosts(posts, comments);
+        }else{
+            //DO NOTHING
+        }
     });
 
     submit.addEventListener("click", (e)=>{

@@ -459,7 +459,7 @@ function insertNewComment(comment){
 
 /**
  * Builds the upper portion of the post_footer including the post_footer itself.
- * @param {Post} post Post object that will be used to build the post_footer.
+ * @param {Post} singlePost Post object that will be used to build the post_footer.
  * @returns Footer element that will be used by a postCard element.
  */
  function buildPostFooter(singlePost){
@@ -532,8 +532,7 @@ function insertNewComment(comment){
         e.preventDefault();
 
         //Get post index to post
-        var thisIndex = -1;
-        thisIndex = searchPostIndex(posts, singlePost.posthash);
+        var thisIndex = searchPostIndex(posts, singlePost.posthash);
 
         var like_val = parseInt(posts[thisIndex].like);
         //Check state of like button
