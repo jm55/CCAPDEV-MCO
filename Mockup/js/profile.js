@@ -520,6 +520,7 @@ function resetTimeline(){
         e.preventDefault();
         var thisIndex = searchPostIndex(posts, singlePost.posthash);
         console.log("edit post[" + thisIndex + "]: " + singlePost.posthash);
+        window.location.href = "../html/post.html";
         //ROUTE TO EDIT POST PAGE
     });
 
