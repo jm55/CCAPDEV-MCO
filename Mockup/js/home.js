@@ -17,7 +17,7 @@ OBJECTS
  * @param {*} imgblob Image in blob type //NULL 
  * @param {string} imgurl Image in URLtype
  * @param {Number} like Number of likes; Default: 0
- * @param {Number]} report Report count //TO BE REPLACED BY A Report object
+ * @param {Number} report Report count //TO BE REPLACED BY A Report object
  * @param {list} comment Comment objects
  * @param {Date} datetime Date and Time of Post; Default: new Date()
  */
@@ -97,7 +97,7 @@ var comments = [];
 var currentUser = null;
 
 /**
- * TODO
+ * Builds the list of sample users, posts, and comments.
  */
  function autoFill(){
     var user0 = new User("dlsu","237392540","dlsu@mail.com","De La Salle", "University", "Manila", "M", "Animo La Salle", "../img/dp/dlsu_dp.webp"); //SAMPLE LOGGED IN USER

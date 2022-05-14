@@ -102,6 +102,9 @@ var currentUser = null;
 var targetUser = null; //THE ACCOUNT THAT THE USER ACTUALLY VIEWS; SINCE IT MAY NOT BE NECESSARILY THE SAME AS THE LOGGED IN USER
 var testComment = null;
 
+/**
+ * Builds the list of users, posts, comments.
+ */
 function autoFill(){
     console.log("autoFill()");
     currentUser = new User("dlsu","237392540","dlsu@mail.com","De La Salle", "University", "Manila", "M", "Animo La Salle", "../img/dp/dlsu_dp.webp"); //SAMPLE LOGGED IN USER
@@ -206,6 +209,9 @@ MOST ARE DEREIVED FROM FUNCTIONS FOUND IN home.js
    return filteredPosts;
 }
 
+/**
+ * Displays the currentUser object to the page user identfier elements.
+ */
 function displayCurrentUser(){
     $("#profile-pic").attr("src", currentUser.profilepic);
     document.title = currentUser.username + " - Budol Finds";

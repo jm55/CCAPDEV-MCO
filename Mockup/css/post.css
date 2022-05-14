@@ -235,3 +235,86 @@ td > a{
     row-gap: 10px;
     font-size: 12px;
 }
+
+/*
+==========================================
+            FOR EDIT POSTS
+==========================================
+*/
+
+.edit_post{
+    overflow-y: auto;
+    background-color: var(--primary);
+    width: 40em;
+    height: 70vh;
+    margin-left: auto;
+    margin-right: auto;
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+.edit_post_user{
+    display: flex;
+    column-gap: 10px;
+}
+
+.edit_post_description{  
+    height: 128px;
+    color: white;
+    resize: none;
+    overflow-y: auto;
+    font-size: 12px;
+}
+
+.edit_post_image{
+    margin-left: auto;
+    margin-right: auto;
+    width: 90%;
+    max-width: 400px;
+    aspect-ratio: 1/1;
+}
+
+.edit_post_list{
+    margin-bottom: 10px;
+    color: white;
+    font-weight: bold;
+    min-width: 20em;
+    max-width: 40%;
+    font-size: 12px;
+}
+
+.edit_post_table{
+    margin-top: 10px;
+    margin-bottom: 10px;
+    text-align: left;
+    font-weight: normal !important;
+}
+
+.edit_post_footer{
+    margin-top: 10px;
+    display: inline;
+}
+
+.edit_post_interact{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    font-size: 12px;
+    margin-top: 20px;
+}
+
+.edit_post_interact > .button{
+    min-width: 4em;
+    width: 6em;
+    max-width: 6em;
+    min-height: 3em;
+    max-height: 3em;
+}
+
+.edit_post_form{
+    color: var(--text);
+    display: grid;
+    overflow-y: auto;
+    width: 100%;
+    row-gap: 10px;
+    font-size: 12px;
+}
