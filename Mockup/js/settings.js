@@ -76,6 +76,17 @@ var submitClicked = false;
     $("#cancel-btn").click(()=>{
         homeRedirect();
     });
+    $("#delete-btn").click(()=>{
+        if(confirm("Do you want to close the account?")){
+            if(hash(document.getElementById("password_current").value)==currentUser.password){
+                console.log("Close account: " + currentUser);
+                //ROUTE TO index
+                window.location.href = "../index.html";
+            }else{
+                alert("Enter current password to confirm account deletion.");
+            }
+        }
+    });
     $("#bio").keydown(()=>{
         updateTextCount();
     });
