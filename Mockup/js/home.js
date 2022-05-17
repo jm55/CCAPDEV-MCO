@@ -411,7 +411,7 @@ function insertNewComment(comment){
         $(username).text(singlePost.user.username);
         $(post_description_text).text(singlePost.description);
         $(item_label).text(singlePost.label);
-        $(item_link).text(singlePost.link);
+        $(item_link_a).text(singlePost.link);
         $(category).text("Category: ");
         $(category_link_a).text(singlePost.category);
 
@@ -422,6 +422,8 @@ function insertNewComment(comment){
         //Add other attributes
         $(postdp).attr("alt","Profile Picture");
         //$(post_image).attr("loading", "lazy");
+        $(item_link_a).attr("href", singlePost.link);
+        $(item_link_a).attr("target", "_blank");
 
         //APPENDING
         //Header
