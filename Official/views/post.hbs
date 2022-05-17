@@ -1,0 +1,96 @@
+    <body>
+        
+        <header class="card brand_banner">
+            <div class="banner_left">
+                <p class="banner_title"><a id="logo-btn">Budol Finds</a></p>
+                <nav class="menu">
+                    <button id="home-btn" class="menu_button">Home</button>
+                    <select id="categories" name="categories" class="menu_categories"> <!--Same categories from Shopee-->
+                        <option value="">Category</option>
+                        <option value="Audio">Audio</option>
+                        <option value="Babies&Kids">Babies & Kids</option>
+                        <option value="Cameras">Cameras</option>
+                        <option value="Gaming">Gaming</option>
+                        <option value="Groceries">Groceries</option>
+                        <option value="Health&PersonalCare">Health & Personal Care</option>
+                        <option value="Hobbies&Stationery">Hobbies & Stationery</option>
+                        <option value="Home&Living">Home & Living</option>
+                        <option value="HomeAppliances">Home Appliances</option>
+                        <option value="HomeEntertainment">Home Entertainment</option>
+                        <option value="Laptops&Computers">Laptops & Computers</option>
+                        <option value="MakeupFragrances">Makeup Fragrances</option>
+                        <option value="Men'sApparel">Men's Apparel</option>
+                        <option value="Men'sBags&Accessories">Men's Bags & Accessories</option>
+                        <option value="Men'sShoes">Men's Shoes</option>
+                        <option value="Mobiles&Gadgets">Mobiles & Gadgets</option>
+                        <option value="MobilesAccessories">Mobiles Accessories</option>
+                        <option value="Motors">Motors</option>
+                        <option value="PetCare">Pet Care</option>
+                        <option value="Sports&Travel">Sports & Travel</option>
+                        <option value="Toys,Games&Collectibles">Toys, Games & Collectibles</option>
+                        <option value="WomenAccessories">Women Accessories</option>
+                        <option value="Women'sApparel">Women's Apparel</option>
+                        <option value="Women'sBags">Women's Bags</option>
+                        <option value="Women'sShoes">Women's Shoes</option>
+                    </select>
+                    <input id="search-txt" name="search-txt" class="textfield" />
+                    <button id="search-btn" class="menu_button">Search</button>
+                    <button id="account-settings-btn" class="menu_button">Settings</button>
+                    <button id="logout-btn" class="menu_button">Logout</button>
+                </nav>
+            </div>
+            <div class="banner_right">
+                <a id="userbutton"><img id="profile-pic" class="profilepic" src="../img/default/default_dp.png"></a>
+            </div>
+        </header>
+
+        <div class="card edit_post">
+            <form name="postForm" id="post-form" class="edit_post_form">
+                <label>Post Content:</label>
+                <textarea name="post-content" id="post-content" class="edit_post_description"></textarea>
+                <label>Category:</label>
+                <select id="post-category" name="post-category"> <!--Same categories from Shopee-->
+                    <option value="">Category</option>
+                    <option value="Audio">Audio</option>
+                    <option value="Babies&Kids">Babies & Kids</option>
+                    <option value="Cameras">Cameras</option>
+                    <option value="Gaming">Gaming</option>
+                    <option value="Groceries">Groceries</option>
+                    <option value="Health&PersonalCare">Health & Personal Care</option>
+                    <option value="Hobbies&Stationery">Hobbies & Stationery</option>
+                    <option value="Home&Living">Home & Living</option>
+                    <option value="HomeAppliances">Home Appliances</option>
+                    <option value="HomeEntertainment">Home Entertainment</option>
+                    <option value="Laptops&Computers">Laptops & Computers</option>
+                    <option value="MakeupFragrances">Makeup Fragrances</option>
+                    <option value="Men'sApparel">Men's Apparel</option>
+                    <option value="Men'sBags&Accessories">Men's Bags & Accessories</option>
+                    <option value="Men'sShoes">Men's Shoes</option>
+                    <option value="Mobiles&Gadgets">Mobiles & Gadgets</option>
+                    <option value="MobilesAccessories">Mobiles Accessories</option>
+                    <option value="Motors">Motors</option>
+                    <option value="PetCare">Pet Care</option>
+                    <option value="Sports&Travel">Sports & Travel</option>
+                    <option value="Toys,Games&Collectibles">Toys, Games & Collectibles</option>
+                    <option value="WomenAccessories">Women Accessories</option>
+                    <option value="Women'sApparel">Women's Apparel</option>
+                    <option value="Women'sBags">Women's Bags</option>
+                    <option value="Women'sShoes">Women's Shoes</option>
+                </select>
+                <label>Link Label:</label>
+                <input id="post-label" name="post-label" type="text" class="textfield">
+                <label>Link:</label>
+                <input id="post-link" name="post-link" type="text" class="textfield">
+                <label>Image:</label>
+                <img id="post-image" class="edit_post_image" src="" alt="" style="display:none;">
+                <input id="post-img-select" name="post-img-select" type="file" accept="image/*"/>
+                <div class="interact">
+                    <input id="save-post-btn" type="button" class="button" value="Save">
+                    <input id="delete-post-btn" type="button" class="button" value="Delete">
+                    <input id="cancel-post-btn" type="button" class="button" value="Cancel">
+                </div>
+            </form>
+        </div>
+
+    </body>
+</html>

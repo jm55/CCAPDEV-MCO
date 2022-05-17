@@ -1,0 +1,39 @@
+html{
+    background-image: var(--default_image);
+}
+
+.login{
+    background-color: var(--primary);
+    color: white;
+    position: relative;
+    max-width: 30em;    
+    position: relative;
+    margin-left: auto;
+    margin-right: auto;
+    height: max-content;
+    font-size: var(--font-size-normal);
+}
+
+.loginform{
+    display: grid;
+    margin-bottom: 2%;
+    row-gap: 10px;
+}
+
+.login-buttons{
+    display: grid;
+    row-gap: 10px;
+    margin-top: 20px;
+}
+
+.banner_title{
+    font-family: inherit;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+}
+
+#errorText{
+    color: red;
+    height: 10px;
+}

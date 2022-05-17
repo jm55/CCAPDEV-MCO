@@ -1,0 +1,97 @@
+html{
+    background-color: var(--background);
+}
+
+.menu_button{
+    min-width: 6em;
+    width: 6em;
+    max-width: 6em;
+    min-height: 3em;
+    max-height: 3em;
+    margin-right: 10px;
+    font-size: small;
+}
+
+.timeline{
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    column-gap: 10px;
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%;
+}
+
+.profile{
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#banner-title{
+    text-align: left;
+    font-size: 2em !important;
+    font-weight: bold;
+    margin-top: 0em;
+    margin-bottom: 10px;
+}
+
+#menu{
+    display: inline-block;
+    max-width: max-content;
+}
+
+#home-header{
+    display: flex;
+    position: sticky;
+    top: 0%;
+    max-height: 6em;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    padding-left: 20px;
+}
+
+#profilepic{
+    width: inherit;
+    height: inherit;
+}
+
+#banner-left{
+    width: 80%;
+    display: flex;
+}
+
+#banner-right{
+    width: 20%;
+    display: flex;
+}
+
+#menu{
+    display: flex;
+    height: fit-content;
+    margin-top: 0%;
+}
+
+#categories{
+    min-width: 8em;
+    width: 8em;
+    max-width: 8em;
+    min-height: 3em;
+    max-height: 3em;
+    margin-right: 10px;
+    font-size: small;
+    background-color: var(--primary-button);
+}
+
+#profile-pic{
+    margin: auto auto auto auto;
+    position: relative;
+    width: inherit;
+    height: inherit;
+}
+
+#userbutton{
+    margin: auto auto auto auto;
+    position: relative;
+    width: 64px;
+    height: 64px;
+}

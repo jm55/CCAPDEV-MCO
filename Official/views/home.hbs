@@ -1,0 +1,170 @@
+<link rel="stylesheet" href="../css/home.css">
+<link rel="stylesheet" href="../css/post.css">
+
+<script src="../js/banner.js"></script>
+<script src="../js/home.js"></script>
+
+<header class="card_brand_banner">
+    <div class="upper_banner">
+        <div class="my_account">
+            <span><a id="userbutton"><img id="profile-pic" class="profilepic" src="../img/default/default_dp.png" alt="User Profile Picture"></a></span>
+            <span id="userfullname"> {{username}} </span>
+            <span> | </span>
+            <span> <a href="" id="myaccount">My Account</a> </span>
+            <span> | </span>
+            <span> <a href="" id="logout-btn">Logout</a> </span>
+        </div>
+    </div>
+    <div class="lower_banner">
+        <span class="span_banner-title">
+            <p class="banner_title"><a id="logo-btn">Budol Finds</a></p>
+        </span>
+        <span class="span_search-bar"><div class="search_bar">
+            <nav class="menu">
+                <input id="search-txt" name="search-txt" class="textfield" />
+                <select id="categories" name="categories" class="menu_categories"> <!--Same categories from Shopee-->
+                    <option value="">Category</option>
+                    <option value="Audio">Audio</option>
+                    <option value="Babies&Kids">Babies & Kids</option>
+                    <option value="Cameras">Cameras</option>
+                    <option value="Gaming">Gaming</option>
+                    <option value="Groceries">Groceries</option>
+                    <option value="Health&PersonalCare">Health & Personal Care</option>
+                    <option value="Hobbies&Stationery">Hobbies & Stationery</option>
+                    <option value="Home&Living">Home & Living</option>
+                    <option value="HomeAppliances">Home Appliances</option>
+                    <option value="HomeEntertainment">Home Entertainment</option>
+                    <option value="Laptops&Computers">Laptops & Computers</option>
+                    <option value="Makeup&Fragrances">Makeup & Fragrances</option>
+                    <option value="Men'sApparel">Men's Apparel</option>
+                    <option value="Men'sBags&Accessories">Men's Bags & Accessories</option>
+                    <option value="Men'sShoes">Men's Shoes</option>
+                    <option value="Mobiles&Gadgets">Mobiles & Gadgets</option>
+                    <option value="MobilesAccessories">Mobiles Accessories</option>
+                    <option value="Motors">Motors</option>
+                    <option value="PetCare">Pet Care</option>
+                    <option value="Sports&Travel">Sports & Travel</option>
+                    <option value="Toys,Games&Collectibles">Toys, Games & Collectibles</option>
+                    <option value="WomenAccessories">Women Accessories</option>
+                    <option value="Women'sApparel">Women's Apparel</option>
+                    <option value="Women'sBags">Women's Bags</option>
+                    <option value="Women'sShoes">Women's Shoes</option>
+                </select>
+                <button id="search-btn" class="menu_button">Search</button>                       
+        </div></span>
+    </div>
+</header>
+
+<div class="container">
+    
+    <div class="card new_post">
+        <form name="newPostForm" id="new-post-form" class="new_post_form">
+            <label>Post Content:</label>
+            <textarea name="new-post-content" id="new-post-content" class="new_post_description"></textarea>
+            <label>Category:</label>
+            <select id="new-post-category" name="new-post-category"> <!--Same categories from Shopee-->
+                <option value="">Category</option>
+                <option value="Audio">Audio</option>
+                <option value="Babies&Kids">Babies & Kids</option>
+                <option value="Cameras">Cameras</option>
+                <option value="Gaming">Gaming</option>
+                <option value="Groceries">Groceries</option>
+                <option value="Health&PersonalCare">Health & Personal Care</option>
+                <option value="Hobbies&Stationery">Hobbies & Stationery</option>
+                <option value="Home&Living">Home & Living</option>
+                <option value="HomeAppliances">Home Appliances</option>
+                <option value="HomeEntertainment">Home Entertainment</option>
+                <option value="Laptops&Computers">Laptops & Computers</option>
+                <option value="MakeupFragrances">Makeup Fragrances</option>
+                <option value="Men'sApparel">Men's Apparel</option>
+                <option value="Men'sBags&Accessories">Men's Bags & Accessories</option>
+                <option value="Men'sShoes">Men's Shoes</option>
+                <option value="Mobiles&Gadgets">Mobiles & Gadgets</option>
+                <option value="MobilesAccessories">Mobiles Accessories</option>
+                <option value="Motors">Motors</option>
+                <option value="PetCare">Pet Care</option>
+                <option value="Sports&Travel">Sports & Travel</option>
+                <option value="Toys,Games&Collectibles">Toys, Games & Collectibles</option>
+                <option value="WomenAccessories">Women Accessories</option>
+                <option value="Women'sApparel">Women's Apparel</option>
+                <option value="Women'sBags">Women's Bags</option>
+                <option value="Women'sShoes">Women's Shoes</option>
+            </select>
+            <label>Link Label:</label>
+            <input id="new-post-label" name="new-post-label" type="text" class="textfield">
+            <label>Link:</label>
+            <input id="new-post-link" name="new-post-link" type="text" class="textfield">
+            <label>Image:</label>
+            <img id="new-post-image" class="new_post_image" src="" alt="" style="display:none;">
+            <input id="new-post-img-select" name="new-post-img-select" type="file" accept="image/*"/>
+            <div class="interact">
+                <input id="new-post-btn" type="button" class="button" value="Post">
+                <input id="new-post-cancel-btn" type="button" class="button" value="Cancel">
+            </div>
+        </form>
+    </div>
+
+    <div class="timeline">   
+        <!--FILL CONTENT USING JS-->
+        <!--
+            SAMPLE POST CARD
+            <div id="" class="post card"> //BUILD ID BASED ON POST ID/HASH; SINGLE POST-CARD BLOCK - REPETITIVE//    
+                //POST HEADER: CONTAINS POSTEE INFORMATION//
+                <div class="post_header">
+                    <a href="">
+                        <span class="post_user">
+                            <img src="" class="postdp profilepic" alt="Profile Picture"><p class="username">//POST OWNER USERNAME HERE// </p> //BUILD IMG SRC AND P<USERNAME> TEXT BASED ON POST USER DATA//
+                        </span>
+                    </a>
+                </div>
+                
+                //POST CONTENT: ALL DATA ABOUT THE POST//
+                <div class="post_content"> //SINGLE POST-CONTENT BLOCK - DON'T REPEAT//
+                    <div class="post_description">
+                        <p class="post_description_text"> //BUILD TEXT BASED ON POST DESCRIPTION//
+                            //TEXT HERE//
+                        </p>
+                    </div>
+                    <div class="post_list">
+                        <table class="post_table">
+                            <tr>
+                                <td class="item_label">//ITEM LABEL HERE//</td> //BUILD TEXT BASED ON POST LABEL DATA//
+                                <td class="item_link"><a href="">//ITEM LINK-FRIENDLY-LABEL HERE//</a></td> //BUILD TEXT AND A'S HREF BASED ON POST LINK DATA//
+                            </tr>
+                            <tr>
+                                <td >Category: </td>
+                                <td class="item_category_link"><a href="">//CATEGORY HERE//</a></td> //BUILD TEXT AND A'S HREF BASED ON POST CATEGORY DATA//
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="post_image_div">
+                        <img src="" class="post_image" alt="Post Picture" loading="lazy"> //BUILD SRC VALUE AT JS BASED ON POST IMG DATA/DIRECTORY//
+                    </div>
+                </div>
+
+                //POST FOOTER: CONTAINS CONTROLS FOR USER INTERACTION TO POST//
+                <div class="post_footer">
+                    <div class="likes">
+                        <p class="likecounter">//LIKES HERE//</p> //BUILD ID AND TEXT VALUE AT JS BASED ON POST ID/HASH AND LIKE COUNT//
+                        <p class="post_timedate">//POST DATE-TIME HERE//</p> //BUILD TEXT VALUE AT JS BASED ON POST DATETIME//
+                    </div>
+                    <form class="interact">
+                        <input type="button" class="button" id="like-button" value="Like">
+                        <input type="button" class="button" id="share-button" value="Share">
+                        <input type="button" class="button" id="report-button" value="Report">
+                        <input type="text" class="textfield comment_textfield">
+                        <input type="submit" class="button" value="Comment"/>
+                    </form>
+                    <div class="comment_list">
+                        <label>Comments</label>
+                        <div class="comment_div"> //SINGLE COMMENT BLOCK - REPETITIVE//
+                            <a href="" class="username">//COMMENTER USERNAME HERE//</a>//BUILD HREF VALUE AT JS BASED ON COMMENT OBJECT DATA-//
+                            <p>//COMMENT HERE//</p> //BUILD TEXT VALUE AT JS BASED ON COMMENT OBJECT DATA-//
+                            <p class="comment-timedate">//COMMENT DATETIME HERE//</p> //BUILD TEXT VALUE AT JS BASED ON COMMENT DATETIME DATA-//
+                        </div>
+                    </div>
+                </div>
+            </div>
+        -->
+    </div> <!--END OF TIMELINE-->
+</div>

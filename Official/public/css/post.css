@@ -1,0 +1,320 @@
+/*
+==========================================
+        FOR CURRENT POSTS
+==========================================
+*/
+
+.postdp{
+    width: 32px;
+    height: 32px;
+}
+
+.post{
+    background-color: var(--primary);
+    width: 40em;
+    height: max-content;
+    margin: 0px auto 20px auto; /*points to bottom*/
+    padding-top: 20px;
+    padding-bottom: 20px;
+    overflow: auto;
+}
+
+.create{
+    width: 40%;
+    height: inherit;
+}
+
+.timeline{
+    overflow-y: auto;
+    width: 70%;
+    position: relative;
+    padding-bottom: 10px;
+}
+
+.post_user{
+    display: flex;
+    column-gap: 10px;
+    width: fit-content;
+}
+
+.username{
+    margin-top: auto;
+    margin-bottom: auto;
+    font-weight: bold;
+    font-size: 15px;
+}
+
+.post_content{
+    display: block;
+}
+
+.post_description{
+    display: flex;
+    color: white;
+}
+
+.post_description_text{
+    font-size: 15px;
+}
+
+.post_image_div{
+    display: flex;
+}
+
+.post_image_div > img{
+    margin-left: auto;
+    margin-right: auto;
+    width: inherit;
+    max-width: 300px;
+    aspect-ratio: 1/1;
+}
+
+.post_list{
+    margin-bottom: 10px;
+    color: var(--text);
+    font-weight: bold;
+    min-width: 20em;
+    max-width: 40%;
+    font-size: 12px;
+}
+
+.post_table{
+    margin-top: 10px;
+    margin-bottom: 10px;
+    text-align: left;
+    font-weight: normal !important;
+}
+
+td > a{
+    font-weight: 600 !important;
+}
+
+.post_footer{
+    margin-top: 10px;
+    display: inline;
+}
+
+.likes{
+    color: var(--text);
+    font-weight: bold;
+    font-size: 12px;
+}
+
+.comment_textfield{
+    width: 82%;
+}
+
+.post_timedate{
+    font-size: var(--font-size-normal);
+    font-weight: 500;
+}
+
+.interact{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    font-size: 12px;
+}
+
+.interact > .button{
+    min-width: 4em;
+    width: 6em;
+    max-width: 6em;
+    min-height: 3em;
+    max-height: 3em;
+}
+
+.comment_list{
+    margin-top: 10px;
+    margin-right: 20px; 
+}
+
+.comment_div{
+    margin-top: 10px;
+    width: 100%;
+    display: block;
+    font-size: 12px;
+    background-color: var(--background-dark);
+    padding: 5px;
+    border-radius: 10px;
+}
+
+.comment_timedate{
+    font-size: var(--font-size-normal);
+    text-align: right;
+    background-color: aqua;
+}
+
+.input[type="submit"]{
+    width: 30%;
+}
+
+#link{
+    font-weight: bold;
+}
+
+/*
+==========================================
+            FOR NEW POSTS
+==========================================
+*/
+
+.new_post{
+    overflow-y: auto;
+    background-color: var(--primary);
+    width: 25em;
+    height: 70vh;
+    margin-left: auto;
+    margin-right: auto;
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+.new_post_user{
+    display: flex;
+    column-gap: 10px;
+}
+
+.new_post_description{  
+    height: 128px;
+    color: white;
+    resize: none;
+    overflow-y: auto;
+    font-size: 12px;
+}
+
+.new_post_image{
+    margin-left: auto;
+    margin-right: auto;
+    width: 90%;
+    max-width: 400px;
+    aspect-ratio: 1/1;
+}
+
+.new_post_list{
+    margin-bottom: 10px;
+    color: white;
+    font-weight: bold;
+    min-width: 20em;
+    max-width: 40%;
+    font-size: 12px;
+}
+
+.new_post_table{
+    margin-top: 10px;
+    margin-bottom: 10px;
+    text-align: left;
+    font-weight: normal !important;
+}
+
+.new_post_footer{
+    margin-top: 10px;
+    display: inline;
+}
+
+.new_post_interact{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    font-size: 12px;
+    margin-top: 20px;
+}
+
+.new_post_interact > .button{
+    min-width: 4em;
+    width: 6em;
+    max-width: 6em;
+    min-height: 3em;
+    max-height: 3em;
+}
+
+.new_post_form{
+    color: var(--text);
+    display: grid;
+    overflow-y: auto;
+    width: 100%;
+    row-gap: 10px;
+    font-size: 12px;
+}
+
+/*
+==========================================
+            FOR EDIT POSTS
+==========================================
+*/
+
+.edit_post{
+    overflow-y: auto;
+    background-color: var(--primary);
+    width: 40em;
+    height: 70vh;
+    margin-left: auto;
+    margin-right: auto;
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+.edit_post_user{
+    display: flex;
+    column-gap: 10px;
+}
+
+.edit_post_description{  
+    height: 128px;
+    color: white;
+    resize: none;
+    overflow-y: auto;
+    font-size: 12px;
+}
+
+.edit_post_image{
+    margin-left: auto;
+    margin-right: auto;
+    width: 90%;
+    max-width: 400px;
+    aspect-ratio: 1/1;
+}
+
+.edit_post_list{
+    margin-bottom: 10px;
+    color: white;
+    font-weight: bold;
+    min-width: 20em;
+    max-width: 40%;
+    font-size: 12px;
+}
+
+.edit_post_table{
+    margin-top: 10px;
+    margin-bottom: 10px;
+    text-align: left;
+    font-weight: normal !important;
+}
+
+.edit_post_footer{
+    margin-top: 10px;
+    display: inline;
+}
+
+.edit_post_interact{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    font-size: 12px;
+    margin-top: 20px;
+}
+
+.edit_post_interact > .button{
+    min-width: 4em;
+    width: 6em;
+    max-width: 6em;
+    min-height: 3em;
+    max-height: 3em;
+}
+
+.edit_post_form{
+    color: var(--text);
+    display: grid;
+    overflow-y: auto;
+    width: 100%;
+    row-gap: 10px;
+    font-size: 12px;
+}

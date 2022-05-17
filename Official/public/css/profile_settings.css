@@ -1,0 +1,48 @@
+html{
+    background-image: url("../img/default/divisoria.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+#gender>option{
+    background-color: var(--primary);
+}
+
+#gender{
+    min-height: 40px;
+    border-radius: 16px;
+}
+
+#profile-info{ /*Same CSS code from login.css*/
+    background-color: var(--primary);
+    color: var(--text);
+    position: relative;
+    font-size: 12px;
+    max-width: 30em;
+    position: relative;
+    margin-left: auto;
+    margin-right: auto;
+    height: max-content;
+}
+
+#profileform{  /*Same CSS code from login.css*/
+    display: grid;
+    margin-bottom: 2%;
+    row-gap: 10px;
+}
+
+#profilepic{
+    width: 128px;
+    height: 128px;
+}
+
+#bio{
+    resize: vertical;
+    min-height: 20vh;
+}
+
+#buttons{
+    display: grid;
+    row-gap: 10px;
+    margin-top: 4%;
+}

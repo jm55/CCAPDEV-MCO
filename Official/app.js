@@ -1,34 +1,47 @@
-console.log("App.js");
-
-//Import modules
+const path = require('path');
 const express = require('express');
 const hbs = require('express-handlebars');
 
-//Create server object
-const app = express();
-
-//PORT NUMBER
 const PORT = process.env.PORT || 3000;
 
-//Set static folder
+const app = express();
+
+//setting static
 app.use(express.static(__dirname + "/public"));
 
-//Set hbs as view engine
-app.engine("hbs", hbs.engine({extname: "hbs"}));
+//view engine via handelbars
+app.engine("hbs", hbs.engine({extname: 'hbs'}));
 app.set("view engine", "hbs");
 app.set("views", "./views");
-
-//Set view cache
 app.set("view cache", false);
 
-//App Listens
-app.listen(PORT,()=>{
-    console.log("localhost:" + PORT);
+app.get('/', (req, res)=>{
+    //res.status(200).send("Hello World"); //SEND
+    //res.status(200).json({"message":"Hello World"}); //SEND JSON FORMAT 
+    //res.status(200).download("app.js"); //DOWNLOAD FILE
+    res.redirect('/login');
 });
 
-//Index Route
-app.get("/", (req, res)=>{
-    res.sendStatus(200);
+app.get('/login', (req,res)=>{
+    res.render("login", {title: "Login - Budol Finds"}); 
 });
 
-//Other Routes
+app.get('/home', (req, res)=>{
+    res.render("home",  {title: "Home - Budol Finds"});
+});
+
+app.get('/signup', (req, res)=>{
+    res.render("signup",  {title: "Signup - Budol Finds"});
+});
+
+app.get('/profile', (req, res)=>{
+    res.render("profile",  {title: "{{user}} - Budol Finds"});
+});
+
+app.get('/profile_settings', (req, res)=>{
+    res.render("profile_settings",  {title: "{{user}} - Budol Finds"});
+});
+
+app.listen(PORT, ()=>{
+    console.log("This is app.js\nListening @ " + PORT);
+});

@@ -1,0 +1,300 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans&display=swap');
+
+:root{
+    --background: #C3886D;
+    --background-dark: #BA7656;
+    --background-content-area: #e5d7c4; 
+
+    --primary: rgb(164, 103, 74);
+    --primary-button: #915b42;
+    --primary-hover: #87553e;
+    --primary-select: #65402e;
+
+    --warning-background: #e53735;
+    --warning-light: #ff6e60;   
+    --warning-dark: #ab000d;
+
+    --text: #ffffff;
+    --text-hover:  #080808;
+    --text-select: 00838F;
+
+    --textbox: rgba(255,255,255,30%);
+    --textbox-hover: rgba(255,255,255,20%);
+
+    --default_image: url("../img/default/default_background.webp");
+
+    --font-size-normal: 12px;
+    --font-size-large: 14px;
+    --font-size-header: 3em;
+
+    --border-radius: 10px;
+}
+
+::-webkit-scrollbar{
+    width: 15px;
+    background-color: var(--textbox-hover);
+    border-radius: var(--border-radius);
+}
+
+::-webkit-scrollbar-thumb{
+    width: 15px;
+    background-color: var(--primary-button);
+    border-radius: var(--border-radius);
+}
+
+::-webkit-scrollbar-thumb:hover{
+    background-color: var(--primary-hover);
+}
+
+::-webkit-scrollbar-thumb:active{
+    background-color: var(--primary-select);
+}
+
+::-webkit-file-upload-button{
+    border-radius: var(--border-radius);
+    border: none;
+    background-color: var(--primary-button); /*600*/
+    font-family: inherit !important;
+    color:white;
+    cursor: pointer;    
+    font-size: 12px !important;
+    height: 5vh;
+}
+
+::-webkit-file-upload-button:hover{
+    background-color: var(--primary-hover); /*700*/
+}
+
+::-webkit-file-upload-button:active{
+    background-color: var(--primary-select); /*800*/
+}
+
+html{
+    font-family: 'Open Sans', sans-serif !important;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-size: auto;  
+    background-color: whitesmoke;
+    scroll-behavior: smooth;
+}
+
+footer{
+    background-color: var(--primary);
+    color: var(--text);
+    position: fixed;
+    bottom: 2%;
+    right: 2%;
+    width: 92%;
+}
+
+button, .button, select{
+    border-radius: var(--border-radius);
+    border: none;
+    background-color: var(--primary-button); /*600*/
+    font-family: inherit;
+    color:white;
+    cursor: pointer;
+    font-size: var(--font-size-large) !important;
+    font-weight: 600;
+    height: 35px;
+}
+
+select{
+    padding-left: 8px;
+    font-size: var(--font-size-normal);
+}
+
+select > option{
+    background-color: var(--primary);
+}
+
+button:hover, .button:hover, select:hover{
+    background-color: var(--primary-hover); /*700*/
+}
+
+button:active, .button:active, select:hover{
+    background-color: var(--primary-select); /*800*/
+}
+
+a{
+    color: var(--text);
+    text-decoration: none;
+}
+
+a:visited {
+    color: var(--text);
+}
+
+a:hover {
+    color: var(--primary-hover);
+}
+
+a:active {
+    color: var(--text-select); /*800*/
+}
+
+p{
+    color: var(--text);
+}
+
+label{
+    color: var(--text);
+}
+
+table{
+    width: 100%;
+    border-spacing: 0px;
+    border: none;
+    color: var(--text);
+}
+
+td{
+    font-size: var(--font-size-normal);
+}
+
+label{
+    font-weight: bold;
+}
+
+img{
+    border-radius: 4px;
+}
+
+.textfield{
+    border-radius: var(--border-radius);
+    background-color: rgba(255,255,255,30%);
+    color: var(--text);
+    vertical-align: middle;
+    border: none;
+    font-family: inherit;
+    height: 40px;
+    font-size: 12px;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.textfield:hover{
+    background-color: var(--textbox-hover);
+}
+
+textarea{
+    border-radius: var(--border-radius);
+    background-color: rgba(255,255,255,30%);
+    color: var(--text);
+    vertical-align: middle;
+    border: none;
+    font-family: inherit;
+    height: 40px;
+    font-size: 12px;
+    padding-left: 2%;
+    padding-right: 2%;
+    padding-top: 2%;
+    padding-bottom: 2%;
+}
+
+textarea:hover{
+    background: var(--textbox-hover);
+}
+
+.card{
+    border-radius: var(--border-radius);
+    padding-top: 1%;
+    padding-bottom: 1%;
+    padding-left: 2%;
+    padding-right: 2%;
+}
+
+.profilepic{
+    border-radius: 50%;
+    border: none;
+}
+
+.profilepic:hover{
+    filter:brightness(80%);
+}
+
+.profilepic:active{
+    filter:brightness(60%);
+}
+
+.brand_banner{
+    background-color: var(--primary);
+    color: var(--text);
+    position: relative;
+    margin-bottom: 10px;
+    max-height: fit-content !important;
+    z-index: 100;
+    display: flex;
+    position: sticky;
+    top: 0%;
+    max-height: 6em;
+    padding-top: 20px;
+    padding-left: 20px;
+}
+
+.wsection{
+    display: block !important;
+}
+
+.menu{
+    position: relative;
+    display: flex;
+    width: 100%;
+}
+
+.menu_button{
+    min-width: 6em;
+    width: 6em;
+    max-width: 6em;
+    min-height: 3em;
+    max-height: 3em;
+    margin-right: 10px;
+    font-size: small;
+}
+
+#search-txt{
+    margin-right: 10px;
+}
+
+.menu_categories{
+    min-width: 15em;
+    width: 8em;
+    max-width: 15em;
+    min-height: 3em;
+    max-height: 3em;
+    margin-right: 10px;
+    font-size: small;
+    background-color: var(--primary-button);
+}
+
+#profile-pic{
+    margin: auto auto auto auto;
+    position: relative;
+    width: inherit;
+    height: inherit;
+}
+
+#userbutton{
+    margin: auto auto auto auto;
+    position: relative;
+    width: 64px;
+    height: 64px;
+}
+
+.banner_left{
+    width: 80%;
+    display: block;
+}
+
+.banner_right{
+    width: 20%;
+    display: flex;
+}
+
+.banner_title{
+    text-align: left;
+    font-size: 2em !important;
+    font-weight: bold;
+    margin-top: 0em;
+    margin-bottom: 10px;
+}

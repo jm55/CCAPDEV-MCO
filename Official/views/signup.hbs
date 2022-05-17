@@ -1,0 +1,74 @@
+<link rel="stylesheet" href="../css/signup.css">
+
+<script src="../js/signup.js"></script>
+
+<header id="" class="card brand_banner wsection">
+    <h1 class="banner_title"><a href="">Budol Finds</a></h1>
+    <h2 class="section_title">Sign Up</h2>
+</header>
+
+<div class="signup card">
+    <form name="signupform" id="signupform" class="signupform">
+        <span>
+            <label>Profile Pic:</label>
+            <span class="errorText" id="error-profilepic-select"></span>
+        </span>
+        <img name="profilepic" id="profilepic" src="/img/default/default_dp.png" class="profilepic" alt="Profile Picture">
+        <input name="profilepic-select" id="profilepic-select" type="file" accept="image/*" alt="Profile Picture" required> <!--Derived from https://stackoverflow.com/a/3381621 and https://www.w3schools.com/tags/att_input_accept.asp-->
+        <span>
+            <label>Username*:</label>
+            <span class="errorText" id="error-username"></span>
+        </span>
+        <input name="username" id="username" type="text" class="textfield" maxlength="50" />
+        <span> 
+            <label>Password*:</label>
+            <span class="errorText" id="error-password_a"></span>
+        </span>
+        <input name="password_a" id="password_a" type="password" class="textfield" maxlength="50" />
+        <span>
+            <label>Repeat Password*:</label>
+            <span class="errorText" id="error-password_b"></span>
+        </span>
+        <input name="password_b" id="password_b" type="password" class="textfield" maxlength="50" />
+        <span>
+            <label>Email*:</label>
+            <span class="errorText" id="error-email"></span>
+        </span>
+        <input name="email" id="email" type="email" class="textfield" maxlength="50" />
+        <span>
+            <label>First Name*:</label>
+            <span class="errorText" id="error-fname"></span>
+        </span>
+        <input name="fname" id="fname" type="text" class="textfield" maxlength="50" />
+        <span>
+            <label>Middle Name:</label>
+            <span class="errorText" id="error-mname"></span>
+        </span>
+        <input name="mname" id="mname" type="text" class="textfield" maxlength="50" />
+        <span>
+            <label>Last Name*:</label>
+            <span class="errorText" id="error-lname"></span>
+        </span>
+        <input name="lname" id="lname" type="text" class="textfield" maxlength="50" />
+        <span>
+            <label>Gender*:</label>
+            <span class="errorText" id="error-gender"></span>
+        </span>
+        <select name="gender" id="gender" class="gender">
+            <option value=""></option>
+            <option value="M">M</option>
+            <option value="F">F</option>
+            <option value="LGBTQ">LGBTQ</option>
+        </select>
+        <span>
+            <label>Bio:</label>
+            <span class="errorText" id="error-bio"></span>
+        </span>
+        <textarea id="bio" name="bio" value="" maxlength="255"></textarea>
+        <label style="text-align:right;" id="bio-counter"></label>
+        <input type="submit" value="Sign Up" id="signup-btn" class="button"/>
+        <input type="button" value="Clear" id="clear-btn" class="button"/>
+        <input type="button" value="Login" id="login-btn" class="button"/>
+        </div>
+    </form>
+</div>
