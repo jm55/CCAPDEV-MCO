@@ -4,7 +4,8 @@
   "description": "Practice for Express JS",
   "main": "app.js",
   "scripts": {
-    "devmode": "nodemon app.js"
+    "start": "node app.js",
+    "devmode": "npx nodemon app.js"
   },
   "keywords": [
     "npm"

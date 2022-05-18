@@ -32,5 +32,5 @@ page, home page/timeline, and different pages organized by item category (e.g.:
 2. Locate Official
 3. Run `npm install` on terminal.
 ## Execution
-1. Normal Mode: `node app.js`
-2. Dev Mode: `npx nodemon app.js`
+1. Normal Mode: `node app.js` or `npm start`
+2. Dev Mode: `npx nodemon app.js` or `npm run devmode`

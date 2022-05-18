@@ -59,7 +59,7 @@ function login(){
     if(counter === 0){
         //PROCESS FOR PROPER LOGGING IN OF USER
         if(sampleAuth(c[0], c[1]))
-            window.location.href = "../html/home.html";
+            window.location.href = "/home";
         else{
             for(let f of formData){
                 $("#" + f[0]).css("background-color", "var(--warning-light)");
