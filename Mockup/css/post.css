@@ -236,6 +236,10 @@ td > a{
     font-size: 12px;
 }
 
+#new-post-img-select{
+    border-radius: var(--border-radius);
+}
+
 /*
 ==========================================
             FOR EDIT POSTS

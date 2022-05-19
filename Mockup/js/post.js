@@ -93,8 +93,8 @@ $(document).ready(()=>{
     });
     $("#cancel-post-btn").click((e)=>{
         e.preventDefault();
-        //Route back to home
-        window.location.href = "../html/home.html";
+        //Route back to profile page
+        window.location.href = "../html/profile.html";
         console.log("cancel-edit-post");
     });
     $("#post-img-select").on("change",()=>{

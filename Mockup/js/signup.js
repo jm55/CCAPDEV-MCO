@@ -208,9 +208,11 @@ function setDefaultErrorMessage(id){
         case "gender":
             errorMessage = "* Select a gender";
             break;
-        case "bio":
-            errorMessage = "* Enter a bio";
-            break;
+        // case "bio":
+        //     errorMessage = "* Enter a bio";
+        //     break;
+        default:
+            errorMessage = "Unknown id";
 
     }
     $("#error-" + id).text(errorMessage);
@@ -299,7 +301,7 @@ function errMessage(functionName, msg){
  */
  function updateColor(){
     for(f of new FormData(document.forms.signupform)){
-        if(!(f[0]=="profilepic-select")){
+        if(!(f[0]=="profilepic-select") && !(f[0]=="bio")){
             if(f[1] == ""){
                 changeBGColor(f[0], "var(--warning-light)");
                 setDefaultErrorMessage(f[0]);
