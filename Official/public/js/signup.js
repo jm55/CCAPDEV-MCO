@@ -20,7 +20,7 @@ var submitClicked = false;
         }
     });
     $("#login-btn").click(()=>{
-        window.location.href = "/login";
+        loginRedirect();
     });
     $("#clear-btn").click(()=>{
         clearSignup();
@@ -168,6 +168,13 @@ function clearSignup(){
 }
 
 /**
+ * Redirects the user to the login page.
+ */
+function loginRedirect(){
+    window.location.href = "/login";
+}
+
+/**
  * Sets the error message with the passed id back to its default value.
  * @param id ID of the error message to change, minue the "error-" part.
  */
@@ -201,9 +208,11 @@ function setDefaultErrorMessage(id){
         case "gender":
             errorMessage = "* Select a gender";
             break;
-        case "bio":
-            errorMessage = "* Enter a bio";
-            break;
+        // case "bio":
+        //     errorMessage = "* Enter a bio";
+        //     break;
+        default:
+            errorMessage = "Unknown id";
 
     }
     $("#error-" + id).text(errorMessage);
@@ -292,7 +301,7 @@ function errMessage(functionName, msg){
  */
  function updateColor(){
     for(f of new FormData(document.forms.signupform)){
-        if(!(f[0]=="profilepic-select")){
+        if(!(f[0]=="profilepic-select") && !(f[0]=="bio")){
             if(f[1] == ""){
                 changeBGColor(f[0], "var(--warning-light)");
                 setDefaultErrorMessage(f[0]);

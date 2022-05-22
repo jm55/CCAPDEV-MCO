@@ -7,7 +7,7 @@ console.log("banner.js loaded");
 $(document).ready(()=>{
     $("#home-btn").click(()=>{
         console.log("#home-btn clicked");
-        window.location.href = "home";
+        window.location.href = "/home";
     });
     $("#userbutton").click(()=>{
         console.log("#userbutton clicked");

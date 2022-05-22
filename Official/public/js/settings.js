@@ -74,14 +74,14 @@ var submitClicked = false;
         updateColor();  
     });
     $("#cancel-btn").click(()=>{
-        window.location.href = "/home";
+        homeRedirect();
     });
     $("#delete-btn").click(()=>{
         if(confirm("Do you want to close the account?")){
             if(hash(document.getElementById("password_current").value)==currentUser.password){
                 console.log("Close account: " + currentUser);
                 //ROUTE TO index
-                window.location.href = "../index.html";
+                window.location.href = "../index";
             }else{
                 alert("Enter current password to confirm account deletion.");
             }
@@ -118,8 +118,8 @@ FUNCTION SPECIFIC METHODS
 function displayCurrentUser(){
     $("#profilepic").attr("src", currentUser.profilepic);
     //$("#userfullname").text(currentUser.formal_name);
-    //$("#myaccount").attr("href", "../html/profile.html");
-    //$("#logout-btn").attr("href","../html/login.html");
+    //$("#myaccount").attr("href", "/profile");
+    //$("#logout-btn").attr("href","/login");
 }
 
 /**
@@ -312,6 +312,10 @@ function clearSignup(){
     for(f of form)
         $("#" + f[0]).val("");
     submitClicked = false;
+}
+
+function homeRedirect(){
+    window.location.href = "/profile";
 }
 
 /*

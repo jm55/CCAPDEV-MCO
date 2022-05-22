@@ -173,6 +173,7 @@ $(document).ready(()=>{
             posts.unshift(newPost);
             resetTimeline();
             displayPosts(posts);
+            clearInputs();
         }
         else 
             errMessage("","New Post Data Incomplete");
@@ -182,25 +183,9 @@ $(document).ready(()=>{
         refreshNewPostImage();
     });
 
-    $("#new-post-cancel-btn").click((e)=>{   
-        var inputPostDesc = document.getElementById('new-post-content');
-        inputPostDesc.value = '';
-
-        var inputPostCat = document.getElementById('new-post-category');
-        inputPostCat.value = '';
-
-        var inputPostLab = document.getElementById('new-post-label');
-        inputPostLab.value = '';
-
-        var inputPostLink = document.getElementById('new-post-link');
-        inputPostLink.value = '';
-
-        var inputPostImgSel = document.getElementById('new-post-img-select');
-        inputPostImgSel.value = '';
-
-        var inputPostImg = document.getElementById('new-post-image');
-        refreshNewPostImage();
-
+    $("#new-post-cancel-btn").click((e)=>{
+        newPostClicked = false;
+        clearInputs();
         updateColor(true); //Restores text box for value triggered input BG color.
     });
 
@@ -244,6 +229,29 @@ FUNCTION SPECIFIC METHODS
 */
 
 /**
+ * Clears the "Create Post" input fields
+ */
+ function clearInputs(){
+    var inputPostDesc = document.getElementById('new-post-content');
+    inputPostDesc.value = '';
+
+    var inputPostCat = document.getElementById('new-post-category');
+    inputPostCat.value = '';
+
+    var inputPostLab = document.getElementById('new-post-label');
+    inputPostLab.value = '';
+
+    var inputPostLink = document.getElementById('new-post-link');
+    inputPostLink.value = '';
+
+    var inputPostImgSel = document.getElementById('new-post-img-select');
+    inputPostImgSel.value = '';
+
+    var inputPostImg = document.getElementById('new-post-image');
+    refreshNewPostImage();
+ }
+
+/**
  * Filters posts by list of keywords on search
  * @param {list} postList List of posts to be filtered
  * @param {string} category Target category for filtering
@@ -265,7 +273,7 @@ function displayCurrentUser(){
     $("#profile-pic").attr("src", currentUser.profilepic);
     $("#userfullname").text(currentUser.formal_name);
     $("#myaccount").attr("href", "/profile");
-    $("#logout-btn").attr("href", "/login");
+    $("#logout-btn").attr("href","/login");
 }
 
 /**
@@ -411,7 +419,7 @@ function insertNewComment(comment){
         $(username).text(singlePost.user.username);
         $(post_description_text).text(singlePost.description);
         $(item_label).text(singlePost.label);
-        $(item_link).text(singlePost.link);
+        $(item_link_a).text(singlePost.link);
         $(category).text("Category: ");
         $(category_link_a).text(singlePost.category);
 
@@ -422,6 +430,8 @@ function insertNewComment(comment){
         //Add other attributes
         $(postdp).attr("alt","Profile Picture");
         //$(post_image).attr("loading", "lazy");
+        $(item_link_a).attr("href", singlePost.link);
+        $(item_link_a).attr("target", "_blank");
 
         //APPENDING
         //Header
@@ -451,7 +461,6 @@ function insertNewComment(comment){
         $(post_card).append(footer);
 
         $(post_card).attr("posthash", singlePost.posthash);
-
     }
     
     return post_card;
@@ -528,6 +537,7 @@ function insertNewComment(comment){
     }
     
     // EVENTLISTENERS FOR FOOTER BUTTONS
+    //TODO: when pressing enter on the comment box, it likes the post instead of submitting the comment
     likeBtn.addEventListener("click", function(e){
         e.preventDefault();
 
@@ -675,6 +685,7 @@ function searchPostIndex(postList, thisPostHash){
  * Creates a single Post object
  * @returns Post object
  */
+ //TODO: when creating a new post, the link and category are aligned differently from the pre-created posts
 function createPost(){
     //user, description="", category="", label="", link="", imgblob=null, imgurl="", like=0, report=0, comment=[], posthash="", postid=-1, datetime = new Date()
     let user = currentUser;
@@ -697,14 +708,14 @@ function createPost(){
  * Checks contents of newPostForm for invalidity (i.e. empty input).
  * @returns True if a valid post, false if otherwise
  */
+ //TODO: add character limit to input fields
 function validateNewPost(){
     var form = new FormData(document.forms.newPostForm);
     var validity = true;
     for(f of form){
-        if(f[0] == "new-post-img-select")
-            if(!getInputFile("new-post-img-select"))
-                validity = false;
-        else if(f[1].length == 0)
+        if(f[0] == "new-post-img-select" && !getInputFile("new-post-img-select"))
+            validity = false;
+        else if(f[1] == "")
             validity = false;
     }
     return validity;
@@ -727,21 +738,27 @@ TRANSFERRABLE/GLOBAL METHODS
  function updateColor(restore=false){
     if(restore){
         for(f of new FormData(document.forms.newPostForm))
-            if(f[0] != "new-post-img-select")
+            if(f[0] == "new-post-category"){
+                changeBGColor(f[0], "var(--primary-button)");
+            }
+            else if(f[0] != "new-post-img-select")
                 changeBGColor(f[0], "var(--textbox)");
             else
-            changeBGColor(f[0], "none");
+                changeBGColor(f[0], "var(--primary)");
     }else{
         for(f of new FormData(document.forms.newPostForm)){
+            if(f[0] == "new-post-category"){
+                changeBGColor(f[0], "var(--primary-button)");
+            }
+            else if(f[0] != "new-post-img-select")
+                changeBGColor(f[0], "var(--textbox)");
+            else
+                changeBGColor(f[0], "var(--primary)");
+
             if(f[1] == "")
                 changeBGColor(f[0], "var(--warning-light)");
             else if(!getInputFile("new-post-img-select"))
-                changeBGColor(f[0], "var(--warning-light)");
-            else
-                if(f[0] != "new-post-img-select")
-                    changeBGColor(f[0], "var(--textbox)");
-                else
-                    changeBGColor(f[0], "var(--primary)");
+                changeBGColor("new-post-img-select", "var(--warning-light)");
         }
     }
     

@@ -11,7 +11,7 @@ $(document).ready(()=>{
     console.log(sampleKeys);
 
     $("#signup-btn").click(()=>{
-        window.location.href = "/signup";
+        redirectSignup();
     });
 
     $("#login-btn").click((e)=>{
@@ -29,6 +29,13 @@ $(document).ready(()=>{
             login();
     });
 });
+
+/**
+ * Redirects user to signup
+ */
+function redirectSignup(){
+    window.location.href = "/signup"
+}
 
 /**
  * Process entire login process

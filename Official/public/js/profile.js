@@ -216,8 +216,8 @@ function displayCurrentUser(){
     $("#profile-pic").attr("src", currentUser.profilepic);
     document.title = currentUser.username + " - Budol Finds";
     //$("#userfullname").text(currentUser.formal_name);
-    //$("#myaccount").attr("href", "../html/profile.html");
-    //$("#logout-btn").attr("href","../html/login.html");
+    //$("#myaccount").attr("href", "/profile");
+    //$("#logout-btn").attr("href","/login");
 }
 
 /**
@@ -520,7 +520,7 @@ function resetTimeline(){
         e.preventDefault();
         var thisIndex = searchPostIndex(posts, singlePost.posthash);
         console.log("edit post[" + thisIndex + "]: " + singlePost.posthash);
-        window.location.href = "../html/post.html";
+        window.location.href = "/post";
         //ROUTE TO EDIT POST PAGE
     });
 

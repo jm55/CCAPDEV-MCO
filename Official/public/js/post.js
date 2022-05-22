@@ -87,14 +87,14 @@ $(document).ready(()=>{
             //Delete post here
         }else{
             //Route back to home
-            window.location.href = "../html/home.html";
+            window.location.href = "/home";
         }
         console.log("delete-post");
     });
     $("#cancel-post-btn").click((e)=>{
         e.preventDefault();
-        //Route back to home
-        window.location.href = "../html/home.html";
+        //Route back to profile page
+        window.location.href = "/profile";
         console.log("cancel-edit-post");
     });
     $("#post-img-select").on("change",()=>{
@@ -161,8 +161,8 @@ function displayCurrentUser(){
     $("#profile-pic").attr("src", currentUser.profilepic);
     //document.title = currentUser.username + " - Budol Finds";
     //$("#userfullname").text(currentUser.formal_name);
-    //$("#myaccount").attr("href", "../html/profile.html");
-    //$("#logout-btn").attr("href","../html/login.html");
+    //$("#myaccount").attr("href", "/profile");
+    //$("#logout-btn").attr("href","/login");
 }
 
 /**
