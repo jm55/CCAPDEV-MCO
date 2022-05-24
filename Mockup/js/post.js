@@ -11,7 +11,7 @@ console.log("post.js");
  * @param {*} imgblob Image in blob type //NULL 
  * @param {string} imgurl Image in URLtype
  * @param {Number} like Number of likes; Default: 0
- * @param {Number]} report Report count //TO BE REPLACED BY A Report object
+ * @param {Number} report Report count //TO BE REPLACED BY A Report object
  * @param {list} comment Comment objects
  * @param {Date} datetime Date and Time of Post; Default: new Date()
  */

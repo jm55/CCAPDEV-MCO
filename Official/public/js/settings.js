@@ -1,106 +1,56 @@
 console.log("settings.js loaded!");
 
-/*
-===================================================================================
-
-OBJECTS
-
-===================================================================================
-*/
-
-
-/**
- * User Profile or User Object
- * @param {string} username Username
- * @param {string} password Password (Refers to password_b at signup and settings)
- * @param {string} email Email
- * @param {string} fname First Name
- * @param {string} mname Middle Name
- * @param {string} lname Last Name
- * @param {string} gender Gender
- * @param {string} bio Biography
- * @param {string} profilepic ProfilePic (string? or blob? NOT YET SURE)
- * @param {Date} dateCreated Used as reference values for hashing userID. Defaults to new Date() but can be set as constant when prototyping users.
- * @param {string} userID Identifier for user, leave as null by default if a new account.
- */
- const User = function(username, password="", email, fname, mname="", lname, gender, bio="", profilepic="", dateCreated=new Date(), userID=null){
-    this.username = username;
-    this.password = password; //acts more as a passhash than a password
-    this.email = email;
-    this.fname = fname;
-    this.mname = mname;
-    this.lname = lname;
-    this.gender = gender;
-    this.bio = bio;
-    this.profilepic = profilepic; //TO BE UPDATED TO POINT TO SERVER DIRECTORY AT '../img/dp/<username>.jpg'; BY CURRENT DESIGN, IF USERNAME WAS CHANGED, THE DP WILL BE SAVED AGAIN AS NEW FILE WITH NEW FILENAME (I.E. USERNAME)
-    this.formal_name = lname + ", " + fname + " " + mname.substring(0,1);
-    if(userID == null)
-        this.userID = hash(this.username+dateCreated.toString); //hash() must be on the same area as User constructor; DON'T IMPLEMENT FOR PHASE 1 JUST YET
-    else
-        this.userID = userID;
-    //IF A CLASS, ADD FUNCTION TO SAVE URL/BLOB AS FILE TO SERVER AT '../img/dp/<username>.jpg'
-}
-
-
-/*
-===================================================================================
-
-FOR DEMONSTRATION PURPOSES
-SAMPLE SCRIPTED DATA
-
-===================================================================================
-*/
-var currentUser = null; // = new User();
-
-
 /* MAIN */
 var submitClicked = false;
  $(document).ready(()=>{
+    //Update selected value of gender in select
+    var gender = $("#gender").attr("value");
+    $("#gender").val(gender);
+
     $("#bio-counter").text("0/255"); //default max value for bio characters
-
-    currentUser = new User("dlsu","237392540","dlsu@mail.com","De La Salle", "University", "Manila", "M", "Animo La Salle", "../img/dp/dlsu_dp.webp"); //SAMPLE LOGGED IN USER
-    loadUser(currentUser);
-    displayCurrentUser();
-
+    
     $("#save-btn").click((e)=>{
-        e.preventDefault();
-        if(validateProfileInputs()){
-            updatedUser = saveProfile(currentUser);
-            if(updatedUser){
-                currentUser = updatedUser;
-                updatedUser = null;
-            }
-        }   
-        updateColor();  
+        console.log("#save-btn");
     });
+    
     $("#cancel-btn").click(()=>{
+        console.log("#cancel-btn");
         homeRedirect();
     });
+    
     $("#delete-btn").click(()=>{
+        console.log("#delete-btn");
         if(confirm("Do you want to close the account?")){
             if(hash(document.getElementById("password_current").value)==currentUser.password){
-                console.log("Close account: " + currentUser);
-                //ROUTE TO index
-                window.location.href = "../index";
+                window.location.href = "/";
             }else{
                 alert("Enter current password to confirm account deletion.");
             }
         }
     });
+    
     $("#bio").keydown(()=>{
         updateTextCount();
     });
+    
     $("#profilepic-select").on("change", ()=>{
         refreshDP();
     });
+    
     $("input").keyup((e)=>{
         if(submitClicked)
             updateColor();
     });
+    
+    $("#gender").on("change",(e)=>{
+        console.log("#gender");
+    });
+    
     $("select").on("change",(e)=>{
         if(submitClicked)
             updateColor();
     });
+    
     $("#save-btn").keyup((e)=>{
         updateColor();
     });
@@ -115,60 +65,35 @@ FUNCTION SPECIFIC METHODS
 ===================================================================================
 */
 
-function displayCurrentUser(){
-    $("#profilepic").attr("src", currentUser.profilepic);
-    //$("#userfullname").text(currentUser.formal_name);
-    //$("#myaccount").attr("href", "/profile");
-    //$("#logout-btn").attr("href","/login");
-}
-
-/**
- * @param {User} user User profile to be modified
- * @returns User object when saved to server, null if not saved
- */
-function saveProfile(user){
+function saveProfile(userid){    
     var updatedUser = null;
-
-    user.username = document.getElementById("username").value;
-    user.email = document.getElementById("email").value;
-    user.fname = document.getElementById("fname").value;
-    user.mname = document.getElementById("mname").value;
-    user.lname = document.getElementById("lname").value;
-    user.gender = document.getElementById("gender").value;
-    user.bio = document.getElementById("bio").value;
+    let username = document.getElementById("username").value;
+    let email = document.getElementById("email").value;
+    let fname = document.getElementById("fname").value;
+    let mname = document.getElementById("mname").value;
+    let lname = document.getElementById("lname").value;
+    let gender = document.getElementById("gender").value;
+    let bio = document.getElementById("bio").value;
     
     let URL = getTempURL(getInputFile("profilepic-select"));
+    let profilepic = "";
     if(URL)
-        user.profilepic = URL; //TEMPORARILY USING BLOBURL
+        profilepic = URL; //TEMPORARILY USING BLOBURL
     
+    let password = "";
     if(document.getElementById("password_b").value.length > 0)
-        user.password = hash(document.getElementById("password_b").value); //RECOMMENDED TO BE IN HASH
+        password = hash(document.getElementById("password_b").value); //RECOMMENDED TO BE IN HASH
     else
-        user.password = hash(document.getElementById("password_current").value); //RECOMMENDED TO BE IN HASH
+        password = hash(document.getElementById("password_current").value); //RECOMMENDED TO BE IN HASH
+
+    updatedUser = { userId: userid, username:username, passhash:password, 
+                    email:email, fname:fname, mname:mname, 
+                    lname:lname, gender:gender, bio:bio, 
+                    profilepic:profilepic};
+
+    console.log(updatedUser);
     
-    if(true){
-        updatedUser = user;
-    }
-
     return updatedUser;
-}
-
-
-/**
- * TODO
- * Loads user to profile inputs
- * @param {User} user 
- */
-function loadUser(user){
-    if(user){
-        $("#username").val(user.username);
-        $("#email").val(user.email);
-        $("#fname").val(user.fname);
-        $("#mname").val(user.mname);
-        $("#lname").val(user.lname);
-        $("#gender").val(user.gender);
-        $("#bio").val(user.bio);
-    }
 }
 
 /**

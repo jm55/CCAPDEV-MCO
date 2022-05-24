@@ -163,7 +163,7 @@ td > a{
     overflow-y: auto;
     background-color: var(--primary);
     width: 25em;
-    height: 70vh;
+    height: 550px;
     margin-left: auto;
     margin-right: auto;
     padding-top: 20px;
@@ -250,7 +250,7 @@ td > a{
     overflow-y: auto;
     background-color: var(--primary);
     width: 40em;
-    height: 70vh;
+    height: fit-content;
     margin-left: auto;
     margin-right: auto;
     padding-top: 20px;

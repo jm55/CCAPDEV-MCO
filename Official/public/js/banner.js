@@ -28,6 +28,22 @@ $(document).ready(()=>{
             return null;
         }
     });
+
+    $("#categories").on("change", (e)=>{
+        var cat = document.getElementById("categories").value;
+        console.log("menu category: " + cat);
+    });
+
+    $("#search-btn").click((e)=>{
+        console.log("#search-btn");
+    });
+
+    $("#search-txt").keyup((e)=>{
+        e.preventDefault();
+        if(e.key=="Enter"){
+            console.log("#search-txt");
+        }
+    });
 });
 
 /**

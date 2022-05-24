@@ -35,10 +35,13 @@ app.get('/', (req, res)=>{
 import utils from './utils/utils.js';
 utils.autoFill();
 utils.appendPostMetadata();
-var users = utils.users;
-var posts = utils.posts;
-var comments = utils.comments;
+var users = utils.getUsers();
+var posts = utils.getPosts();
+var comments = utils.getComments();
 var currentUser = users[0];
+
+//Controllers
+
 
 app.get('/login', (req,res)=>{
     console.log(req.url);
@@ -52,9 +55,34 @@ app.get('/home', (req, res)=>{
         currentUser: currentUser,
         posts: posts,
         helpers: {
-            fullName(fname, mname, lname){return lname + ", " + fname + " " + mname.substring(0,1) + "."}
+            fullName(fname, mname, lname){return lname + ", " + fname + " " + mname.substring(0,1) + "."},
+            likeBtn(id, posthash){return "submitLike(" + id + "," + posthash + ")";},
         }
     });
+});
+
+app.post("/home/post", (req, res) => {
+    console.log("new post received: ");
+    try {
+        //WRITE IMAGE TO STORAGE AS POSTHASH.WEBP
+        //CHANGE IMGURL
+        var newImgURL = ""; //INVOKE IMGURL AS POST'S IMGURL
+        posts.push({
+            author: req.body['author'],
+            description: req.body['description'],
+            category: req.body['category'],
+            label: req.body['label'],
+            link: req.body['link'],
+            datetime: req.body['datetime'],
+            imgurl: req.body['imgurl'],
+            posthash: hash(req.body['author']+req.body['description'])
+        });
+        console.log(posts[posts.length-1]);
+        res.sendStatus(200);
+    } catch(e) {
+        res.statusMessage = e;
+        res.sendStatus(400);
+    }
 });
 
 app.get('/signup', (req, res)=>{
@@ -69,13 +97,23 @@ app.get('/profile', (req, res)=>{
 
 app.get('/profile_settings', (req, res)=>{
     console.log(req.url);
-    res.render("profile_settings",  {title: "{{user}} - Budol Finds"});
+    res.render("profile_settings",  
+        {
+            title: "Profile Settings - Budol Finds",
+            currentUser: currentUser,
+            helpers:{
+
+            }
+        });
+});
+
+app.get('/post', (req, res)=>{
+    console.log(req.url);
+    res.render("post",  {title: "{{user}} - Budol Finds"});
 });
 
 //404
-app.use((req, res, err) => {
-    console.log(req);
-    console.log(res);
+app.use((req, res, err) => {;
     res.render("err", {
         title: "Error - Budol Finds",
         errID: "404",

@@ -3,7 +3,6 @@ console.log("utils.js loaded");
 var users = [];
 var posts = []; //USER OBJECT IN POSTS ARE TEMPORARY, WILL BE REPLACED WITH USERID FOR FLEXIBLE USER ADDRESSING
 var comments = [];
-var currentUser = null;
 
 /**
  * Builds the list of sample users, posts, and comments.
@@ -45,7 +44,18 @@ function autoFill(){
     comments.push(comment1,comment2,comment3,comment4,comment5,comment6,comment7,comment8,comment9,comment10,comment11,comment12,comment13,comment14);
 
     posts = sortByDate(posts);
-    currentUser = user0;
+}
+
+function getUsers(){
+    return users;
+}
+
+function getPosts(){
+    return posts;
+}
+
+function getComments(){
+    return comments;
 }
 
 /*MAIN*/
@@ -106,4 +116,4 @@ function sortByDate(postList, descending=true){
     return String(a);
 }
 
-export default {users, posts, comments, currentUser, autoFill, appendPostMetadata};
+export default {getUsers, getPosts, getComments, autoFill, appendPostMetadata};
