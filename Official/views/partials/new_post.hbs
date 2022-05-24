@@ -1,0 +1,19 @@
+<div class="card new_post">
+        <form name="newPostForm" id="new-post-form" class="new_post_form">
+            <label>Post Content:</label>
+            <textarea name="new-post-content" id="new-post-content" class="new_post_description"></textarea>
+            <label>Category:</label>
+            {{>categories}}
+            <label>Link Label:</label>
+            <input id="new-post-label" name="new-post-label" type="text" class="textfield">
+            <label>Link:</label>
+            <input id="new-post-link" name="new-post-link" type="text" class="textfield">
+            <label>Image:</label>
+            <img id="new-post-image" class="new_post_image" src="" alt="" style="display:none;">
+            <input id="new-post-img-select" name="new-post-img-select" type="file" accept="image/*"/>
+            <div class="interact">
+                <input id="new-post-btn" type="button" class="button" value="Post">
+                <input id="new-post-cancel-btn" type="button" class="button" value="Cancel">
+            </div>
+        </form>
+    </div>

@@ -3,7 +3,6 @@ html{
 }
 
 .login{
-    background-color: var(--primary);
     color: white;
     position: relative;
     max-width: 30em;    

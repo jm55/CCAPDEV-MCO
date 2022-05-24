@@ -16,7 +16,7 @@
 
     --text: #ffffff;
     --text-hover: #080808;
-    --text-select: #00838F;
+    --text-select: #65402e;
 
     --textbox: rgba(255,255,255,30%);
     --textbox-hover: rgba(255,255,255,20%);
@@ -74,7 +74,7 @@ html{
     background-size: cover;
     background-repeat: no-repeat;
     background-size: auto;  
-    background-color: whitesmoke;
+    background-color: var(--background);
     scroll-behavior: smooth;
 }
 
@@ -133,7 +133,7 @@ a:active {
     color: var(--text-select); /*800*/
 }
 
-p{
+p,h1,h2{
     color: var(--text);
 }
 
@@ -197,11 +197,13 @@ textarea:hover{
 }
 
 .card{
+    background-color: var(--primary);
     border-radius: var(--border-radius);
     padding-top: 1%;
     padding-bottom: 1%;
     padding-left: 2%;
     padding-right: 2%;
+    margin-bottom: 10px;
 }
 
 .profilepic{

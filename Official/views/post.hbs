@@ -1,38 +1,10 @@
     <body>
-        
         <header class="card brand_banner">
             <div class="banner_left">
                 <p class="banner_title"><a id="logo-btn">Budol Finds</a></p>
                 <nav class="menu">
                     <button id="home-btn" class="menu_button">Home</button>
-                    <select id="categories" name="categories" class="menu_categories"> <!--Same categories from Shopee-->
-                        <option value="">Category</option>
-                        <option value="Audio">Audio</option>
-                        <option value="Babies&Kids">Babies & Kids</option>
-                        <option value="Cameras">Cameras</option>
-                        <option value="Gaming">Gaming</option>
-                        <option value="Groceries">Groceries</option>
-                        <option value="Health&PersonalCare">Health & Personal Care</option>
-                        <option value="Hobbies&Stationery">Hobbies & Stationery</option>
-                        <option value="Home&Living">Home & Living</option>
-                        <option value="HomeAppliances">Home Appliances</option>
-                        <option value="HomeEntertainment">Home Entertainment</option>
-                        <option value="Laptops&Computers">Laptops & Computers</option>
-                        <option value="MakeupFragrances">Makeup Fragrances</option>
-                        <option value="Men'sApparel">Men's Apparel</option>
-                        <option value="Men'sBags&Accessories">Men's Bags & Accessories</option>
-                        <option value="Men'sShoes">Men's Shoes</option>
-                        <option value="Mobiles&Gadgets">Mobiles & Gadgets</option>
-                        <option value="MobilesAccessories">Mobiles Accessories</option>
-                        <option value="Motors">Motors</option>
-                        <option value="PetCare">Pet Care</option>
-                        <option value="Sports&Travel">Sports & Travel</option>
-                        <option value="Toys,Games&Collectibles">Toys, Games & Collectibles</option>
-                        <option value="WomenAccessories">Women Accessories</option>
-                        <option value="Women'sApparel">Women's Apparel</option>
-                        <option value="Women'sBags">Women's Bags</option>
-                        <option value="Women'sShoes">Women's Shoes</option>
-                    </select>
+                    {{>categories}}
                     <input id="search-txt" name="search-txt" class="textfield" />
                     <button id="search-btn" class="menu_button">Search</button>
                     <button id="account-settings-btn" class="menu_button">Settings</button>
@@ -49,34 +21,7 @@
                 <label>Post Content:</label>
                 <textarea name="post-content" id="post-content" class="edit_post_description"></textarea>
                 <label>Category:</label>
-                <select id="post-category" name="post-category"> <!--Same categories from Shopee-->
-                    <option value="">Category</option>
-                    <option value="Audio">Audio</option>
-                    <option value="Babies&Kids">Babies & Kids</option>
-                    <option value="Cameras">Cameras</option>
-                    <option value="Gaming">Gaming</option>
-                    <option value="Groceries">Groceries</option>
-                    <option value="Health&PersonalCare">Health & Personal Care</option>
-                    <option value="Hobbies&Stationery">Hobbies & Stationery</option>
-                    <option value="Home&Living">Home & Living</option>
-                    <option value="HomeAppliances">Home Appliances</option>
-                    <option value="HomeEntertainment">Home Entertainment</option>
-                    <option value="Laptops&Computers">Laptops & Computers</option>
-                    <option value="MakeupFragrances">Makeup Fragrances</option>
-                    <option value="Men'sApparel">Men's Apparel</option>
-                    <option value="Men'sBags&Accessories">Men's Bags & Accessories</option>
-                    <option value="Men'sShoes">Men's Shoes</option>
-                    <option value="Mobiles&Gadgets">Mobiles & Gadgets</option>
-                    <option value="MobilesAccessories">Mobiles Accessories</option>
-                    <option value="Motors">Motors</option>
-                    <option value="PetCare">Pet Care</option>
-                    <option value="Sports&Travel">Sports & Travel</option>
-                    <option value="Toys,Games&Collectibles">Toys, Games & Collectibles</option>
-                    <option value="WomenAccessories">Women Accessories</option>
-                    <option value="Women'sApparel">Women's Apparel</option>
-                    <option value="Women'sBags">Women's Bags</option>
-                    <option value="Women'sShoes">Women's Shoes</option>
-                </select>
+                {{>categories}}
                 <label>Link Label:</label>
                 <input id="post-label" name="post-label" type="text" class="textfield">
                 <label>Link:</label>

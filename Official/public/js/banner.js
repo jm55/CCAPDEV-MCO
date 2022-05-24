@@ -34,6 +34,6 @@ $(document).ready(()=>{
  * Logout protocols
  * @returns Return true if successfully logged out, false if otherwise.
  */
-function logout(curentUser){
+function logout(currentUser){
     return true;
 }
