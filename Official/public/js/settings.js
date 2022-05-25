@@ -2,22 +2,20 @@ console.log("settings.js loaded!");
 
 /* MAIN */
 var submitClicked = false;
- $(document).ready(()=>{
+$(document).ready(()=>{
+    console.log(currentUser);
+
     //Update selected value of gender in select
     var gender = $("#gender").attr("value");
     $("#gender").val(gender);
 
     $("#bio-counter").text("0/255"); //default max value for bio characters
-    
-    $("#save-btn").click((e)=>{
-        console.log("#save-btn");
-    });
-    
+
     $("#cancel-btn").click(()=>{
         console.log("#cancel-btn");
         homeRedirect();
     });
-    
+
     $("#delete-btn").click(()=>{
         console.log("#delete-btn");
         if(confirm("Do you want to close the account?")){
@@ -28,29 +26,29 @@ var submitClicked = false;
             }
         }
     });
-    
+
     $("#bio").keydown(()=>{
         updateTextCount();
     });
-    
+
     $("#profilepic-select").on("change", ()=>{
         refreshDP();
     });
-    
+
     $("input").keyup((e)=>{
         if(submitClicked)
             updateColor();
     });
-    
+
     $("#gender").on("change",(e)=>{
         console.log("#gender");
     });
-    
+
     $("select").on("change",(e)=>{
         if(submitClicked)
             updateColor();
     });
-    
+
     $("#save-btn").keyup((e)=>{
         updateColor();
     });
@@ -65,35 +63,58 @@ FUNCTION SPECIFIC METHODS
 ===================================================================================
 */
 
+function updateProfile(profile){
+    console.log(profile);
+    fetch("/profile_settings/update",{
+        method: "POST",
+        body: JSON.stringify(profile),
+        headers:{
+            "Content-Type": "application/json"
+        }
+    }).then((res) => {
+        if (res.status >= 200 && res.status < 300) {// SUCCESS
+            window.location.href = '/profile';
+        } else {// ERROR
+            console.log("response error: " + res.status);
+        }
+    }).catch((error) => {
+        console.error(error);
+    });
+}
+
 function saveProfile(userid){    
-    var updatedUser = null;
-    let username = document.getElementById("username").value;
-    let email = document.getElementById("email").value;
-    let fname = document.getElementById("fname").value;
-    let mname = document.getElementById("mname").value;
-    let lname = document.getElementById("lname").value;
-    let gender = document.getElementById("gender").value;
-    let bio = document.getElementById("bio").value;
+    if(validateProfileInputs()){
+        var updatedUser = null;
+        var username = document.getElementById("username").value;
+        var email = document.getElementById("email").value;
+        var fname = document.getElementById("fname").value;
+        var mname = document.getElementById("mname").value;
+        var lname = document.getElementById("lname").value;
+        var gender = document.getElementById("gender").value;
+        var bio = document.getElementById("bio").value;
+        
+        var URL = getTempURL(getInputFile("profilepic-select"));
+        var profilepic = "";
+        if(URL)
+            profilepic = URL; //TEMPORARILY USING BLOBURL
+        else
+            profilepic = currentUser.profilepic;
+        
+        var password = "";
+        if(document.getElementById("password_b").value.length > 0)
+            password = hash(document.getElementById("password_b").value); //RECOMMENDED TO BE IN HASH
+        else
+            password = hash(document.getElementById("password_current").value); //RECOMMENDED TO BE IN HASH
     
-    let URL = getTempURL(getInputFile("profilepic-select"));
-    let profilepic = "";
-    if(URL)
-        profilepic = URL; //TEMPORARILY USING BLOBURL
+        updatedUser = { userId: String(userid), username:username, password:password, 
+                        email:email, fname:fname, mname:mname, 
+                        lname:lname, gender:gender, bio:bio, 
+                        profilepic:profilepic};
     
-    let password = "";
-    if(document.getElementById("password_b").value.length > 0)
-        password = hash(document.getElementById("password_b").value); //RECOMMENDED TO BE IN HASH
-    else
-        password = hash(document.getElementById("password_current").value); //RECOMMENDED TO BE IN HASH
-
-    updatedUser = { userId: userid, username:username, passhash:password, 
-                    email:email, fname:fname, mname:mname, 
-                    lname:lname, gender:gender, bio:bio, 
-                    profilepic:profilepic};
-
-    console.log(updatedUser);
-    
-    return updatedUser;
+        updateProfile(updatedUser);
+    }else{
+        console.log("inputs missing");
+    }
 }
 
 /**
@@ -108,25 +129,6 @@ function saveProfile(userid){
 }
 
 /**
- * Creates User object based on inputs.
- * Call this only after validating if inputs are valid.
- * @returns User object with the inputs inputted by the user.
- */
-function createUser(){
-    let username = document.getElementById("username").value;
-    let password = hash(document.getElementById("password_b").value); //HASHED EQUIVALENT
-    let email = document.getElementById("email").value;
-    let fname = document.getElementById("fname").value;
-    let mname = document.getElementById("mname").value;
-    let lname = document.getElementById("lname").value;
-    let gender = document.getElementById("gender").value;
-    let bio = document.getElementById("bio").value;
-    let profilepic = getTempURL(getInputFile("profilepic-select")); //TEMPORARILY USING BLOBURL
-
-    return new User(username,password,email,fname, mname, lname, gender,bio, profilepic);
-}
-
-/**
  * Retrieves inputted signup data from profileform.
  * @returns Key-Value pair of all IDs available from @var idlist;
  */
@@ -138,7 +140,7 @@ function validateProfileInputs(){
     for(f of form){ 
         if(f[1].length == 0){
             if(f[0] != "bio" && f[0] != "profilepic-select" && f[0] != "password_a" && f[0] != "password_b"){
-                errMessage("validateSignupInputs",  f[0] + " not filled")
+                errMessage("validateSignupInputs",  f[0] + " not filled");
                 validity = false;
             }
         }
@@ -152,12 +154,13 @@ function validateProfileInputs(){
         
         //CHECK PASSWORD IF SAME, RECOMMENDED TO BE HASHED BEFORE COMPARING
         if(f[0] == "password_current"){
-            if(currentUser.password == hash(f[1])){
+            if(currentUser.passhash == hash(f[1])){
                 validCurrentPassword = true;
             }
             else{
                 validity = false;
-                alert("incorrect currentPassword");
+                errMessage("validateSignupInputs",  f[0] + " not filled");
+                alert("Incorrect Current Password");
             }
         }
 
@@ -183,6 +186,7 @@ function validateProfileInputs(){
                 validity = false;
             }
     }
+    updateColor();
     return validity;
 }
 
@@ -344,6 +348,10 @@ function errMessage(functionName, msg){
                 changeBGColor(f[0], "var(--textbox)");
                 $("#error-" + f[0]).text("");
             }
+        }
+        if(f[0]=="password_current" && hash(f[1])!=currentUser.passhash){
+            changeBGColor(f[0], "var(--warning-light)");
+            setDefaultErrorMessage(f[0]);
         }
     }
 }

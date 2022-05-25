@@ -16,22 +16,24 @@
         </nav>
     </div>
     <div class="banner_right">
-        <a id="userbutton"><img id="profile-pic" class="profilepic" src="../img/default/default_dp.png"></a>
+        <a id="userbutton"><img id="profile-pic" class="profilepic" src='{{#if currentUser.profilepic}}{{currentUser.profilepic}}{{else}}"../img/default/default_dp.png"{{/if}}'></a>
     </div>
 </header>
 
 <div class="card edit_post">
-    <form name="postForm" id="post-form" class="edit_post_form">
+    <form name="postForm" id="post-form" class="edit_post_form" author={{currentPost.author}} >
         <label>Post Content:</label>
-        <textarea name="post-content" id="post-content" class="edit_post_description"></textarea>
+        <textarea name="post-content" id="post-content" class="edit_post_description">{{currentPost.description}}</textarea>
         <label>Category:</label>
-        {{>categories}}
+        <select id="post-category" name="post-category" class="post_category" value="{{currentPost.category}}"> <!--Same categories from Shopee-->
+            {{>category_options}}
+        </select>
         <label>Link Label:</label>
-        <input id="post-label" name="post-label" type="text" class="textfield">
+        <input id="post-label" name="post-label" type="text" class="textfield" value="{{currentPost.label}}">
         <label>Link:</label>
-        <input id="post-link" name="post-link" type="text" class="textfield">
+        <input id="post-link" name="post-link" type="text" class="textfield" value="{{currentPost.link}}">
         <label>Image:</label>
-        <img id="post-image" class="edit_post_image" src="" alt="" style="display:none;">
+        <img id="post-image" class="edit_post_image" src='{{#if currentPost.imgurl}}{{currentPost.imgurl}}{{else}}../img/default/imagenotfound.png{{/if}}' alt="">
         <input id="post-img-select" name="post-img-select" type="file" accept="image/*"/>
         <div class="interact">
             <input id="save-post-btn" type="button" class="button" value="Save">
@@ -40,3 +42,7 @@
         </div>
     </form>
 </div>
+
+<script>
+    currentPost = {{{currentPostJSON}}}
+</script>

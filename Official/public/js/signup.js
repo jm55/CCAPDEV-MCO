@@ -14,9 +14,10 @@ var submitClicked = false;
         updateColor();
         if(validateSignupInputs()){
             p = createUser();
-            console.log("New User Object: ");
-            console.log(p);
-            window.location.href = "/home";
+            
+            //UPLOAD HERE
+
+
         }
     });
     $("#login-btn").click(()=>{

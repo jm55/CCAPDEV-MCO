@@ -19,14 +19,7 @@ $(document).ready(()=>{
     });
     $("#logout-btn").click(()=>{
         console.log("#logout-btn clicked");
-        if(logout(currentUser)){
-            console.log("logOut() returned true");
-            window.location.href = "/login";
-        }
-        else{
-            console.log("logOut() returned false");
-            return null;
-        }
+        window.location.href = "/logout";
     });
 
     $("#categories").on("change", (e)=>{

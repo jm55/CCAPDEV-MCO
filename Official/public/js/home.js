@@ -61,12 +61,9 @@ function submitComment(id, posthash){
 }
 
 function submitPost(post){
-    const jsonPost = JSON.stringify(post);
-    console.log(post);
-    console.log(jsonPost);
-    fetch("/home/post",{
+    fetch("/post/new",{
         method: "POST",
-        body: jsonPost,
+        body: JSON.stringify(post),
         headers:{
             "Content-Type": "application/json"
         }

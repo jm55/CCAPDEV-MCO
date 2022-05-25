@@ -5,15 +5,13 @@
 <script src="../js/home.js"></script>
 
 <header class="card_brand_banner">
-    <div class="upper_banner">
-        <div class="my_account">
-            <span><a id="userbutton"><img id="profile-pic" class="profilepic" src='{{#if currentUser.profilepic}}{{currentUser.profilepic}}{{else}}"../img/default/default_dp.png"{{/if}}' alt="User Profile Picture"></a></span>
-            <span id="userfullname"> {{fullName currentUser.fname currentUser.mname currentUser.lname}} </span>
-            <span> | </span>
-            <span> <a href="" id="myaccount">My Account</a> </span>
-            <span> | </span>
-            <span> <a href="" id="logout-btn">Logout</a> </span>
-        </div>
+    <div class="upper_banner my_account">
+        <span><a id="userbutton"><img id="profile-pic" class="profilepic" src='{{#if currentUser.profilepic}}{{currentUser.profilepic}}{{else}}"../img/default/default_dp.png"{{/if}}' alt="User Profile Picture"></a></span>
+        <span id="userfullname"> {{fullName currentUser.fname currentUser.mname currentUser.lname}} </span>
+        <span> | </span>
+        <span> <a href="/profile" id="myaccount">My Account</a> </span>
+        <span> | </span>
+        <span> <a href="/logout" id="logout-btn">Logout</a> </span>
     </div>
     <div class="lower_banner">
         <span class="span_banner-title">
@@ -66,23 +64,25 @@
                 <!-- POST FOOTER: CONTAINS CONTROLS FOR USER INTERACTION TO POST-->
                 <div class="post_footer">
                     <div class="likes">
-                        <p class="likecounter"><!--LIKES HERE--></p>
-                        <p class="post_timedate"><!--POST DATE-TIME HERE--></p>
+                        <p class="likecounter">{{likes this.likes}}</p>
+                        <p class="post_timedate">Posted: {{simpleDateTime this.datetime}}</p>
                     </div>
                     <form class="interact" id="interact#{{this.posthash}}" name="interact#{{this.posthash}}">
                         <input type="button" class="button" id="like-button" value="Like" onclick="submitLike({{../currentUser.userId}},{{this.posthash}})"> <!--https://stackoverflow.com/a/13645315-->
                         <input type="button" class="button" id="share-button" value="Share" onclick="submitShare({{../currentUser.userId}},{{this.posthash}})">
                         <input type="button" class="button" id="report-button" value="Report" onclick="submitReport({{../currentUser.userId}},{{this.posthash}})">
                         <input type="text" class="textfield comment_textfield">
-                        <input type="submit" class="button" value="Comment" onclick="submitComment({{../currentUser.userId}},{{this.posthash}})"/>
+                        <input type="button" class="button" value="Comment" onclick="submitComment({{../currentUser.userId}},{{this.posthash}})"/>
                     </form>
                     <div class="comment_list">
                         <label>Comments</label>
+                        {{#comments}}
                         <div class="comment_div"> <!--SINGLE COMMENT BLOCK - REPETITIVE-->
-                            <a href="" class="username"><!--COMMENTER USERNAME HERE--></a><!--BUILD HREF VALUE AT JS BASED ON COMMENT OBJECT DATA--->
-                            <p><!--COMMENT HERE--></p> <!--BUILD TEXT VALUE AT JS BASED ON COMMENT OBJECT DATA--->
-                            <p class="comment-timedate"><!--COMMENT DATETIME HERE--></p><!--BUILD TEXT VALUE AT JS BASED ON COMMENT DATETIME DATA--->
+                            <a href="/user/{{username}}" class="username">{{username}}</a><!--BUILD HREF VALUE AT JS BASED ON COMMENT OBJECT DATA--->
+                            <p>{{text}}</p> <!--BUILD TEXT VALUE AT JS BASED ON COMMENT OBJECT DATA--->
+                            <p class="comment-timedate">{{simpleDateTime datetime}}</p><!--BUILD TEXT VALUE AT JS BASED ON COMMENT DATETIME DATA--->
                         </div>
+                        {{/comments}}
                     </div>
                 </div>
             </div>
