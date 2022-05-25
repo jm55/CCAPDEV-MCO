@@ -1,22 +1,19 @@
-<link rel="stylesheet" href="../css/post.css">
-<link rel="stylesheet" href="../css/profile.css">
-<script src="../js/banner.js"></script>
-<script src="../js/post.js"></script>
+<link rel="stylesheet" href="/css/post.css">
+<link rel="stylesheet" href="/css/profile.css">
+<script src="/js/banner.js"></script>
+<script src="/js/post.js"></script>
 
 <header class="card brand_banner">
     <div class="banner_left">
         <p class="banner_title"><a id="logo-btn" href="/">Budol Finds</a></p>
         <nav class="menu">
             <button id="home-btn" class="menu_button">Home</button>
-            {{>categories}}
-            <input id="search-txt" name="search-txt" class="textfield" />
-            <button id="search-btn" class="menu_button">Search</button>
             <button id="account-settings-btn" class="menu_button">Settings</button>
             <button id="logout-btn" class="menu_button">Logout</button>
         </nav>
     </div>
     <div class="banner_right">
-        <a id="userbutton"><img id="profile-pic" class="profilepic" src='{{#if currentUser.profilepic}}{{currentUser.profilepic}}{{else}}"../img/default/default_dp.png"{{/if}}'></a>
+        <a id="userbutton"><img id="profile-pic" class="profilepic" src={{#if currentUser.profilepic}}{{currentUser.profilepic}}{{else}}"../img/default/default_dp.png"{{/if}}></a>
     </div>
 </header>
 
@@ -25,9 +22,7 @@
         <label>Post Content:</label>
         <textarea name="post-content" id="post-content" class="edit_post_description">{{currentPost.description}}</textarea>
         <label>Category:</label>
-        <select id="post-category" name="post-category" class="post_category" value="{{currentPost.category}}"> <!--Same categories from Shopee-->
-            {{>category_options}}
-        </select>
+        {{>post-category}}
         <label>Link Label:</label>
         <input id="post-label" name="post-label" type="text" class="textfield" value="{{currentPost.label}}">
         <label>Link:</label>

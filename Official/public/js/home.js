@@ -39,29 +39,69 @@ $(document).ready(()=>{
     });
 
     $("#new-post-category").on("change", (e)=>{
+        // @ts-ignore
         var cat = document.getElementById("new-post-category").value;
         console.log("new post category: " + cat);
     });
 });
 
 function submitLike(id, posthash){
-    console.log("Like: " + posthash + " from " + id); 
+    console.log("Like: " + posthash + " from " + id);
+    fetch("/home/like",{
+        headers:{
+            "Content-Type": "application/json"
+        }
+    }).then((res) => {
+        if (res.status >= 200 && res.status < 300) {// SUCCESS
+            console.log("Like " + posthash + " success");
+        } else {// ERROR
+            console.log("response error: " + res.status);
+        }
+    }).catch((error) => {
+        console.error(error);
+    });
 }
 
 function submitShare(id, posthash){
-    console.log("Share: " + posthash + " from " + id); 
+    console.log("Share: " + posthash + " from " + id);
 }
 
 function submitReport(id, posthash){
     console.log("Report: " + posthash + " from " + id); 
+    fetch("/home/Report",{
+        headers:{
+            "Content-Type": "application/json"
+        }
+    }).then((res) => {
+        if (res.status >= 200 && res.status < 300) {// SUCCESS
+            console.log("Report " + posthash + " success");
+        } else {// ERROR
+            console.log("response error: " + res.status);
+        }
+    }).catch((error) => {
+        console.error(error);
+    }); 
 }
 
 function submitComment(id, posthash){
-    console.log("Comment: " + posthash + " from " + id); 
+    console.log("Comment: " + posthash + " from " + id);
+    fetch("/home/comment",{
+        headers:{
+            "Content-Type": "application/json"
+        }
+    }).then((res) => {
+        if (res.status >= 200 && res.status < 300) {// SUCCESS
+            console.log("Comment " + posthash + " success");
+        } else {// ERROR
+            console.log("response error: " + res.status);
+        }
+    }).catch((error) => {
+        console.error(error);
+    });
 }
 
 function submitPost(post){
-    fetch("/post/new",{
+    fetch("/home/post",{
         method: "POST",
         body: JSON.stringify(post),
         headers:{

@@ -15,7 +15,7 @@ $(document).ready(()=>{
     });
     $("#account-settings-btn").click(()=>{
         console.log("#account-settings-btn clicked");
-        window.location.href = "/profile_settings"
+        window.location.href = "/profile/settings"
     });
     $("#logout-btn").click(()=>{
         console.log("#logout-btn clicked");
@@ -38,11 +38,3 @@ $(document).ready(()=>{
         }
     });
 });
-
-/**
- * Logout protocols
- * @returns Return true if successfully logged out, false if otherwise.
- */
-function logout(currentUser){
-    return true;
-}

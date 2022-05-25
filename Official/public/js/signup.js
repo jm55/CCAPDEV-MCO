@@ -9,15 +9,10 @@ var submitClicked = false;
         e.preventDefault();
         
         submitClicked = true;
-        p = null // User object
         
         updateColor();
         if(validateSignupInputs()){
-            p = createUser();
-            
-            //UPLOAD HERE
-
-
+            makeProfile(saveProfile())
         }
     });
     $("#login-btn").click(()=>{
@@ -58,6 +53,58 @@ FUNCTION SPECIFIC METHODS
 ===================================================================================
 */
 
+function makeProfile(profile){
+    console.log(profile);
+    fetch("/profile_settings/update",{
+        method: "POST",
+        body: JSON.stringify(profile),
+        headers:{
+            "Content-Type": "application/json"
+        }
+    }).then((res) => {
+        if (res.status >= 200 && res.status < 300) {// SUCCESS
+            window.location.href = '/profile';
+        } else {// ERROR
+            console.log("response error: " + res.status);
+        }
+    }).catch((error) => {
+        console.error(error);
+    });
+}
+
+function saveProfile(){    
+    if(validateProfileInputs()){
+        var updatedUser = null;
+        var username = document.getElementById("username").value;
+        var email = document.getElementById("email").value;
+        var fname = document.getElementById("fname").value;
+        var mname = document.getElementById("mname").value;
+        var lname = document.getElementById("lname").value;
+        var gender = document.getElementById("gender").value;
+        var bio = document.getElementById("bio").value;
+        
+        var profilepic = getTempURL(getInputFile("profilepic-select"));
+        
+        var password = "";
+        if(document.getElementById("password_b").value.length > 0)
+            password = hash(document.getElementById("password_b").value); //RECOMMENDED TO BE IN HASH
+        else
+            password = hash(document.getElementById("password_current").value); //RECOMMENDED TO BE IN HASH
+    
+        var userid = hash(username+password+new Date()); //TEMPORARY USERID CREATION BUT SHALL BE REPLACED WITH EITHER BCRYPT OR MONGODB _id.
+
+        updatedUser = { userId: String(userid), username:username, password:password, 
+                        email:email, fname:fname, mname:mname, 
+                        lname:lname, gender:gender, bio:bio, 
+                        profilepic:profilepic};
+    
+        updateProfile(updatedUser);
+    }else{
+        console.log("inputs missing");
+    }
+}
+
+
 /**
  * Refreshes displayed User picture if file is selected; Uses tempURL/blobURL as placeholder for file
  */
@@ -72,25 +119,6 @@ function refreshDP(){
         errMessage("refreshDP", "Error with file");
     }
         
-}
-
-/**
- * Creates User object based on inputs.
- * Call this only after validating if inputs are valid.
- * @returns User object with the inputs inputted by the user.
- */
-function createUser(){
-    let username = document.getElementById("username").value;
-    let password = hash(document.getElementById("password_b").value); //RECOMMENDED TO BE IN HASH
-    let email = document.getElementById("email").value;
-    let fname = document.getElementById("fname").value;
-    let mname = document.getElementById("mname").value;
-    let lname = document.getElementById("lname").value;
-    let gender = document.getElementById("gender").value;
-    let bio = document.getElementById("bio").value;
-    let profilepic = getTempURL(getInputFile("profilepic-select")); //TEMPORARILY USING BLOBURL
-
-    return new User(username,password,email,fname, mname, lname, gender,bio, profilepic);
 }
 
 /**

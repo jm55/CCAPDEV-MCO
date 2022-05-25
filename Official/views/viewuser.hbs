@@ -1,34 +1,40 @@
-<link rel="stylesheet" href="/css/home.css">
 <link rel="stylesheet" href="/css/post.css">
+<link rel="stylesheet" href="/css/profile.css">
+<link rel="stylesheet" href="/css/home.css">
 
 <script src="/js/banner.js"></script>
-<script src="/js/home.js"></script>
+<script src="/js/profile.js"></script>
 
-<header class="card_brand_banner">
-    <div class="upper_banner my_account">
-        <span><a id="userbutton"><img id="profile-pic" class="profilepic" src='{{#if currentUser.profilepic}}{{currentUser.profilepic}}{{else}}"/img/default/default_dp.png"{{/if}}' alt="User Profile Picture"></a></span>
-        <span id="userfullname"> {{fullName currentUser.fname currentUser.mname currentUser.lname}} </span>
-        <span> | </span>
-        <span> <a href="/profile" id="myaccount">My Account</a> </span>
-        <span> | </span>
-        <span> <a href="/logout" id="logout-btn">Logout</a> </span>
+<header class="card brand_banner">
+    <div class="banner_left">
+        <p class="banner_title"><a id="logo-btn">Budol Finds</a></p>
+        <nav class="menu">
+            <button id="home-btn" class="menu_button">Home</button>
+            {{>menu_categories}}
+            <input id="search-txt" name="search-txt" class="textfield" />
+            <button id="search-btn" class="menu_button">Search</button>
+            <button id="account-settings-btn" class="menu_button">Settings</button>
+            <button id="logout-btn" class="menu_button">Logout</button>
+        </nav>
     </div>
-    <div class="lower_banner">
-        <span class="span_banner-title">
-            <p class="banner_title"><a id="logo-btn" href="/">Budol Finds</a></p> <!--POINTS TO INDEX-->
-        </span>
-        <span class="span_search-bar"><div class="search_bar">
-            <nav class="menu">
-                <input id="search-txt" name="search-txt" class="textfield" />
-                {{>menu_categories}}
-                <button id="search-btn" class="menu_button">Search</button>                       
-        </div></span>
+    <div class="banner_right">
+        <a id="userbutton"><img id="profile-pic" class="profilepic" src='{{#if currentUser.profilepic}}{{currentUser.profilepic}}{{else}}"../img/default/default_dp.png"{{/if}}'></a>
     </div>
 </header>
 
 <div class="container">
-    
-    {{>new_post}}
+
+    <div class="card new_post" style="display:grid;">
+        <h1>{{targetUser.username}}</h1>
+        <img style="max-width: 7    0% !important; margin-left: auto; margin-right: auto;" src="{{targetUser.profilepic}}">
+        <div>
+            <p>Post Count:</p>
+            <h2>{{postCount}}</h2>
+            <br>
+            <p>Report Count:</p>
+            <h2>{{reportCount}}</h2>
+        </div>
+    </div>
 
     <div class="timeline">
         {{#if posts}}  

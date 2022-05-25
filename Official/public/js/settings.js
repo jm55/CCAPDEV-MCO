@@ -54,15 +54,6 @@ $(document).ready(()=>{
     });
 });
 
-
-/*
-===================================================================================
-
-FUNCTION SPECIFIC METHODS
-
-===================================================================================
-*/
-
 function updateProfile(profile){
     console.log(profile);
     fetch("/profile_settings/update",{

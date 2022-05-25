@@ -34,18 +34,20 @@ $(document).ready(()=>{
     });
 });
 
-function submitEditedPost(profile){
-    console.log(profile);
-    fetch("/post/edit",{
+function submitEditedPost(post){
+    console.log(post);
+    var fetchURL = "/post/" + currentPost.posthash + "/save";
+    fetch(fetchURL,{
         method: "POST",
-        body: JSON.stringify(profile),
+        body: JSON.stringify(post),
         headers:{
             "Content-Type": "application/json"
         }
     }).then((res) => {
         if (res.status >= 200 && res.status < 300) {// SUCCESS
-            window.location.href = '/post';
+            window.location.href = '/profile';
         } else {// ERROR
+            alert("Error saving post, please try again.");
             console.log("response error: " + res.status);
         }
     }).catch((error) => {
@@ -65,7 +67,7 @@ function savePost(){
     if(URL)
         p['imgurl'] = URL; //TEMPORARILY USING BLOBURL
     else
-        p['imgurl'] = currentPost.imgurl;
+        p['imgurl'] = currentPost.imgurl; //Refers to currentPostJSON from post.hbs
 
     p['label'] = document.getElementById("post-label").value;
     p['link'] = document.getElementById("post-link").value;

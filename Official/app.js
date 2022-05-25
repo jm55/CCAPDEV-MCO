@@ -30,15 +30,28 @@ app.set("view cache", false);
 app.use(express.json());
 
 //Routers
-import rootNav from './router/nav.js';
 import postNav from './router/posts.js';
+import logNav from './router/log.js';
+import signupNav from './router/signup.js';
+import homeNav from './router/home.js';
+import profileNav from './router/profile.js';
+
 
 //Use Routers
-app.use(rootNav);
+app.use(homeNav);
 app.use(postNav);
+app.use(logNav);
+app.use(signupNav);
+app.use(profileNav);
 
 //DB
 import { connectToServer } from './db/conn.js';
+
+//Index
+app.get('/', (req, res)=>{
+    console.log(req.url);
+    res.redirect('/login');
+});
 
 //404
 app.use((req, res, err) => {

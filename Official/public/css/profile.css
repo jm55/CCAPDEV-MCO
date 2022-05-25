@@ -84,10 +84,10 @@ html{
 }
 
 #profile-pic{
-    margin: auto auto auto auto;
-    position: relative;
-    width: inherit;
-    height: inherit;
+    margin: auto auto auto auto !important;
+    position: relative !important;
+    width: inherit !important;
+    height: inherit !important;
 }
 
 #userbutton{
