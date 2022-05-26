@@ -2,18 +2,17 @@ import express from 'express';
 
 const postNav = express.Router();
 
-//TEMPDB
-import * as utils from '../utils/utils.js';
+import * as tempDB from '../utils/tempDB.js';
 
 //View Specific Post
 postNav.get('/post/:posthash', (req, res)=>{ //TO UPGRADE THAT ALLOWS /post/<posthash> TO ACCESS SPECIFIC POSTS
     console.log(req.url);
     res.render("viewpost",  {
         title: "Post - Budol Finds",
-        currentUser: utils.currentUser,
-        postComments: utils.getCommentToPost(utils.currentPost.posthash),
-        currentPost: utils.currentPost, //SAMPLE POST
-        currentPostJSON: JSON.stringify(utils.currentPost),
+        currentUser: tempDB.currentUser,
+        postComments: tempDB.getCommentToPost(tempDB.currentPost.posthash),
+        currentPost: null,//tempDB.currentPost, //SAMPLE POST
+        currentPostJSON: JSON.stringify(tempDB.currentPost),
         helpers: {
             likes(size){return size.length;},
             simpleDateTime(dt){return dt.toLocaleDateString();}
@@ -24,11 +23,20 @@ postNav.get('/post/:posthash', (req, res)=>{ //TO UPGRADE THAT ALLOWS /post/<pos
 //Edit Post
 postNav.get('/post/:posthash/edit', (req, res)=>{ //TO UPGRADE THAT ALLOWS /post/<posthash> TO ACCESS SPECIFIC POSTS
     console.log(req.url);
+
+    /**
+     * DO USER CHECK HERE FIRST IF USER 'OWNS' THE POST.
+     * 
+     * SET currentPost TO POST IF USER 'OWNS' POST
+     * 
+     * SET currentPost TO NULL IF USER !'OWNS' POST
+     */
+
     res.render("post",  {
         title: "Post - Budol Finds",
-        currentUser: utils.currentUser, //SAMPLE USER
-        currentPost: utils.currentPost, //SAMPLE POST
-        currentPostJSON: JSON.stringify(utils.currentPost), //SAMPLE JSON POST
+        currentUser: tempDB.currentUser, //SAMPLE USER
+        currentPost: tempDB.currentPost, //SAMPLE POST
+        currentPostJSON: JSON.stringify(tempDB.currentPost), //SAMPLE JSON POST
     });
 });
 
@@ -53,3 +61,4 @@ postNav.post('/post/:posthash/save', (req, res)=>{ //TO UPGRADE THAT ALLOWS /pos
 });
 
 export default postNav;
+console.log("Router: posts.js loaded!");

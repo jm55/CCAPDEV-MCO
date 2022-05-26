@@ -1,7 +1,7 @@
 //.dotenv
 import 'dotenv/config';
 
-import * as conn from '../db/conn.js';
+import * as conn from '../../db/conn.js';
 
 conn.connectToServer((err)=>{
     if(err){

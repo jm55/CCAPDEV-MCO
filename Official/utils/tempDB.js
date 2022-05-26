@@ -1,4 +1,4 @@
-console.log("utils.js loaded");
+import {hash} from './hasher.js';
 
 function sortByDate(postList, descending=true){
     var sortedPosts = [];
@@ -104,8 +104,8 @@ function autoFill(){
     var comment14 = {author:users[2].userId, text:"Aw man, the black one is sold out...", posthash:"16334", datetime:new Date()};
     comments.push(comment1,comment2,comment3,comment4,comment5,comment6,comment7,comment8,comment9,comment10,comment11,comment12,comment13,comment14);
 
-    //automated nalang para mabilis
-    //Like structure: {author, posthash}
+    //Automated nalang para mabilis
+    //Like Structure: {author, posthash}
     for(var u of users){
         for(var p of posts){
             if(u.userId != p.author)
@@ -113,6 +113,10 @@ function autoFill(){
         }
     }
     likes.push({author: user0.userId, posthash: post1.posthash});
+
+
+    //Report Structure: {author, posthash, datetime}
+    //TODO
 
     posts = sortByDate(posts);
     
@@ -131,12 +135,14 @@ export var targetUser = users[1];
 export var currentPost = posts[9];
 
 export function getCommentToPost(posthash){
-    var comments = [];
+    console.log(posthash);
+    var filteredComments = [];
     for(var c of comments){
         if(c.posthash == posthash)
-            comments.push(c);
+            filteredComments.push(c);
     }
-    return comments;
+    console.log(filteredComments);
+    return filteredComments;
 }
 
 export function getPostsByAuthorID(id){
@@ -148,20 +154,5 @@ export function getPostsByAuthorID(id){
     return filteredPosts;
 }
 
-export function hash(s){
-    /* Simple hash function. */
-    var a = 1, c = 0, h, o;
-    if (s) {
-        a = 0;
-        /*jshint plusplus:false bitwise:false*/
-        for (h = s.length - 1; h >= 0; h--) {
-            o = s.charCodeAt(h);
-            a = (a<<6&268435455) + o + (o<<14);
-            c = a & 266338304;
-            a = c!==0?a^c>>21:a;
-        }
-    }
-    return String(a);
-}
-
 export default {};
+console.log("Module: tempDB.js loaded!");

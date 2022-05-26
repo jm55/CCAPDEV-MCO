@@ -21,3 +21,4 @@ signupNav.post('/signup/save', (req, res)=>{ //TO UPGRADE THAT ALLOWS /post/<pos
 });
 
 export default signupNav;
+console.log("Router: signup.js loaded!");

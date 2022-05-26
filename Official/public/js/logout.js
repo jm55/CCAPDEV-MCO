@@ -4,7 +4,6 @@
 $( document ).ready((e)=>{
     //Note who is logging out and when
     var logoutRequest = {userid: null, datetime: new Date()};
-
     console.log("Logging out...");
     fetch("/logout/out",{
         method: "POST",

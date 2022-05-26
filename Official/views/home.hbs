@@ -27,68 +27,14 @@
 </header>
 
 <div class="container">
-    
     {{>new_post}}
-
     <div class="timeline">
         {{#if posts}}  
         {{#each posts}}
-            <div id="" class="post card" posthash={{this.posthash}} author={{this.author}}> <!--BUILD ID BASED ON POST ID/HASH; SINGLE POST-CARD BLOCK - REPETITIVE-->
-                <!--POST HEADER: CONTAINS POSTEE INFORMATION-->
-                <div class="post_header">
-                    <a href="">
-                        <span class="post_user">
-                            <img src={{this.user.profilepic}} class="postdp profilepic" alt="Profile Picture"><p class="username">{{this.user.username}}</p> <!--BUILD IMG SRC AND P<USERNAME> TEXT BASED ON POST USER DATA-->
-                        </span>
-                    </a>
-                </div>
-                <!--POST CONTENT: ALL DATA ABOUT THE POST-->
-                <div class="post_content"> <!--SINGLE POST-CONTENT BLOCK - DON'T REPEAT-->
-                    <div class="post_description">
-                        <p class="post_description_text"> <!--BUILD TEXT BASED ON POST DESCRIPTION-->
-                            {{this.description}}
-                        </p>
-                    </div>
-                    <div class="post_list">
-                        <table class="post_table">
-                            <tr><a href="{{this.link}}">{{this.label}}</a></tr><!--BUILD TEXT AND A'S HREF BASED ON POST LINK DATA-->
-                            <tr>
-                                <td>Category:</td>
-                                <td class="item_category_link"><a href="/posts/{{this.category}}">{{this.category}}</a></td> <!--BUILD TEXT AND A'S HREF BASED ON POST CATEGORY DATA-->
-                            </tr>
-                        </table>
-                    </div>
-                    <div class="post_image_div"><img src={{this.imgurl}} class="post_image" alt="Post Picture" loading="lazy"></div> <!--BUILD SRC VALUE AT JS BASED ON POST IMG DATA/DIRECTORY-->
-                </div>
-
-                <!-- POST FOOTER: CONTAINS CONTROLS FOR USER INTERACTION TO POST-->
-                <div class="post_footer">
-                    <div class="likes">
-                        <p class="likecounter">{{likes this.likes}}</p>
-                        <p class="post_timedate">Posted: {{simpleDateTime this.datetime}}</p>
-                    </div>
-                    <form class="interact" id="interact#{{this.posthash}}" name="interact#{{this.posthash}}">
-                        <input type="button" class="button" id="like-button" value="Like" onclick="submitLike({{../currentUser.userId}},{{this.posthash}})"> <!--https://stackoverflow.com/a/13645315-->
-                        <input type="button" class="button" id="share-button" value="Share" onclick="submitShare({{../currentUser.userId}},{{this.posthash}})">
-                        <input type="button" class="button" id="report-button" value="Report" onclick="submitReport({{../currentUser.userId}},{{this.posthash}})">
-                        <input type="text" class="textfield comment_textfield">
-                        <input type="button" class="button" value="Comment" onclick="submitComment({{../currentUser.userId}},{{this.posthash}})"/>
-                    </form>
-                    <div class="comment_list">
-                        <label>Comments</label>
-                        {{#comments}}
-                        <div class="comment_div"> <!--SINGLE COMMENT BLOCK - REPETITIVE-->
-                            <a href="/user/{{username}}" class="username">{{username}}</a><!--BUILD HREF VALUE AT JS BASED ON COMMENT OBJECT DATA--->
-                            <p>{{text}}</p> <!--BUILD TEXT VALUE AT JS BASED ON COMMENT OBJECT DATA--->
-                            <p class="comment-timedate">{{simpleDateTime datetime}}</p><!--BUILD TEXT VALUE AT JS BASED ON COMMENT DATETIME DATA--->
-                        </div>
-                        {{/comments}}
-                    </div>
-                </div>
-            </div>
+            {{>postcards}}
         {{/each}}
         {{else}}
-            {{>no_postcard}}
+            {{>notfound}}
         {{/if}}
     </div> <!--END OF TIMELINE-->
 </div>

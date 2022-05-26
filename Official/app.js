@@ -11,6 +11,9 @@ import hbs from 'express-handlebars';
 //.dotenv
 import 'dotenv/config';
 
+//Favicon
+import favicon from 'serve-favicon';
+
 //localhost:8080 or localhost:3000
 const PORT = process.env.PORT || 3000;
 
@@ -29,13 +32,15 @@ app.set("view cache", false);
 //Enable JSON reading capability
 app.use(express.json());
 
+//Add favicon
+app.use(favicon(__dirname + '/public/img/favicons/favicon.ico'));
+
 //Routers
 import postNav from './router/posts.js';
 import logNav from './router/log.js';
 import signupNav from './router/signup.js';
 import homeNav from './router/home.js';
 import profileNav from './router/profile.js';
-
 
 //Use Routers
 app.use(homeNav);
@@ -46,6 +51,9 @@ app.use(profileNav);
 
 //DB
 import { connectToServer } from './db/conn.js';
+
+//TempDB
+import * as tempDB from './utils/tempDB.js';
 
 //Index
 app.get('/', (req, res)=>{
@@ -68,9 +76,7 @@ connectToServer((err)=>{
         process.exit;
     }
 
-    //Load Objects from DB
-
-    //DB Accessible
+    //DB ACCESSIBLE
     app.listen(PORT, ()=>{
         console.log("Budol Finds\nListening @ " + PORT);
     });

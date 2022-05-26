@@ -78,6 +78,10 @@ html{
     scroll-behavior: smooth;
 }
 
+body{
+    margin: 10px 0px 0px 0px !important;
+}
+
 footer{
     background-color: var(--primary);
     color: var(--text);
@@ -198,7 +202,7 @@ textarea:hover{
 
 .card{
     background-color: var(--primary);
-    border-radius: var(--border-radius);
+    border-radius: var(--border-radius) !important;
     padding-top: 1%;
     padding-bottom: 1%;
     padding-left: 2%;
@@ -223,15 +227,13 @@ textarea:hover{
     background-color: var(--primary);
     color: var(--text);
     position: relative;
-    margin-bottom: 10px;
+    margin: 20px 10px 20px 10px !important;
     max-height: fit-content !important;
     z-index: 100;
     display: flex;
     position: sticky;
     top: 0%;
     max-height: 6em;
-    padding-top: 20px;
-    padding-left: 20px;
 }
 
 .wsection{

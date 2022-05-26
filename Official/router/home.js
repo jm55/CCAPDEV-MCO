@@ -2,16 +2,15 @@ import express from 'express';
 
 const homeNav = express.Router();
 
-//FakeDB
-import * as utils from '../utils/utils.js';
+import * as tempDB from '../utils/tempDB.js';
 
 //Home
 homeNav.get('/home', (req, res)=>{
     console.log(req.url);
     res.render("home", {
         title: "Home - Budol Finds",
-        currentUser: utils.currentUser,
-        posts: utils.posts,
+        currentUser: tempDB.currentUser,
+        posts: tempDB.posts,
         helpers: {
             fullName(fname, mname, lname){return lname + ", " + fname + " " + mname.substring(0,1) + "."},
             simpleDateTime(dt){return dt.toLocaleDateString();},
@@ -74,3 +73,4 @@ homeNav.post('/home/comment', (req, res)=>{ //TO UPGRADE THAT ALLOWS /post/<post
 });
 
 export default homeNav;
+console.log("Router: home.js loaded!");

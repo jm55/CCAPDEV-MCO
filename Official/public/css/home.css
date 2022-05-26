@@ -7,16 +7,15 @@ body{
     width: 100vw;
 }
 
-header.card_brand_banner{
+.card_brand_banner{
     position: sticky;
+    width: 98%;
     margin-left: auto;
     margin-right: auto;
-    width: 98%;
-    border-radius: var(--border-radius) !important;
+    border-radius: var(--border-radius);
 }
 
 div.upper_banner{
-    margin-top: 10px;
     height: 20px;
     background-color: var(--background-dark);
 }
@@ -30,7 +29,7 @@ div.my_account{
     height: 20px;
     padding-left: 15px;
     padding-right: 15px;
-    padding-top: 5px;
+    padding-top: 10px;
 }
 
 #profile-pic{
@@ -68,11 +67,14 @@ div.container{
     /* margin-top: 10px; */
     display: flex;
     margin-top: 10px;
-    height: 88vh;
+    margin-bottom: 10px;
+    height: 85vh;
+    width: 90vw;
     background-color: #e5d7c4;
     max-width: 1400px;
     justify-content: center;
     margin-left: auto;
     margin-right: auto;
-    padding: 10px 10px 10px 10px;
+    padding: 10px 10px 0px 10px;
+    border-radius: var(--border-radius);
 }

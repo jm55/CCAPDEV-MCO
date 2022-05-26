@@ -2,9 +2,8 @@ import express from 'express';
 
 const profileNav = express.Router();
 
-//TEMPDB
-import * as utils from '../utils/utils.js';
-var targetUser = utils.users[1];
+import * as tempDB from '../utils/tempDB.js';
+var targetUser = tempDB.users[1];
 
 
 function buildTitle(username){
@@ -16,10 +15,10 @@ profileNav.get('/user/:userid', (req, res)=>{
     console.log(req.url);
     res.render("viewuser",  {
         title: buildTitle(targetUser.username),
-        currentUser: utils.currentUser, 
-        targetUser: utils.targetUser, //PERTAINS TO A TARGET USER'S ACCOUNT
-        posts: utils.getPostsByAuthorID(utils.targetUser.userId),
-        postCount: utils.getPostsByAuthorID(utils.targetUser.userId).length,
+        currentUser: tempDB.currentUser, 
+        targetUser: tempDB.targetUser, //PERTAINS TO A TARGET USER'S ACCOUNT
+        posts: tempDB.getPostsByAuthorID(tempDB.targetUser.userId),
+        postCount: tempDB.getPostsByAuthorID(tempDB.targetUser.userId).length,
         reportCount: 0,
         helpers: {
             fullName(fname, mname, lname){return lname + ", " + fname + " " + mname.substring(0,1) + "."},
@@ -38,10 +37,10 @@ profileNav.get('/user/:userid', (req, res)=>{
 profileNav.get('/profile', (req, res)=>{
     console.log(req.url);
     res.render("profile",  {
-        title: buildTitle(utils.currentUser.username),
-        currentUser: utils.currentUser, 
-        targetUser: utils.currentUser,
-        posts: utils.getPostsByAuthorID(utils.currentUser.userId),
+        title: buildTitle(tempDB.currentUser.username),
+        currentUser: tempDB.currentUser, 
+        targetUser: tempDB.currentUser,
+        posts: tempDB.getPostsByAuthorID(tempDB.currentUser.userId),
         helpers: {
             fullName(fname, mname, lname){return lname + ", " + fname + " " + mname.substring(0,1) + "."},
             simpleDateTime(dt){return dt.toLocaleDateString();},
@@ -60,16 +59,18 @@ profileNav.get('/profile/settings', (req, res)=>{
     console.log(req.url);
     res.render("profile_settings", {
         title: "Profile Settings - Budol Finds",
-        currentUser: utils.currentUser,
-        currentUserJSON: JSON.stringify(utils.currentUser),
+        currentUser: tempDB.currentUser,
+        currentUserJSON: JSON.stringify(tempDB.currentUser),
     });
 });
 
 //Profile Save
 profileNav.post('/profile/settings/save', (req, res)=>{
     console.log(req.url);
+    var body = req.body;
+    req.body = null;
     try{
-        console.log(req.body);
+        console.log(body);
 
         /**
          * UPDATE PROFILE HERE
@@ -86,3 +87,4 @@ profileNav.post('/profile/settings/save', (req, res)=>{
 });
 
 export default profileNav;
+console.log("Router: profile.js loaded!");

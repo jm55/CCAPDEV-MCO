@@ -16,3 +16,6 @@ export function connectToServer(callback){
 export function getDB(name = process.env.DB_NAME){
     return client.db(name);
 }
+
+export default {};
+console.log("Module conn.js loaded!");

@@ -65,8 +65,6 @@ function login(){
     var counter = checkEmpty(formData);
     var c = listEntries(formData);
 
-    //HASH C[1] IMMEDIATELY; USE BCRYPT FOR HASHING 
-
     if(counter === 0) //No empties
         auth(c[0], c[1]);
     else if(counter === 2){ //Both empties
