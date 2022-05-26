@@ -25,9 +25,9 @@ logNav.post('/login/in',(req, res)=>{
          * SEND 200 IF AUTHENTICATED
          * SEND 500 IF !AUTHENTICATED
          * 
-         * REGARDLESS, LOGOUT MUST BE MADE
+         * REGARDLESS, LOGIN MUST BE MADE
          */
-        res.sendStatus(400);
+        res.sendStatus(200);
     } catch(e) {
         res.statusMessage = e;
         res.sendStatus(400);
