@@ -45,7 +45,9 @@ logNav.post('/logout/out',(req, res)=>{
     console.log(req.socket.remoteAddress + ": " + req.url);
     try {
         /**
+         * 
          * VERIFY LOGOUT HERE
+         * 
          */
         console.log(req.body);
         res.sendStatus(200); //NOT SURE IF NEEDED

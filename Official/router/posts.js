@@ -39,13 +39,33 @@ postNav.get('/post/:posthash/edit', (req, res)=>{ //TO UPGRADE THAT ALLOWS /post
 });
 
 //Edit Post
-postNav.post('/post/:posthash/save', (req, res)=>{ //TO UPGRADE THAT ALLOWS /post/<posthash> TO ACCESS SPECIFIC POSTS
+postNav.patch('/post/:posthash/save', (req, res)=>{ //TO UPGRADE THAT ALLOWS /post/<posthash> TO ACCESS SPECIFIC POSTS
     console.log(req.socket.remoteAddress + ": " + req.url);
     try {
         console.log(req.body);
 
         /**
          * UPDATE POST HERE
+         * 
+         * RETURN 200 IF SUCCESSFUL
+         * RETURN 500 IF NOT SUCCESSFUL
+         */
+
+        res.sendStatus(300); //NOT SURE IF NEEDED
+    } catch(e) {
+        res.statusMessage = e;
+        res.sendStatus(400);
+    }
+});
+
+//Delete Post
+postNav.delete('/post/:posthash/delete', (req, res)=>{ //TO UPGRADE THAT ALLOWS /post/<posthash> TO ACCESS SPECIFIC POSTS
+    console.log(req.socket.remoteAddress + ": " + req.url);
+    try {
+        console.log(req.body);
+
+        /**
+         * DELETE POST HERE
          * 
          * RETURN 200 IF SUCCESSFUL
          * RETURN 500 IF NOT SUCCESSFUL

@@ -103,7 +103,6 @@ function submitComment(id, posthash){
     });
 }
 
-//TODO
 function submitPost(){
     console.log("Submit Post");
     var f = new FormData(document.forms.form);

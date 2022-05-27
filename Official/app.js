@@ -17,6 +17,9 @@ import 'dotenv/config';
 //Favicon
 import favicon from 'serve-favicon';
 
+//nocache
+import nocache from  'nocache';
+
 //localhost:8080 or localhost:3000
 const PORT = process.env.PORT || 3000;
 
@@ -31,6 +34,11 @@ app.engine("hbs", hbs.engine({extname: 'hbs'}));
 app.set("view engine", "hbs");
 app.set("views", "./views");
 app.set("view cache", false);
+
+//Further disable caching
+if(Number(process.env.PRODUCTION) == 0){
+    app.use(nocache());
+}
 
 //Enable JSON reading capability
 app.use(express.json());

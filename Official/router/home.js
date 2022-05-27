@@ -17,6 +17,11 @@ import fs from 'fs';
 //Home
 homeNav.get('/home', (req, res)=>{
     console.log(req.socket.remoteAddress + ": " + req.url);
+    /**
+     * 
+     * CHECK IF USER IS LOGGED IN. IF SO, THEN RENDER THE PAGE BELOW, ELSE THEN REDIRECT BACK TO LOGIN.
+     * 
+     */
     res.render("home", {
         title: "Home - Budol Finds",
         currentUser: tempDB.currentUser,
@@ -35,7 +40,12 @@ homeNav.get('/home', (req, res)=>{
 });
 
 //New Post
-homeNav.post('/home/post', mult.upload_post.single('imgselect'), (req, res)=>{ //TO UPGRADE THAT ALLOWS /post/<posthash> TO ACCESS SPECIFIC POSTS
+homeNav.post('/home/post', mult.upload_post.single('imgselect'), (req, res)=>{ 
+    /**
+     * 
+     * CHECK IF USER IS LOGGED IN. IF SO, THEN RENDER THE PAGE BELOW, ELSE THEN REDIRECT BACK TO LOGIN.
+     * 
+     */
     console.log(req.socket.remoteAddress + ": " + req.url);
     req.body["postHash"] = newPostHash();
     try{
@@ -57,7 +67,7 @@ homeNav.post('/home/post', mult.upload_post.single('imgselect'), (req, res)=>{ /
 });
 
 //Like Post
-homeNav.post('/home/like', (req, res)=>{ //TO UPGRADE THAT ALLOWS /post/<posthash> TO ACCESS SPECIFIC POSTS
+homeNav.post('/home/like', (req, res)=>{ 
     console.log(req.socket.remoteAddress + ": " + req.url);
     try{
         console.log(req.body);
@@ -69,7 +79,7 @@ homeNav.post('/home/like', (req, res)=>{ //TO UPGRADE THAT ALLOWS /post/<posthas
 });
 
 //Report Post
-homeNav.post('/home/report', (req, res)=>{ //TO UPGRADE THAT ALLOWS /post/<posthash> TO ACCESS SPECIFIC POSTS
+homeNav.post('/home/report', (req, res)=>{ 
     console.log(req.socket.remoteAddress + ": " + req.url);
     try{
         console.log(req.body);
@@ -81,7 +91,7 @@ homeNav.post('/home/report', (req, res)=>{ //TO UPGRADE THAT ALLOWS /post/<posth
 });
 
 //Report Post
-homeNav.post('/home/comment', (req, res)=>{ //TO UPGRADE THAT ALLOWS /post/<posthash> TO ACCESS SPECIFIC POSTS
+homeNav.post('/home/comment', (req, res)=>{ 
     console.log(req.socket.remoteAddress + ": " + req.url);
     try{
         console.log(req.body);

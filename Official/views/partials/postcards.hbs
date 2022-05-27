@@ -1,4 +1,4 @@
-<div id="" class="post card" posthash={{this.posthash}} author={{this.author}}> <!--BUILD ID BASED ON POST ID/HASH; SINGLE POST-CARD BLOCK - REPETITIVE-->
+<div id="" class="post card" postHash={{this.postHash}} author={{this.userId}}> <!--BUILD ID BASED ON POST ID/HASH; SINGLE POST-CARD BLOCK - REPETITIVE-->
     <!--POST HEADER: CONTAINS POSTEE INFORMATION-->
     <div class="post_header">
         <a href="/user/{{this.user.username}}">
@@ -32,12 +32,13 @@
             <p class="likecounter">{{likes this.likes}}</p>
             <p class="post_timedate">Posted: {{simpleDateTime this.datetime}}</p>
         </div>
-        <form class="interact" id="interact#{{this.posthash}}" name="interact#{{this.posthash}}">
-            <input type="button" class="button" id="like-button" value="Like" onclick="submitLike({{../currentUser.userId}},{{this.posthash}})"> <!--https://stackoverflow.com/a/13645315-->
-            <input type="button" class="button" id="share-button" value="Share" onclick="submitShare({{../currentUser.userId}},{{this.posthash}})">
-            <input type="button" class="button" id="report-button" value="Report" onclick="submitReport({{../currentUser.userId}},{{this.posthash}})">
+        <form class="interact" id="interact#{{this.postHash}}" name="interact#{{this.postHash}}" >
+            <input type="text" value='{{../currentUser.userId}}' id="interactUserId" name="interactUserId" style="display:none;">
+            <input type="button" class="button" id="like-button" value="Like" onclick="submitLike({{../currentUser.userId}},{{this.postHash}})"> <!--https://stackoverflow.com/a/13645315-->
+            <input type="button" class="button" id="share-button" value="Share" onclick="submitShare({{../currentUser.userId}},{{this.postHash}})">
+            <input type="button" class="button" id="report-button" value="Report" onclick="submitReport({{../currentUser.userId}},{{this.postHash}})">
             <input type="text" class="textfield comment_textfield">
-            <input type="button" class="button" value="Comment" onclick="submitComment({{../currentUser.userId}},{{this.posthash}})"/>
+            <input type="button" class="button" value="Comment" onclick="submitComment({{../currentUser.userId}},{{this.postHash}})"/>
         </form>
         <div class="comment_list">
             {{#comments}}

@@ -5,7 +5,7 @@
 
 <header class="card brand_banner">
     <div class="banner_left">
-        <p class="banner_title"><a id="logo-btn" href="/">Budol Finds</a></p>
+        <p class="banner_title"><a id="logo-btn" href="/home">Budol Finds</a></p>
         <nav class="menu">
             <button id="home-btn" class="menu_button">Home</button>
             <button id="account-settings-btn" class="menu_button">Settings</button>
@@ -18,24 +18,7 @@
 </header>
 
 <div class="card edit_post">
-    <form name="postForm" id="post-form" class="edit_post_form" author={{currentPost.author}} enctype="multipart/form-data">
-        <label>Post Content:</label>
-        <textarea name="post-content" id="post-content" class="edit_post_description">{{currentPost.description}}</textarea>
-        <label>Category:</label>
-        {{>post-category}}
-        <label>Link Label:</label>
-        <input id="post-label" name="post-label" type="text" class="textfield" value="{{currentPost.label}}">
-        <label>Link:</label>
-        <input id="post-link" name="post-link" type="text" class="textfield" value="{{currentPost.link}}">
-        <label>Image:</label>
-        <img id="post-image" class="edit_post_image" src='{{#if currentPost.imgurl}}{{currentPost.imgurl}}{{else}}../img/default/imagenotfound.png{{/if}}' alt="">
-        <input id="post-img-select" name="post-img-select" type="file" accept="image/*"/>
-        <div class="interact">
-            <input id="save-post-btn" type="button" class="button" value="Save">
-            <input id="delete-post-btn" type="button" class="button" value="Delete">
-            <input id="cancel-post-btn" type="button" class="button" value="Cancel">
-        </div>
-    </form>
+    {{>post_form}}
 </div>
 
 <script>

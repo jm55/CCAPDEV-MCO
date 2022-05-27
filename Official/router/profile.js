@@ -11,7 +11,7 @@ function buildTitle(username){
 }
 
 //User (other User Profile)
-profileNav.get('/user/:userid', (req, res)=>{
+profileNav.get('/user/:username', (req, res)=>{
     console.log(req.socket.remoteAddress + ": " + req.url);
     res.render("viewuser",  {
         title: buildTitle(targetUser.username),
@@ -64,8 +64,8 @@ profileNav.get('/profile/settings', (req, res)=>{
     });
 });
 
-//Profile Save
-profileNav.post('/profile/settings/save', (req, res)=>{
+//Save Profile
+profileNav.patch('/profile/settings/save', (req, res)=>{
     console.log(req.socket.remoteAddress + ": " + req.url);
     var body = req.body;
     req.body = null;
@@ -73,6 +73,26 @@ profileNav.post('/profile/settings/save', (req, res)=>{
         console.log(body);
         /**
          * UPDATE PROFILE HERE
+         * 
+         * RETURN 200 IF SUCCESSFUL
+         * RETURN 500 IF !SUCCESSFUL
+         */
+        res.sendStatus(200);
+    }catch(e){
+        res.statusMessage = e;
+        res.sendStatus(400);
+    }
+});
+
+//Delete Profile
+profileNav.delete('/profile/settings/delete', (req, res)=>{
+    console.log(req.socket.remoteAddress + ": " + req.url);
+    var body = req.body;
+    req.body = null;
+    try{
+        console.log(body);
+        /**
+         * DELETE PROFILE HERE
          * 
          * RETURN 200 IF SUCCESSFUL
          * RETURN 500 IF !SUCCESSFUL
