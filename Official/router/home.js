@@ -5,6 +5,15 @@ const homeNav = express.Router();
 //TempDB
 import * as tempDB from '../utils/tempDB.js';
 
+//Multer
+import * as mult from '../middleware/mult.js';
+
+//Creating postHashes
+import {newPostHash} from "../utils/hashIds.js";
+
+//File Renaming (cannot bypass Multer issue of not being able to name file prior to call.)
+import fs from 'fs';
+
 //Home
 homeNav.get('/home', (req, res)=>{
     console.log(req.socket.remoteAddress + ": " + req.url);
@@ -26,10 +35,20 @@ homeNav.get('/home', (req, res)=>{
 });
 
 //New Post
-homeNav.post('/home/post', (req, res)=>{ //TO UPGRADE THAT ALLOWS /post/<posthash> TO ACCESS SPECIFIC POSTS
+homeNav.post('/home/post', mult.upload_post.single('imgselect'), (req, res)=>{ //TO UPGRADE THAT ALLOWS /post/<posthash> TO ACCESS SPECIFIC POSTS
     console.log(req.socket.remoteAddress + ": " + req.url);
+    req.body["postHash"] = newPostHash();
     try{
-        console.log(req.body);
+        console.log(req.body); //<= Save Contents to Database
+
+        //Renames DP image
+        fs.rename('./public/img/post_img/'+(req.file.originalname), './public/img/post_img/ '+req.body["postHash"]+".webp", (e)=>{
+            if(e!=null)
+                console.log("NewPost Image error: " + e.message);
+            else
+                console.log("NewDP Image writing successful!");
+        });
+
         res.sendStatus(200);
     }catch(e){
         res.statusMessage = e;

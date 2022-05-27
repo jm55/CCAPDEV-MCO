@@ -12,6 +12,8 @@ var submitClicked = false;
         updateColor();
         if(validateSignupInputs())
             makeProfile();
+        else
+            alert("Please check your inputs again");
     });
     $("#login-btn").click(()=>{
         loginRedirect();
@@ -42,18 +44,8 @@ var submitClicked = false;
     });
 });
 
-
-/*
-===================================================================================
-
-FUNCTION SPECIFIC METHODS
-
-===================================================================================
-*/
-
 function makeProfile(){
     var fmd = new FormData(document.forms.signupform);
-    console.log(fmd);
     fetch("/signup/save",{
         method: "POST",
         body: fmd,
@@ -61,6 +53,7 @@ function makeProfile(){
         if (res.status >= 200 && res.status < 300) {// SUCCESS
             window.location.href = '/login'; //TODO
         } else {// ERROR
+            console.log(res.statusText);
             console.log("response error: " + res.status);
         }
     }).catch((error) => {
@@ -87,9 +80,8 @@ function refreshDP(){
 /**
  * Retrieves inputted signup data from signupform.
  */
-function validateSignupInputs(){
+function validateSignupInputs(){    
     var form = new FormData(document.forms.signupform);
-    form.append("userId", );
     console.log(form);
     var validity = true;
     var prevHash = "";
@@ -115,7 +107,6 @@ function validateSignupInputs(){
                 prevHash = hash(f[1]);
             }
             if(f[0] == "password_b"){
-                console.log(prevHash + ", " + hash(f[1]));
                 if(prevHash != hash(f[1])){
                     errMessage("validateSignupInputs", "Mismatched passwords");
                     $("#error-" + f[0]).text("* Passwords do not match");
@@ -212,14 +203,6 @@ function setDefaultErrorMessage(id){
     $("#error-" + id).text(errorMessage);
 }
 
-/*
-===================================================================================
-
-TRANSFERRABLE/GLOBAL METHODS
-
-===================================================================================
-*/
-
 /**
  * Counts the length value of an text.
  * @param limit (Optional) Text length limit. Default: 255 characters.
@@ -269,7 +252,7 @@ function errMessage(functionName, msg){
 }
 
 /**
- * Simple Hash Function (For Emulation Purposes)
+ * Simple Hash Function (For Checking Purposes only)
  * Reference: https://gist.github.com/iperelivskiy/4110988
  * @param {string} s String to be hashed
  * @returns Numeric hash string equivalent of s
@@ -307,6 +290,7 @@ function errMessage(functionName, msg){
         }
     }
 }
+
 /**
  * Changes the background color of an element, given its ID.
  * @param {string} id ID of target element
@@ -314,40 +298,4 @@ function errMessage(functionName, msg){
  */
 function changeBGColor(id, color){
     document.getElementById(id).style.backgroundColor = color;
-}
-
-/*
-===================================================================================
-
-OBJECTS
-
-===================================================================================
-*/
-
-
-/**
- * User Profile or User Object
- * @param {string} username Username
- * @param {string} password Password (Refers to password_b at signup and settings)
- * @param {string} email Email
- * @param {string} fname First Name
- * @param {string} mname Middle Name
- * @param {string} lname Last Name
- * @param {string} gender Gender
- * @param {string} bio Biography
- * @param {string} profilepic ProfilePic (string? or blob? NOT YET SURE)
- */
- const User = function(username, password="", email, fname, mname, lname, gender, bio="", profilepic=""){
-    this.username = username;
-    this.password = password;
-    this.email = email;
-    this.fname = fname;
-    this.mname = mname;
-    this.lname = lname;
-    this.gender = gender;
-    this.bio = bio;
-    this.profilepic = profilepic; //TO BE UPDATED TO POINT TO SERVER DIRECTORY AT '../img/dp/<username>.jpg'; BY CURRENT DESIGN, IF USERNAME WAS CHANGED, THE DP WILL BE SAVED AGAIN AS NEW FILE WITH NEW FILENAME (I.E. USERNAME)
-    this.formal_name = lname + ", " + fname + " " + mname.substring(0,1);
-
-    //IF A CLASS, ADD FUNCTION TO SAVE URL/BLOB AS FILE TO SERVER AT '../img/dp/<username>.jpg'
 }

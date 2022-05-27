@@ -7,7 +7,7 @@ var posts_storage  = multer.diskStorage({
         cb(null, './public/img/post_img');
     },
     filename: function(req, file, cb){
-        cb(null, req.body.filename + ".webp");
+        cb(null, file.originalname);
     }
 });
 
@@ -16,9 +16,11 @@ var dp_storage  = multer.diskStorage({
         cb(null, './public/img/dp');
     },
     filename: function(req, file, cb){
-        cb(null, req.body.filename + ".webp");
+        cb(null, file.originalname);
     }
 });
+
+export var buffer = multer();
 
 export var upload_post = multer({ storage: posts_storage });
 export var upload_dp = multer({ storage: dp_storage });

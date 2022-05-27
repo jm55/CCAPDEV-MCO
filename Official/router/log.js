@@ -2,7 +2,7 @@ import express from 'express';
 
 const logNav = express.Router();
 
-import * as hs from '../utils/hasher.js';
+import * as hs from '../utils/bcrypt.js';
 
 //Login
 logNav.get('/login', (req,res)=>{
