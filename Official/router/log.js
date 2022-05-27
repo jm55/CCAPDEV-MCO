@@ -6,13 +6,13 @@ import * as hs from '../utils/hasher.js';
 
 //Login
 logNav.get('/login', (req,res)=>{
-    console.log(req.url);
+    console.log(req.socket.remoteAddress + ": " + req.url);
     res.render("login", {title: "Login - Budol Finds"}); 
 });
 
 //Confirm Login
 logNav.post('/login/in',(req, res)=>{
-    console.log(req.url);
+    console.log(req.socket.remoteAddress + ": " + req.url);
     var body = req.body;
     req.body = null;
     body["password"] = hs.getHash(body["password"]); //in hash already
@@ -36,13 +36,13 @@ logNav.post('/login/in',(req, res)=>{
 
 //Logout
 logNav.get('/logout', (req, res)=>{ //TO UPGRADE THAT ALLOWS /post/<posthash> TO ACCESS SPECIFIC POSTS
-    console.log(req.url);
+    console.log(req.socket.remoteAddress + ": " + req.url);
     res.render("logout",{title: "Logging out..."});
 });
 
 //Confirm Logout
 logNav.post('/logout/out',(req, res)=>{
-    console.log(req.url);
+    console.log(req.socket.remoteAddress + ": " + req.url);
     try {
         /**
          * VERIFY LOGOUT HERE

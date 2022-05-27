@@ -6,7 +6,7 @@ import * as tempDB from '../utils/tempDB.js';
 
 //View Specific Post
 postNav.get('/post/:posthash', (req, res)=>{ //TO UPGRADE THAT ALLOWS /post/<posthash> TO ACCESS SPECIFIC POSTS
-    console.log(req.url);
+    console.log(req.socket.remoteAddress + ": " + req.url);
     res.render("viewpost",  {
         title: "Post - Budol Finds",
         currentUser: tempDB.currentUser,
@@ -22,8 +22,7 @@ postNav.get('/post/:posthash', (req, res)=>{ //TO UPGRADE THAT ALLOWS /post/<pos
 
 //Edit Post
 postNav.get('/post/:posthash/edit', (req, res)=>{ //TO UPGRADE THAT ALLOWS /post/<posthash> TO ACCESS SPECIFIC POSTS
-    console.log(req.url);
-
+    console.log(req.socket.remoteAddress + ": " + req.url);
     /**
      * DO USER CHECK HERE FIRST IF USER 'OWNS' THE POST.
      * 
@@ -31,7 +30,6 @@ postNav.get('/post/:posthash/edit', (req, res)=>{ //TO UPGRADE THAT ALLOWS /post
      * 
      * SET currentPost TO NULL IF USER !'OWNS' POST
      */
-
     res.render("post",  {
         title: "Post - Budol Finds",
         currentUser: tempDB.currentUser, //SAMPLE USER
@@ -42,7 +40,7 @@ postNav.get('/post/:posthash/edit', (req, res)=>{ //TO UPGRADE THAT ALLOWS /post
 
 //Edit Post
 postNav.post('/post/:posthash/save', (req, res)=>{ //TO UPGRADE THAT ALLOWS /post/<posthash> TO ACCESS SPECIFIC POSTS
-    console.log(req.url);
+    console.log(req.socket.remoteAddress + ": " + req.url);
     try {
         console.log(req.body);
 

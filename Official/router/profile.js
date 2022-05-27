@@ -12,7 +12,7 @@ function buildTitle(username){
 
 //User (other User Profile)
 profileNav.get('/user/:userid', (req, res)=>{
-    console.log(req.url);
+    console.log(req.socket.remoteAddress + ": " + req.url);
     res.render("viewuser",  {
         title: buildTitle(targetUser.username),
         currentUser: tempDB.currentUser, 
@@ -35,7 +35,7 @@ profileNav.get('/user/:userid', (req, res)=>{
 
 //Profile
 profileNav.get('/profile', (req, res)=>{
-    console.log(req.url);
+    console.log(req.socket.remoteAddress + ": " + req.url);
     res.render("profile",  {
         title: buildTitle(tempDB.currentUser.username),
         currentUser: tempDB.currentUser, 
@@ -56,7 +56,7 @@ profileNav.get('/profile', (req, res)=>{
 
 //Profile Settings
 profileNav.get('/profile/settings', (req, res)=>{
-    console.log(req.url);
+    console.log(req.socket.remoteAddress + ": " + req.url);
     res.render("profile_settings", {
         title: "Profile Settings - Budol Finds",
         currentUser: tempDB.currentUser,
@@ -66,19 +66,17 @@ profileNav.get('/profile/settings', (req, res)=>{
 
 //Profile Save
 profileNav.post('/profile/settings/save', (req, res)=>{
-    console.log(req.url);
+    console.log(req.socket.remoteAddress + ": " + req.url);
     var body = req.body;
     req.body = null;
     try{
         console.log(body);
-
         /**
          * UPDATE PROFILE HERE
          * 
          * RETURN 200 IF SUCCESSFUL
          * RETURN 500 IF !SUCCESSFUL
          */
-
         res.sendStatus(200);
     }catch(e){
         res.statusMessage = e;

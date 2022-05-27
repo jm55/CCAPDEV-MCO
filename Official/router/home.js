@@ -2,11 +2,12 @@ import express from 'express';
 
 const homeNav = express.Router();
 
+//TempDB
 import * as tempDB from '../utils/tempDB.js';
 
 //Home
 homeNav.get('/home', (req, res)=>{
-    console.log(req.url);
+    console.log(req.socket.remoteAddress + ": " + req.url);
     res.render("home", {
         title: "Home - Budol Finds",
         currentUser: tempDB.currentUser,
@@ -26,7 +27,7 @@ homeNav.get('/home', (req, res)=>{
 
 //New Post
 homeNav.post('/home/post', (req, res)=>{ //TO UPGRADE THAT ALLOWS /post/<posthash> TO ACCESS SPECIFIC POSTS
-    console.log(req.url);
+    console.log(req.socket.remoteAddress + ": " + req.url);
     try{
         console.log(req.body);
         res.sendStatus(200);
@@ -38,7 +39,7 @@ homeNav.post('/home/post', (req, res)=>{ //TO UPGRADE THAT ALLOWS /post/<posthas
 
 //Like Post
 homeNav.post('/home/like', (req, res)=>{ //TO UPGRADE THAT ALLOWS /post/<posthash> TO ACCESS SPECIFIC POSTS
-    console.log(req.url);
+    console.log(req.socket.remoteAddress + ": " + req.url);
     try{
         console.log(req.body);
         res.sendStatus(200);
@@ -50,7 +51,7 @@ homeNav.post('/home/like', (req, res)=>{ //TO UPGRADE THAT ALLOWS /post/<posthas
 
 //Report Post
 homeNav.post('/home/report', (req, res)=>{ //TO UPGRADE THAT ALLOWS /post/<posthash> TO ACCESS SPECIFIC POSTS
-    console.log(req.url);
+    console.log(req.socket.remoteAddress + ": " + req.url);
     try{
         console.log(req.body);
         res.sendStatus(200);
@@ -62,7 +63,7 @@ homeNav.post('/home/report', (req, res)=>{ //TO UPGRADE THAT ALLOWS /post/<posth
 
 //Report Post
 homeNav.post('/home/comment', (req, res)=>{ //TO UPGRADE THAT ALLOWS /post/<posthash> TO ACCESS SPECIFIC POSTS
-    console.log(req.url);
+    console.log(req.socket.remoteAddress + ": " + req.url);
     try{
         console.log(req.body);
         res.sendStatus(200);

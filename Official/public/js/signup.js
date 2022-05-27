@@ -7,13 +7,11 @@ var submitClicked = false;
 
     $("#signup-btn").click((e)=>{
         e.preventDefault();
-        
         submitClicked = true;
         
         updateColor();
-        if(validateSignupInputs()){
-            makeProfile(saveProfile())
-        }
+        if(validateSignupInputs())
+            makeProfile();
     });
     $("#login-btn").click(()=>{
         loginRedirect();
@@ -53,17 +51,15 @@ FUNCTION SPECIFIC METHODS
 ===================================================================================
 */
 
-function makeProfile(profile){
-    console.log(profile);
-    fetch("/profile_settings/update",{
+function makeProfile(){
+    var fmd = new FormData(document.forms.signupform);
+    console.log(fmd);
+    fetch("/signup/save",{
         method: "POST",
-        body: JSON.stringify(profile),
-        headers:{
-            "Content-Type": "application/json"
-        }
+        body: fmd,
     }).then((res) => {
         if (res.status >= 200 && res.status < 300) {// SUCCESS
-            window.location.href = '/profile';
+            window.location.href = '/login'; //TODO
         } else {// ERROR
             console.log("response error: " + res.status);
         }
@@ -71,39 +67,6 @@ function makeProfile(profile){
         console.error(error);
     });
 }
-
-function saveProfile(){    
-    if(validateProfileInputs()){
-        var updatedUser = null;
-        var username = document.getElementById("username").value;
-        var email = document.getElementById("email").value;
-        var fname = document.getElementById("fname").value;
-        var mname = document.getElementById("mname").value;
-        var lname = document.getElementById("lname").value;
-        var gender = document.getElementById("gender").value;
-        var bio = document.getElementById("bio").value;
-        
-        var profilepic = getTempURL(getInputFile("profilepic-select"));
-        
-        var password = "";
-        if(document.getElementById("password_b").value.length > 0)
-            password = hash(document.getElementById("password_b").value); //RECOMMENDED TO BE IN HASH
-        else
-            password = hash(document.getElementById("password_current").value); //RECOMMENDED TO BE IN HASH
-    
-        var userid = hash(username+password+new Date()); //TEMPORARY USERID CREATION BUT SHALL BE REPLACED WITH EITHER BCRYPT OR MONGODB _id.
-
-        updatedUser = { userId: String(userid), username:username, password:password, 
-                        email:email, fname:fname, mname:mname, 
-                        lname:lname, gender:gender, bio:bio, 
-                        profilepic:profilepic};
-    
-        updateProfile(updatedUser);
-    }else{
-        console.log("inputs missing");
-    }
-}
-
 
 /**
  * Refreshes displayed User picture if file is selected; Uses tempURL/blobURL as placeholder for file
@@ -123,10 +86,11 @@ function refreshDP(){
 
 /**
  * Retrieves inputted signup data from signupform.
- * @returns Key-Value pair of all IDs available from @var idlist;
  */
 function validateSignupInputs(){
     var form = new FormData(document.forms.signupform);
+    form.append("userId", );
+    console.log(form);
     var validity = true;
     var prevHash = "";
     for(f of form){
@@ -151,6 +115,7 @@ function validateSignupInputs(){
                 prevHash = hash(f[1]);
             }
             if(f[0] == "password_b"){
+                console.log(prevHash + ", " + hash(f[1]));
                 if(prevHash != hash(f[1])){
                     errMessage("validateSignupInputs", "Mismatched passwords");
                     $("#error-" + f[0]).text("* Passwords do not match");

@@ -18,7 +18,7 @@
 </header>
 
 <div class="card edit_post">
-    <form name="postForm" id="post-form" class="edit_post_form" author={{currentPost.author}} >
+    <form name="postForm" id="post-form" class="edit_post_form" author={{currentPost.author}} enctype="multipart/form-data">
         <label>Post Content:</label>
         <textarea name="post-content" id="post-content" class="edit_post_description">{{currentPost.description}}</textarea>
         <label>Category:</label>

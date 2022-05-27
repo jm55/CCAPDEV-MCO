@@ -8,6 +8,9 @@ const __dirname = path.dirname(__filename);
 import express from 'express';
 import hbs from 'express-handlebars';
 
+//File management
+import * as file from './middleware/mult.js';
+
 //.dotenv
 import 'dotenv/config';
 
@@ -52,17 +55,15 @@ app.use(profileNav);
 //DB
 import { connectToServer } from './db/conn.js';
 
-//TempDB
-import * as tempDB from './utils/tempDB.js';
-
 //Index
 app.get('/', (req, res)=>{
-    console.log(req.url);
+    console.log(req.socket.remoteAddress + ": " + req.url);
     res.redirect('/login');
 });
 
 //404
 app.use((req, res, err) => {
+    console.log(req.socket.remoteAddress + ": " + req.url + " [404]");
     res.render("err", {
         title: "Error - Budol Finds",
         errID: "404",
