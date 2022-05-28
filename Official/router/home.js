@@ -9,7 +9,7 @@ import * as tempDB from '../utils/tempDB.js';
 import * as mult from '../middleware/mult.js';
 
 //Creating postHashes
-import {newPostHash} from "../utils/hashIds.js";
+import {newPostHash} from "../middleware/hashIds.js";
 
 //File Renaming (cannot bypass Multer issue of not being able to name file prior to call.)
 import fs from 'fs';
@@ -25,6 +25,7 @@ homeNav.get('/home', (req, res)=>{
     res.render("home", {
         title: "Home - Budol Finds",
         currentUser: tempDB.currentUser,
+        currentUserId   : tempDB.currentUser.userId,
         posts: tempDB.posts,
         helpers: {
             fullName(fname, mname, lname){return lname + ", " + fname + " " + mname.substring(0,1) + "."},
@@ -39,6 +40,8 @@ homeNav.get('/home', (req, res)=>{
     });
 });
 
+import * as file from '../middleware/fs.js';
+
 //New Post
 homeNav.post('/home/post', mult.upload_post.single('imgselect'), (req, res)=>{ 
     /**
@@ -52,12 +55,7 @@ homeNav.post('/home/post', mult.upload_post.single('imgselect'), (req, res)=>{
         console.log(req.body); //<= Save Contents to Database
 
         //Renames DP image
-        fs.rename('./public/img/post_img/'+(req.file.originalname), './public/img/post_img/ '+req.body["postHash"]+".webp", (e)=>{
-            if(e!=null)
-                console.log("NewPost Image error: " + e.message);
-            else
-                console.log("NewDP Image writing successful!");
-        });
+        file.renamePostImg(req.file.originalname, req.body["postHash"]);
 
         res.sendStatus(200);
     }catch(e){

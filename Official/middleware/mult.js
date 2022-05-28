@@ -4,7 +4,7 @@ import multer from 'multer';
 
 var posts_storage  = multer.diskStorage({
     destination: function(req, file, cb){
-        cb(null, './public/img/post_img');
+        cb(null, process.env.POSTIMG_DIR);
     },
     filename: function(req, file, cb){
         cb(null, file.originalname);
@@ -13,7 +13,7 @@ var posts_storage  = multer.diskStorage({
 
 var dp_storage  = multer.diskStorage({
     destination: function(req, file, cb){
-        cb(null, './public/img/dp');
+        cb(null, process.env.DPIMG_DIR);
     },
     filename: function(req, file, cb){
         cb(null, file.originalname);

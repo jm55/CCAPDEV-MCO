@@ -13,13 +13,6 @@ OBJECTS
 
 /* MAIN */
 $(document).ready(()=>{
-    autoFill();
-    console.log("currentUser");
-    console.log(currentUser);
-    displayCurrentUser();
-
-    displayPosts(posts, comments);
-
     $("#search-btn").click((e)=>{
         e.preventDefault();
         var filteredPosts = filterBySearch(posts,getSearch());

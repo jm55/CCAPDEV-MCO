@@ -17,14 +17,14 @@
         </nav>
     </div>
     <div class="banner_right">
-        <a id="userbutton"><img id="profile-pic" class="profilepic" src='{{#if currentUser.profilepic}}{{currentUser.profilepic}}{{else}}"../img/default/default_dp.png"{{/if}}'></a>
+        <a id="userbutton"><img onerror="this.src='/img/default/imagenotfound.png'" loading='lazy'  id="profile-pic" class="profilepic" src='{{#if currentUser.profilepic}}{{currentUser.profilepic}}{{else}}"../img/default/default_dp.png"{{/if}}'></a>
     </div>
 </header>
 
 {{#if targetUser}}
     <div class="card" style="display: flex; width: 90%; margin: 0px auto 20px auto;">
         <span style="width: 15%; margin-right: 4%;">
-            <img style="max-height: 200px !important; margin-left: auto; margin-right: auto;" src="{{targetUser.profilepic}}">
+            <img onerror="this.src='/img/default/imagenotfound.png'" loading='lazy'  style="max-height: 200px !important; margin-left: auto; margin-right: auto;" src="{{targetUser.profilepic}}">
             <h1>{{targetUser.username}}</h1>
         </span>
         <span style="width: 16%; margin-right: 4%;">

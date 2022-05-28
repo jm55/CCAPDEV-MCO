@@ -1,9 +1,10 @@
+<script src="/js/postcards.js"></script>
 <div id="" class="post card" postHash={{this.postHash}} author={{this.userId}}> <!--BUILD ID BASED ON POST ID/HASH; SINGLE POST-CARD BLOCK - REPETITIVE-->
     <!--POST HEADER: CONTAINS POSTEE INFORMATION-->
     <div class="post_header">
         <a href="/user/{{this.user.username}}">
             <span class="post_user">
-                <img src={{this.user.profilepic}} class="postdp profilepic" alt="Profile Picture"><p class="username">{{this.user.username}}</p> <!--BUILD IMG SRC AND P<USERNAME> TEXT BASED ON POST USER DATA-->
+                <img onerror="this.src='/img/default/imagenotfound.png'" loading='lazy'  src={{this.user.profilepic}} class="postdp profilepic" alt="Profile Picture"><p class="username">{{this.user.username}}</p> <!--BUILD IMG SRC AND P<USERNAME> TEXT BASED ON POST USER DATA-->
             </span>
         </a>
     </div>
@@ -23,7 +24,8 @@
                 </tr>
             </table>
         </div>
-        <div class="post_image_div"><img src={{this.imgurl}} class="post_image" alt="Post Picture" loading="lazy"></div> <!--BUILD SRC VALUE AT JS BASED ON POST IMG DATA/DIRECTORY-->
+        <!--Added fix for img if it is not available: https://stackoverflow.com/a/13118956-->
+        <div class="post_image_div"><img onerror="this.src='/img/default/imagenotfound.png'" loading='lazy'  src={{this.imgurl}} class="post_image" alt="Post Picture" ></div> <!--BUILD SRC VALUE AT JS BASED ON POST IMG DATA/DIRECTORY-->
     </div>
 
     <!-- POST FOOTER: CONTAINS CONTROLS FOR USER INTERACTION TO POST-->
@@ -32,13 +34,12 @@
             <p class="likecounter">{{likes this.likes}}</p>
             <p class="post_timedate">Posted: {{simpleDateTime this.datetime}}</p>
         </div>
-        <form class="interact" id="interact#{{this.postHash}}" name="interact#{{this.postHash}}" >
-            <input type="text" value='{{../currentUser.userId}}' id="interactUserId" name="interactUserId" style="display:none;">
-            <input type="button" class="button" id="like-button" value="Like" onclick="submitLike({{../currentUser.userId}},{{this.postHash}})"> <!--https://stackoverflow.com/a/13645315-->
-            <input type="button" class="button" id="share-button" value="Share" onclick="submitShare({{../currentUser.userId}},{{this.postHash}})">
-            <input type="button" class="button" id="report-button" value="Report" onclick="submitReport({{../currentUser.userId}},{{this.postHash}})">
+        <form class="interact" id='interact#{{this.postHash}}' name="interact#{{this.postHash}}" >
+            <input type="button" class="button" id="like-button" value="Like" onclick="submitLike({{this.postHash}})"> <!--https://stackoverflow.com/a/13645315-->
+            <input type="button" class="button" id="share-button" value="Share" onclick="showShare({{this.postHash}})">
+            <input type="button" class="button" id="report-button" value="Report" onclick="submitReport({{this.postHash}})">
             <input type="text" class="textfield comment_textfield">
-            <input type="button" class="button" value="Comment" onclick="submitComment({{../currentUser.userId}},{{this.postHash}})"/>
+            <input type="button" class="button" value="Comment" onclick="submitComment({{this.postHash}})"/>
         </form>
         <div class="comment_list">
             {{#comments}}

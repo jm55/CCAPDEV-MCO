@@ -8,7 +8,7 @@ import * as mult from '../middleware/mult.js';
 import 'dotenv/config';
 
 //Creating UserIds
-import {newUserId} from "../utils/hashIds.js";
+import {newUserId} from "../middleware/hashIds.js";
 
 //Passwords and sht
 import bcrypt from 'bcrypt';
@@ -25,6 +25,8 @@ signupNav.get('/signup', (req,res)=>{
     res.render("signup", {title: "Sign up - Budol Finds"}); 
 });
 
+import * as file from '../middleware/fs.js';
+
 //Signup Save File
 signupNav.post('/signup/save', mult.upload_dp.single('profilepic-select'), (req, res, next)=>{ //TO UPGRADE THAT ALLOWS /post/<posthash> TO ACCESS SPECIFIC POSTS;
     console.log(req.socket.remoteAddress + ": " + req.url);
@@ -40,12 +42,7 @@ signupNav.post('/signup/save', mult.upload_dp.single('profilepic-select'), (req,
             try{
                 console.log(req.body); //<= Save Contents to Database
                 //Renames DP image
-                fs.rename('./public/img/dp/'+(req.file.originalname), './public/img/dp/ '+req.body["userId"]+".webp", (e)=>{
-                    if(e!=null)
-                        console.log("NewDP Image error: " + e.message);
-                    else
-                        console.log("NewDP Image writing successful!");
-                });
+                file.renameDP(req.file.originalname,req.body["userId"]);
                 res.sendStatus(200);
             }catch(e){
                 res.statusMessage = e;

@@ -6,7 +6,7 @@
 
 <header class="card_brand_banner">
     <div class="upper_banner my_account">
-        <span><a id="userbutton"><img id="profile-pic" class="profilepic" src='{{#if currentUser.profilepic}}{{currentUser.profilepic}}{{else}}"/img/default/default_dp.png"{{/if}}' alt="User Profile Picture"></a></span>
+        <span><a id="userbutton"><img onerror="this.src='/img/default/imagenotfound.png'" loading='lazy'  id="profile-pic" class="profilepic" src='{{#if currentUser.profilepic}}{{currentUser.profilepic}}{{else}}"/img/default/default_dp.png"{{/if}}' alt="User Profile Picture"></a></span>
         <span id="userfullname"> {{fullName currentUser.fname currentUser.mname currentUser.lname}} </span>
         <span> | </span>
         <span> <a href="/profile" id="myaccount">My Account</a> </span>
@@ -40,3 +40,6 @@
         {{/if}}
     </div> <!--END OF TIMELINE-->
 </div>
+<script>
+    userId = {{currentUserId}}
+</script>

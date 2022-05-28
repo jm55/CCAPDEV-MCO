@@ -60,9 +60,6 @@ app.use(logNav);
 app.use(signupNav);
 app.use(profileNav);
 
-//DB
-import { connectToServer } from './db/conn.js';
-
 //Index
 app.get('/', (req, res)=>{
     console.log(req.socket.remoteAddress + ": " + req.url);
@@ -79,13 +76,18 @@ app.use((req, res, err) => {
     });
 });
 
-connectToServer((err)=>{
+//DB
+import * as db from './db/conn.js';
+
+db.connectToServer((err)=>{
     if(err){
-        console.log(err);
+        console.error("Error occured connecting to server!");
+        console.error("Please check if you have installed MongoDB or have internet connection.");
+        console.error(err);
         process.exit;
     }
-
     //DB ACCESSIBLE
+    db.checkDB();
     app.listen(PORT, ()=>{
         console.log("Budol Finds\nListening @ " + PORT);
     });

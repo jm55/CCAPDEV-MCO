@@ -3,6 +3,7 @@ import express from 'express';
 const postNav = express.Router();
 
 import * as tempDB from '../utils/tempDB.js';
+import * as file from '../middleware/fs.js';
 
 //View Specific Post
 postNav.get('/post/:posthash', (req, res)=>{ //TO UPGRADE THAT ALLOWS /post/<posthash> TO ACCESS SPECIFIC POSTS

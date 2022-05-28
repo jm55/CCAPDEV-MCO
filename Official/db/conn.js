@@ -17,5 +17,14 @@ export function getDB(name = process.env.DB_NAME){
     return client.db(name);
 }
 
+const dbNames = ['users','reports','comments','posts','likes'];
+
+export function checkDB(){
+    getDB().stats().then((s)=>{
+        console.log("Servername: " + getDB().databaseName);
+        console.log("DB Collections: " + s.collections);
+    });
+}
+
 export default {};
 console.log("Module conn.js loaded!");

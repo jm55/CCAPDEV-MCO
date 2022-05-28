@@ -64,6 +64,8 @@ profileNav.get('/profile/settings', (req, res)=>{
     });
 });
 
+import * as file from '../middleware/fs.js';
+
 //Save Profile
 profileNav.patch('/profile/settings/save', (req, res)=>{
     console.log(req.socket.remoteAddress + ": " + req.url);
