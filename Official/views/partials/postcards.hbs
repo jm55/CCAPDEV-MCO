@@ -4,7 +4,7 @@
     <div class="post_header">
         <a href="/user/{{this.user.username}}">
             <span class="post_user">
-                <img onerror="this.src='/img/default/imagenotfound.png'" loading='lazy'  src={{this.user.profilepic}} class="postdp profilepic" alt="Profile Picture"><p class="username">{{this.user.username}}</p> <!--BUILD IMG SRC AND P<USERNAME> TEXT BASED ON POST USER DATA-->
+                <img onerror="this.src='/img/default/imagenotfound.webp'" loading='lazy'  src={{this.user.profilepic}} class="postdp profilepic" alt="Profile Picture"><p class="username">{{this.user.username}}</p> <!--BUILD IMG SRC AND P<USERNAME> TEXT BASED ON POST USER DATA-->
             </span>
         </a>
     </div>
@@ -25,7 +25,7 @@
             </table>
         </div>
         <!--Added fix for img if it is not available: https://stackoverflow.com/a/13118956-->
-        <div class="post_image_div"><img onerror="this.src='/img/default/imagenotfound.png'" loading='lazy'  src={{this.imgurl}} class="post_image" alt="Post Picture" ></div> <!--BUILD SRC VALUE AT JS BASED ON POST IMG DATA/DIRECTORY-->
+        <div class="post_image_div"><img onerror="this.src='/img/default/imagenotfound.webp'" loading='lazy'  src={{this.imgurl}} class="post_image" alt="Post Picture" ></div> <!--BUILD SRC VALUE AT JS BASED ON POST IMG DATA/DIRECTORY-->
     </div>
 
     <!-- POST FOOTER: CONTAINS CONTROLS FOR USER INTERACTION TO POST-->

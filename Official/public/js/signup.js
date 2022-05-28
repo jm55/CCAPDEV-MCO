@@ -71,7 +71,7 @@ function refreshDP(){
         $("#error-profilepic-select").text("");
     }
     else{
-        $("#profilepic").attr("src","../img/default/default_dp.png");
+        $("#profilepic").attr("src","../img/default/default_dp.webp");
         errMessage("refreshDP", "Error with file");
     }
         
