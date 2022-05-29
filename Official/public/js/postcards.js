@@ -7,6 +7,7 @@ function submitLike(posthash){
     body['userId'] = userId;
     body['postHash'] = posthash;
     body['datetime'] = new Date();
+    body['currentCount'] = document.getElementById('likeCounter'+ posthash).textContent.split(' ')[1];
 
     fetch("/post/like",{
         method:'POST',
@@ -41,11 +42,20 @@ function showShare(posthash){
 
 //TODO
 function submitReport(posthash){
-    console.log("Report: " + posthash + " from " + userId); 
-    fetch("/post/"+posthash+"/report",{
+    console.log("Report: " + posthash + " from " + userId);
+    //userId, posthash, datetime
+    var body = {};
+    body['userId'] = userId;
+    body['postHash'] = posthash;
+    body['datetime'] = new Date();
+    fetch("/post/report",{
+        method:'POST',
+        body: JSON.stringify(body),
         headers:{"Content-Type": "application/json"}
     }).then((res) => {
         if (res.status >= 200 && res.status < 300) {// SUCCESS
+            alert('Report has been sent!');
+            document.getElementById('report-button' + posthash).style.display = 'none';
             console.log("Report " + posthash + " success");
         } else {// ERROR
             console.log("response error: " + res.status);
@@ -54,6 +64,7 @@ function submitReport(posthash){
         console.error(error);
     }); 
 }
+
 
 //TODO
 function submitComment(posthash){
@@ -72,10 +83,36 @@ function submitComment(posthash){
     }).then((res) => {
         if (res.status >= 200 && res.status < 300) {// SUCCESS
             console.log("Comment " + posthash + " success");
+            var parent = document.getElementById('comments_div'+posthash);
+            console.log(parent);
+            var comment = buildComment(userId, body['text'], username, body['datetime']);
+            parent.insertBefore(comment, parent.childNodes[2]);
         } else {// ERROR
             console.log("response error: " + res.status);
         }
     }).catch((error) => {
         console.error(error);
     });
+}
+
+function buildComment(id, comment, username, datetime){
+    var div = document.createElement('div');
+    div.setAttribute('class', 'comment_div');
+    
+    var usernameA = document.createElement('a');
+    usernameA.setAttribute('href','/user/'+username);
+    usernameA.setAttribute('class','username');
+    usernameA.textContent = username;
+    div.appendChild(usernameA);
+
+    var textP = document.createElement('p');
+    textP.textContent = comment;
+    div.appendChild(textP);
+
+    var datetimeP = document.createElement('p');
+    datetimeP.setAttribute('class', 'comment-timedate');
+    datetimeP.textContent = datetime.toLocaleDateString();
+    div.appendChild(datetimeP);
+
+    return div;
 }

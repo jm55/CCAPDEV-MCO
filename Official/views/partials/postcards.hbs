@@ -31,7 +31,7 @@
     <!-- POST FOOTER: CONTAINS CONTROLS FOR USER INTERACTION TO POST-->
     <div class="post_footer">
         <div class="likes">
-            <p class="likecounter" id='likeCounter{{this.postHash}}''>{{{likes this.likes}}}: {{this.likes}}</p>
+            <p class="likecounter" id='likeCounter{{this.postHash}}'>{{{likes this.likes}}}: {{this.likes}}</p>
             <p class="post_timedate">Posted: {{simpleDateTime this.datetime}}</p>
         </div>
         <form class="interact" id='interact#{{this.postHash}}' name="interact#{{this.postHash}}" >
@@ -41,15 +41,17 @@
             <input type="text" id="comment#{{this.postHash}}" name="comment#{{this.postHash}}" class="textfield comment_textfield">
             <input type="button" class="button" value="Comment" onclick="submitComment('{{this.postHash}}')"/>
         </form>
-        <div class="comment_list">
-            {{#comments}}
-            <label>Comments</label>
-            <div class="comment_div"> <!--SINGLE COMMENT BLOCK - REPETITIVE-->
-                <a href="/user/{{username}}" class="username">{{username}}</a><!--BUILD HREF VALUE AT JS BASED ON COMMENT OBJECT DATA--->
-                <p>{{text}}</p> <!--BUILD TEXT VALUE AT JS BASED ON COMMENT OBJECT DATA--->
-                <p class="comment-timedate">{{simpleDateTime datetime}}</p><!--BUILD TEXT VALUE AT JS BASED ON COMMENT DATETIME DATA--->
-            </div>
-            {{/comments}}
+        {{#if comments}}
+        <div class="comment_list" id="comments_div{{this.postHash}}">
+            <label>Comments:</label>    
+                {{#comments}}
+                <div class="comment_div"> <!--SINGLE COMMENT BLOCK - REPETITIVE-->
+                    <a href="/user/{{username}}" class="username">{{username}}</a><!--BUILD HREF VALUE AT JS BASED ON COMMENT OBJECT DATA--->
+                    <p>{{text}}</p> <!--BUILD TEXT VALUE AT JS BASED ON COMMENT OBJECT DATA--->
+                    <p class="comment-timedate">{{simpleDateTime datetime}}</p><!--BUILD TEXT VALUE AT JS BASED ON COMMENT DATETIME DATA--->
+                </div>
+                {{/comments}}
         </div>
+        {{/if}}
     </div>
 </div>

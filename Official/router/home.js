@@ -17,7 +17,6 @@ homeNav.get('/home', (req, res)=>{
     res.render("home", {
         title: "Home - Budol Finds",
         currentUser: tempDB.currentUser,
-        currentUserId   : tempDB.currentUser.userId,
         //likes: tempDB.likes,
         posts: tempDB.posts,
         helpers: {

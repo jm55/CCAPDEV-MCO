@@ -21,7 +21,6 @@ postNav.get('/post/:posthash', (req, res)=>{ //TO UPGRADE THAT ALLOWS /post/<pos
     res.render("viewpost",  {
         title: "Post - Budol Finds",
         currentUser: tempDB.currentUser,
-        currentUserId: tempDB.currentUser.userId,
         likes: tempDB.likes,
         post: tempDB.currentPost, //SAMPLE POST
         postJSON: JSON.stringify(tempDB.currentPost),
@@ -131,7 +130,12 @@ postNav.post('/post/like', (req, res)=>{
          * 
          * SEND A JSON MESSAGE CONTAINING IF BUTTON IS LIKED OR NOT AND WHAT IS THE COUNTER FOR THE POSTHASH
          */
-        var countVal = 100; //RETRIEVE COUNT FROM SERVER
+        var countVal = req.body['currentCount'];
+        var increment = true; //CHECK REQUIREMENTS
+        if(increment)
+            countVal++;
+        else
+            countVal--;
         var count = format.pluralInator("Like", countVal) + ": " + countVal;
         var btn = "Liked";
         res.status(200).json({btn:btn,count:count});
@@ -146,7 +150,6 @@ postNav.post('/post/report', (req, res)=>{
     console.log("Request: " + req.socket.remoteAddress + ":" + req.socket.remotePort + " => " + req.url);
     try{
         console.log(req.body);
-
         res.sendStatus(200);
     }catch(e){
         res.statusMessage = e;
@@ -158,7 +161,7 @@ postNav.post('/post/report', (req, res)=>{
 postNav.post('/post/comment', (req, res)=>{ 
     console.log("Request: " + req.socket.remoteAddress + ":" + req.socket.remotePort + " => " + req.url);
     try{
-        console.log("Received Comment: " + req.body);
+        console.log(req.body);
         res.sendStatus(200);
     }catch(e){
         res.statusMessage = e;
