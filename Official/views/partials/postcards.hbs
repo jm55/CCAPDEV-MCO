@@ -31,15 +31,15 @@
     <!-- POST FOOTER: CONTAINS CONTROLS FOR USER INTERACTION TO POST-->
     <div class="post_footer">
         <div class="likes">
-            <p class="likecounter">{{likes this.likes}}</p>
+            <p class="likecounter" id='likeCounter{{this.postHash}}''>{{{likes this.likes}}}: {{this.likes}}</p>
             <p class="post_timedate">Posted: {{simpleDateTime this.datetime}}</p>
         </div>
         <form class="interact" id='interact#{{this.postHash}}' name="interact#{{this.postHash}}" >
-            <input type="button" class="button" id="like-button" value="Like" onclick="submitLike({{this.postHash}})"> <!--https://stackoverflow.com/a/13645315-->
-            <input type="button" class="button" id="share-button" value="Share" onclick="showShare({{this.postHash}})">
-            <input type="button" class="button" id="report-button" value="Report" onclick="submitReport({{this.postHash}})">
-            <input type="text" class="textfield comment_textfield">
-            <input type="button" class="button" value="Comment" onclick="submitComment({{this.postHash}})"/>
+            <input type="button" class="button" id="like-button{{this.postHash}}" value={{{btnLiked this.postHash}}} onclick="submitLike('{{this.postHash}}')"> <!--https://stackoverflow.com/a/13645315-->
+            <input type="button" class="button" id="share-button{{this.postHash}}" value="Share" onclick="showShare('{{this.postHash}}')">
+            <input type="button" class="button" id="report-button{{this.postHash}}" value="Report" onclick="submitReport('{{this.postHash}}')">
+            <input type="text" id="comment#{{this.postHash}}" name="comment#{{this.postHash}}" class="textfield comment_textfield">
+            <input type="button" class="button" value="Comment" onclick="submitComment('{{this.postHash}}')"/>
         </form>
         <div class="comment_list">
             {{#comments}}

@@ -2,8 +2,9 @@ import express from 'express';
 
 const postNav = express.Router();
 
-//TempDB
+//Utilities
 import * as tempDB from '../utils/tempDB.js';
+import * as format from '../utils/formatting.js'
 
 //Multer
 import * as mult from '../middleware/mult.js';
@@ -113,7 +114,20 @@ postNav.post('/post/like', (req, res)=>{
     console.log("Request: " + req.socket.remoteAddress + "=>" + req.url);
     try{
         console.log(req.body);
-        res.sendStatus(200);
+        /**
+         * SEND LIKE TO SERVER
+         * 
+         * CHECK IF LIKES CONTAIN THE SAME LIKE
+         * 
+         * IF REQ'S LIKE IS ALREADY THERE, DELETE THE LIKE FROM SERVER
+         * IF REQ'S LIKE IS NOT THERE, WRITE THE LIKE TO SERVER
+         * 
+         * SEND A JSON MESSAGE CONTAINING IF BUTTON IS LIKED OR NOT AND WHAT IS THE COUNTER FOR THE POSTHASH
+         */
+        var countVal = 100; //RETRIEVE COUNT FROM SERVER
+        var count = format.pluralInator("Like", countVal) + ": " + countVal;
+        var btn = "Liked";
+        res.status(200).json({btn:btn,count:count});
     }catch(e){
         res.statusMessage = e;
         res.sendStatus(400);
@@ -125,6 +139,7 @@ postNav.post('/post/report', (req, res)=>{
     console.log("Request: " + req.socket.remoteAddress + "=>" + req.url);
     try{
         console.log(req.body);
+
         res.sendStatus(200);
     }catch(e){
         res.statusMessage = e;
@@ -136,7 +151,7 @@ postNav.post('/post/report', (req, res)=>{
 postNav.post('/post/comment', (req, res)=>{ 
     console.log("Request: " + req.socket.remoteAddress + "=>" + req.url);
     try{
-        console.log(req.body);
+        console.log("Received Comment: " + req.body);
         res.sendStatus(200);
     }catch(e){
         res.statusMessage = e;

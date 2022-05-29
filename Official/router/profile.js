@@ -2,7 +2,9 @@ import express from 'express';
 
 const profileNav = express.Router();
 
+//Utilities
 import * as tempDB from '../utils/tempDB.js';
+import * as format from '../utils/formatting.js';
 var targetUser = tempDB.users[1];
 
 
@@ -21,13 +23,13 @@ profileNav.get('/user/:username', (req, res)=>{
         postCount: tempDB.getPostsByAuthorID(tempDB.targetUser.userId).length,
         reportCount: 0,
         helpers: {
-            fullName(fname, mname, lname){return lname + ", " + fname + " " + mname.substring(0,1) + "."},
-            simpleDateTime(dt){return dt.toLocaleDateString();},
-            likes(like){
-                if(like > 1)
-                    return "Likes: " + like;
-                else
-                    return "Like: " + like;
+            fullName(fname, mname, lname){return format.formalName(fname,mname,lname);},
+            simpleDateTime(dt){return format.simpleDateTime(dt);},
+            likes(like){return format.pluralInator('Like',like);},
+            btnLiked(postHash){
+                if(tempDB.isLiked(tempDB.currentUser.userId,postHash))
+                    return "Liked";
+                return "Like";
             }
         }
     });
@@ -42,13 +44,13 @@ profileNav.get('/profile', (req, res)=>{
         targetUser: tempDB.currentUser,
         posts: tempDB.getPostsByAuthorID(tempDB.currentUser.userId),
         helpers: {
-            fullName(fname, mname, lname){return lname + ", " + fname + " " + mname.substring(0,1) + "."},
-            simpleDateTime(dt){return dt.toLocaleDateString();},
-            likes(like){
-                if(like > 1)
-                    return "Likes: " + like;
-                else
-                    return "Like: " + like;
+            fullName(fname, mname, lname){return format.formalName(fname,mname,lname);},
+            simpleDateTime(dt){return format.simpleDateTime(dt);},
+            likes(like){return format.pluralInator('Like',like);},
+            btnLiked(postHash){
+                if(tempDB.isLiked(tempDB.currentUser.userId,postHash))
+                    return "Liked";
+                return "Like";
             }
         }
     });
