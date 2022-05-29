@@ -8,7 +8,7 @@ export function connectToServer(callback){
     client.connect((err,client)=>{
         if(err || !client)
             return callback(err);
-        console.log("Connection to DB established!");
+        console.log("conn.connectToServer: Connection to DB established!");
         return callback();
     });
 }
@@ -21,10 +21,10 @@ const dbNames = ['users','reports','comments','posts','likes'];
 
 export function checkDB(){
     getDB().stats().then((s)=>{
-        console.log("Servername: " + getDB().databaseName);
+        console.log("DB Server Name: " + getDB().databaseName);
         console.log("DB Collections: " + s.collections);
     });
 }
 
 export default {};
-console.log("Module conn.js loaded!");
+console.log("DB: conn.js loaded!");

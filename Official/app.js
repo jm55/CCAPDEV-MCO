@@ -8,9 +8,6 @@ const __dirname = path.dirname(__filename);
 import express from 'express';
 import hbs from 'express-handlebars';
 
-//File management
-import * as file from './middleware/mult.js';
-
 //.dotenv
 import 'dotenv/config';
 
@@ -62,13 +59,13 @@ app.use(profileNav);
 
 //Index
 app.get('/', (req, res)=>{
-    console.log(req.socket.remoteAddress + ": " + req.url);
+    console.log("Request: " + req.socket.remoteAddress + "=>" + req.url);
     res.redirect('/login');
 });
 
 //404
 app.use((req, res, err) => {
-    console.log(req.socket.remoteAddress + ": " + req.url + " [404]");
+    console.log("404: " + req.socket.remoteAddress + "=>" + req.url);
     res.render("err", {
         title: "Error - Budol Finds",
         errID: "404",
@@ -79,16 +76,16 @@ app.use((req, res, err) => {
 //DB
 import * as db from './db/conn.js';
 
-db.connectToServer((err)=>{
+db.connectToServer((err, callback)=>{
     if(err){
-        console.error("Error occured connecting to server!");
-        console.error("Please check if you have installed MongoDB or have internet connection.");
-        console.error(err);
+        console.error("db.connectToServer: Error occured connecting to server!");
+        console.error("db.connectToServer: Please check if you have installed MongoDB or have internet connection.");
+        console.error("db.connectToServer: " + err);
         process.exit;
     }
     //DB ACCESSIBLE
     db.checkDB();
     app.listen(PORT, ()=>{
-        console.log("Budol Finds\nListening @ " + PORT);
+        console.log("Budol Finds Server Listening @ " + PORT);
     });
 });

@@ -1,24 +1,7 @@
-function submitPost(){
-    console.log("Submit Post");
-    var f = new FormData(document.forms.form);
-    fetch("/home/post",{
-        method: "POST",
-        body: f,
-    }).then((res) => {
-        if (res.status >= 200 && res.status < 300) {// SUCCESS
-            location.reload();
-        } else {// ERROR
-            console.log("response error: " + res.status);
-        }
-    }).catch((error) => {
-        console.error(error);
-    });
-}
-
 //TODO
 function submitLike(posthash){
     console.log("Like: " + posthash + " from " + userId);
-    fetch("/home/like",{
+    fetch("/post/like",{
         
         headers:{
             "Content-Type": "application/json"
@@ -42,7 +25,7 @@ function showShare(posthash){
 //TODO
 function submitReport(posthash){
     console.log("Report: " + posthash + " from " + userId); 
-    fetch("/home/Report",{
+    fetch("/post/Report",{
         headers:{
             "Content-Type": "application/json"
         }
@@ -60,7 +43,7 @@ function submitReport(posthash){
 //TODO
 function submitComment(posthash){
     console.log("Comment: " + posthash + " from " + userId);
-    fetch("/home/comment",{
+    fetch("/post/comment",{
         headers:{
             "Content-Type": "application/json"
         }

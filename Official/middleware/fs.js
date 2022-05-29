@@ -4,21 +4,25 @@ const POST_DIR = process.env.POSTIMG_DIR;
 const DP_DIR = process.env.DPIMG_DIR;
 
 export function renamePostImg(originalName, postHash){
+    var success = false;
     fs.rename(POST_DIR+originalName, POST_DIR+postHash+".webp", (e)=>{
-        if(e!=null)
-            console.log("NewPost Image error: " + e.message);
+        if(e == null)
+            success = true;
         else
-            console.log("NewPost Image writing successful!");
+            console.error(e);
     });
+    return success;
 }
 
 export function renameDP(originalName, userId){
+    var success = false;
     fs.rename(DP_DIR+originalName, DP_DIR+userId+".webp", (e)=>{
-        if(e!=null)
-            console.log("NewDP Image error: " + e.message);
+        if(e == null)
+            success = true;
         else
-            console.log("NewDP Image writing successful!");
+            console.error(e);
     });
+    return success;
 }
 
 export default {};

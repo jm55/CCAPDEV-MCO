@@ -7,4 +7,4 @@ export function checkPosts(){
 }
 
 export default{};
-console.log("Module postController.js loaded");
+console.log("DB.Controller postController.js loaded");

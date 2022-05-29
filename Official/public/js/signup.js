@@ -1,4 +1,4 @@
-console.log("signup.js loaded!");
+console.log("Public JS: signup.js loaded!");
 
 var submitClicked = false;
 

@@ -7,4 +7,4 @@ export function checkLikes(){
 }
 
 export default{};
-console.log("Module likeController.js loaded");
+console.log("DB.Controller likeController.js loaded");

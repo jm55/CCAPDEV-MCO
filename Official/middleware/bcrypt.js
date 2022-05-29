@@ -19,4 +19,4 @@ export function hash(s){
 }
 
 export default {};
-console.log("Module: hasher.js loaded!");
+console.log("Middleware: hasher.js loaded!");

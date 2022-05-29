@@ -28,21 +28,19 @@ $(document).ready(()=>{
         window.location.href = "/profile";
         console.log("cancel-edit-post");
     });
-    $("#post-img-select").on("change",()=>{
+    $("#imgselect").on("change",()=>{
         console.log("image change");
         refreshNewPostImage();
     });
 });
 
-function submitEditedPost(post){
-    console.log(post);
+function submitEdit(){
+    console.log("Edit Post");
     var fetchURL = "/post/" + currentPost.posthash + "/save";
+    var f = new FormData(document.forms.form);
     fetch(fetchURL,{
         method: "POST",
-        body: JSON.stringify(post),
-        headers:{
-            "Content-Type": "application/json"
-        }
+        body: f,
     }).then((res) => {
         if (res.status >= 200 && res.status < 300) {// SUCCESS
             window.location.href = '/profile';
@@ -55,25 +53,33 @@ function submitEditedPost(post){
     });
 }
 
-function savePost(){
-    var p = {};
-    const id = $("#post-form").attr("author");
-    p['author'] = id;
-    const description = document.getElementById("post-content").value;
-    p['description'] = description;
-    p['category']= document.getElementById("post-category").value;
+function submitPost(){
+    console.log("Submit Post");
+    var f = new FormData(document.forms.form);
+    fetch("/post/new",{
+        method: "POST",
+        body: f,
+    }).then((res) => {
+        if (res.status >= 200 && res.status < 300) {// SUCCESS
+            location.reload();
+        } else {// ERROR
+            console.log("response error: " + res.status);
+        }
+    }).catch((error) => {
+        console.error(error);
+    });
+}
 
-    var URL = getTempURL(getInputFile("post-img-select"));
-    if(URL)
-        p['imgurl'] = URL; //TEMPORARILY USING BLOBURL
-    else
-        p['imgurl'] = currentPost.imgurl; //Refers to currentPostJSON from post.hbs
-
-    p['label'] = document.getElementById("post-label").value;
-    p['link'] = document.getElementById("post-link").value;
-    p['datetime'] = new Date();
-    console.log(p);
-    return p;    
+function validatePost(){
+    var form = new FormData(document.forms.form);
+    var validity = true;
+    for(var f of form){
+        if(f[0] == "imgselect" && !getInputFile('imgselect'))
+            validity = false;
+        else if(f[1] == "")
+            validity = false;
+    }
+    return validity;
 }
 
 /**
@@ -105,13 +111,13 @@ function savePost(){
  * Either shows the element if an image (if there exists a selected file) or not (if otherwise).
  */
  function refreshNewPostImage(){
-    var file = getInputFile("post-img-select");
+    var file = getInputFile("imgselect");
     if(file){ //check if it exists
-        document.getElementById("post-image").style.display = "block";
-        $("#post-image").attr("src",getTempURL(file));
+        document.getElementById("image").style.display = "block";
+        $("#image").attr("src",getTempURL(file));
     }else{
-        document.getElementById("post-image").style.display = "none";
-        $("#post-image").attr("src",getTempURL(file));
+        document.getElementById("image").style.display = "none";
+        $("#image").attr("src",getTempURL(file));
         errMessage("refreshDP", "Error with file");
     }
 }

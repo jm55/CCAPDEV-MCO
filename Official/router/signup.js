@@ -21,7 +21,7 @@ const signupNav = express.Router();
 
 //Signup Page
 signupNav.get('/signup', (req,res)=>{
-    console.log(req.socket.remoteAddress + ": " + req.url);
+    console.log("Request: " + req.socket.remoteAddress + "=>" + req.url);
     res.render("signup", {title: "Sign up - Budol Finds"}); 
 });
 
@@ -29,7 +29,7 @@ import * as file from '../middleware/fs.js';
 
 //Signup Save File
 signupNav.post('/signup/save', mult.upload_dp.single('profilepic-select'), (req, res, next)=>{ //TO UPGRADE THAT ALLOWS /post/<posthash> TO ACCESS SPECIFIC POSTS;
-    console.log(req.socket.remoteAddress + ": " + req.url);
+    console.log("Request: " + req.socket.remoteAddress + "=>" + req.url);
     req.body['password_b'] = null;
     bcrypt.hash(req.body['password_a'], 10, function(err, hash) {
         if(err != null){

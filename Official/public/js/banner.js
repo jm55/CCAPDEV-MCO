@@ -1,4 +1,4 @@
-console.log("banner.js loaded");
+console.log("Public JS: banner.js loaded");
 
 /**
  * ONLY CONTAINS REDIRECTS AND NOT SEARCH/FILTERS

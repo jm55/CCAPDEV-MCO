@@ -1,4 +1,4 @@
-console.log("settings.js loaded!");
+console.log("Public JS: settings.js loaded!");
 
 /* MAIN */
 var submitClicked = false;

@@ -7,4 +7,4 @@ export function checkUsers(){
 }
 
 export default{};
-console.log("Module userController.js loaded");
+console.log("DB.Controller userController.js loaded");

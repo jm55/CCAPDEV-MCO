@@ -7,4 +7,4 @@ export function checkComments(){
 }
 
 export default{};
-console.log("Module commentController.js loaded");
+console.log("DB.Controller commentController.js loaded");

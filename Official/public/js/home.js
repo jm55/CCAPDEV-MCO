@@ -1,4 +1,4 @@
-console.log("home.js loaded");
+console.log("Public JS: home.js loaded");
 
 /*MAIN*/
 
@@ -14,11 +14,13 @@ $(document).ready(()=>{
         var newPost = null;
         newPostClicked = true;
         updateColor();
-        if(validateNewPost()){
+        if(validatePost()){
             submitPost();
             clearInputs();
-        }else
+        }else{
+            alert("Please check completeness of post content.");
             errMessage("","New Post Data Incomplete");
+        }
     });
 
     $("#imgselect").on("change",()=>{
@@ -43,42 +45,6 @@ $(document).ready(()=>{
         console.log("new post category: " + cat);
     });
 });
-
-function validateNewPost(){
-    var form = new FormData(document.forms.form);
-    var validity = true;
-    for(var f of form){
-        if(f[0] == "imgselect" && !getInputFile())
-            validity = false;
-        else if(f[1] == "")
-            validity = false;
-    }
-    return validity;
-}
-
-/**
- * Get a TempURL for use for displaying images even if file is not yet sent to server.
- * Recommended to be used with getInputFile();
- * @param {File} file 
- * @returns Temporary blobURL (cache?) for file specified
- */
-function getTempURL(file){
-    if(file)
-        return URL.createObjectURL(file);
-    return "";
-}
-
-/**
- * Retrieves the file object pointed to by and id-specified <input type="file"> element.
- * @param {string} id ID of input element
- * @returns First file available pointed by the element ID.
- */
-function getInputFile(){
-    //Reference: https://stackoverflow.com/a/15792918 & https://stackoverflow.com/a/4459419
-    var elem = document.getElementById("imgselect");
-    var file = elem.files;
-    return file[0]; //Returns only the first file
-}
 
 /**
  * Prints err message on console
@@ -117,7 +83,7 @@ function updateColor(restore=false){
 
             if(f[1] == "")
                 changeBGColor(f[0], "var(--warning-light)");
-            else if(!getInputFile())
+            else if(!getInputFile('imgselect'))
                 changeBGColor("imgselect", "var(--warning-light)");
         }
     }

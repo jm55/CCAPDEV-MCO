@@ -12,4 +12,4 @@ export function newPostHash(){
 }
 
 export default {}
-console.log("Utils: hashids.js loaded!");
+console.log("Middleware: hashids.js loaded!");

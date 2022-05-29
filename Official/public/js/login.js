@@ -1,4 +1,4 @@
-console.log("login.js loaded!");
+console.log("Public JS: login.js loaded!");
 
 var sampleKeys = [{"username":"dlsu","password":"237392540"}];
 
@@ -31,28 +31,31 @@ function redirectSignup(){
 }
 
 function auth(uname, pwrd){
-    console.log(auth);
     const key = {username:uname, password:pwrd};
     fetch("/login/in",{
         method: "POST",
         body: JSON.stringify(key),
-        headers:{
-            "Content-Type": "application/json"
-        }
+        headers:{"Content-Type": "application/json"},
     }).then((res) => {
-        if (res.status >= 200 && res.status < 300) {// SUCCESS
-
-            //CHECK AUTHENTICATION HERE
-
-            window.location.href = '/home';
+        if (res.status >= 200 && res.status < 300) {// SUCCES
+            return res.json();
         } else {// ERROR
             alert("Error ocurred while logging in.");
             window.location.href = '/login';
         }
+    }).then(data=>{ //Reference: https://stackoverflow.com/a/56903161
+        if(data)
+            if(data['success']){
+                //SET SESSION FOR USER
+                window.location.href='/home';
+            }else{
+                alert("Invalid username or password");
+                window.location.href='/login';
+            }
     }).catch((error) => {
         console.error(error);
         alert("Error ocurred while logging in.");
-        window.location.href = '/login';
+        window.location.href = '/';
     });
 }
 

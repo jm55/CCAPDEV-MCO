@@ -7,4 +7,4 @@ export function checkReports(){
 }
 
 export default{};
-console.log("Module reportController.js loaded");
+console.log("DB.Controller reportController.js loaded");
