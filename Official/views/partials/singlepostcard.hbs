@@ -1,0 +1,57 @@
+<script src="/js/postcards.js"></script>
+<div id='post{{post.postHash}}' class="post card" postHash={{post.postHash}} author={{post.userId}}> <!--BUILD ID BASED ON POST ID/HASH; SINGLE POST-CARD BLOCK - REPETITIVE-->
+    <!--POST HEADER: CONTAINS POSTEE INFORMATION-->
+    <div class="post_header">
+        <a href="/user/{{post.user.username}}">
+            <span class="post_user">
+                <img onerror="src='/img/default/imagenotfound.webp'" loading='lazy'  src={{post.user.profilepic}} class="postdp profilepic" alt="Profile Picture"><p class="username">{{post.user.username}}</p> <!--BUILD IMG SRC AND P<USERNAME> TEXT BASED ON POST USER DATA-->
+            </span>
+        </a>
+    </div>
+    <!--POST CONTENT: ALL DATA ABOUT THE POST-->
+    <div class="post_content"> <!--SINGLE POST-CONTENT BLOCK - DON'T REPEAT-->
+        <div class="post_description">
+            <p class="post_description_text"> <!--BUILD TEXT BASED ON POST DESCRIPTION-->
+                {{post.description}}
+            </p>
+        </div>
+        <div class="post_list">
+            <table class="post_table">
+                <tr><a href="{{post.link}}">{{post.label}}</a></tr><!--BUILD TEXT AND A'S HREF BASED ON POST LINK DATA-->
+                <tr>
+                    <td>Category:</td>
+                    <td class="item_category_link"><a href="/posts/{{post.category}}">{{post.category}}</a></td> <!--BUILD TEXT AND A'S HREF BASED ON POST CATEGORY DATA-->
+                </tr>
+            </table>
+        </div>
+        <!--Added fix for img if it is not available: https://stackoverflow.com/a/13118956-->
+        <div class="post_image_div"><img onerror="src='/img/default/imagenotfound.webp'" loading='lazy'  src={{post.imgurl}} class="post_image" alt="Post Picture" ></div> <!--BUILD SRC VALUE AT JS BASED ON POST IMG DATA/DIRECTORY-->
+    </div>
+
+    <!-- POST FOOTER: CONTAINS CONTROLS FOR USER INTERACTION TO POST-->
+    <div class="post_footer">
+        <div class="likes">
+            <p class="likecounter" id='likeCounter{{post.postHash}}'>{{{likes post.likes}}}: {{post.likes}}</p>
+            <p class="post_timedate">Posted: {{simpleDateTime datetime}}</p>
+        </div>
+        <form class="interact" id='interact#{{post.postHash}}' name="interact#{{post.postHash}}" >
+            <input type="button" class="button" id="like-button{{post.postHash}}" value={{{btnLiked post.postHash}}} onclick="submitLike('{{post.postHash}}')"> <!--https://stackoverflow.com/a/13645315-->
+            <input type="button" class="button" id="share-button{{post.postHash}}" value="Share" onclick="showShare('{{post.postHash}}')">
+            <input type="button" class="button" id="report-button{{post.postHash}}" value="Report" onclick="submitReport('{{post.postHash}}')">
+            <input type="text" id="comment#{{post.postHash}}" name="comment#{{post.postHash}}" class="textfield comment_textfield">
+            <input type="button" class="button" value="Comment" onclick="submitComment('{{post.postHash}}')"/>
+        </form>
+        <div class="comment_list">
+            {{#if post.comments}}
+            {{#each post.comments}}
+            <label>Comments</label>
+            <div class="comment_div"> <!--SINGLE COMMENT BLOCK - REPETITIVE-->
+                <a href="/user/{{username}}" class="username">{{username}}</a><!--BUILD HREF VALUE AT JS BASED ON COMMENT OBJECT DATA--->
+                <p>{{text}}</p> <!--BUILD TEXT VALUE AT JS BASED ON COMMENT OBJECT DATA--->
+                <p class="comment-timedate">{{simpleDateTime datetime}}</p><!--BUILD TEXT VALUE AT JS BASED ON COMMENT DATETIME DATA--->
+            </div>
+            {{/each}}
+            {{/if}}
+        </div>
+    </div>
+</div>

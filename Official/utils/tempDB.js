@@ -162,7 +162,7 @@ export function getPostsByAuthorID(id){
 }
 
 export function isLiked(currentUserId, postHash){
-    console.log("isLiked: " + currentUserId + ", " + postHash);
+    //console.log("isLiked: " + currentUserId + ", " + postHash);
     if(findLikeByPostHash(postHash) != null)
         if(currentUserId == findLikeByPostHash(postHash)['userId'])
             return true;

@@ -59,7 +59,7 @@ app.use(profileNav);
 
 //Index
 app.get('/', (req, res)=>{
-    console.log("Request: " + req.socket.remoteAddress + "=>" + req.url);
+    console.log("Request: " + req.socket.remoteAddress + ":" + req.socket.remotePort + " => " + req.url);
     res.redirect('/login');
 });
 

@@ -17,63 +17,13 @@
     </div>
 </header>
 
-{{#if currentPost}}
-    <div id="" class="post card" posthash={{currentPost.posthash}} author={{currentPost.author}}> <!--BUILD ID BASED ON POST ID/HASH; SINGLE POST-CARD BLOCK - REPETITIVE-->
-        <div class="post_header"><!--POST HEADER: CONTAINS POSTEE INFORMATION-->
-            <a href="/user/{{currentPost.user.username}}">
-                <span class="post_user">
-                    <img onerror="this.src='/img/default/imagenotfound.webp'" loading='lazy'  src={{currentPost.user.profilepic}} class="postdp profilepic" alt="Profile Picture"><p class="username">{{currentPost.user.username}}</p> <!--BUILD IMG SRC AND P<USERNAME> TEXT BASED ON POST USER DATA-->
-                </span>
-            </a>
-        </div>
-        <!--POST CONTENT: ALL DATA ABOUT THE POST-->
-        <div class="post_content"> <!--SINGLE POST-CONTENT BLOCK - DON'T REPEAT-->
-            <div class="post_description">
-                <p class="post_description_text"> <!--BUILD TEXT BASED ON POST DESCRIPTION-->
-                    {{currentPost.description}}
-                </p>
-            </div>
-            <div class="post_list">
-                <table class="post_table">
-                    <tr><a href="{{currentPost.link}}">{{currentPost.label}}</a></tr><!--BUILD TEXT AND A'S HREF BASED ON POST LINK DATA-->
-                    <tr>
-                        <td>Category:</td>
-                        <td class="item_category_link"><a href="/posts/{{currentPost.category}}">{{currentPost.category}}</a></td> <!--BUILD TEXT AND A'S HREF BASED ON POST CATEGORY DATA-->
-                    </tr>
-                </table>
-            </div>
-            <div class="post_image_div"><img onerror="this.src='/img/default/imagenotfound.webp'" loading='lazy'  src={{currentPost.imgurl}} class="post_image" alt="Post Picture" ></div> <!--BUILD SRC VALUE AT JS BASED ON POST IMG DATA/DIRECTORY-->
-        </div>
-
-        <!-- POST FOOTER: CONTAINS CONTROLS FOR USER INTERACTION TO POST-->
-        <div class="post_footer">
-            <div class="likes">
-                <p class="likecounter">{{likes currentPost.likes}}</p>
-                <p class="post_timedate">Posted: {{simpleDateTime currentPost.datetime}}</p>
-            </div>
-            <form class="interact" id="interact#{{currentPost.posthash}}" name="interact#{{currentPost.posthash}}" enctype="multipart/form-data">
-                <input type="button" class="button" id="like-button" value="Like" onclick="submitLike({{../currentUser.userId}},{{currentPost.posthash}})"> <!--https://stackoverflow.com/a/13645315-->
-                <input type="button" class="button" id="share-button" value="Share" onclick="submitShare({{../currentUser.userId}},{{currentPost.posthash}})">
-                <input type="button" class="button" id="report-button" value="Report" onclick="submitReport({{../currentUser.userId}},{{currentPost.posthash}})">
-                <input type="text" class="textfield comment_textfield">
-                <input type="button" class="button" value="Comment" onclick="submitComment({{../currentUser.userId}},{{currentPost.posthash}})"/>
-            </form>
-            <div class="comment_list">
-                {{#each postComments}}
-                <label>Comments</label>
-                <div class="comment_div"> <!--SINGLE COMMENT BLOCK - REPETITIVE-->
-                    <a href="/user/{{this.username}}" class="username">{{this.username}}</a><!--BUILD HREF VALUE AT JS BASED ON COMMENT OBJECT DATA--->
-                    <p>{{this.text}}</p> <!--BUILD TEXT VALUE AT JS BASED ON COMMENT OBJECT DATA--->
-                    <p class="comment-timedate">{{simpleDateTime datetime}}</p><!--BUILD TEXT VALUE AT JS BASED ON COMMENT DATETIME DATA--->
-                </div>
-                {{/each}}
-            </div>
-        </div>
-    </div>
+{{#if post}}
+    {{> singlepostcard}}
 {{else}}
-    {{>notfound}}
+    {{> notfound}}
 {{/if}}
 
 <script>
-    currentPost = {{{currentPostJSON}}}
+    currentPost = {{{postJSON}}}
+    userId = {{currentUserId}}
 </script>

@@ -5,7 +5,9 @@ export function pluralInator(word, val){
 }
 
 export function simpleDateTime(dt){
-    return dt.toLocaleDateString();
+    if(dt)
+        return dt.toLocaleDateString();
+    return "";
 }
 
 export function formalName(fname, mname, lname){

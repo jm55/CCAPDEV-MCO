@@ -14,10 +14,10 @@ function buildTitle(username){
 
 //User (other User Profile)
 profileNav.get('/user/:username', (req, res)=>{
-    console.log("Request: " + req.socket.remoteAddress + "=>" + req.url);
+    console.log("Request: " + req.socket.remoteAddress + ":" + req.socket.remotePort + " => " + req.url);
     res.render("viewuser",  {
         title: buildTitle(targetUser.username),
-        currentUser: tempDB.currentUser, 
+        currentUser: tempDB.currentUser,
         targetUser: tempDB.targetUser, //PERTAINS TO A TARGET USER'S ACCOUNT
         posts: tempDB.getPostsByAuthorID(tempDB.targetUser.userId),
         postCount: tempDB.getPostsByAuthorID(tempDB.targetUser.userId).length,
@@ -37,7 +37,7 @@ profileNav.get('/user/:username', (req, res)=>{
 
 //Profile
 profileNav.get('/profile', (req, res)=>{
-    console.log("Request: " + req.socket.remoteAddress + "=>" + req.url);
+    console.log("Request: " + req.socket.remoteAddress + ":" + req.socket.remotePort + " => " + req.url);
     res.render("profile",  {
         title: buildTitle(tempDB.currentUser.username),
         currentUser: tempDB.currentUser, 
@@ -58,7 +58,7 @@ profileNav.get('/profile', (req, res)=>{
 
 //Profile Settings
 profileNav.get('/profile/settings', (req, res)=>{
-    console.log("Request: " + req.socket.remoteAddress + "=>" + req.url);
+    console.log("Request: " + req.socket.remoteAddress + ":" + req.socket.remotePort + " => " + req.url);
     res.render("profile_settings", {
         title: "Profile Settings - Budol Finds",
         currentUser: tempDB.currentUser,
@@ -70,7 +70,7 @@ import * as file from '../middleware/fs.js';
 
 //Save Profile
 profileNav.patch('/profile/settings/save', (req, res)=>{
-    console.log("Request: " + req.socket.remoteAddress + "=>" + req.url);
+    console.log("Request: " + req.socket.remoteAddress + ":" + req.socket.remotePort + " => " + req.url);
     var body = req.body;
     req.body = null;
     try{
@@ -90,7 +90,7 @@ profileNav.patch('/profile/settings/save', (req, res)=>{
 
 //Delete Profile
 profileNav.delete('/profile/settings/delete', (req, res)=>{
-    console.log("Request: " + req.socket.remoteAddress + "=>" + req.url);
+    console.log("Request: " + req.socket.remoteAddress + ":" + req.socket.remotePort + " => " + req.url);
     var body = req.body;
     req.body = null;
     try{

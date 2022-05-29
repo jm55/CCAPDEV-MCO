@@ -8,13 +8,13 @@ import bcrypt from 'bcrypt';
 
 //Login
 logNav.get('/login', (req,res)=>{
-    console.log("Request: " + req.socket.remoteAddress + "=>" + req.url);
+    console.log("Request: " + req.socket.remoteAddress + ":" + req.socket.remotePort + " => " + req.url);
     res.render("login", {title: "Login - Budol Finds"}); 
 });
 
 //Confirm Login
 logNav.post('/login/in',(req, res)=>{
-    console.log("Request: " + req.socket.remoteAddress + "=>" + req.url);
+    console.log("Request: " + req.socket.remoteAddress + ":" + req.socket.remotePort + " => " + req.url);
     try {
         console.log('Login Credentials: ' + JSON.stringify(body));
         var body = req.body;
@@ -38,13 +38,13 @@ logNav.post('/login/in',(req, res)=>{
 
 //Logout
 logNav.get('/logout', (req, res)=>{ //TO UPGRADE THAT ALLOWS /post/<posthash> TO ACCESS SPECIFIC POSTS
-    console.log("Request: " + req.socket.remoteAddress + "=>" + req.url);
+    console.log("Request: " + req.socket.remoteAddress + ":" + req.socket.remotePort + " => " + req.url);
     res.render("logout",{title: "Logging out..."});
 });
 
 //Confirm Logout
 logNav.post('/logout/out',(req, res)=>{
-    console.log("Request: " + req.socket.remoteAddress + "=>" + req.url);
+    console.log("Request: " + req.socket.remoteAddress + ":" + req.socket.remotePort + " => " + req.url);
     try {
         /**
          * 

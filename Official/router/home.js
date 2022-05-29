@@ -8,7 +8,7 @@ import * as format from '../utils/formatting.js'
 
 //Home
 homeNav.get('/home', (req, res)=>{
-    console.log("Request: " + req.socket.remoteAddress + "=>" + req.url);
+    console.log("Request: " + req.socket.remoteAddress + ":" + req.socket.remotePort + " => " + req.url);
     /**
      * 
      * CHECK IF USER IS LOGGED IN. IF SO, THEN RENDER THE PAGE BELOW, ELSE THEN REDIRECT BACK TO LOGIN.
@@ -18,7 +18,7 @@ homeNav.get('/home', (req, res)=>{
         title: "Home - Budol Finds",
         currentUser: tempDB.currentUser,
         currentUserId   : tempDB.currentUser.userId,
-        likes: tempDB.likes,
+        //likes: tempDB.likes,
         posts: tempDB.posts,
         helpers: {
             fullName(fname, mname, lname){return format.formalName(fname,mname,lname);},

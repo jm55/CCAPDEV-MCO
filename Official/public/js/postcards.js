@@ -32,6 +32,11 @@ function submitLike(posthash){
 //TODO
 function showShare(posthash){
     console.log("Share: " + posthash + " from " + userId);
+    var link = "localhost:3000/post/" + posthash;
+    
+    //Reference: https://www.w3schools.com/howto/howto_js_copy_clipboard.asp
+    navigator.clipboard.writeText(link);
+    alert("Link has been copied!");
 }
 
 //TODO

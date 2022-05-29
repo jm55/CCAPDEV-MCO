@@ -17,23 +17,30 @@ import {newPostHash} from "../middleware/hashIds.js";
 
 //View Specific Post
 postNav.get('/post/:posthash', (req, res)=>{ //TO UPGRADE THAT ALLOWS /post/<posthash> TO ACCESS SPECIFIC POSTS
-    console.log("Request: " + req.socket.remoteAddress + "=>" + req.url);
+    console.log("Request: " + req.socket.remoteAddress + ":" + req.socket.remotePort + " => " + req.url);
     res.render("viewpost",  {
         title: "Post - Budol Finds",
         currentUser: tempDB.currentUser,
-        postComments: tempDB.getCommentToPost(tempDB.currentPost.posthash),
-        currentPost: null,//tempDB.currentPost, //SAMPLE POST
-        currentPostJSON: JSON.stringify(tempDB.currentPost),
+        currentUserId: tempDB.currentUser.userId,
+        likes: tempDB.likes,
+        post: tempDB.currentPost, //SAMPLE POST
+        postJSON: JSON.stringify(tempDB.currentPost),
         helpers: {
-            likes(size){return size.length;},
-            simpleDateTime(dt){return dt.toLocaleDateString();}
+            fullName(fname, mname, lname){return format.formalName(fname,mname,lname);},
+            simpleDateTime(dt){return format.simpleDateTime(dt);},
+            likes(like){return format.pluralInator('Like',like);},
+            btnLiked(postHash){
+                if(tempDB.isLiked(tempDB.currentUser.userId,postHash))
+                    return "Liked";
+                return "Like";
+            }
         }
     });
 });
 
 //Edit Post
 postNav.get('/post/:posthash/edit', (req, res)=>{ //TO UPGRADE THAT ALLOWS /post/<posthash> TO ACCESS SPECIFIC POSTS
-    console.log("Request: " + req.socket.remoteAddress + "=>" + req.url);
+    console.log("Request: " + req.socket.remoteAddress + ":" + req.socket.remotePort + " => " + req.url);
     /**
      * DO USER CHECK HERE FIRST IF USER 'OWNS' THE POST.
      * 
@@ -51,7 +58,7 @@ postNav.get('/post/:posthash/edit', (req, res)=>{ //TO UPGRADE THAT ALLOWS /post
 
 //Edit Post
 postNav.patch('/post/:posthash/save', (req, res)=>{ //TO UPGRADE THAT ALLOWS /post/<posthash> TO ACCESS SPECIFIC POSTS
-    console.log("Request: " + req.socket.remoteAddress + "=>" + req.url);
+    console.log("Request: " + req.socket.remoteAddress + ":" + req.socket.remotePort + " => " + req.url);
     try {
         console.log(req.body);
 
@@ -71,7 +78,7 @@ postNav.patch('/post/:posthash/save', (req, res)=>{ //TO UPGRADE THAT ALLOWS /po
 
 //Delete Post
 postNav.delete('/post/:posthash/delete', (req, res)=>{ //TO UPGRADE THAT ALLOWS /post/<posthash> TO ACCESS SPECIFIC POSTS
-    console.log("Request: " + req.socket.remoteAddress + "=>" + req.url);
+    console.log("Request: " + req.socket.remoteAddress + ":" + req.socket.remotePort + " => " + req.url);
     try {
         console.log(req.body);
 
@@ -96,7 +103,7 @@ postNav.post('/post/new', mult.upload_post.single('imgselect'), (req, res)=>{
      * CHECK IF USER IS LOGGED IN. IF SO, THEN RENDER THE PAGE BELOW, ELSE THEN REDIRECT BACK TO LOGIN.
      * 
      */
-    console.log("Request: " + req.socket.remoteAddress + "=>" + req.url);
+    console.log("Request: " + req.socket.remoteAddress + ":" + req.socket.remotePort + " => " + req.url);
     req.body["postHash"] = newPostHash();
     try{
         console.log(req.body); //<= Save Contents to Database
@@ -111,7 +118,7 @@ postNav.post('/post/new', mult.upload_post.single('imgselect'), (req, res)=>{
 
 //Like Post
 postNav.post('/post/like', (req, res)=>{ 
-    console.log("Request: " + req.socket.remoteAddress + "=>" + req.url);
+    console.log("Request: " + req.socket.remoteAddress + ":" + req.socket.remotePort + " => " + req.url);
     try{
         console.log(req.body);
         /**
@@ -136,7 +143,7 @@ postNav.post('/post/like', (req, res)=>{
 
 //Report Post
 postNav.post('/post/report', (req, res)=>{ 
-    console.log("Request: " + req.socket.remoteAddress + "=>" + req.url);
+    console.log("Request: " + req.socket.remoteAddress + ":" + req.socket.remotePort + " => " + req.url);
     try{
         console.log(req.body);
 
@@ -149,7 +156,7 @@ postNav.post('/post/report', (req, res)=>{
 
 //Report Post
 postNav.post('/post/comment', (req, res)=>{ 
-    console.log("Request: " + req.socket.remoteAddress + "=>" + req.url);
+    console.log("Request: " + req.socket.remoteAddress + ":" + req.socket.remotePort + " => " + req.url);
     try{
         console.log("Received Comment: " + req.body);
         res.sendStatus(200);
