@@ -4,7 +4,7 @@ const logNav = express.Router();
 
 import * as hs from '../middleware/bcrypt.js'; //TEMPORARY ONLY
 
-import bcrypt from 'bcrypt';
+import tempDB from '../utils/tempDB.js';
 
 //Login
 logNav.get('/login', (req,res)=>{
@@ -29,7 +29,8 @@ logNav.post('/login/in',(req, res)=>{
          * 
          * REGARDLESS, LOGIN MUST BE MADE
          */
-        res.status(200).json({success:true});
+        var match = tempDB.isMatch(body['username'],body['password']); //TEMPORARY LOGIN VALIDATION THROUGH TEMPDB.isMatch()
+        res.json({success:match}); 
     } catch(e) {
         res.statusMessage = e;
         res.sendStatus(400);

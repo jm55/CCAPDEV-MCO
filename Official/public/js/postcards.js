@@ -1,4 +1,3 @@
-//TODO
 function submitLike(posthash){
     console.log("Like: " + posthash + " from " + userId);
     
@@ -30,7 +29,6 @@ function submitLike(posthash){
     });
 }
 
-//TODO
 function showShare(posthash){
     console.log("Share: " + posthash + " from " + userId);
     var link = "localhost:3000/post/" + posthash;
@@ -40,7 +38,6 @@ function showShare(posthash){
     alert("Link has been copied!");
 }
 
-//TODO
 function submitReport(posthash){
     console.log("Report: " + posthash + " from " + userId);
     //userId, posthash, datetime
@@ -65,14 +62,16 @@ function submitReport(posthash){
     }); 
 }
 
-
-//TODO
 function submitComment(posthash){
-    console.log("Comment: " + posthash + " from " + userId);
-    
+    console.log("Comment: " + posthash + " from " + userId); 
+    var commentVal = document.getElementById("comment#"+posthash).value;
+
+    if(commentVal == "") //PREVENTS EMPTY COMMENTS
+        return null;
+
     var body = {};
     body['userId'] = userId;
-    body['text'] = document.getElementById("comment#"+posthash).value;
+    body['text'] = commentVal;
     body['postHash'] = posthash;
     body['datetime'] = new Date();
 

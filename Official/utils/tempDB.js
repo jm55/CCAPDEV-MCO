@@ -169,5 +169,21 @@ export function isLiked(currentUserId, postHash){
     return false;
 }
 
+export function isMatch(username, password){
+    var passhash = hash.hash(password);
+    password = null;
+    for(var u of users)
+        if(u.passhash == passhash && u.username == username)
+            return true;
+    return false;
+}
+
+export function userExists(username){
+    for(var u of users)
+        if(u.username == username)
+            return true;
+    return false;
+}
+
 export default {};
 console.log("Utils: tempDB.js loaded!");

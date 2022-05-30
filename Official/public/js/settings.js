@@ -1,10 +1,11 @@
 console.log("Public JS: settings.js loaded!");
 
+var validCurrentPassword = false, validity = true, newPassMismatch = false;
+
 /* MAIN */
 var submitClicked = false;
 $(document).ready(()=>{
     console.log(currentUser);
-
     //Update selected value of gender in select
     var gender = $("#gender").attr("value");
     $("#gender").val(gender);
@@ -19,7 +20,7 @@ $(document).ready(()=>{
     $("#delete-btn").click(()=>{
         console.log("#delete-btn");
         if(confirm("Do you want to close the account?")){
-            if(hash(document.getElementById("password_current").value)==currentUser.password){
+            if(hash(document.getElementById("password_current").value)==currentUser.passhash){
                 window.location.href = "/";
             }else{
                 alert("Enter current password to confirm account deletion.");
@@ -52,83 +53,37 @@ $(document).ready(()=>{
     $("#save-btn").keyup((e)=>{
         updateColor();
     });
+
+    $("#save-btn").click((e)=>{
+        e.preventDefault();
+        saveProfile();
+    });
 });
 
-function updateProfile(profile){
-    console.log(profile);
-    fetch("/profile_settings/update",{
-        method: "POST",
-        body: JSON.stringify(profile),
-        headers:{
-            "Content-Type": "application/json"
-        }
+function sendProfile(){
+    var fmd = new FormData(document.forms.profileform);
+    fmd.append('userId', currentUser.userId);
+    fetch("/profile/settings/save",{
+        method: "PATCH",
+        body: fmd,
     }).then((res) => {
         if (res.status >= 200 && res.status < 300) {// SUCCESS
-            window.location.href = '/profile';
+            window.location.href = '/profile'; //TODO
         } else {// ERROR
+            console.log(res.statusText);
             console.log("response error: " + res.status);
+            alert("Error saving your profile, please try again.");
         }
     }).catch((error) => {
         console.error(error);
     });
 }
 
-function saveProfile(userid){    
-    if(validateProfileInputs()){
-        var updatedUser = null;
-        var username = document.getElementById("username").value;
-        var email = document.getElementById("email").value;
-        var fname = document.getElementById("fname").value;
-        var mname = document.getElementById("mname").value;
-        var lname = document.getElementById("lname").value;
-        var gender = document.getElementById("gender").value;
-        var bio = document.getElementById("bio").value;
-        
-        var URL = getTempURL(getInputFile("profilepic-select"));
-        var profilepic = "";
-        if(URL)
-            profilepic = URL; //TEMPORARILY USING BLOBURL
-        else
-            profilepic = currentUser.profilepic;
-        
-        var password = "";
-        if(document.getElementById("password_b").value.length > 0)
-            password = hash(document.getElementById("password_b").value); //RECOMMENDED TO BE IN HASH
-        else
-            password = hash(document.getElementById("password_current").value); //RECOMMENDED TO BE IN HASH
-    
-        updatedUser = { userId: String(userid), username:username, password:password, 
-                        email:email, fname:fname, mname:mname, 
-                        lname:lname, gender:gender, bio:bio, 
-                        profilepic:profilepic};
-    
-        updateProfile(updatedUser);
-    }else{
-        console.log("inputs missing");
-    }
-}
-
-/**
- * Refreshes displayed User picture if file is selected; Uses tempURL/blobURL as placeholder for file
- */
- function refreshDP(){
-    var file = getInputFile("profilepic-select");
-    if(file) //check if it exists
-        $("#profilepic").attr("src",getTempURL(file));
-    else
-        errMessage("refreshDP", "Error with file");
-}
-
-/**
- * Retrieves inputted signup data from profileform.
- * @returns Key-Value pair of all IDs available from @var idlist;
- */
-function validateProfileInputs(){
+function saveProfile(){
     var form = new FormData(document.forms.profileform);
-    var validity = true;
-    var validCurrentPassword = false;
-    var newPasswordA = "";
-    for(f of form){ 
+    validCurrentPassword = false;
+    validity = true;
+    for(var f of form){ 
         if(f[1].length == 0){
             if(f[0] != "bio" && f[0] != "profilepic-select" && f[0] != "password_a" && f[0] != "password_b"){
                 errMessage("validateSignupInputs",  f[0] + " not filled");
@@ -142,34 +97,6 @@ function validateProfileInputs(){
                 validity = false;
             }
         } 
-        
-        //CHECK PASSWORD IF SAME, RECOMMENDED TO BE HASHED BEFORE COMPARING
-        if(f[0] == "password_current"){
-            if(currentUser.passhash == hash(f[1])){
-                validCurrentPassword = true;
-            }
-            else{
-                validity = false;
-                errMessage("validateSignupInputs",  f[0] + " not filled");
-                alert("Incorrect Current Password");
-            }
-        }
-
-        //CHECK IF THERE IS AN ATTEMPT FOR NEW PASSWORD
-        if(f[0] == "password_a" && f[1].length != 0 && validCurrentPassword){
-            newPasswordA = hash(f[1]);
-        }
-        if(f[0] == "password_b" && validCurrentPassword && newPasswordA){
-            if(f[1].length != 0){
-                if(hash(f[1]) != newPasswordA && validCurrentPassword){
-                    validity = false;
-                    alert("New Passwords mismatch, please try again");
-                }
-            }else{
-                validity = false;
-            }
-        }
-            
         //CHECK BIO IF AT 255 CHAR AT MOST
         if(f[0] == "bio")
             if(f[1].length > 255){ //BIO CHAR LIMIT
@@ -177,8 +104,62 @@ function validateProfileInputs(){
                 validity = false;
             }
     }
-    updateColor();
-    return validity;
+    var body = {};
+    body['username'] = currentUser.username;
+    body['password'] = String(document.getElementById('password_current').value);
+    fetch("/validate/password",{
+        method:'POST',
+        body: JSON.stringify(body),
+        headers:{ "Content-Type": "application/json"}        
+    }).then((res)=>{
+        console.log('res.json()');
+        return res.json();
+    }).then(data=>{
+        console.log("match: " + data['match']);
+        validCurrentPassword = data['match'];
+    }).finally(()=>{
+        console.log('finally: '+ validCurrentPassword);
+        var a = document.getElementById("password_a").value;
+        var b = document.getElementById("password_b").value;
+        if(validCurrentPassword){
+            if(a.length > 0 && b.length > 0){
+                if(String(a)===(String(b))){
+                    newPassMismatch = false;
+                    validity = true;
+                }else{
+                    console.log("new pass mismatch");
+                    newPassMismatch = true;
+                    validity = false;
+                }
+            }else{
+                console.log("no new password");
+                validity = true;
+            }
+        }else{
+            console.log("current password wrong");
+            document.getElementById("password_current").value = "";
+            validity = false;
+        }
+        updateColor();
+        if(validity)
+            sendProfile();
+        else
+            alert("Please check inputs again");
+    }).catch((error)=>{
+        console.error("Error checking password on DB");
+        console.error(error);
+    });
+}
+
+/**
+ * Refreshes displayed User picture if file is selected; Uses tempURL/blobURL as placeholder for file
+ */
+ function refreshDP(){
+    var file = getInputFile("profilepic-select");
+    if(file) //check if it exists
+        $("#profilepic").attr("src",getTempURL(file));
+    else
+        errMessage("refreshDP", "Error with file");
 }
 
 /**
@@ -217,6 +198,12 @@ function validateProfileInputs(){
             break;
         case "bio":
             errorMessage = "* Enter a bio";
+            break;
+        case "password_a":
+            errorMessage = "*Check if this matches the second password";
+            break;
+        case "password_b":
+            errorMessage = "*Check if this matches the first password";
             break;
     }
     $("#error-" + id).text(errorMessage);
@@ -298,33 +285,11 @@ function errMessage(functionName, msg){
 }
 
 /**
- * Simple Hash Function (For Emulation Purposes)
- * Reference: https://gist.github.com/iperelivskiy/4110988
- * @param {string} s String to be hashed
- * @returns Numeric hash string equivalent of s
- */
- function hash(s) {
-    /* Simple hash function. */
-    var a = 1, c = 0, h, o;
-    if (s) {
-        a = 0;
-        /*jshint plusplus:false bitwise:false*/
-        for (h = s.length - 1; h >= 0; h--) {
-            o = s.charCodeAt(h);
-            a = (a<<6&268435455) + o + (o<<14);
-            c = a & 266338304;
-            a = c!==0?a^c>>21:a;
-        }
-    }
-    return String(a);
-}
-
-/**
  * Carried over from HO3 trigges a scan of the form specified (unfortunately, it is hardcoded)
  */
  function updateColor(){
     var newPasswordA = false; //TO BE USED IF TO FLAG PASSWORD_B
-    for(f of new FormData(document.forms.profileform)){
+    for(var f of new FormData(document.forms.profileform)){
         if(f[0] == "password_a" && f[1].length > 0) //NEW PASSWORD_A WAS SET
             newPasswordA = true;
         if(!(f[0]=="bio" || f[0]=="profilepic-select" || f[0]=="password_a")){
@@ -340,12 +305,13 @@ function errMessage(functionName, msg){
                 $("#error-" + f[0]).text("");
             }
         }
-        if(f[0]=="password_current" && hash(f[1])!=currentUser.passhash){
+        if(f[0]=="password_current" && !f[1]){
             changeBGColor(f[0], "var(--warning-light)");
             setDefaultErrorMessage(f[0]);
         }
     }
 }
+
 /**
  * Changes the background color of an element, given its ID.
  * @param {string} id ID of target element
