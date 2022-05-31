@@ -27,6 +27,15 @@ function buildTitle(username){
 //User (other User Profile)
 profileNav.get('/user/:username', (req, res)=>{
     console.log("Request: " + req.socket.remoteAddress + ":" + req.socket.remotePort + " => " + req.url);
+    /**
+     * 
+     * EXTRACT USERNAME FROM URL
+     * 
+     * SEARCH DB FOR USERNAME
+     * 
+     * IF EXISTS, RENDER PAGE ELSE LET IT RENDER AS EMPTY
+     * 
+     */
     res.render("viewuser",  {
         title: buildTitle(targetUser.username),
         currentUser: tempDB.currentUser,
@@ -50,6 +59,15 @@ profileNav.get('/user/:username', (req, res)=>{
 //Profile
 profileNav.get('/profile', (req, res)=>{
     console.log("Request: " + req.socket.remoteAddress + ":" + req.socket.remotePort + " => " + req.url);
+    /**
+     * 
+     * CHECK WHO'S SESSION IS THIS AND IF LOGGED IN
+     * 
+     * IF LOGGED IN FIND USER IN DB
+     * AND LIST POSTS WHERE AUTHOR IS DB
+     * 
+     *
+     */  
     res.render("profile",  {
         title: buildTitle(tempDB.currentUser.username),
         currentUser: tempDB.currentUser, 

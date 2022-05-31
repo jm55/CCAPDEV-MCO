@@ -46,10 +46,10 @@ $(document).ready(()=>{
         window.location.href = "/profile";
         console.log("cancel-post-btn");
     });
-
+    
     $("#imgselect").on("change",()=>{
-        console.log("image change");
-        refreshNewPostImage();
+        if(refreshNewPostImage())
+            changeBGColor("imgselect", "var(--primary)");
     });
 });
 
@@ -126,22 +126,6 @@ function validatePost(){
 }
 
 /**
- * Refreshes New Post Image Element
- * Either shows the element if an image (if there exists a selected file) or not (if otherwise).
- */
- function refreshNewPostImage(){
-    var file = getInputFile("imgselect");
-    if(file){ //check if it exists
-        document.getElementById("image").style.display = "block";
-        $("#image").attr("src",getTempURL(file));
-    }else{
-        document.getElementById("image").style.display = "none";
-        $("#image").attr("src",getTempURL(file));
-        errMessage("refreshDP", "Error with file");
-    }
-}
-
-/**
  * Clears the "Create Post" input fields
  */
  function clearInputs(){
@@ -163,3 +147,92 @@ function validatePost(){
     var inputPostImg = document.getElementById('image');
     refreshNewPostImage();
  }
+
+ /**
+ * Updates background colors of inputs found on specified form.
+ * Form specified: document.forms.form
+ * @param {boolean} restore Set true if will set all input BG color as normal, otherwise it will mark empty inputs as red. Default as false
+ */
+function updateColor(restore=false){
+    if(restore){
+        for(f of new FormData(document.forms.form))
+            if(f[0] == "category"){
+                changeBGColor(f[0], "var(--primary-button)");
+            }
+            else if(f[0] != "imgselect")
+                changeBGColor(f[0], "var(--textbox)");
+            else
+                changeBGColor(f[0], "var(--primary)");
+    }else{
+        for(f of new FormData(document.forms.form)){
+            if(f[0] == "category"){
+                changeBGColor(f[0], "var(--primary-button)");
+            }
+            else if(f[0] != "img-select")
+                changeBGColor(f[0], "var(--textbox)");
+            else
+                changeBGColor(f[0], "var(--primary)");
+
+            if(f[1] == "")
+                changeBGColor(f[0], "var(--warning-light)");
+            else if(!getInputFile('imgselect'))
+                changeBGColor("imgselect", "var(--warning-light)");
+        }
+    }
+}
+
+/**
+ * Prints err message on console
+ * Use for silent invalid input messages
+ * @param {string}functionName Name offunction that called this. Don't include '()'
+ * @param {string} msg Details of error
+ */
+ function errMessage(functionName, msg){
+    console.error(functionName + "(): ", msg);
+}
+
+/**
+ * Changes the background color of an element, given its ID.
+ * @param {string} id ID of target element
+ * @param {string} color Background color of target element
+ */
+ function changeBGColor(id, color){
+    document.getElementById(id).style.backgroundColor = color;
+}
+
+/**
+ * Refreshes New Post Image Element
+ * Either shows the element if an image (if there exists a selected file) or not (if otherwise).
+ */
+ function refreshNewPostImage(){
+    var file = getInputFile("img-select");
+    if(file){ //check if it exists
+        document.getElementById("image").style.display = "block";
+        $("#image").attr("src",getTempURL(file));
+        return true;
+    }else{
+        document.getElementById("image").style.display = "none";
+        $("#image").attr("src",getTempURL(file));
+        errMessage("refreshDP", "Error with file");
+        return false;
+    }
+}
+
+/**
+ * Prints err message on console
+ * Use for silent invalid input messages
+ * @param {string}functionName Name offunction that called this. Don't include '()'
+ * @param {string} msg Details of error
+ */
+ function errMessage(functionName, msg){
+    console.error(functionName + "(): ", msg);
+}
+
+/**
+ * Changes the background color of an element, given its ID.
+ * @param {string} id ID of target element
+ * @param {string} color Background color of target element
+ */
+ function changeBGColor(id, color){
+    document.getElementById(id).style.backgroundColor = color;
+}

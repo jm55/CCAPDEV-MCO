@@ -90,6 +90,7 @@ function submitComment(posthash){
             console.log(parent);
             var comment = buildComment(userId, body['text'], username, body['datetime']);
             parent.insertBefore(comment, parent.childNodes[2]);
+            document.getElementById("comment#"+posthash).value = "";
         } else {// ERROR
             console.log("response error: " + res.status);
         }

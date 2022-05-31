@@ -9,6 +9,8 @@ import * as format from '../utils/formatting.js'
 //DB
 import * as dbPost from '../db/controller/postController.js';
 import * as dbLike from'../db/controller/likeController.js';
+import * as dbComment from'../db/controller/commentController.js';
+import * as dbReport from'../db/controller/reportController.js';
 
 //Multer
 import * as mult from '../middleware/mult.js';
@@ -24,6 +26,8 @@ postNav.use(express.json());
 //View Specific Post
 postNav.get('/post/:posthash', (req, res)=>{ //TO UPGRADE THAT ALLOWS /post/<posthash> TO ACCESS SPECIFIC POSTS
     console.log("Request: " + req.socket.remoteAddress + ":" + req.socket.remotePort + " => " + req.url);
+    var targetPostHash = req.params['posthash'];
+    console.log("Target postHash: " + targetPostHash);
     res.render("viewpost",  {
         title: "Post - Budol Finds",
         currentUser: tempDB.currentUser,
@@ -187,6 +191,10 @@ postNav.post('/post/report', (req, res)=>{
     console.log("Request: " + req.socket.remoteAddress + ":" + req.socket.remotePort + " => " + req.url);
     try{
         console.log(req.body);
+        //SAMPLE BODY: { userId: 1, postHash: '42069', datetime: '2022-05-31T07:01:37.495Z' }
+        dbReport.blotterReport(req.body).catch((error)=>{
+            console.error(error);
+        });
         res.sendStatus(200);
     }catch(e){
         res.statusMessage = e;
@@ -198,7 +206,12 @@ postNav.post('/post/report', (req, res)=>{
 postNav.post('/post/comment', (req, res)=>{ 
     console.log("Request: " + req.socket.remoteAddress + ":" + req.socket.remotePort + " => " + req.url);
     try{
-        console.log(req.body);
+        dbComment.newComment(req.body).then((val)=>{
+            console.log("newComment: " + val.acknowledged);
+        }).catch((error)=>{
+            console.log()
+            console.error(error);
+        })
         res.sendStatus(200);
     }catch(e){
         res.statusMessage = e;

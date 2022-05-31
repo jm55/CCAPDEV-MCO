@@ -6,4 +6,8 @@ export function checkReports(){
     return reportCollection.find({}).toArray();
 }
 
+export function blotterReport(report){
+    return reportCollection.insertOne(report);
+}
+
 console.log("DB.Controller reportController.js loaded");

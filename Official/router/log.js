@@ -7,8 +7,6 @@ const logNav = express.Router();
 import bcrypt from 'bcrypt';
 import * as db from '../db/controller/userController.js';
 
-import tempDB from '../utils/tempDB.js';
-
 //Login
 logNav.get('/login', (req,res)=>{
     console.log("Request: " + req.socket.remoteAddress + ":" + req.socket.remotePort + " => " + req.url);
@@ -19,28 +17,29 @@ logNav.get('/login', (req,res)=>{
 logNav.post('/login/in',(req, res)=>{
     console.log("Request: " + req.socket.remoteAddress + ":" + req.socket.remotePort + " => " + req.url);
     var body = req.body;
-    req.body = null;
     try {
-        //console.log('Login Credentials: ' + JSON.stringify(body));
         db.userExists(body['username']).then((u)=>{
-            if(u.username == body['username']){
-                bcrypt.compare(String(body['password']),u.passhash,(err,same)=>{
-                    if(err != null)
-                        res.sendStatus(500);
-                    /***
-                     * 
-                     * 
-                     * 
-                     * SET SESSION HERE OR SOMETHING.
-                     * AWAIT FOR LESSONS IN AUTHENTICATION
-                     * AS IT MAY OFFER KNOWLEDGE ON HOW TO DO SO.
-                     * 
-                     * 
-                     */
-                    res.json({success:same});
-                });
+            if(u!=null){
+                if(u['username'] == body['username']){
+                    bcrypt.compare(String(body['password']),u.passhash,(err,same)=>{
+                        if(err != null)
+                            res.sendStatus(500);
+                        /***
+                         * 
+                         * 
+                         * 
+                         * SET SESSION HERE OR SOMETHING.
+                         * AWAIT FOR LESSONS IN AUTHENTICATION
+                         * AS IT MAY OFFER KNOWLEDGE ON HOW TO DO SO.
+                         * 
+                         * 
+                         */
+                        res.json({success:same});
+                    });
+                }else
+                    res.json({success:false}); 
             }else
-                res.json({success:false}); 
+                res.json({success:false});
         })
     } catch(e) {
         res.statusMessage = e;
@@ -58,9 +57,14 @@ logNav.get('/logout', (req, res)=>{ //TO UPGRADE THAT ALLOWS /post/<posthash> TO
 logNav.post('/logout/out',(req, res)=>{
     console.log("Request: " + req.socket.remoteAddress + ":" + req.socket.remotePort + " => " + req.url);
     try {
-        /**
+        /***
          * 
-         * VERIFY LOGOUT HERE
+         * 
+         * 
+         * TERMINATE SESSION HERE
+         * WAIT FOR LECTURE ABOUT AUTHENTICATION AND SESSION
+         * 
+         * 
          * 
          */
         console.log(req.body);
