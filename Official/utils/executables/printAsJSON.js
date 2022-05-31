@@ -1,6 +1,6 @@
 console.log("printUsers.js");
 
-import * as utils from '../utils.js';
+import * as utils from '../tempDB.js';
 import * as fs from 'fs';
 
 var filenames = ['users.json', 'posts.json', 'comments.json', 'likes.json'];

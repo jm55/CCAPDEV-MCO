@@ -24,8 +24,32 @@ export function addUser(user){
      */
     delete user.password_a; //REMOVES PASSWORD A (NOT TO USE)
     delete user.password_b; //REMOVES PASSWORD B (NOT TO USE)
-    console.log(user);
+    //console.log(user);
     return userCollection.insertOne(user);
+}
+
+export function updateUser(user){
+    delete user.password_a;
+    delete user.password_b;
+    delete user.password_current;
+    console.log(user);
+    return userCollection.updateOne({'userId':user.userId}, {$set: user}).then(val=>{
+        console.log(val);
+    }).catch((error)=>{
+        console.error(error);
+    });
+}
+
+export function getHash(userId){
+    return userCollection.find({'userId': String(userId)}).toArray();
+}
+
+export function getHashViaUsername(username){
+    return userCollection.find({'username': String(username)}).toArray();
+}
+
+export function deleteUser(userId){
+    return userCollection.deleteOne({'userId': String(userId)});
 }
 
 export function userExists(username){

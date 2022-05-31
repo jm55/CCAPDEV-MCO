@@ -11,6 +11,9 @@ var targetUser = tempDB.users[1];
 import * as mult from '../middleware/mult.js';
 import * as file from '../middleware/fs.js';
 
+//DB
+import * as dbUser from '../db/controller/userController.js';
+
 //dotenv
 import 'dotenv/config';
 
@@ -85,50 +88,51 @@ profileNav.get('/profile/settings', (req, res)=>{
 profileNav.patch('/profile/settings/save', mult.upload_dp.single('profilepic-select'), (req, res)=>{
     console.log("Request: " + req.socket.remoteAddress + ":" + req.socket.remotePort + " => " + req.url);
     try{
-        console.log("body:");
-        console.log(req.body);
-        console.log("file:");
-        console.log(req.file);
-        /**
-         * UPDATE PROFILE HERE
-         * 
-         * 2. VALIDATE CURRENT PASSWORD THROUGH '/validate/password'
-         * 3. IF BODY CONTAINS PASSWORD_A AND PASSWORD_B THEN APPLY PASSWORD TO DB VIA BCRYPT
-         * 4. IF FILE IS NULL THEN RETAIN IMAGE, ELSE THEN DELETE CURRENT FILE AND APPLY THE FILE ATTACHMENT AS NEW DP.
-         * 
-         * RETURN 200 IF SUCCESSFUL
-         * RETURN 500 IF !SUCCESSFUL
-         */
-        if(tempDB.isMatch(req.body['username'], req.body['password_current'])){
-            if(String(req.body['password_a']).length > 0 && String(req.body['password_b'])){
-                if(String(req.body['password_a'])===String(req.body['password_b'])){
-                    bcrypt.hash(req.body['password_b'],Number(process.env.SALT_ROUNDS),(error, hash)=>{
-                        if(error != null)
-                            res.sendStatus(500);
-                        req.body['passhash'] = hash;
-                        req.body['password_current'] = req.body['password_a'] = req.body['password_b'] = null;
-                        if(req.file)
-                            req.body['profilepic'] = dpUpdate(req.file.originalname,req.body["userId"]);
-                        console.log(req.body); //UPLOAD TO DB
-                    });
+        var body = req.body;
+        var file = req.file;
+        var currHash = "";
+        dbUser.getHash(body['userId']).then((arr)=>{
+            currHash = arr[0]['passhash'];
+            bcrypt.compare(body['password_current'], currHash, (error, same)=>{
+                if(error != null)
+                    res.sendStatus(500);
+                if(same){
+                    if(String(body['password_a']).length > 0 && String(body['password_b']).length){
+                        if(String(body['password_a'])==String(body['password_b'])){ //NEW PASSWORD
+                            bcrypt.hash(req.body['password_b'], Number(process.env.SALT_ROUNDS),(err, enc)=>{
+                                if(err != null)
+                                    res.sendStatus(500);
+                                else{
+                                    body['password_current'] = null;
+                                    body['password_a'] = null;
+                                    body['password_b'] = null;
+                                    body['passhash'] = enc;
+                                    if(req.file)
+                                        dpUpdate(file.originalname, body['userId']);
+                                    dbUser.updateUser(body);
+                                    res.sendStatus(200);
+                                }
+                            });
+                        }else{
+                            console.log("New Password Mismatch!");
+                            res.sendStatus(400);
+                        }
+                    }else{ //NO NEW PASSWORD
+                        if(file)
+                            dpUpdate(file.originalname, body['userId']);
+                        dbUser.updateUser(body);
+                        res.sendStatus(200);
+                    }
                 }else{
-                    //NEW PASSWORDS NOT EQUAL
-                    res.sendStatus(400);
+                    console.log("Password not found on DB!");
+                    res.sendStatus(403);
                 }
-            }else{
-                //SKIP PASSWORDS AND UPLOAD VALUES
-                if(req.file)
-                    req.body['profilepic'] = dpUpdate(req.file.originalname,req.body["userId"]);
-                console.log(req.body); //UPLOAD TO DB
-            }
-        }else
-            res.sendStatus(403);
-        res.sendStatus(200);
+            });
+        });
     }catch(e){
         res.sendStatus(500);
     }
 });
-
 function dpUpdate(originalname, userid){
     file.renameDP(originalname,userid);
     return process.env.DP_PUBLIC + userid + ".webp";
@@ -159,9 +163,19 @@ profileNav.post('/validate/password',(req, res)=>{
     try{
         console.log(req.body);
         var replyBody = {};
-        replyBody['match'] = tempDB.isMatch(req.body.username,req.body.password); //TEMPORARY WAY OF CHECKING, SHOULD BE THROUGH BCRYPT AND DB
-        req.body = null;
-        res.json(replyBody);
+        dbUser.getHashViaUsername(req.body['username']).then((user)=>{
+            console.log(user);
+            var hash = user[0]['passhash'];
+            bcrypt.compare(req.body['password'],hash,(error, same)=>{
+                if(error != null)
+                    console.log(error);
+                replyBody['match'] = same;
+                req.body = null;
+                res.json(replyBody);
+            });
+        }).catch((error)=>{
+            console.log(error);
+        });
     }catch(e){
         console.log("Error on password validation");
         console.log(e);

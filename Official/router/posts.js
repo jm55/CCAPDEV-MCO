@@ -7,7 +7,8 @@ import * as tempDB from '../utils/tempDB.js';
 import * as format from '../utils/formatting.js'
 
 //DB
-import * as db from '../db/controller/postController.js';
+import * as dbPost from '../db/controller/postController.js';
+import * as dbLike from'../db/controller/likeController.js';
 
 //Multer
 import * as mult from '../middleware/mult.js';
@@ -17,6 +18,8 @@ import * as file from '../middleware/fs.js';
 
 //Creating postHashes
 import {newPostHash} from "../middleware/hashIds.js";
+
+postNav.use(express.json());
 
 //View Specific Post
 postNav.get('/post/:posthash', (req, res)=>{ //TO UPGRADE THAT ALLOWS /post/<posthash> TO ACCESS SPECIFIC POSTS
@@ -113,7 +116,7 @@ postNav.post('/post/new', mult.upload_post.single('imgselect'), (req, res)=>{
     req.body["imgurl"] = '/img/post/' + req.body['postHash'] + ".webp";
     req.body["datetime"] = new Date();
     try{
-        db.addPost(req.body).then((p)=>{
+        dbPost.addPost(req.body).then((p)=>{
             file.renamePostImg(req.file.originalname, req.body["postHash"]);
             res.sendStatus(200);
         }).catch((err)=>{
@@ -132,29 +135,52 @@ postNav.post('/post/like', (req, res)=>{
     try{
         console.log(req.body);
         /**
-         * SEND LIKE TO SERVER
-         * 
-         * CHECK IF LIKES CONTAIN THE SAME LIKE
-         * 
-         * IF REQ'S LIKE IS ALREADY THERE, DELETE THE LIKE FROM SERVER
-         * IF REQ'S LIKE IS NOT THERE, WRITE THE LIKE TO SERVER
-         * 
-         * SEND A JSON MESSAGE CONTAINING IF BUTTON IS LIKED OR NOT AND WHAT IS THE COUNTER FOR THE POSTHASH
+         * SAMPLE:
+         * userId: 1,
+         * postHash: '08191',
+         * datetime: '2022-05-31T04:11:12.381Z',
+         * currentCount: '1'
          */
-        var countVal = req.body['currentCount'];
-        var increment = true; //CHECK REQUIREMENTS
-        if(increment)
-            countVal++;
-        else
-            countVal--;
-        var count = format.pluralInator("Like", countVal) + ": " + countVal;
-        var btn = "Liked";
-        res.status(200).json({btn:btn,count:count});
+        var currentCount = Number(req.body['currentCount']);
+        dbLike.isLiked(req.body['userId'], req.body['postHash']).then((arr)=>{
+            /**
+             * SAMPLE arr:
+             * _id: new ObjectId("6295991a5b87f2fa73565a12"),
+             * userId: '1',
+             * postHash: '42069',
+             * datetime: '2022-05-31T04:26:30.532Z'
+             */
+            console.log('arr');
+            console.log(arr);
+            if(arr.length > 0){
+                console.log("Already liked!");
+                dbLike.unlike(req.body['userId'],req.body['postHash']);
+                updateCounter(res,currentCount,false);
+            }else{
+                console.log("Not yet liked!");
+                dbLike.like(req.body);
+                updateCounter(res,currentCount,true);
+            }   
+        });
     }catch(e){
         res.statusMessage = e;
         res.sendStatus(400);
     }
 });
+
+function updateCounter(res, counter, increment){
+    var countVal = counter;
+    var btn = "Liked";
+    if(increment)
+        countVal++;
+    else{
+        btn = "Like";
+        countVal--;
+    }
+    var count = format.pluralInator("Like", countVal) + ": " + countVal;
+    
+    res.status(200).json({btn:btn,count:count});
+}
 
 //Report Post
 postNav.post('/post/report', (req, res)=>{ 
