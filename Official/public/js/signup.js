@@ -51,10 +51,12 @@ function makeProfile(){
         body: fmd,
     }).then((res) => {
         if (res.status >= 200 && res.status < 300) {// SUCCESS
-            window.location.href = '/login'; //TODO
-        } else {// ERROR
-            console.log(res.statusText);
-            console.log("response error: " + res.status);
+            console.log(res);
+            window.location.href = '/login';
+        }else if(res.status == 403){
+            alert('Username already in use');
+        }else{
+            console.log(res.status);
         }
     }).catch((error) => {
         console.error(error);

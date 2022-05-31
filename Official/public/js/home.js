@@ -8,20 +8,6 @@ $(document).ready(()=>{
     //SHOW ITEM CATEGORIES; Reference: https://stackoverflow.com/a/590219
     //let list = [];
     //$(".menu_categories").each(function(){ list.push($(this).val());});
-    
-    //EVENTLISTERNERS / ACTIONLISTENERS
-    $("#post-btn").click((e)=>{
-        var newPost = null;
-        newPostClicked = true;
-        updateColor();
-        if(validatePost()){
-            submitPost();
-            clearInputs();
-        }else{
-            alert("Please check completeness of post content.");
-            errMessage("","New Post Data Incomplete");
-        }
-    });
 
     $("#imgselect").on("change",()=>{
         if(refreshNewPostImage())
@@ -97,29 +83,6 @@ function updateColor(restore=false){
  function changeBGColor(id, color){
     document.getElementById(id).style.backgroundColor = color;
 }
-
-/**
- * Clears the "Create Post" input fields
- */
- function clearInputs(){
-    var inputPostDesc = document.getElementById('content');
-    inputPostDesc.value = '';
-
-    var inputPostCat = document.getElementById('category');
-    inputPostCat.value = '';
-
-    var inputPostLab = document.getElementById('label');
-    inputPostLab.value = '';
-
-    var inputPostLink = document.getElementById('link');
-    inputPostLink.value = '';
-
-    var inputPostImgSel = document.getElementById('imgselect');
-    inputPostImgSel.value = '';
-
-    var inputPostImg = document.getElementById('image');
-    refreshNewPostImage();
- }
 
 /**
  * Refreshes New Post Image Element

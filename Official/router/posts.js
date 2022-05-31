@@ -6,6 +6,9 @@ const postNav = express.Router();
 import * as tempDB from '../utils/tempDB.js';
 import * as format from '../utils/formatting.js'
 
+//DB
+import * as db from '../db/controller/postController.js';
+
 //Multer
 import * as mult from '../middleware/mult.js';
 
@@ -32,6 +35,12 @@ postNav.get('/post/:posthash', (req, res)=>{ //TO UPGRADE THAT ALLOWS /post/<pos
                 if(tempDB.isLiked(tempDB.currentUser.userId,postHash))
                     return "Liked";
                 return "Like";
+            },
+            editable(postUserId){
+                if(postUserId == tempDB.currentUser.userId)
+                    return "block";
+                else
+                    return "none";
             }
         }
     });
@@ -60,14 +69,12 @@ postNav.patch('/post/:posthash/save', (req, res)=>{ //TO UPGRADE THAT ALLOWS /po
     console.log("Request: " + req.socket.remoteAddress + ":" + req.socket.remotePort + " => " + req.url);
     try {
         console.log(req.body);
-
         /**
          * UPDATE POST HERE
          * 
          * RETURN 200 IF SUCCESSFUL
          * RETURN 500 IF NOT SUCCESSFUL
          */
-
         res.sendStatus(300); //NOT SURE IF NEEDED
     } catch(e) {
         res.statusMessage = e;
@@ -80,14 +87,12 @@ postNav.delete('/post/:posthash/delete', (req, res)=>{ //TO UPGRADE THAT ALLOWS 
     console.log("Request: " + req.socket.remoteAddress + ":" + req.socket.remotePort + " => " + req.url);
     try {
         console.log(req.body);
-
         /**
          * DELETE POST HERE
          * 
          * RETURN 200 IF SUCCESSFUL
          * RETURN 500 IF NOT SUCCESSFUL
          */
-
         res.sendStatus(300); //NOT SURE IF NEEDED
     } catch(e) {
         res.statusMessage = e;
@@ -99,16 +104,22 @@ postNav.delete('/post/:posthash/delete', (req, res)=>{ //TO UPGRADE THAT ALLOWS 
 postNav.post('/post/new', mult.upload_post.single('imgselect'), (req, res)=>{ 
     /**
      * 
-     * CHECK IF USER IS LOGGED IN. IF SO, THEN RENDER THE PAGE BELOW, ELSE THEN REDIRECT BACK TO LOGIN.
+     * CHECK IF USER IS LOGGED IN. 
+     * IF SO, THEN RENDER THE PAGE BELOW, ELSE THEN REDIRECT BACK TO LOGIN.
      * 
      */
     console.log("Request: " + req.socket.remoteAddress + ":" + req.socket.remotePort + " => " + req.url);
     req.body["postHash"] = newPostHash();
+    req.body["imgurl"] = '/img/post/' + req.body['postHash'] + ".webp";
+    req.body["datetime"] = new Date();
     try{
-        console.log(req.body); //<= Save Contents to Database
-        //Renames DP image
-        file.renamePostImg(req.file.originalname, req.body["postHash"]);
-        res.redirect('/home');
+        db.addPost(req.body).then((p)=>{
+            file.renamePostImg(req.file.originalname, req.body["postHash"]);
+            res.sendStatus(200);
+        }).catch((err)=>{
+            console.error(err);
+            res.sendStatus(500);
+        });
     }catch(e){
         res.statusMessage = e;
         res.sendStatus(400);

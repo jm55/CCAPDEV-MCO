@@ -1,7 +1,7 @@
 <form name="form" id="form" class="new_post_form" enctype="multipart/form-data">
     <input id="userId" name="userId" type="text" style="display: none;" value='{{currentUser.userId}}' >
     <label>Post Content:</label>
-    <textarea name="content" id="content" class="new_post_description"></textarea>
+    <textarea name="description" id="description" class="new_post_description"></textarea>
     <label>Category:</label>
     <select  id="category" name="category" class="menu_categories"> <!--Same categories from Shopee-->
         {{>category_options}}

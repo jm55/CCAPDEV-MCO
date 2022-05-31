@@ -27,6 +27,12 @@ homeNav.get('/home', (req, res)=>{
                 if(tempDB.isLiked(tempDB.currentUser.userId,postHash))
                     return "Liked";
                 return "Like";
+            },
+            editable(postUserId){
+                if(postUserId === tempDB.currentUser.userId)
+                    return "block";
+                else
+                    return "none";
             }
         }
     });

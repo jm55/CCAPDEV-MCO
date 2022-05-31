@@ -6,5 +6,8 @@ export function checkPosts(){
     return postCollection.find({}).toArray();
 }
 
-export default{};
+export function addPost(post){
+    return postCollection.insertOne(post);
+}
+
 console.log("DB.Controller postController.js loaded");

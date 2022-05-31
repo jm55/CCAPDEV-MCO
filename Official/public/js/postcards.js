@@ -38,6 +38,10 @@ function showShare(posthash){
     alert("Link has been copied!");
 }
 
+function editForward(posthash){
+    window.location.href = '/post/' + posthash + '/edit';
+}
+
 function submitReport(posthash){
     console.log("Report: " + posthash + " from " + userId);
     //userId, posthash, datetime

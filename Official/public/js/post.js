@@ -5,29 +5,48 @@ $(document).ready(()=>{
     var cat = $("#post-category").attr("value");
     $("#post-category").val(cat);
 
+    $("#post-btn").click((e)=>{
+        newPostClicked = true;
+        updateColor();
+        if(validatePost()){
+            submitPost();
+            clearInputs();
+        }else{
+            alert("Please check completeness of post content.");
+            errMessage("","New Post Data Incomplete");
+        }
+    });
+
     $("#save-post-btn").click((e)=>{
         e.preventDefault();
         console.log("#save-post-btn");
         submitEditedPost(savePost());
     });
+
     $("#delete-post-btn").click((e)=>{
         e.preventDefault();
         console.log("#delete-post-btn");
         if(confirm("Delete this post?")){
-            console.log("Post will be deleted");
-            //Delete post here
+            /***
+             * 
+             * 
+             * DELETE POST HERE
+             * 
+             */
         }else{
             //Route back to home
             window.location.href = "/home";
         }
         console.log("delete-post");
     });
+
     $("#cancel-post-btn").click((e)=>{
         e.preventDefault();
         //Route back to profile page
         window.location.href = "/profile";
-        console.log("cancel-edit-post");
+        console.log("cancel-post-btn");
     });
+
     $("#imgselect").on("change",()=>{
         console.log("image change");
         refreshNewPostImage();
@@ -123,23 +142,24 @@ function validatePost(){
 }
 
 /**
- * Simple Hash Function (for emulation purposes)
- * Reference: https://gist.github.com/iperelivskiy/4110988
- * @param {string} s String to be hashed
- * @returns Numeric hash string equivalent of s
+ * Clears the "Create Post" input fields
  */
- function hash(s) {
-    /* Simple hash function. */
-    var a = 1, c = 0, h, o;
-    if (s) {
-        a = 0;
-        /*jshint plusplus:false bitwise:false*/
-        for (h = s.length - 1; h >= 0; h--) {
-            o = s.charCodeAt(h);
-            a = (a<<6&268435455) + o + (o<<14);
-            c = a & 266338304;
-            a = c!==0?a^c>>21:a;
-        }
-    }
-    return String(a);
-}
+ function clearInputs(){
+    var inputPostDesc = document.getElementById('description');
+    inputPostDesc.value = '';
+
+    var inputPostCat = document.getElementById('category');
+    inputPostCat.value = '';
+
+    var inputPostLab = document.getElementById('label');
+    inputPostLab.value = '';
+
+    var inputPostLink = document.getElementById('link');
+    inputPostLink.value = '';
+
+    var inputPostImgSel = document.getElementById('imgselect');
+    inputPostImgSel.value = '';
+
+    var inputPostImg = document.getElementById('image');
+    refreshNewPostImage();
+ }

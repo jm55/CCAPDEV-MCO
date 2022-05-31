@@ -2,7 +2,10 @@ import express from 'express';
 
 const logNav = express.Router();
 
-import * as hs from '../middleware/bcrypt.js'; //TEMPORARY ONLY
+
+//import * as hs from '../middleware/bcrypt.js'; //TEMPORARY ONLY
+import bcrypt from 'bcrypt';
+import * as db from '../db/controller/userController.js';
 
 import tempDB from '../utils/tempDB.js';
 
@@ -15,22 +18,30 @@ logNav.get('/login', (req,res)=>{
 //Confirm Login
 logNav.post('/login/in',(req, res)=>{
     console.log("Request: " + req.socket.remoteAddress + ":" + req.socket.remotePort + " => " + req.url);
+    var body = req.body;
+    req.body = null;
     try {
-        console.log('Login Credentials: ' + JSON.stringify(body));
-        var body = req.body;
-        req.body = null;
-        body["password"] = hs.getHash(body["password"]); //in hash already
-        /**
-         * AUTHENTICATE HERE
-         * 
-         * USE BCRYPT
-         * SEND 200 IF AUTHENTICATED
-         * SEND 500 IF !AUTHENTICATED
-         * 
-         * REGARDLESS, LOGIN MUST BE MADE
-         */
-        var match = tempDB.isMatch(body['username'],body['password']); //TEMPORARY LOGIN VALIDATION THROUGH TEMPDB.isMatch()
-        res.json({success:match}); 
+        //console.log('Login Credentials: ' + JSON.stringify(body));
+        db.userExists(body['username']).then((u)=>{
+            if(u.username == body['username']){
+                bcrypt.compare(String(body['password']),u.passhash,(err,same)=>{
+                    if(err != null)
+                        res.sendStatus(500);
+                    /***
+                     * 
+                     * 
+                     * 
+                     * SET SESSION HERE OR SOMETHING.
+                     * AWAIT FOR LESSONS IN AUTHENTICATION
+                     * AS IT MAY OFFER KNOWLEDGE ON HOW TO DO SO.
+                     * 
+                     * 
+                     */
+                    res.json({success:same});
+                });
+            }else
+                res.json({success:false}); 
+        })
     } catch(e) {
         res.statusMessage = e;
         res.sendStatus(400);

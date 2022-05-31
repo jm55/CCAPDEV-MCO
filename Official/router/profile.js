@@ -60,6 +60,12 @@ profileNav.get('/profile', (req, res)=>{
                 if(tempDB.isLiked(tempDB.currentUser.userId,postHash))
                     return "Liked";
                 return "Like";
+            },
+            editable(postUserId){
+                if(postUserId == tempDB.currentUser.userId)
+                    return "block";
+                else
+                    return "none";
             }
         }
     });
@@ -96,7 +102,7 @@ profileNav.patch('/profile/settings/save', mult.upload_dp.single('profilepic-sel
         if(tempDB.isMatch(req.body['username'], req.body['password_current'])){
             if(String(req.body['password_a']).length > 0 && String(req.body['password_b'])){
                 if(String(req.body['password_a'])===String(req.body['password_b'])){
-                    bcrypt.hash(req.body['password_b'],process.env.SALT_ROUNDS,(error, hash)=>{
+                    bcrypt.hash(req.body['password_b'],Number(process.env.SALT_ROUNDS),(error, hash)=>{
                         if(error != null)
                             res.sendStatus(500);
                         req.body['passhash'] = hash;
