@@ -29,8 +29,16 @@ export function like(body){
     return likeCollection.insertOne(body);
 }
 
-export async function countLikes(postHash){
-    return (await likeCollection.find({'postHash':String(postHash)}).toArray()).length;
+export function getLikes(){
+    return likeCollection.find({}).toArray();
+}
+
+export function getLikeByUserID(userId){
+    return likeCollection.find({'userId':userId}).toArray();
+}
+
+export function getLikeByPostHash(postHash){
+    return likeCollection.find({'postHash':postHash}).toArray();    
 }
 
 console.log("DB.Controller likeController.js loaded");

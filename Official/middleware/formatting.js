@@ -13,3 +13,7 @@ export function simpleDateTime(dt){
 export function formalName(fname, mname, lname){
     return lname + ", " + fname + " " + mname.substring(0,1) + ".";
 }
+
+export function buildTitle(username){
+    return username + " - Budol Finds"
+}

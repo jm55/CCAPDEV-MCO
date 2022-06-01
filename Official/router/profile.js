@@ -4,25 +4,18 @@ const profileNav = express.Router();
 
 //Utilities
 import * as tempDB from '../utils/tempDB.js';
-import * as format from '../utils/formatting.js';
-var targetUser = tempDB.users[1];
-
-//Multer and File
+import * as format from '../middleware/formatting.js';
 import * as mult from '../middleware/mult.js';
 import * as file from '../middleware/fs.js';
-
-//DB
 import * as dbUser from '../db/controller/userController.js';
-
-//dotenv
 import 'dotenv/config';
-
-//bcrypt
 import bcrypt from 'bcrypt';
 
-function buildTitle(username){
-    return username + " - Budol Finds"
-}
+//DB
+import * as dispatch from '../middleware/dispatch.js';
+
+//TempUser
+var targetUser = tempDB.users[1];
 
 //User (other User Profile)
 profileNav.get('/user/:username', (req, res)=>{
@@ -37,7 +30,7 @@ profileNav.get('/user/:username', (req, res)=>{
      * 
      */
     res.render("viewuser",  {
-        title: buildTitle(targetUser.username),
+        title: format.buildTitle(targetUser.username),
         currentUser: tempDB.currentUser,
         targetUser: tempDB.targetUser, //PERTAINS TO A TARGET USER'S ACCOUNT
         posts: tempDB.getPostsByAuthorID(tempDB.targetUser.userId),
@@ -68,27 +61,36 @@ profileNav.get('/profile', (req, res)=>{
      * 
      *
      */  
-    res.render("profile",  {
-        title: buildTitle(tempDB.currentUser.username),
-        currentUser: tempDB.currentUser, 
-        targetUser: tempDB.currentUser,
-        posts: tempDB.getPostsByAuthorID(tempDB.currentUser.userId),
-        helpers: {
-            fullName(fname, mname, lname){return format.formalName(fname,mname,lname);},
-            simpleDateTime(dt){return format.simpleDateTime(dt);},
-            likes(like){return format.pluralInator('Like',like);},
-            btnLiked(postHash){
-                if(tempDB.isLiked(tempDB.currentUser.userId,postHash))
-                    return "Liked";
-                return "Like";
-            },
-            editable(postUserId){
-                if(postUserId == tempDB.currentUser.userId)
-                    return "block";
-                else
-                    return "none";
+    var userId = '1'; //UPDATE USING SESSION userId VALUE
+
+    dispatch.getProfileById(userId).then((data)=>{
+        var user = data[0]
+        var posts = data[1];
+        res.render("profile",  {
+            title: format.buildTitle(user.username),
+            currentUser: user, 
+            targetUser: user,
+            posts: posts,
+            helpers: {
+                fullName(fname, mname, lname){return format.formalName(fname,mname,lname);},
+                simpleDateTime(dt){return format.simpleDateTime(dt);},
+                likes(like){return format.pluralInator('Like',like);},
+                btnLiked(postHash){
+                    for(var p of posts)
+                        if(p.postHash == postHash)
+                            for(var u of p.likeVals)
+                                if(u.userId == user.userId)
+                                    return "Liked";
+                    return "Like";
+                },
+                editable(postUserId){
+                    if(postUserId == user.userId)
+                        return "block";
+                    else
+                        return "none";
+                }
             }
-        }
+        });
     });
 });
 

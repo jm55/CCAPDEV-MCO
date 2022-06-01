@@ -32,7 +32,7 @@
     <div class="post_footer">
         <div class="likes">
             <p class="likecounter" id='likeCounter{{post.postHash}}'>{{{likes post.likes}}}: {{post.likes}}</p>
-            <p class="post_timedate">Posted: {{simpleDateTime datetime}}</p>
+            <p class="post_timedate">Posted: {{ datetime}}</p>
         </div>
         <form class="interact" id='interact#{{post.postHash}}' name="interact#{{post.postHash}}" >
             <input type="button" class="button" id="like-button{{post.postHash}}" value={{{btnLiked post.postHash}}} onclick="submitLike('{{post.postHash}}')"> <!--https://stackoverflow.com/a/13645315-->
@@ -49,7 +49,7 @@
             <div class="comment_div" id="comments_div{{post.postHash}}"> <!--SINGLE COMMENT BLOCK - REPETITIVE-->
                 <a href="/user/{{username}}" class="username">{{username}}</a><!--BUILD HREF VALUE AT JS BASED ON COMMENT OBJECT DATA--->
                 <p>{{text}}</p> <!--BUILD TEXT VALUE AT JS BASED ON COMMENT OBJECT DATA--->
-                <p class="comment-timedate">{{simpleDateTime datetime}}</p><!--BUILD TEXT VALUE AT JS BASED ON COMMENT DATETIME DATA--->
+                <p class="comment-timedate">{{ datetime}}</p><!--BUILD TEXT VALUE AT JS BASED ON COMMENT DATETIME DATA--->
             </div>
             {{/each}}
         </div>

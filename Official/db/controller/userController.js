@@ -56,4 +56,16 @@ export function userExists(username){
     return userCollection.findOne({username: username});
 }
 
+export function getUsers(){
+    return userCollection.find({}).toArray();
+}
+
+export function getUsersByUserName(userName){
+    return userCollection.find({'username':userName}).toArray();
+}
+
+export function getUsersByUserID(userId){
+    return userCollection.find({'userId':userId}).toArray();
+}
+
 console.log("DB.Controller userController.js loaded");

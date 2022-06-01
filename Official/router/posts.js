@@ -4,7 +4,7 @@ const postNav = express.Router();
 
 //Utilities
 import * as tempDB from '../utils/tempDB.js';
-import * as format from '../utils/formatting.js'
+import * as format from '../middleware/formatting.js'
 
 //DB
 import * as dbPost from '../db/controller/postController.js';

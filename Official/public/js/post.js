@@ -1,4 +1,5 @@
 console.log("post.js");
+var newPostClicked = false;
 
 $(document).ready(()=>{
     //Update selected value of gender in select
@@ -155,7 +156,7 @@ function validatePost(){
  */
 function updateColor(restore=false){
     if(restore){
-        for(f of new FormData(document.forms.form))
+        for(var f of new FormData(document.forms.form))
             if(f[0] == "category"){
                 changeBGColor(f[0], "var(--primary-button)");
             }
