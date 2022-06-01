@@ -42,11 +42,12 @@ function editForward(posthash){
     window.location.href = '/post/' + posthash + '/edit';
 }
 
-function submitReport(posthash){
+function submitReport(posthash, postOwnerId){
     console.log("Report: " + posthash + " from " + userId);
     //userId, posthash, datetime
     var body = {};
     body['userId'] = userId;
+    body['postOwnerId'] = postOwnerId;
     body['postHash'] = posthash;
     body['datetime'] = new Date();
     fetch("/post/report",{

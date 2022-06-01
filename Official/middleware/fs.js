@@ -3,6 +3,14 @@ import fs from 'fs';
 const POST_DIR = process.env.POSTIMG_DIR;
 const DP_DIR = process.env.DPIMG_DIR;
 
+export function deletePostImg(postHash){
+    fs.unlinkSync(POST_DIR+postHash+".webp");
+}
+
+export function deleteDP(userId){
+    fs.unlinkSync(DP_DIR+userId+".webp");
+}
+
 export function renamePostImg(originalName, postHash){
     var success = false;
     fs.rename(POST_DIR+originalName, POST_DIR+postHash+".webp", (e)=>{

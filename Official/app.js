@@ -62,6 +62,12 @@ app.use(debugTest);
 
 //Index
 app.get('/', (req, res)=>{
+    /**
+     * 
+     * 
+     *  ROUTE TO HOME PAGE IF LOGGED IN (I.E. HAS SESSION), ELSE THEN ROUTE TO LOGIN PAGE
+     * 
+     */
     console.log("Request: " + req.socket.remoteAddress + ":" + req.socket.remotePort + " => " + req.url);
     res.redirect('/login');
 });

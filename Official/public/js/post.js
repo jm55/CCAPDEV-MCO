@@ -2,9 +2,11 @@ console.log("post.js");
 var newPostClicked = false;
 
 $(document).ready(()=>{
+    console.log(currentPost);
     //Update selected value of gender in select
     var cat = $("#post-category").attr("value");
     $("#post-category").val(cat);
+    $("#category").val($("#category").attr("value")); //FOR EDIT POSTS
 
     $("#post-btn").click((e)=>{
         newPostClicked = true;
@@ -12,40 +14,36 @@ $(document).ready(()=>{
         if(validatePost()){
             submitPost();
             clearInputs();
+            location.reload();
         }else{
             alert("Please check completeness of post content.");
             errMessage("","New Post Data Incomplete");
         }
     });
 
-    $("#save-post-btn").click((e)=>{
+    $("#save-btn").click((e)=>{
         e.preventDefault();
-        console.log("#save-post-btn");
-        submitEditedPost(savePost());
-    });
-
-    $("#delete-post-btn").click((e)=>{
-        e.preventDefault();
-        console.log("#delete-post-btn");
-        if(confirm("Delete this post?")){
-            /***
-             * 
-             * 
-             * DELETE POST HERE
-             * 
-             */
-        }else{
-            //Route back to home
-            window.location.href = "/home";
+        if(validatePost(true)){
+            submitEdit();
+            location.reload();
         }
-        console.log("delete-post");
     });
 
-    $("#cancel-post-btn").click((e)=>{
+    $("#cancel-btn").click((e)=>{
         e.preventDefault();
-        //Route back to profile page
-        window.location.href = "/profile";
-        console.log("cancel-post-btn");
+        clearInputs();
+    });
+
+    $("#cancel-edit-btn").click((e)=>{
+        e.preventDefault();
+        if(confirm("Are you sure to cancel?"))
+            window.location.href = '/';
+    });
+
+    $("#delete-btn").click((e)=>{
+        e.preventDefault();
+        if(confirm("Are you sure you want to delete?"))
+            submitDelete();
     });
     
     $("#imgselect").on("change",()=>{
@@ -54,12 +52,34 @@ $(document).ready(()=>{
     });
 });
 
+function submitDelete(){
+    console.log("Delete Post");
+    var fetchURL = "/post/" + currentPost.posthash + "/delete";
+    var f = {};
+    f['postHash'] = currentPost.postHash;
+    fetch(fetchURL,{
+        method: "DELETE",
+        body: JSON.stringify(f),
+        headers:{'Content-Type':'application/json'},
+    }).then((res) => {
+        if (res.status >= 200 && res.status < 300) {// SUCCESS
+            window.location.href = '/profile';
+        } else {// ERROR
+            alert("Error deleting post, please try again.");
+            console.log("response error: " + res.status);
+        }
+    }).catch((error) => {
+        console.error(error);
+    });
+}
+
 function submitEdit(){
     console.log("Edit Post");
-    var fetchURL = "/post/" + currentPost.posthash + "/save";
+    var fetchURL = "/post/" + currentPost.postHash + "/save";
     var f = new FormData(document.forms.form);
+    f.append('postHash', currentPost.postHash);
     fetch(fetchURL,{
-        method: "POST",
+        method: "PATCH",
         body: f,
     }).then((res) => {
         if (res.status >= 200 && res.status < 300) {// SUCCESS
@@ -90,14 +110,22 @@ function submitPost(){
     });
 }
 
-function validatePost(){
+function validatePost(imageSkip=false){
     var form = new FormData(document.forms.form);
     var validity = true;
     for(var f of form){
-        if(f[0] == "imgselect" && !getInputFile('imgselect'))
-            validity = false;
-        else if(f[1] == "")
-            validity = false;
+        if(imageSkip){
+            if(f[0] == "imgselect")
+                validity = true;
+            if(f[1] == "")
+                validity = false;
+        }else{
+            if(f[0] == "imgselect" && !getInputFile('imgselect'))
+                validity = false;
+            if(f[1] == "")
+                validity = false;
+        }
+            
     }
     return validity;
 }
@@ -206,7 +234,7 @@ function updateColor(restore=false){
  * Either shows the element if an image (if there exists a selected file) or not (if otherwise).
  */
  function refreshNewPostImage(){
-    var file = getInputFile("img-select");
+    var file = getInputFile("imgselect");
     if(file){ //check if it exists
         document.getElementById("image").style.display = "block";
         $("#image").attr("src",getTempURL(file));

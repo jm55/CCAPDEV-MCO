@@ -2,7 +2,7 @@
     <label>Post Content:</label>
     <textarea name="description" id="description" class="new_post_description">{{currentPost.description}}</textarea>
     <label>Category:</label>
-    <select id="post-category" name="post-category" class="menu_categories" value="{{currentPost.category}}"> <!--Same categories from Shopee-->
+    <select id="category" name="category" class="menu_categories" value="{{currentPost.category}}"> <!--Same categories from Shopee-->
         {{>category_options}}
     </select>
     <label>Link Label:</label>
@@ -13,9 +13,9 @@
     <img onerror="this.src='/img/default/imagenotfound.webp'" loading='lazy' id="image" class="new_post_image" src="{{currentPost.imgurl}}" alt="" style="display:block;">
     <input id="imgselect" name="imgselect" type="file" accept="image/*"/>
     <div class="interact">
-        <input id="post-btn" type="button" class="button" value="Save">
-        <input id="delete-post-btn" type="button" class="button" value="Delete">
-        <input id="cancel-post-btn" type="button" class="button" value="Cancel">
+        <input id="save-btn" type="button" class="button" value="Save">
+        <input id="delete-btn" type="button" class="button" value="Delete">
+        <input id="cancel-edit-btn" type="button" class="button" value="Cancel">
     </div>
 </form>
 

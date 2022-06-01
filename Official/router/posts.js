@@ -3,7 +3,6 @@ import express from 'express';
 const postNav = express.Router();
 
 //Utilities
-import * as tempDB from '../utils/tempDB.js';
 import * as format from '../middleware/formatting.js'
 
 //DB
@@ -11,6 +10,7 @@ import * as dbPost from '../db/controller/postController.js';
 import * as dbLike from'../db/controller/likeController.js';
 import * as dbComment from'../db/controller/commentController.js';
 import * as dbReport from'../db/controller/reportController.js';
+import * as dispatch from '../middleware/dispatch.js';
 
 //Multer
 import * as mult from '../middleware/mult.js';
@@ -27,29 +27,41 @@ postNav.use(express.json());
 postNav.get('/post/:posthash', (req, res)=>{ //TO UPGRADE THAT ALLOWS /post/<posthash> TO ACCESS SPECIFIC POSTS
     console.log("Request: " + req.socket.remoteAddress + ":" + req.socket.remotePort + " => " + req.url);
     var targetPostHash = req.params['posthash'];
-    console.log("Target postHash: " + targetPostHash);
-    res.render("viewpost",  {
-        title: "Post - Budol Finds",
-        currentUser: tempDB.currentUser,
-        likes: tempDB.likes,
-        post: tempDB.currentPost, //SAMPLE POST
-        postJSON: JSON.stringify(tempDB.currentPost),
-        helpers: {
-            fullName(fname, mname, lname){return format.formalName(fname,mname,lname);},
-            simpleDateTime(dt){return format.simpleDateTime(dt);},
-            likes(like){return format.pluralInator('Like',like);},
-            btnLiked(postHash){
-                if(tempDB.isLiked(tempDB.currentUser.userId,postHash))
-                    return "Liked";
-                return "Like";
-            },
-            editable(postUserId){
-                if(postUserId == tempDB.currentUser.userId)
-                    return "block";
-                else
-                    return "none";
+    
+    var userId = '1'; //UPDATE USING SESSION userId VALUE
+
+    dispatch.getSinglePost(userId, targetPostHash).then((data)=>{
+        const currentUser = data[0];
+        const currentPost = data[1];
+        const currentLikes = data[2];
+        const currentComments = data[3];
+
+        res.render("viewpost",  {
+            title: "Post - Budol Finds",
+            currentUser: currentUser,
+            comments: currentComments,
+            likes: currentLikes.length,
+            post: currentPost, //SAMPLE POST
+            postJSON: JSON.stringify(currentPost),
+            helpers: {
+                fullName(fname, mname, lname){return format.formalName(fname,mname,lname);},
+                simpleDateTime(dt){return format.simpleDateTime(dt);},
+                likes(like){return format.pluralInator('Like',like);},
+                btnLiked(postHash){
+                    if(currentPost == postHash)
+                        for(var u of currentPost.likeVals)
+                            if(u.userId == currentUser.userId)
+                                return "Liked";
+                    return "Like";
+                },
+                editable(postUserId){
+                    if(postUserId == currentUser.userId)
+                        return "block";
+                    else
+                        return "none";
+                }
             }
-        }
+        });
     });
 });
 
@@ -63,48 +75,51 @@ postNav.get('/post/:posthash/edit', (req, res)=>{ //TO UPGRADE THAT ALLOWS /post
      * 
      * SET currentPost TO NULL IF USER !'OWNS' POST
      */
-    res.render("post",  {
-        title: "Post - Budol Finds",
-        currentUser: tempDB.currentUser, //SAMPLE USER
-        currentPost: tempDB.currentPost, //SAMPLE POST
-        currentPostJSON: JSON.stringify(tempDB.currentPost), //SAMPLE JSON POST
+    var userId = '1'; //UPDATE USING SESSION userId VALUE
+    dispatch.getCurrentUserByID(userId).then((user)=>{
+        dispatch.getEditPost(userId, req.params['posthash']).then((data)=>{
+            if(data[0].userId === userId){
+                res.render("post",  {
+                    title: "Post Edit - Budol Finds",
+                    currentUser: user, //SAMPLE USER
+                    currentPost: data[0], //SAMPLE POST
+                    currentPostJSON: JSON.stringify(data[0]), //SAMPLE JSON POST
+                });
+            }else{
+                res.render("err", {
+                    title: "Error - Budol Finds",
+                    errID: "403",
+                    errMsg: "Post not editable to you."
+                });
+            }
+        });
     });
 });
 
 //Edit Post
-postNav.patch('/post/:posthash/save', (req, res)=>{ //TO UPGRADE THAT ALLOWS /post/<posthash> TO ACCESS SPECIFIC POSTS
+postNav.patch('/post/:posthash/save', mult.upload_post.single('imgselect'), (req, res)=>{ //TO UPGRADE THAT ALLOWS /post/<posthash> TO ACCESS SPECIFIC POSTS
     console.log("Request: " + req.socket.remoteAddress + ":" + req.socket.remotePort + " => " + req.url);
-    try {
-        console.log(req.body);
-        /**
-         * UPDATE POST HERE
-         * 
-         * RETURN 200 IF SUCCESSFUL
-         * RETURN 500 IF NOT SUCCESSFUL
-         */
-        res.sendStatus(300); //NOT SURE IF NEEDED
-    } catch(e) {
-        res.statusMessage = e;
-        res.sendStatus(400);
-    }
+    dbPost.updatePost(req.body).then((p)=>{
+        if(req.file)
+            file.renamePostImg(req.file.originalname, req.body["postHash"]);
+        res.sendStatus(200);
+    }).catch((err)=>{
+        console.error(err);
+        res.sendStatus(500);
+    });
 });
 
 //Delete Post
 postNav.delete('/post/:posthash/delete', (req, res)=>{ //TO UPGRADE THAT ALLOWS /post/<posthash> TO ACCESS SPECIFIC POSTS
     console.log("Request: " + req.socket.remoteAddress + ":" + req.socket.remotePort + " => " + req.url);
-    try {
-        console.log(req.body);
-        /**
-         * DELETE POST HERE
-         * 
-         * RETURN 200 IF SUCCESSFUL
-         * RETURN 500 IF NOT SUCCESSFUL
-         */
-        res.sendStatus(300); //NOT SURE IF NEEDED
-    } catch(e) {
-        res.statusMessage = e;
-        res.sendStatus(400);
-    }
+    dispatch.deletePost(req.body['postHash']).then((result)=>{
+        console.log(result);
+        file.deletePostImg(req.body['postHash']);
+        res.sendStatus(200);
+    }).catch((error)=>{
+        console.error(error);
+        res.sendStatus(500);
+    });
 });
 
 //New Post

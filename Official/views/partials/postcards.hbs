@@ -37,7 +37,7 @@
         <form class="interact" id='interact#{{this.postHash}}' name="interact#{{this.postHash}}" >
             <input type="button" class="button" id="like-button{{this.postHash}}" value={{{btnLiked this.postHash}}} onclick="submitLike('{{this.postHash}}')"> <!--https://stackoverflow.com/a/13645315-->
             <input type="button" class="button" id="share-button{{this.postHash}}" value="Share" onclick="showShare('{{this.postHash}}')">
-            <input type="button" class="button" id="report-button{{this.postHash}}" value="Report" onclick="submitReport('{{this.postHash}}')">
+            <input type="button" class="button" id="report-button{{this.postHash}}" value="Report" onclick="submitReport('{{this.postHash}}','{{this.userId}}')">
             <input type="button" class="button" id="edit-button{{this.postHash}}" value="Edit" onclick="editForward('{{this.postHash}}')" style="display:{{{editable this.userId}}}">
             <input type="text" id="comment#{{this.postHash}}" name="comment#{{this.postHash}}" class="textfield comment_textfield">
             <input type="button" class="button" value="Comment" onclick="submitComment('{{this.postHash}}')"/>

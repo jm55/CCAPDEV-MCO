@@ -60,11 +60,11 @@ export function getUsers(){
     return userCollection.find({}).toArray();
 }
 
-export function getUsersByUserName(userName){
+export function getUserByUserName(userName){
     return userCollection.find({'username':userName}).toArray();
 }
 
-export function getUsersByUserID(userId){
+export function getUserByUserID(userId){
     return userCollection.find({'userId':userId}).toArray();
 }
 

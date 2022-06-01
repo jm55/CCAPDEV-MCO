@@ -10,4 +10,8 @@ export function blotterReport(report){
     return reportCollection.insertOne(report);
 }
 
+export function reportByPostOwnerId(userId){
+    return reportCollection.find({'postOwnerId':userId}).toArray();
+}
+
 console.log("DB.Controller reportController.js loaded");

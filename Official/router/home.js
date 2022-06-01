@@ -16,9 +16,8 @@ homeNav.get('/home', (req, res)=>{
     var userId = '1'; //UPDATE USING SESSION userId VALUE
     
     dispatch.getCurrentUserByID(userId).then((userdata)=>{
-        var user = userdata[0];
+        var user = userdata;
         dispatch.getHomePost().then((posts)=>{
-            dispatch.getCurrentUserByID().then
             res.render("home", {
                 title: "Home - Budol Finds",
                 currentUser: user,

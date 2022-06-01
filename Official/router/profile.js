@@ -3,7 +3,6 @@ import express from 'express';
 const profileNav = express.Router();
 
 //Utilities
-import * as tempDB from '../utils/tempDB.js';
 import * as format from '../middleware/formatting.js';
 import * as mult from '../middleware/mult.js';
 import * as file from '../middleware/fs.js';
@@ -13,9 +12,6 @@ import bcrypt from 'bcrypt';
 
 //DB
 import * as dispatch from '../middleware/dispatch.js';
-
-//TempUser
-var targetUser = tempDB.users[1];
 
 //User (other User Profile)
 profileNav.get('/user/:username', (req, res)=>{
@@ -29,23 +25,43 @@ profileNav.get('/user/:username', (req, res)=>{
      * IF EXISTS, RENDER PAGE ELSE LET IT RENDER AS EMPTY
      * 
      */
-    res.render("viewuser",  {
-        title: format.buildTitle(targetUser.username),
-        currentUser: tempDB.currentUser,
-        targetUser: tempDB.targetUser, //PERTAINS TO A TARGET USER'S ACCOUNT
-        posts: tempDB.getPostsByAuthorID(tempDB.targetUser.userId),
-        postCount: tempDB.getPostsByAuthorID(tempDB.targetUser.userId).length,
-        reportCount: 0,
-        helpers: {
-            fullName(fname, mname, lname){return format.formalName(fname,mname,lname);},
-            simpleDateTime(dt){return format.simpleDateTime(dt);},
-            likes(like){return format.pluralInator('Like',like);},
-            btnLiked(postHash){
-                if(tempDB.isLiked(tempDB.currentUser.userId,postHash))
-                    return "Liked";
-                return "Like";
-            }
-        }
+
+    const currentUserId = '1'; //UPDATE USING SESSION userId VALUE
+    const targetUserName = req.params['username'];
+    
+    dispatch.getUserPair(currentUserId, targetUserName).then((userPair)=>{
+        const currentUser = userPair[0];
+        const targetUser = userPair[1];
+        dispatch.getProfileById(targetUser.userId).then((data)=>{
+            const posts = data[1];
+            res.render("viewuser",  {
+                title: format.buildTitle(targetUser.username),
+                currentUser: currentUser,
+                targetUser: targetUser, //PERTAINS TO A TARGET USER'S ACCOUNT
+                posts: posts,
+                postCount: posts.length,
+                reportCount: targetUser['reportCount'],
+                helpers: {
+                    fullName(fname, mname, lname){return format.formalName(fname,mname,lname);},
+                    simpleDateTime(dt){return format.simpleDateTime(dt);},
+                    likes(like){return format.pluralInator('Like',like);},
+                    btnLiked(postHash){
+                        for(var p of posts)
+                            if(p.postHash == postHash)
+                                for(var u of p.likeVals)
+                                    if(u.userId == currentUser.userId)
+                                        return "Liked";
+                        return "Like";
+                    },
+                    editable(postUserId){
+                        if(postUserId == currentUser.userId)
+                            return "block";
+                        else
+                            return "none";
+                    }
+                }
+            });
+        });
     });
 });
 
@@ -97,10 +113,15 @@ profileNav.get('/profile', (req, res)=>{
 //Profile Settings
 profileNav.get('/profile/settings', (req, res)=>{
     console.log("Request: " + req.socket.remoteAddress + ":" + req.socket.remotePort + " => " + req.url);
-    res.render("profile_settings", {
-        title: "Profile Settings - Budol Finds",
-        currentUser: tempDB.currentUser,
-        currentUserJSON: JSON.stringify(tempDB.currentUser),
+
+    var userId = '1'; //UPDATE USING SESSION userId VALUE
+
+    dispatch.getCurrentUserByID(userId).then((user)=>{
+        res.render("profile_settings", {
+            title: "Profile Settings - Budol Finds",
+            currentUser: user,
+            currentUserJSON: JSON.stringify(user),
+        });
     });
 });
 
@@ -179,7 +200,7 @@ profileNav.delete('/profile/settings/delete', (req, res)=>{
 });
 
 profileNav.post('/validate/password',(req, res)=>{
-     console.log("Request: " + req.socket.remoteAddress + ":" + req.socket.remotePort + " => " + req.url);
+    console.log("Request: " + req.socket.remoteAddress + ":" + req.socket.remotePort + " => " + req.url);
     try{
         console.log(req.body);
         var replyBody = {};
@@ -199,20 +220,27 @@ profileNav.post('/validate/password',(req, res)=>{
     }catch(e){
         console.log("Error on password validation");
         console.log(e);
+        res.sendStatus(500);
     }
 });
 
 profileNav.post('/validate/username',(req, res)=>{
      console.log("Request: " + req.socket.remoteAddress + ":" + req.socket.remotePort + " => " + req.url);
     try{
-        console.log(req.body);
-        var replyBody = {};
-        replyBody['match'] = tempDB.userExists(req.body.username); //TEMPORARY WAY OF CHECKING IT, SHOULD BE VIA DB
-        req.body = null;
-        res.json(replyBody);
+        var username = 'amelia.watson'; //req.body.username;
+        dbUser.userExists(username).then((result)=>{ //
+            var state = false;
+            if(username == result.username)
+                state = true;
+            var replyBody = {};
+            replyBody['match'] = state; 
+            req.body = null;
+            res.json(replyBody);
+        });
     }catch(e){
         console.log("Error on username validation");
         console.log(e);
+        res.sendStatus(500);
     }
 });
 
