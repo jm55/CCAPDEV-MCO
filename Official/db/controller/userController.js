@@ -2,10 +2,11 @@ import { getDB } from '../conn.js';
 
 const userCollection = getDB().collection('users');
 
-export function checkUsers(){
-    return userCollection.find({}).toArray();
-}
-
+/**
+ * Adds a user object to the user collection of the database.
+ * @param {Object} user User object to be added on the database.
+ * @returns Promise of an insert result on the users collection of the database.
+ */
 export function addUser(user){
     /**
      * SAMPLE USER DATA
@@ -24,10 +25,15 @@ export function addUser(user){
      */
     delete user.password_a; //REMOVES PASSWORD A (NOT TO USE)
     delete user.password_b; //REMOVES PASSWORD B (NOT TO USE)
-    //console.log(user);
     return userCollection.insertOne(user);
 }
 
+/**
+ * Updates a user document on the users collection of the database.
+ * It uses the user's userId as the 'primary' key.
+ * @param {Object} user User to be updated in the object.
+ * @returns Promise of an update result on the users collection of the database.
+ */
 export function updateUser(user){
     delete user.password_a;
     delete user.password_b;
@@ -40,32 +46,66 @@ export function updateUser(user){
     });
 }
 
+/**
+ * Gets the passhash of the user specified by the userId.
+ * @param {String} userId Filter parameter 
+ * @returns Promise of an array of users that fits the userId filter.
+ */
 export function getHash(userId){
     return userCollection.find({'userId': String(userId)}).toArray();
 }
 
+/**
+ * Gets the passhash of the user specified by the username.
+ * @param {String} username Filter parameter
+ * @returns Promise of an array of users that fits the username filter.
+ */
 export function getHashViaUsername(username){
     return userCollection.find({'username': String(username)}).toArray();
 }
 
+/**
+ * Deletes a user specified by the userId.
+ * @param {String} userId userId of the target user to be deleted.
+ * @returns Promise of a delete result on the users collection of the database.
+ */
 export function deleteUser(userId){
     return userCollection.deleteOne({'userId': String(userId)});
 }
 
+/**
+ * Finds a user that fits the specified username parameter.
+ * @param {String} username username of the target user to find.
+ * @returns Promise of a single user document of the specified username filter.
+ */
 export function userExists(username){
     return userCollection.findOne({username: username});
 }
 
+/**
+ * Gets all documents from the users collection of the database.
+ * @returns Promise of a list of all users from the database.
+ */
 export function getUsers(){
     return userCollection.find({}).toArray();
 }
 
+/**
+ * Gets a user object given the specified username.
+ * @param {String} userName Filter parameter
+ * @returns Promise of a single user document of the specified username filter.
+ */
 export function getUserByUserName(userName){
-    return userCollection.find({'username':userName}).toArray();
+    return userCollection.findOne({'username':userName});
 }
 
+/**
+ * Gets a user object given the specified userId
+ * @param {String} userId Filter parameter.
+ * @returns Promise of a single user docuemnt of the specified userId filter.
+ */
 export function getUserByUserID(userId){
-    return userCollection.find({'userId':userId}).toArray();
+    return userCollection.findOne({'userId':userId});
 }
 
 console.log("DB.Controller userController.js loaded");

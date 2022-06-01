@@ -2,6 +2,9 @@
 //Reference: https://github.com/RugvedB/Nodejs-Multer-File
 import multer from 'multer';
 
+/**
+ * Multer write parameters for post images.
+ */
 var posts_storage  = multer.diskStorage({
     destination: function(req, file, cb){
         cb(null, process.env.POSTIMG_DIR);
@@ -11,6 +14,9 @@ var posts_storage  = multer.diskStorage({
     }
 });
 
+/**
+ * Multer write parameters for dp images.
+ */
 var dp_storage  = multer.diskStorage({
     destination: function(req, file, cb){
         cb(null, process.env.DPIMG_DIR);

@@ -1,6 +1,7 @@
 import express from 'express';
 
 const profileNav = express.Router();
+profileNav.use(express.json());
 
 //Utilities
 import * as format from '../middleware/formatting.js';
@@ -13,7 +14,10 @@ import bcrypt from 'bcrypt';
 //DB
 import * as dispatch from '../middleware/dispatch.js';
 
-//User (other User Profile)
+/**
+ * @todo
+ * User (other User Profile)
+ */
 profileNav.get('/user/:username', (req, res)=>{
     console.log("Request: " + req.socket.remoteAddress + ":" + req.socket.remotePort + " => " + req.url);
     /**
@@ -25,7 +29,6 @@ profileNav.get('/user/:username', (req, res)=>{
      * IF EXISTS, RENDER PAGE ELSE LET IT RENDER AS EMPTY
      * 
      */
-
     const currentUserId = '1'; //UPDATE USING SESSION userId VALUE
     const targetUserName = req.params['username'];
     
@@ -65,7 +68,10 @@ profileNav.get('/user/:username', (req, res)=>{
     });
 });
 
-//Profile
+/**
+ * @todo
+ * Profile
+ */
 profileNav.get('/profile', (req, res)=>{
     console.log("Request: " + req.socket.remoteAddress + ":" + req.socket.remotePort + " => " + req.url);
     /**
@@ -110,7 +116,7 @@ profileNav.get('/profile', (req, res)=>{
     });
 });
 
-//Profile Settings
+/** Profile Settings */
 profileNav.get('/profile/settings', (req, res)=>{
     console.log("Request: " + req.socket.remoteAddress + ":" + req.socket.remotePort + " => " + req.url);
 
@@ -125,7 +131,7 @@ profileNav.get('/profile/settings', (req, res)=>{
     });
 });
 
-//Save Profile
+/** Save Profile */
 profileNav.patch('/profile/settings/save', mult.upload_dp.single('profilepic-select'), (req, res)=>{
     console.log("Request: " + req.socket.remoteAddress + ":" + req.socket.remotePort + " => " + req.url);
     try{
@@ -179,7 +185,10 @@ function dpUpdate(originalname, userid){
     return process.env.DP_PUBLIC + userid + ".webp";
 }
 
-//Delete Profile
+/**
+ * @todo
+ * Delete Profile
+ */
 profileNav.delete('/profile/settings/delete', (req, res)=>{
     console.log("Request: " + req.socket.remoteAddress + ":" + req.socket.remotePort + " => " + req.url);
     var body = req.body;
@@ -199,6 +208,7 @@ profileNav.delete('/profile/settings/delete', (req, res)=>{
     }
 });
 
+/** Validate Password */
 profileNav.post('/validate/password',(req, res)=>{
     console.log("Request: " + req.socket.remoteAddress + ":" + req.socket.remotePort + " => " + req.url);
     try{
@@ -224,6 +234,7 @@ profileNav.post('/validate/password',(req, res)=>{
     }
 });
 
+/** Validate Username */
 profileNav.post('/validate/username',(req, res)=>{
      console.log("Request: " + req.socket.remoteAddress + ":" + req.socket.remotePort + " => " + req.url);
     try{

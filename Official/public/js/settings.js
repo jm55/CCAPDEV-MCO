@@ -2,11 +2,9 @@ console.log("Public JS: settings.js loaded!");
 
 var validCurrentPassword = false, validity = true, newPassMismatch = false;
 
-/* MAIN */
 var submitClicked = false;
 $(document).ready(()=>{
-    console.log(currentUser);
-    //Update selected value of gender in select
+    //console.log(currentUser);
     var gender = $("#gender").attr("value");
     $("#gender").val(gender);
 
@@ -17,14 +15,17 @@ $(document).ready(()=>{
         homeRedirect();
     });
 
+    /**
+     * @todo
+     */
     $("#delete-btn").click(()=>{
         console.log("#delete-btn");
         if(confirm("Do you want to close the account?")){
-            if(hash(document.getElementById("password_current").value)==currentUser.passhash){
-                window.location.href = "/";
-            }else{
-                alert("Enter current password to confirm account deletion.");
-            }
+            /**
+             * 
+             * CHECK ACCOUNT FOR PASSWORD VIA INPUT AND CONFIRM VALIDITY THROUGH
+             * 
+             */
         }
     });
 
@@ -59,6 +60,67 @@ $(document).ready(()=>{
         saveProfile();
     });
 });
+
+/**
+ * @todo
+ */
+function deleteAccount(){
+    /***
+     * 
+     * COMMENCE DELETION VIA /profile/settings/delete
+     * 
+     * SEND USERID AS BODY VALUE
+     * 
+     */
+}
+
+function checkDeletion(){
+    var body = {};
+    body['username'] = currentUser.username;
+    body['password'] = String(document.getElementById('password_current').value);
+    fetch("/validate/password",{
+        method:'POST',
+        body: JSON.stringify(body),
+        headers:{ "Content-Type": "application/json"}        
+    }).then((res)=>{
+        console.log('res.json()');
+        return res.json();
+    }).then(data=>{
+        console.log("match: " + data['match']);
+        validCurrentPassword = data['match'];
+    }).finally(()=>{
+        console.log('finally: '+ validCurrentPassword);
+        var a = document.getElementById("password_a").value;
+        var b = document.getElementById("password_b").value;
+        if(validCurrentPassword){
+            if(a.length > 0 && b.length > 0){
+                if(String(a)===(String(b))){
+                    newPassMismatch = false;
+                    validity = true;
+                }else{
+                    console.log("new pass mismatch");
+                    newPassMismatch = true;
+                    validity = false;
+                }
+            }else{
+                console.log("no new password");
+                validity = true;
+            }
+        }else{
+            console.log("current password wrong");
+            document.getElementById("password_current").value = "";
+            validity = false;
+        }
+        updateColor();
+        if(validity)
+            deleteAccount();
+        else
+            alert("Please check inputs again");
+    }).catch((error)=>{
+        console.error("Error checking password on DB");
+        console.error(error);
+    });
+}
 
 function sendProfile(){
     var fmd = new FormData(document.forms.profileform);

@@ -2,7 +2,6 @@ console.log("Public JS: login.js loaded!");
 
 var sampleKeys = [{"username":"dlsu","password":"237392540"}];
 
-/**"Main" */
 $(document).ready(()=>{
     console.log("jquery.js");
 
@@ -68,12 +67,12 @@ function login(){
     var counter = checkEmpty(formData);
     var c = listEntries(formData);
 
-    if(counter === 0) //No empties
+    if(counter === 0)
         auth(c[0], c[1]);
-    else if(counter === 2){ //Both empties
+    else if(counter === 2){
         errMessage("login", "Username and password are missing.")
     }
-    else{ //1 field empty
+    else{
         if($("#username").val() == ""){
             errMessage("login", "Username is missing.");
         }
@@ -84,7 +83,6 @@ function login(){
 }
 
 function checkEmpty(formData){
-    //Count for empty inputs
     let counter = 0;
     for(let x of formData)
         if(x[1] == "")
@@ -102,13 +100,7 @@ function listEntries(formData){
     return c;
 }
 
-/**
- * Prints err message on console
- * Use for silent invalid input messages
- * @param {string} functionName Name of function that called this. Don't include '()'
- * @param {string} msg Details of error
- */
- function errMessage(functionName, msg){
+function errMessage(functionName, msg){
     $("#errorText").text("* " + msg);
     console.error(functionName + "(): ", msg);
 }

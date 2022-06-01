@@ -3,7 +3,7 @@ console.log("Public JS: signup.js loaded!");
 var submitClicked = false;
 
  $(document).ready(()=>{
-    $("#bio-counter").text("0/255"); //default max value for bio characters
+    $("#bio-counter").text("0/255");
 
     $("#signup-btn").click((e)=>{
         e.preventDefault();
@@ -15,30 +15,38 @@ var submitClicked = false;
         else
             alert("Please check your inputs again");
     });
+
     $("#login-btn").click(()=>{
         loginRedirect();
     });
+
     $("#clear-btn").click(()=>{
         clearSignup();
     });
+
     $("#bio").keyup(()=>{
         updateTextCount();
     });
+
     $("#bio").keydown(()=>{
         updateTextCount();
     });
+
     $("#profilepic-select").on("change", ()=>{
         console.log("image change");
         refreshDP();
     });
+
     $("input").keyup((e)=>{
         if(submitClicked)
             updateColor();
     });
+
     $("select").on("change",(e)=>{
         if(submitClicked)
             updateColor();
     });
+
     $("#signup-btn").keyup((e)=>{
         updateColor();
     });
@@ -63,9 +71,6 @@ function makeProfile(){
     });
 }
 
-/**
- * Refreshes displayed User picture if file is selected; Uses tempURL/blobURL as placeholder for file
- */
 function refreshDP(){
     var file = getInputFile("profilepic-select");
     if(file){ //check if it exists
@@ -76,18 +81,14 @@ function refreshDP(){
         $("#profilepic").attr("src","../img/default/default_dp.webp");
         errMessage("refreshDP", "Error with file");
     }
-        
 }
 
-/**
- * Retrieves inputted signup data from signupform.
- */
 function validateSignupInputs(){    
     var form = new FormData(document.forms.signupform);
     console.log(form);
     var validity = true;
     var prevHash = "";
-    for(f of form){
+    for(var f of form){
         if(f[1].length == 0){
             if(f[0] != "bio" && f[0] != "profilepic-select"){
                 errMessage("validateSignupInputs",  f[0] + " not filled")
@@ -129,11 +130,6 @@ function validateSignupInputs(){
     return validity;
 }
 
-/**
- * Clears the values of all inputs listed from idlist.
- * @param ids (Optional) you can specify the list ids to be cleared, uses idlist by default.
- * @returns 0 as basic confirmation.
- */
 function clearSignup(){
     var form = new FormData(document.forms.signupform);
     for(f of form){
@@ -154,17 +150,10 @@ function clearSignup(){
     submitClicked = false;
 }
 
-/**
- * Redirects the user to the login page.
- */
 function loginRedirect(){
     window.location.href = "/login";
 }
 
-/**
- * Sets the error message with the passed id back to its default value.
- * @param id ID of the error message to change, minue the "error-" part.
- */
 function setDefaultErrorMessage(id){
     let errorMessage;
     switch(id){
@@ -205,11 +194,6 @@ function setDefaultErrorMessage(id){
     $("#error-" + id).text(errorMessage);
 }
 
-/**
- * Counts the length value of an text.
- * @param limit (Optional) Text length limit. Default: 255 characters.
- * @param alert (Optional) Enable or disable alert pop-ups. Default: true.
- */
 function updateTextCount(limit=255, alert=true){
     let n = $("#bio").val().length;
     let s = "";
@@ -221,45 +205,22 @@ function updateTextCount(limit=255, alert=true){
     $("#bio-counter").text(s);
 }
 
-/**
- * Get a TempURL for use for displaying images even if file is not yet sent to server.
- * Recommended to be used with getInputFile();
- * @param {File} file 
- * @returns Temporary blobURL (cache?) for file specified
- */
 function getTempURL(file){
     return URL.createObjectURL(file);
 }
 
-/**
- * Retrieves the file object pointed to by and id-specified <input type="file"> element.
- * @param {string} id ID of input element
- * @returns First file available pointed by the element ID.
- */
- function getInputFile(id){
+function getInputFile(id){
     //Reference: https://stackoverflow.com/a/15792918 & https://stackoverflow.com/a/4459419
     var inputFile = document.getElementById(id); //Get inputFile element
     var files = inputFile.files; //Get files of input
     return files[0]; //Returns only the first file
 }
 
-/**
- * Prints err message on console
- * Use for silent invalid input messages
- * @param {string} functionName Name of function that called this. Don't include '()'
- * @param {string} msg Details of error
- */
 function errMessage(functionName, msg){
     console.log(functionName + "(): ", msg);
 }
 
-/**
- * Simple Hash Function (For Checking Purposes only)
- * Reference: https://gist.github.com/iperelivskiy/4110988
- * @param {string} s String to be hashed
- * @returns Numeric hash string equivalent of s
- */
- function hash(s) {
+function hash(s) {
     /* Simple hash function. */
     var a = 1, c = 0, h, o;
     if (s) {
@@ -275,9 +236,6 @@ function errMessage(functionName, msg){
     return String(a);
 }
 
-/**
- * Carried over from HO3 trigges a scan of the form specified (unfortunately, it is hardcoded)
- */
  function updateColor(){
     for(f of new FormData(document.forms.signupform)){
         if(!(f[0]=="profilepic-select") && !(f[0]=="bio")){
@@ -293,11 +251,6 @@ function errMessage(functionName, msg){
     }
 }
 
-/**
- * Changes the background color of an element, given its ID.
- * @param {string} id ID of target element
- * @param {string} color Background color of target element
- */
 function changeBGColor(id, color){
     document.getElementById(id).style.backgroundColor = color;
 }

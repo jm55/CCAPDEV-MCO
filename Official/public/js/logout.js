@@ -1,6 +1,4 @@
-/**
- * POST AUTOMATICALLY FOR INTENT TO LOGOUT
- */
+console.log("Public JS: logout.js");
 $( document ).ready((e)=>{
     //Note who is logging out and when
     var logoutRequest = {userid: null, datetime: new Date()};

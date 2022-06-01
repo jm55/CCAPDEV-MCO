@@ -18,14 +18,15 @@ import bcrypt from 'bcrypt';
 import * as db from '../db/controller/userController.js';
 
 const signupNav = express.Router();
+signupNav.use(express.json());
 
-//Signup Page
+/** Signup Page */
 signupNav.get('/signup', (req,res)=>{
     console.log("Request: " + req.socket.remoteAddress + ":" + req.socket.remotePort + " => " + req.url);
     res.render("signup", {title: "Sign up - Budol Finds"}); 
 });
 
-//Signup Save File
+/** Signup Save */
 signupNav.post('/signup/save', mult.upload_dp.single('profilepic-select'), (req, res, next)=>{ //TO UPGRADE THAT ALLOWS /post/<posthash> TO ACCESS SPECIFIC POSTS;
     console.log("Request: " + req.socket.remoteAddress + ":" + req.socket.remotePort + " => " + req.url);
     db.userExists(req.body['username']).then((f)=>{

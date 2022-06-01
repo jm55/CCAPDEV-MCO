@@ -1,19 +1,19 @@
 import express from 'express';
 
 const logNav = express.Router();
-
+logNav.use(express.json());
 
 //import * as hs from '../middleware/bcrypt.js'; //TEMPORARY ONLY
 import bcrypt from 'bcrypt';
 import * as db from '../db/controller/userController.js';
 
-//Login
+/** Login */
 logNav.get('/login', (req,res)=>{
     console.log("Request: " + req.socket.remoteAddress + ":" + req.socket.remotePort + " => " + req.url);
     res.render("login", {title: "Login - Budol Finds"}); 
 });
 
-//Confirm Login
+/** Confirm Login */
 logNav.post('/login/in',(req, res)=>{
     console.log("Request: " + req.socket.remoteAddress + ":" + req.socket.remotePort + " => " + req.url);
     var body = req.body;
@@ -47,13 +47,16 @@ logNav.post('/login/in',(req, res)=>{
     }
 });
 
-//Logout
+/** Logout */
 logNav.get('/logout', (req, res)=>{ //TO UPGRADE THAT ALLOWS /post/<posthash> TO ACCESS SPECIFIC POSTS
     console.log("Request: " + req.socket.remoteAddress + ":" + req.socket.remotePort + " => " + req.url);
     res.render("logout",{title: "Logging out..."});
 });
 
-//Confirm Logout
+/**
+ * @todo
+ * Confirm Logout
+ */
 logNav.post('/logout/out',(req, res)=>{
     console.log("Request: " + req.socket.remoteAddress + ":" + req.socket.remotePort + " => " + req.url);
     try {

@@ -23,8 +23,8 @@ import {newPostHash} from "../middleware/hashIds.js";
 
 postNav.use(express.json());
 
-//View Specific Post
-postNav.get('/post/:posthash', (req, res)=>{ //TO UPGRADE THAT ALLOWS /post/<posthash> TO ACCESS SPECIFIC POSTS
+/** View Specific Post */
+postNav.get('/post/:posthash', (req, res)=>{
     console.log("Request: " + req.socket.remoteAddress + ":" + req.socket.remotePort + " => " + req.url);
     var targetPostHash = req.params['posthash'];
     
@@ -65,8 +65,11 @@ postNav.get('/post/:posthash', (req, res)=>{ //TO UPGRADE THAT ALLOWS /post/<pos
     });
 });
 
-//Edit Post
-postNav.get('/post/:posthash/edit', (req, res)=>{ //TO UPGRADE THAT ALLOWS /post/<posthash> TO ACCESS SPECIFIC POSTS
+/**
+ * @todo
+ * Edit Post
+ */
+postNav.get('/post/:posthash/edit', (req, res)=>{
     console.log("Request: " + req.socket.remoteAddress + ":" + req.socket.remotePort + " => " + req.url);
     /**
      * DO USER CHECK HERE FIRST IF USER 'OWNS' THE POST.
@@ -78,26 +81,34 @@ postNav.get('/post/:posthash/edit', (req, res)=>{ //TO UPGRADE THAT ALLOWS /post
     var userId = '1'; //UPDATE USING SESSION userId VALUE
     dispatch.getCurrentUserByID(userId).then((user)=>{
         dispatch.getEditPost(userId, req.params['posthash']).then((data)=>{
-            if(data[0].userId === userId){
-                res.render("post",  {
-                    title: "Post Edit - Budol Finds",
-                    currentUser: user, //SAMPLE USER
-                    currentPost: data[0], //SAMPLE POST
-                    currentPostJSON: JSON.stringify(data[0]), //SAMPLE JSON POST
-                });
+            if(data){
+                if(data.userId === userId){
+                    res.render("post",  {
+                        title: "Post Edit - Budol Finds",
+                        currentUser: user, //SAMPLE USER
+                        currentPost: data, //SAMPLE POST
+                        currentPostJSON: JSON.stringify(data), //SAMPLE JSON POST
+                    });
+                }else{
+                    res.render("err", {
+                        title: "Error - Budol Finds",
+                        errID: "403",
+                        errMsg: "Post not editable to you."
+                    });
+                }
             }else{
                 res.render("err", {
                     title: "Error - Budol Finds",
-                    errID: "403",
-                    errMsg: "Post not editable to you."
+                    errID: "404",
+                    errMsg: "Nothing to see here..."
                 });
             }
         });
     });
 });
 
-//Edit Post
-postNav.patch('/post/:posthash/save', mult.upload_post.single('imgselect'), (req, res)=>{ //TO UPGRADE THAT ALLOWS /post/<posthash> TO ACCESS SPECIFIC POSTS
+/** Edit Post */
+postNav.patch('/post/:posthash/save', mult.upload_post.single('imgselect'), (req, res)=>{
     console.log("Request: " + req.socket.remoteAddress + ":" + req.socket.remotePort + " => " + req.url);
     dbPost.updatePost(req.body).then((p)=>{
         if(req.file)
@@ -109,8 +120,8 @@ postNav.patch('/post/:posthash/save', mult.upload_post.single('imgselect'), (req
     });
 });
 
-//Delete Post
-postNav.delete('/post/:posthash/delete', (req, res)=>{ //TO UPGRADE THAT ALLOWS /post/<posthash> TO ACCESS SPECIFIC POSTS
+/** Delete Post */
+postNav.delete('/post/:posthash/delete', (req, res)=>{ 
     console.log("Request: " + req.socket.remoteAddress + ":" + req.socket.remotePort + " => " + req.url);
     dispatch.deletePost(req.body['postHash']).then((result)=>{
         console.log(result);
@@ -122,7 +133,10 @@ postNav.delete('/post/:posthash/delete', (req, res)=>{ //TO UPGRADE THAT ALLOWS 
     });
 });
 
-//New Post
+/**
+ * @todo
+ * New Post
+ */
 postNav.post('/post/new', mult.upload_post.single('imgselect'), (req, res)=>{ 
     /**
      * 
@@ -148,7 +162,7 @@ postNav.post('/post/new', mult.upload_post.single('imgselect'), (req, res)=>{
     }
 });
 
-//Like Post
+/** Like Post */
 postNav.post('/post/like', (req, res)=>{ 
     console.log("Request: " + req.socket.remoteAddress + ":" + req.socket.remotePort + " => " + req.url);
     try{
@@ -171,7 +185,7 @@ postNav.post('/post/like', (req, res)=>{
              */
             console.log('arr');
             console.log(arr);
-            if(arr.length > 0){
+            if(arr != null){
                 console.log("Already liked!");
                 dbLike.unlike(req.body['userId'],req.body['postHash']);
                 updateCounter(res,currentCount,false);
@@ -187,6 +201,12 @@ postNav.post('/post/like', (req, res)=>{
     }
 });
 
+/**
+ * Updates the button and counter for like of the post as seen by the user.
+ * @param {Response} res Response Object that called 
+ * @param {Number} counter Number of likes
+ * @param {Boolean} increment Whether increment or not 
+ */
 function updateCounter(res, counter, increment){
     var countVal = counter;
     var btn = "Liked";
@@ -198,10 +218,10 @@ function updateCounter(res, counter, increment){
     }
     var count = format.pluralInator("Like", countVal) + ": " + countVal;
     
-    res.status(200).json({btn:btn,count:count});
+    res.json({btn:btn,count:count});
 }
 
-//Report Post
+/** Report Post */
 postNav.post('/post/report', (req, res)=>{ 
     console.log("Request: " + req.socket.remoteAddress + ":" + req.socket.remotePort + " => " + req.url);
     try{
@@ -217,7 +237,7 @@ postNav.post('/post/report', (req, res)=>{
     }
 });
 
-//Report Post
+/** Comment Post */
 postNav.post('/post/comment', (req, res)=>{ 
     console.log("Request: " + req.socket.remoteAddress + ":" + req.socket.remotePort + " => " + req.url);
     try{

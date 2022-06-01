@@ -1,3 +1,5 @@
+//console.log('postcards.js');
+
 function submitLike(posthash){
     console.log("Like: " + posthash + " from " + userId);
     
@@ -32,9 +34,7 @@ function submitLike(posthash){
 function showShare(posthash){
     console.log("Share: " + posthash + " from " + userId);
     var link = "localhost:3000/post/" + posthash;
-    
-    //Reference: https://www.w3schools.com/howto/howto_js_copy_clipboard.asp
-    navigator.clipboard.writeText(link);
+    navigator.clipboard.writeText(link);//Reference: https://www.w3schools.com/howto/howto_js_copy_clipboard.asp
     alert("Link has been copied!");
 }
 

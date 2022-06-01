@@ -8,7 +8,7 @@ const __dirname = path.dirname(__filename);
 import express from 'express';
 import hbs from 'express-handlebars';
 
-//.dotenv
+//dotenv
 import 'dotenv/config';
 
 //Favicon
@@ -23,7 +23,7 @@ const PORT = process.env.PORT || 3000;
 //Express instance
 const app = express();
 
-//Setting static dicrectory
+//Setting static/public directory
 app.use(express.static(__dirname + "/public"));
 
 //View Engine via Express-Handlebars
@@ -59,11 +59,9 @@ app.use(signupNav);
 app.use(profileNav);
 app.use(debugTest);
 
-
-//Index
+//Index Route
 app.get('/', (req, res)=>{
     /**
-     * 
      * 
      *  ROUTE TO HOME PAGE IF LOGGED IN (I.E. HAS SESSION), ELSE THEN ROUTE TO LOGIN PAGE
      * 
@@ -72,7 +70,7 @@ app.get('/', (req, res)=>{
     res.redirect('/login');
 });
 
-//404
+//404 Route
 app.use((req, res, err) => {
     console.log("404: " + req.socket.remoteAddress + "=>" + req.url);
     res.render("err", {
@@ -82,7 +80,7 @@ app.use((req, res, err) => {
     });
 });
 
-//DB
+//DB Connection
 import * as db from './db/conn.js';
 
 db.connectToServer((err, callback)=>{
@@ -92,7 +90,8 @@ db.connectToServer((err, callback)=>{
         console.error("db.connectToServer: " + err);
         process.exit;
     }
-    //DB ACCESSIBLE
+
+    //DB is accessible
     db.checkDB();
     app.listen(PORT, ()=>{
         console.log("Budol Finds Server Listening @ " + PORT);

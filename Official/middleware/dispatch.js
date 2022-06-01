@@ -16,10 +16,24 @@ function reset(){
     usersHolder = [];
 }
 
+/**
+ * @todo
+ * Delegates the deletion of an entire account and all related objects 
+ * to it.
+ * @param {String} userId
+ * @returns Promise that contains true or false if all traces of the account is deleted in the DB. 
+ */
 export async function purgeAccount(userId){
-    
+    /**
+     * CONDUCT PURGING OF AN ACCOUNT SPECIFIED BY USERID.
+     */
 }
 
+/**
+ * Delegates the deletion of the of a post.
+ * @param {String} postHash Post to be deleted.
+ * @returns Promise whether the post is deleted or not.
+ */
 export async function deletePost(postHash){
     const del = await dbPost.deletePost(postHash);
     return new Promise((resolve, reject)=>{
@@ -28,15 +42,26 @@ export async function deletePost(postHash){
     });
 }
 
+/**
+ * Gets a post for editing.
+ * @param {String} userId 
+ * @param {String} postHash 
+ * @returns Promise of a post object.
+ */
 export async function getEditPost(userId, postHash){
     const post = await dbPost.getPostByPostHash(postHash);
-    
     return new Promise((resolve, reject)=>{
         resolve(post);
         reject("Error retrieving post for edit.");
     });
 }
 
+/**
+ * Gets a single post for viewing.
+ * @param {String} userId User that views the post (not strictly the author of the post) 
+ * @param {String} postHash Post to be viewed.
+ * @returns Promise of a post object.
+ */
 export async function getSinglePost(userId, postHash){
     reset();
         
@@ -45,21 +70,8 @@ export async function getSinglePost(userId, postHash){
     const likes = await dbLike.getLikeByPostHash(postHash);
     const comments = await dbComment.getCommentByPostHash(postHash);
 
-    var user = users[0];
+    var user = users;
     var post = posts[0];
-
-    // if(comments.length == 0)
-    //     post['comments'] = null;
-    // else
-    //     post['comments'] = comments;
-
-    // if(likes.length == 0){
-    //     post['likeVals'] = null;
-    //     post['likes'] = 0;
-    // }else{
-    //     post['likeVals'] = likes;
-    //     post['likes'] = likes.length;
-    // }
 
     return new Promise((resolve, reject)=>{
         resolve([user, post, likes, comments]);
@@ -67,6 +79,11 @@ export async function getSinglePost(userId, postHash){
     });
 }
 
+/**
+ * Gets report count by a user as specified by the userId.
+ * @param {String} userId Filter parameter 
+ * @returns Promise of the count of reports of a user.
+ */
 export async function getReportCountByUserId(userId){
     reset();
     const report = await dbReport.reportByPostOwnerId(userId);
@@ -76,10 +93,17 @@ export async function getReportCountByUserId(userId){
     });
 }
 
+/**
+ * Gets a user pair for both the current user and the target user for profile viewing.
+ * Useful for viewing a user account of another user (and even the current user's).
+ * @param {String} currentUserId userID of the user viewing the profile
+ * @param {String} targetUserName username of the user profile to be viewed.
+ * @returns Promise of a list containing user objects for both current and target users.
+ */
 export async function getUserPair(currentUserId, targetUserName){
     reset();
-    var currentUser = (await dbUser.getUserByUserID(currentUserId))[0];
-    var targetUser = (await dbUser.getUserByUserName(targetUserName))[0];
+    var currentUser = (await dbUser.getUserByUserID(currentUserId));
+    var targetUser = (await dbUser.getUserByUserName(targetUserName));
 
     var currentUserReportCount = (await dbReport.reportByPostOwnerId(currentUser.userId)).length;
     var targetUserReportCount = (await dbReport.reportByPostOwnerId(targetUser.userId)).length;
@@ -93,48 +117,66 @@ export async function getUserPair(currentUserId, targetUserName){
     });
 }
 
+/**
+ * Gets a random user from database.
+ * @deprecated
+ * @returns Promise of a random user object. 
+ */
 export async function getTempUser(){
     reset();
     const users = await dbUser.getUsers();
     return new Promise((resolve,reject)=>{
-        resolve(users[0]);
+        resolve(users[Math.floor(Math.random() * users.length)]);
         reject("Error retrieving temp user!");
     });
 }
 
+/**
+ * Gets a user by its username
+ * @param {String} username Filter parameter.
+ * @returns Promise of a user object as specified by the username.
+ */
 export async function getCurrentUserByUserName(username){
     reset();
+    var user = null;
 
-    var user;
-    if(username == null || username == "")
-        user = await getTempUser();
-    else
+    if(username != "" || username != null)
         user = await dbUser.getUserByUserName(username);
+    
+        return new Promise((resolve,reject)=>{
+        resolve(user);
+        reject("Error retrieving user!");
+    });
+}
+
+/**
+ * Gets currentUser as specified by the userId.
+ * @param {String} userId Filter parameter.
+ * @returns Promise of a user object as specified by the userId.
+ */
+export async function getCurrentUserByID(userId){
+    reset();
+
+    var user = null;
+    if(userId != null || userId != "")
+        user = await dbUser.getUserByUserID(userId);
+        
     return new Promise((resolve,reject)=>{
         resolve(user);
         reject("Error retrieving user!");
     });
 }
 
-export async function getCurrentUserByID(userId){
-    reset();
-
-    var user;
-    if(userId == null || userId == "")
-        user = await getTempUser();
-    else
-        user = await dbUser.getUserByUserID(userId);
-    return new Promise((resolve,reject)=>{
-        resolve(user[0]);
-        reject("Error retrieving user!");
-    });
-}
-
+/**
+ * Gets a complete profile list that contains the user and posts by user respectively.
+ * @param {String} username Filter parameter.
+ * @returns Promise of a complete profile as specified by the username.
+ */
 export async function getProfileByUserName(username){
     reset();
 
     const user = await dbUser.getUserByUserName(username);
-    const posts = await dbPost.getPostByUserID(user[0].userId,{},{});
+    const posts = await dbPost.getPostByUserID(user[0].userId,"","");
 
     var userVal = user[0];
     
@@ -157,15 +199,18 @@ export async function getProfileByUserName(username){
     return promise;
 }
 
+/**
+ * Gets a complete profile list that contains the user and posts by user respectively.
+ * @param {String} userId Filter parameter.
+ * @returns romise of a complete profile as specified by the userId.
+ */
 export async function getProfileById(userId){
     reset();
 
-    const user = await dbUser.getUserByUserID(userId);
-    const posts = await dbPost.getPostByUserID(userId,{},{});
+    const userVal = await dbUser.getUserByUserID(userId);
+    const posts = await dbPost.getPostByUserID(userId,"","");
     const reports = await dbReport.reportByPostOwnerId(userId);
 
-    var userVal = user[0];
-    
     if(reports.length == 0)
         userVal['reportCount'] = '0';
     else
@@ -177,7 +222,7 @@ export async function getProfileById(userId){
         var comments = await dbComment.getCommentByPostHash(postHolder[i]['postHash']);
         //console.log(comments);
         var likes = await dbLike.getLikeByPostHash(postHolder[i]['postHash']);
-        postHolder[i]['user'] = user[0];
+        postHolder[i]['user'] = userVal;
         postHolder[i]['comments'] = comments;
         postHolder[i]['likes'] = likes.length;
         postHolder[i]['likeVals'] = likes;
@@ -190,10 +235,14 @@ export async function getProfileById(userId){
     return promise;
 }
 
+/**
+ * Gets all posts from the database.
+ * @returns Promise of all posts from DB.
+ */
 export async function getHomePost(){
     reset();
 
-    const posts = await dbPost.getPosts({},{'datetime':-1});
+    const posts = await dbPost.getPosts("","");
     const comments = await dbComment.getComments();
     const likes = await dbLike.getLikes();
     const users = await dbUser.getUsers();
@@ -220,12 +269,18 @@ export async function getHomePost(){
     });
 }
 
+/**
+ * Checks if the post is liked by the user
+ * @param {String} userId Filter parameter.
+ * @param {String} postHash Filter parameter.
+ * @returns Promise of a boolean value if the post is liked or not by the user.
+ */
 export async function isLiked(userId, postHash){
     const like = await dbLike.isLiked(userId, postHash);
     
     var isLiked = false;
     if(like.length == 1)
-        if(like[0].userId == userId && like[0].postHash == postHash)
+        if(like.userId == userId && like.postHash == postHash)
             isLiked = true;
 
     return new Promise((resolve, reject)=>{

@@ -1,15 +1,15 @@
 import express from 'express';
 
 const homeNav = express.Router();
+homeNav.use(express.json());
 
 //Utilities
-import * as tempDB from '../utils/tempDB.js';
 import * as format from '../middleware/formatting.js'
 
 //DB
 import * as dispatch from '../middleware/dispatch.js';
 
-//Home
+/** Home */
 homeNav.get('/home', (req, res)=>{
     console.log("Request: " + req.socket.remoteAddress + ":" + req.socket.remotePort + " => " + req.url);
     
@@ -47,11 +47,17 @@ homeNav.get('/home', (req, res)=>{
     });
 });
 
-homeNav.get('/home/search/:searchVal', (req, res)=>{
+/**
+ * @todo
+ * Home Search 
+ */
+homeNav.get('/home/search', (req, res)=>{
     console.log("Request: " + req.socket.remoteAddress + ":" + req.socket.remotePort + " => " + req.url);
-
-
-
+    /**
+     * 
+     * GET SEARCH PARAMETERS FROM BODY
+     * 
+     */
     const out = "Home Search Filter: "+req.params['searchVal'];
     console.log(out);
     res.send(out);
