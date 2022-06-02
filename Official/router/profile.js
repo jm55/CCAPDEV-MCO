@@ -73,10 +73,16 @@ profileNav.get('/user/:username', (req, res)=>{
                         }
                     }
                 });
+            }).catch((err)=>{
+                res.statusMessage = err;
+            res.sendStatus(StatusCodes.INTERNAL_SERVER_ERROR);
             });
         }else{
             redirectError(res, StatusCodes.NOT_FOUND);
         }
+    }).catch((error)=>{
+        res.statusMessage = error;
+        res.sendStatus(StatusCodes.INTERNAL_SERVER_ERROR);
     });
 });
 
@@ -150,6 +156,9 @@ profileNav.get('/profile', (req, res)=>{
                 }
             }
         });
+    }).catch((error)=>{
+        res.statusMessage = error;
+        res.sendStatus(StatusCodes.INTERNAL_SERVER_ERROR);
     });
 });
 
@@ -197,6 +206,9 @@ profileNav.get('/profile/settings', (req, res)=>{
             currentUser: user,
             currentUserJSON: JSON.stringify(user),
         });
+    }).catch((error)=>{
+        res.statusMessage = error;
+        res.sendStatus(StatusCodes.INTERNAL_SERVER_ERROR);
     });
 });
 
@@ -209,52 +221,60 @@ profileNav.patch('/profile/settings/save', mult.upload_dp.single('profilepic-sel
      * 
      * IF NOT LOGGED IN ROUTE AS 401 OR RETURN TO INDEX
      */  
-    try{
-        var body = req.body;
-        var file = req.file;
-        var currHash = "";
-        dbUser.getHash(body['userId']).then((arr)=>{
-            currHash = arr[0]['passhash'];
-            bcrypt.compare(body['password_current'], currHash, (error, same)=>{
-                if(error != null)
-                    res.sendStatus(StatusCodes.INTERNAL_SERVER_ERROR);
-                if(same){
-                    if(String(body['password_a']).length > 0 && String(body['password_b']).length){
-                        if(String(body['password_a'])==String(body['password_b'])){ //NEW PASSWORD
-                            bcrypt.hash(req.body['password_b'], Number(process.env.SALT_ROUNDS),(err, enc)=>{
-                                if(err != null)
-                                    res.sendStatus(StatusCodes.INTERNAL_SERVER_ERROR);
-                                else{
-                                    body['password_current'] = null;
-                                    body['password_a'] = null;
-                                    body['password_b'] = null;
-                                    body['passhash'] = enc;
-                                    if(req.file)
-                                        dpUpdate(file.originalname, body['userId']);
-                                    dbUser.updateUser(body);
-                                    res.sendStatus(StatusCodes.OK);
-                                }
-                            });
-                        }else{
-                            console.log("New Password Mismatch!");
-                            res.sendStatus(400);
-                        }
-                    }else{ //NO NEW PASSWORD
-                        if(file)
-                            dpUpdate(file.originalname, body['userId']);
-                        dbUser.updateUser(body);
-                        res.sendStatus(StatusCodes.OK);
+    var body = req.body;
+    var file = req.file;
+    var currHash = "";
+    dbUser.getHash(body['userId']).then((arr)=>{
+        currHash = arr[0]['passhash'];
+        bcrypt.compare(body['password_current'], currHash, (error, same)=>{
+            if(error != null)
+                res.sendStatus(StatusCodes.INTERNAL_SERVER_ERROR);
+            if(same){
+                if(String(body['password_a']).length > 0 && String(body['password_b']).length){
+                    if(String(body['password_a'])==String(body['password_b'])){ //NEW PASSWORD
+                        bcrypt.hash(req.body['password_b'], Number(process.env.SALT_ROUNDS),(err, enc)=>{
+                            if(err != null)
+                                res.sendStatus(StatusCodes.INTERNAL_SERVER_ERROR);
+                            else{
+                                body['password_current'] = null;
+                                body['password_a'] = null;
+                                body['password_b'] = null;
+                                body['passhash'] = enc;
+                                if(req.file)
+                                    dpUpdate(file.originalname, body['userId']);
+                                dbUser.updateUser(body);
+                                res.sendStatus(StatusCodes.OK);
+                            }
+                        });
+                    }else{
+                        console.log("New Password Mismatch!");
+                        res.sendStatus(400);
                     }
-                }else{
-                    console.log("Password not found on DB!");
-                    res.sendStatus(StatusCodes.UNAUTHORIZED);
+                }else{ //NO NEW PASSWORD
+                    if(file)
+                        dpUpdate(file.originalname, body['userId']);
+                    dbUser.updateUser(body);
+                    res.sendStatus(StatusCodes.OK);
                 }
-            });
+            }else{
+                console.log("Password not found on DB!");
+                res.sendStatus(StatusCodes.UNAUTHORIZED);
+            }
         });
-    }catch(e){
+    }).catch((error)=>{
+        res.statusMessage = error;
         res.sendStatus(StatusCodes.INTERNAL_SERVER_ERROR);
-    }
+    });
 });
+
+/**
+ * Updates the DP image on the directory by replacing the
+ * original filename to the userId and returns the 
+ * resulting dp image file path.
+ * @param {String} originalname Original filename of the picture
+ * @param {String} userid New filename of the picture (associated with the user)
+ * @returns Path of the renamed file for use in the user object.
+ */
 function dpUpdate(originalname, userid){
     file.renameDP(originalname,userid);
     return process.env.DP_PUBLIC + userid + ".webp";
@@ -286,48 +306,39 @@ profileNav.delete('/profile/settings/delete', (req, res)=>{
 /** Validate Password */
 profileNav.post('/validate/password',(req, res)=>{
     console.log("Request: " + req.socket.remoteAddress + ":" + req.socket.remotePort + " => " + req.url);
-    try{
-        console.log(req.body);
-        var replyBody = {};
-        dbUser.getHashViaUsername(req.body['username']).then((user)=>{
-            console.log(user);
-            var hash = user[0]['passhash'];
-            bcrypt.compare(req.body['password'],hash,(error, same)=>{
-                if(error != null)
-                    console.log(error);
-                replyBody['match'] = same;
-                req.body = null;
-                res.json(replyBody);
-            });
-        }).catch((error)=>{
-            console.log(error);
+    
+    var replyBody = {};
+    dbUser.getHashViaUsername(req.body['username']).then((user)=>{
+        console.log(user);
+        var hash = user[0]['passhash'];
+        bcrypt.compare(req.body['password'],hash,(error, same)=>{
+            if(error != null)
+                console.log(error);
+            replyBody['match'] = same;
+            req.body = null;
+            res.json(replyBody);
         });
-    }catch(e){
-        console.log("Error on password validation");
-        console.log(e);
+    }).catch((error)=>{
+        res.statusMessage = error;
         res.sendStatus(StatusCodes.INTERNAL_SERVER_ERROR);
-    }
+    });
 });
 
 /** Validate Username */
 profileNav.post('/validate/username',(req, res)=>{
-     console.log("Request: " + req.socket.remoteAddress + ":" + req.socket.remotePort + " => " + req.url);
-    try{
-        var username = 'amelia.watson'; //req.body.username;
-        dbUser.userExists(username).then((result)=>{ //
-            var state = false;
-            if(username == result.username)
-                state = true;
-            var replyBody = {};
-            replyBody['match'] = state; 
-            req.body = null;
-            res.json(replyBody);
-        });
-    }catch(e){
-        console.log("Error on username validation");
-        console.log(e);
+    console.log("Request: " + req.socket.remoteAddress + ":" + req.socket.remotePort + " => " + req.url);
+    dbUser.userExists(req.body['username']).then((result)=>{ //
+        var state = false;
+        if(req.body['username'] == result.username)
+            state = true;
+        var replyBody = {};
+        replyBody['match'] = state; 
+        req.body = null;
+        res.json(replyBody);
+    }).catch((error)=>{
+        res.statusMessage = error;
         res.sendStatus(StatusCodes.INTERNAL_SERVER_ERROR);
-    }
+    });
 });
 
 export default profileNav;

@@ -95,10 +95,25 @@ export async function deletePost(postHash){
  * @returns Promise of a post object.
  */
 export async function getEditPost(userId, postHash){
-    const post = await dbPost.getPostByPostHash(postHash);
+    var post = null;
+    const user = await dbUser.getUserByUserID(userId);
+
+    if(user == null){
+        return new Promise((resolve, reject)=>{
+            resolve('401');
+            reject('Error resolving promise');
+        });
+    }else{
+        post = await dbPost.getPostByPostHash(postHash);
+        if(post.userId == userId)
+            return new Promise((resolve, reject)=>{
+                resolve([user, post]);
+                reject('Error retrieving post');
+            });
+    }
     return new Promise((resolve, reject)=>{
-        resolve(post);
-        reject("Error retrieving post for edit.");
+        resolve('403');
+        reject('Error resolving promise');
     });
 }
 

@@ -100,23 +100,23 @@ postNav.get('/post/:posthash/edit', (req, res)=>{
      * REDIRECT TO 401 IF NOT AUTHORIZED TO EDIT
      */
     var userId = '1'; //UPDATE USING SESSION userId VALUE
-    dispatch.getCurrentUserByID(userId).then((user)=>{
-        dispatch.getEditPost(userId, req.params['posthash']).then((data)=>{
-            if(data){
-                if(data.userId === userId){
-                    res.render("post",  {
-                        title: "Post Edit - Budol Finds",
-                        currentUser: user, //SAMPLE USER
-                        currentPost: data, //SAMPLE POST
-                        currentPostJSON: JSON.stringify(data), //SAMPLE JSON POST
-                    });
-                }else{
-                    redirectError(res, StatusCodes.FORBIDDEN);
-                }
+    dispatch.getEditPost(userId, req.params['posthash']).then((data)=>{
+        if(data){
+            if(data == 403){
+                redirectError(res, StatusCodes.FORBIDDEN);
+            }else if(data == 401){
+                redirectError(res, StatusCodes.UNAUTHORIZED);
             }else{
-                redirectError(res, StatusCodes.NOT_FOUND);
+                res.render("post",  {
+                    title: "Post Edit - Budol Finds",
+                    currentUser: data[0], //SAMPLE USER
+                    currentPost: data[1], //SAMPLE POST
+                    currentPostJSON: JSON.stringify(data[1]), //SAMPLE JSON POST
+                });
             }
-        });
+        }else{
+            redirectError(res, StatusCodes.NOT_FOUND);
+        }
     });
 });
 
@@ -169,22 +169,18 @@ postNav.post('/post/new', mult.upload_post.single('imgselect'), (req, res)=>{
     req.body["postHash"] = newPostHash();
     req.body["imgurl"] = '/img/post/' + req.body['postHash'] + ".webp";
     req.body["datetime"] = new Date();
-    try{
-        dbPost.addPost(req.body).then((p)=>{
-            if(p.acknowledged==true){
-                file.renamePostImg(req.file.originalname, req.body["postHash"]);
-                res.sendStatus(StatusCodes.OK);
-            }else{
-                res.sendStatus(StatusCodes.EXPECTATION_FAILED);
-            }
-        }).catch((err)=>{
-            console.error(err);
-            res.sendStatus(StatusCodes.INTERNAL_SERVER_ERROR);
-        });
-    }catch(e){
-        res.statusMessage = e;
+    
+    dbPost.addPost(req.body).then((p)=>{
+        if(p.acknowledged==true){
+            file.renamePostImg(req.file.originalname, req.body["postHash"]);
+            res.sendStatus(StatusCodes.OK);
+        }else{
+            res.sendStatus(StatusCodes.EXPECTATION_FAILED);
+        }
+    }).catch((err)=>{
+        res.statusMessage = err;
         res.sendStatus(StatusCodes.INTERNAL_SERVER_ERROR);
-    }
+    });
 });
 
 /**
@@ -201,45 +197,24 @@ postNav.post('/post/like', (req, res)=>{
      * REDIRECT TO ERROR 401 IF NOT LOGGED IN
      * 
      */
-    try{
-        console.log(req.body);
-        /**
-         * SAMPLE:
-         * userId: 1,
-         * postHash: '08191',
-         * datetime: '2022-05-31T04:11:12.381Z',
-         * currentCount: '1'
-         */
-        var currentCount = Number(req.body['currentCount']);
-        dbLike.isLiked(req.body['userId'], req.body['postHash']).then((arr)=>{
-            /**
-             * SAMPLE arr:
-             * _id: new ObjectId("6295991a5b87f2fa73565a12"),
-             * userId: '1',
-             * postHash: '42069',
-             * datetime: '2022-05-31T04:26:30.532Z'
-             */
-            console.log('arr');
-            console.log(arr);
-            if(arr != null){
-                console.log("Already liked!");
-                dbLike.unlike(req.body['userId'],req.body['postHash']);
-                updateCounter(res,currentCount,false);
-            }else{
-                console.log("Not yet liked!");
-                dbLike.like(req.body);
-                updateCounter(res,currentCount,true);
-            }   
-        });
-    }catch(e){
-        res.statusMessage = e;
+    var currentCount = Number(req.body['currentCount']);
+    dbLike.isLiked(req.body['userId'], req.body['postHash']).then((arr)=>{
+        if(arr != null){
+            dbLike.unlike(req.body['userId'],req.body['postHash']);
+            updateCounter(res,currentCount,false);
+        }else{
+            dbLike.like(req.body);
+            updateCounter(res,currentCount,true);
+        }   
+    }).catch((err)=>{
+        res.statusMessage = err;
         res.sendStatus(StatusCodes.INTERNAL_SERVER_ERROR);
-    }
+    });
 });
 
 /**
  * Updates the button and counter for like of the post as seen by the user.
- * @param {Response} res Response Object that called 
+ * @param {import('express').Response} res Response Object that called 
  * @param {Number} counter Number of likes
  * @param {Boolean} increment Whether increment or not 
  */
@@ -253,7 +228,6 @@ function updateCounter(res, counter, increment){
         countVal--;
     }
     var count = format.pluralInator("Like", countVal) + ": " + countVal;
-    
     res.json({btn:btn,count:count});
 }
 
@@ -271,22 +245,16 @@ postNav.post('/post/report', (req, res)=>{
      * REDIRECT TO ERROR 401 IF NOT LOGGED IN
      * 
      */
-    try{
-        console.log(req.body);
-        //SAMPLE BODY: { userId: 1, postHash: '42069', datetime: '2022-05-31T07:01:37.495Z' }
-        dbReport.blotterReport(req.body).then((result)=>{
-            if(result.acknowledged == true)
-                res.sendStatus(StatusCodes.OK);
-            else
-                res.sendStatus(StatusCodes.EXPECTATION_FAILED);
-        }).catch((error)=>{
-            console.error(error);
-        });
-        res.sendStatus(StatusCodes.OK);
-    }catch(e){
-        res.statusMessage = e;
+    //SAMPLE BODY: { userId: 1, postHash: '42069', datetime: '2022-05-31T07:01:37.495Z' }
+    dbReport.blotterReport(req.body).then((result)=>{
+        if(result.acknowledged == true)
+            res.sendStatus(StatusCodes.OK);
+        else
+            res.sendStatus(StatusCodes.EXPECTATION_FAILED);
+    }).catch((error)=>{
+        res.statusMessage = error;
         res.sendStatus(StatusCodes.INTERNAL_SERVER_ERROR);
-    }
+    }); 
 });
 
 /** 
@@ -303,18 +271,15 @@ postNav.post('/post/comment', (req, res)=>{
      * REDIRECT TO ERROR 401 IF NOT LOGGED IN
      * 
      */
-    try{
-        dbComment.newComment(req.body).then((val)=>{
-            if(val.acknowledged == true)
-                res.sendStatus(StatusCodes.OK)
-            else
-                res.sendStatus(StatusCodes.EXPECTATION_FAILED);
-        }).catch((error)=>{
-            res.sendStatus(StatusCodes.INTERNAL_SERVER_ERROR);
-        });
-    }catch(e){
+    dbComment.newComment(req.body).then((val)=>{
+        if(val.acknowledged == true)
+            res.sendStatus(StatusCodes.OK)
+        else
+            res.sendStatus(StatusCodes.EXPECTATION_FAILED);
+    }).catch((error)=>{
+        res.statusMessage = error;
         res.sendStatus(StatusCodes.INTERNAL_SERVER_ERROR);
-    }
+    });
 });
 
 

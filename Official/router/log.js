@@ -23,34 +23,32 @@ logNav.get('/login', (req,res)=>{
 logNav.post('/login/in',(req, res)=>{
     console.log("Request: " + req.socket.remoteAddress + ":" + req.socket.remotePort + " => " + req.url);
     var body = req.body;
-    try {
-        db.userExists(body['username']).then((u)=>{
-            if(u!=null){
-                if(u['username'] == body['username']){
-                    bcrypt.compare(String(body['password']),u.passhash,(err,same)=>{
-                        if(err != null)
-                            res.sendStatus(StatusCodes.INTERNAL_SERVER_ERROR);
-                        /***
-                         * 
-                         * 
-                         * 
-                         * SET SESSION HERE OR SOMETHING.
-                         * AWAIT FOR LESSONS IN AUTHENTICATION
-                         * AS IT MAY OFFER KNOWLEDGE ON HOW TO DO SO.
-                         * 
-                         * 
-                         */
-                        res.json({success:same});
-                    });
-                }else
-                    res.json({success:false}); 
+    db.userExists(body['username']).then((u)=>{
+        if(u!=null){
+            if(u['username'] == body['username']){
+                bcrypt.compare(String(body['password']),u.passhash,(err,same)=>{
+                    if(err != null)
+                        res.sendStatus(StatusCodes.INTERNAL_SERVER_ERROR);
+                    /***
+                     * 
+                     * 
+                     * 
+                     * SET SESSION HERE OR SOMETHING.
+                     * AWAIT FOR LESSONS IN AUTHENTICATION
+                     * AS IT MAY OFFER KNOWLEDGE ON HOW TO DO SO.
+                     * 
+                     * 
+                     */
+                    res.json({success:same});
+                });
             }else
-                res.json({success:false});
-        })
-    } catch(e) {
-        res.statusMessage = e;
+                res.json({success:false}); 
+        }else
+            res.json({success:false});
+    }).catch((error)=>{
+        res.statusMessage = error;
         res.sendStatus(StatusCodes.INTERNAL_SERVER_ERROR);
-    }
+    });
 });
 
 /** Logout */

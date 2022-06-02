@@ -66,6 +66,7 @@ signupNav.post('/signup/save', mult.upload_dp.single('profilepic-select'), (req,
             });
         }
     }).catch((e)=>{
+        res.statusMessage = e;
         res.sendStatus(StatusCodes.INTERNAL_SERVER_ERROR);
     });
 });

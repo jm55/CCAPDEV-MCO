@@ -18,45 +18,38 @@ debugTest.all('/debug',(req,res)=>{
     redirectError(res, StatusCodes.FORBIDDEN);
 });
 
-debugTest.get('/debug/home', (req, res)=>{
+debugTest.get('/debug/post/:posthash/edit', (req, res)=>{
     console.log("Request: " + req.socket.remoteAddress + ":" + req.socket.remotePort + " => " + req.url);
-
+    /**
+     * DO USER CHECK HERE FIRST IF USER 'OWNS' THE POST.
+     * 
+     * SET currentPost TO POST IF USER 'OWNS' POST
+     * 
+     * SET currentPost TO NULL IF USER !'OWNS' POST
+     * 
+     * REDIRECT TO 401 IF NOT AUTHORIZED TO EDIT
+     */
     var userId = '1'; //UPDATE USING SESSION userId VALUE
-
-    dispatch.getHome(userId).then((data)=>{
-        if(data != null){
-            res.render("home", {
-                title: "Home - Budol Finds",
-                currentUser: data[0],
-                //likes: tempDB.likes,
-                search:"",
-                category:"",
-                posts: data[1], //POSTS
-                helpers: {
-                    fullName(fname, mname, lname){return format.formalName(fname,mname,lname);},
-                    simpleDateTime(dt){return format.simpleDateTime(dt);},
-                    likes(like){return format.pluralInator('Like',like);},
-                    btnLiked(postHash){
-                        for(var p of data[1])
-                            if(p.postHash == postHash)
-                                for(var u of p.likeVals)
-                                    if(u.userId == data[0].userId)
-                                        return "Liked";
-                        return "Like";
-                    },
-                    editable(postUserId){
-                        if(postUserId == data[0].userId)
-                            return "block";
-                        else
-                            return "none";
-                    }
-                }
-            });
+    dispatch.getEditPost(userId, req.params['posthash']).then((data)=>{
+        if(data){
+            if(data == 403){
+                redirectError(res, StatusCodes.FORBIDDEN);
+            }else if(data == 401){
+                redirectError(res, StatusCodes.UNAUTHORIZED);
+            }else{
+                res.render("post",  {
+                    title: "Post Edit - Budol Finds",
+                    currentUser: data[0], //SAMPLE USER
+                    currentPost: data[1], //SAMPLE POST
+                    currentPostJSON: JSON.stringify(data[1]), //SAMPLE JSON POST
+                });
+            }
         }else{
-            redirectError(res, StatusCodes.FORBIDDEN);
+            redirectError(res, StatusCodes.NOT_FOUND);
         }
     });
 });
+
 
 /** Home Search */
 debugTest.get('/debug/home/search/:searchVal', (req, res)=>{
@@ -68,6 +61,49 @@ debugTest.get('/debug/home/search/:searchVal', (req, res)=>{
     console.log(out);
     res.send(out);
 });
+
+/** Home */
+// debugTest.get('/debug/home', (req, res)=>{
+//     console.log("Request: " + req.socket.remoteAddress + ":" + req.socket.remotePort + " => " + req.url);
+
+//     var userId = '1'; //UPDATE USING SESSION userId VALUE
+
+//     dispatch.getHome(userId).then((data)=>{
+//         if(data != null){
+//             res.render("home", {
+//                 title: "Home - Budol Finds",
+//                 currentUser: data[0],
+//                 //likes: tempDB.likes,
+//                 search:"",
+//                 category:"",
+//                 posts: data[1], //POSTS
+//                 helpers: {
+//                     fullName(fname, mname, lname){return format.formalName(fname,mname,lname);},
+//                     simpleDateTime(dt){return format.simpleDateTime(dt);},
+//                     likes(like){return format.pluralInator('Like',like);},
+//                     btnLiked(postHash){
+//                         for(var p of data[1])
+//                             if(p.postHash == postHash)
+//                                 for(var u of p.likeVals)
+//                                     if(u.userId == data[0].userId)
+//                                         return "Liked";
+//                         return "Like";
+//                     },
+//                     editable(postUserId){
+//                         if(postUserId == data[0].userId)
+//                             return "block";
+//                         else
+//                             return "none";
+//                     }
+//                 }
+//             });
+//         }else{
+//             redirectError(res, StatusCodes.FORBIDDEN);
+//         }
+//     });
+// });
+
+
 
 /** Profile */
 // debugTest.get('/debug/profile',(req, res)=>{

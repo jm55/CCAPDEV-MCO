@@ -4,6 +4,6 @@ export function redirectError(res, errorCode){
     res.render("err", {
         title: "Error - Budol Finds",
         errID: errorCode,
-        errMsg: getReasonPhrase(errorCode)
+        errMsg: getReasonPhrase(errorCode),
     });
 }
