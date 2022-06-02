@@ -7,12 +7,20 @@ profileNav.use(express.json());
 import * as format from '../middleware/formatting.js';
 import * as mult from '../middleware/mult.js';
 import * as file from '../middleware/fs.js';
-import * as dbUser from '../db/controller/userController.js';
+
+//dotenv
 import 'dotenv/config';
+
+//Encryption
 import bcrypt from 'bcrypt';
 
 //DB
 import * as dispatch from '../middleware/dispatch.js';
+import * as dbUser from '../db/controller/userController.js';
+
+//Error handling
+import { StatusCodes } from 'http-status-codes';
+import {redirectError} from '../middleware/errordispatch.js';
 
 /**
  * @todo
@@ -67,11 +75,7 @@ profileNav.get('/user/:username', (req, res)=>{
                 });
             });
         }else{
-            res.render("err", {
-                title: "Error - Budol Finds",
-                errID: "404",
-                errMsg: "Nothing to see here..."
-            });
+            redirectError(res, StatusCodes.NOT_FOUND);
         }
     });
 });
@@ -113,6 +117,8 @@ profileNav.get('/profile', (req, res)=>{
      * 
      * IF LOGGED IN FIND USER IN DB
      * AND LIST POSTS WHERE AUTHOR IS DB
+     * 
+     * IF NOT LOGGED IN ROUTE AS 401 OR RETURN TO INDEX
      *
      */  
     var userId = '1'; //UPDATE USING SESSION userId VALUE
@@ -160,7 +166,7 @@ profileNav.get('/profile/search', (req, res)=>{
      * IF LOGGED IN FIND USER IN DB
      * AND LIST POSTS WHERE AUTHOR IS DB
      * 
-     *
+     * IF NOT LOGGED IN ROUTE AS 401 OR RETURN TO INDEX
      */  
     
     /**
@@ -176,6 +182,13 @@ profileNav.get('/profile/search', (req, res)=>{
 profileNav.get('/profile/settings', (req, res)=>{
     console.log("Request: " + req.socket.remoteAddress + ":" + req.socket.remotePort + " => " + req.url);
 
+    /**
+     * 
+     * CHECK WHO'S SESSION IS THIS AND IF LOGGED IN
+     * 
+     * IF NOT LOGGED IN ROUTE AS 401 OR RETURN TO INDEX
+     */  
+
     var userId = '1'; //UPDATE USING SESSION userId VALUE
 
     dispatch.getCurrentUserByID(userId).then((user)=>{
@@ -190,6 +203,12 @@ profileNav.get('/profile/settings', (req, res)=>{
 /** Save Profile */
 profileNav.patch('/profile/settings/save', mult.upload_dp.single('profilepic-select'), (req, res)=>{
     console.log("Request: " + req.socket.remoteAddress + ":" + req.socket.remotePort + " => " + req.url);
+    /**
+     * 
+     * CHECK WHO'S SESSION IS THIS AND IF LOGGED IN
+     * 
+     * IF NOT LOGGED IN ROUTE AS 401 OR RETURN TO INDEX
+     */  
     try{
         var body = req.body;
         var file = req.file;
@@ -198,13 +217,13 @@ profileNav.patch('/profile/settings/save', mult.upload_dp.single('profilepic-sel
             currHash = arr[0]['passhash'];
             bcrypt.compare(body['password_current'], currHash, (error, same)=>{
                 if(error != null)
-                    res.sendStatus(500);
+                    res.sendStatus(StatusCodes.INTERNAL_SERVER_ERROR);
                 if(same){
                     if(String(body['password_a']).length > 0 && String(body['password_b']).length){
                         if(String(body['password_a'])==String(body['password_b'])){ //NEW PASSWORD
                             bcrypt.hash(req.body['password_b'], Number(process.env.SALT_ROUNDS),(err, enc)=>{
                                 if(err != null)
-                                    res.sendStatus(500);
+                                    res.sendStatus(StatusCodes.INTERNAL_SERVER_ERROR);
                                 else{
                                     body['password_current'] = null;
                                     body['password_a'] = null;
@@ -213,7 +232,7 @@ profileNav.patch('/profile/settings/save', mult.upload_dp.single('profilepic-sel
                                     if(req.file)
                                         dpUpdate(file.originalname, body['userId']);
                                     dbUser.updateUser(body);
-                                    res.sendStatus(200);
+                                    res.sendStatus(StatusCodes.OK);
                                 }
                             });
                         }else{
@@ -224,16 +243,16 @@ profileNav.patch('/profile/settings/save', mult.upload_dp.single('profilepic-sel
                         if(file)
                             dpUpdate(file.originalname, body['userId']);
                         dbUser.updateUser(body);
-                        res.sendStatus(200);
+                        res.sendStatus(StatusCodes.OK);
                     }
                 }else{
                     console.log("Password not found on DB!");
-                    res.sendStatus(403);
+                    res.sendStatus(StatusCodes.UNAUTHORIZED);
                 }
             });
         });
     }catch(e){
-        res.sendStatus(500);
+        res.sendStatus(StatusCodes.INTERNAL_SERVER_ERROR);
     }
 });
 function dpUpdate(originalname, userid){
@@ -255,12 +274,12 @@ profileNav.delete('/profile/settings/delete', (req, res)=>{
          * DELETE PROFILE HERE
          * 
          * RETURN 200 IF SUCCESSFUL
-         * RETURN 500 IF !SUCCESSFUL
+         * RETURN 417 IF !SUCCESSFUL
          */
-        res.sendStatus(200);
+        res.sendStatus(StatusCodes.OK);
     }catch(e){
         res.statusMessage = e;
-        res.sendStatus(400);
+        res.sendStatus(StatusCodes.INTERNAL_SERVER_ERROR);
     }
 });
 
@@ -286,7 +305,7 @@ profileNav.post('/validate/password',(req, res)=>{
     }catch(e){
         console.log("Error on password validation");
         console.log(e);
-        res.sendStatus(500);
+        res.sendStatus(StatusCodes.INTERNAL_SERVER_ERROR);
     }
 });
 
@@ -307,7 +326,7 @@ profileNav.post('/validate/username',(req, res)=>{
     }catch(e){
         console.log("Error on username validation");
         console.log(e);
-        res.sendStatus(500);
+        res.sendStatus(StatusCodes.INTERNAL_SERVER_ERROR);
     }
 });
 

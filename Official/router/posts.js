@@ -18,24 +18,43 @@ import * as mult from '../middleware/mult.js';
 //Filename Rewrite (via fs)
 import * as file from '../middleware/fs.js';
 
+//Error handling
+import { StatusCodes } from 'http-status-codes';
+import {redirectError} from '../middleware/errordispatch.js';
+
 //Creating postHashes
 import {newPostHash} from "../middleware/hashIds.js";
 
 postNav.use(express.json());
 
-/** View Specific Post */
+/** 
+ *  @todo
+ *  View Specific Post
+ */
 postNav.get('/post/:posthash', (req, res)=>{
     console.log("Request: " + req.socket.remoteAddress + ":" + req.socket.remotePort + " => " + req.url);
     var targetPostHash = req.params['posthash'];
     
-    var userId = '1'; //UPDATE USING SESSION userId VALUE
+    /**
+     * 
+     * 
+     * CHECK IF USER IS LOGGED IN OR NOT
+     * 
+     * UPDATE USERID
+     * 
+     * IF NOT LOGGED IN, SET USERID AS NULL
+     * 
+     * 
+     */
+
+
+    var userId = '1'; //UPDATE USING SESSION userId VALUE LEAVE AS NULL IF NOT LOGGEDIN
 
     dispatch.getSinglePost(userId, targetPostHash).then((data)=>{
         const currentUser = data[0];
         const currentPost = data[1];
         const currentLikes = data[2];
         const currentComments = data[3];
-
         res.render("viewpost",  {
             title: "Post - Budol Finds",
             currentUser: currentUser,
@@ -77,6 +96,8 @@ postNav.get('/post/:posthash/edit', (req, res)=>{
      * SET currentPost TO POST IF USER 'OWNS' POST
      * 
      * SET currentPost TO NULL IF USER !'OWNS' POST
+     * 
+     * REDIRECT TO 401 IF NOT AUTHORIZED TO EDIT
      */
     var userId = '1'; //UPDATE USING SESSION userId VALUE
     dispatch.getCurrentUserByID(userId).then((user)=>{
@@ -90,18 +111,10 @@ postNav.get('/post/:posthash/edit', (req, res)=>{
                         currentPostJSON: JSON.stringify(data), //SAMPLE JSON POST
                     });
                 }else{
-                    res.render("err", {
-                        title: "Error - Budol Finds",
-                        errID: "403",
-                        errMsg: "Post not editable to you."
-                    });
+                    redirectError(res, StatusCodes.FORBIDDEN);
                 }
             }else{
-                res.render("err", {
-                    title: "Error - Budol Finds",
-                    errID: "404",
-                    errMsg: "Nothing to see here..."
-                });
+                redirectError(res, StatusCodes.NOT_FOUND);
             }
         });
     });
@@ -110,13 +123,16 @@ postNav.get('/post/:posthash/edit', (req, res)=>{
 /** Edit Post */
 postNav.patch('/post/:posthash/save', mult.upload_post.single('imgselect'), (req, res)=>{
     console.log("Request: " + req.socket.remoteAddress + ":" + req.socket.remotePort + " => " + req.url);
-    dbPost.updatePost(req.body).then((p)=>{
-        if(req.file)
-            file.renamePostImg(req.file.originalname, req.body["postHash"]);
-        res.sendStatus(200);
+    dbPost.updatePost(req.body).then((result)=>{
+        if(result['acknowledged']==true){
+            if(req.file)
+                file.renamePostImg(req.file.originalname, req.body["postHash"]);
+                res.sendStatus(StatusCodes.OK);
+        }else
+            res.sendStatus(StatusCodes.EXPECTATION_FAILED);
     }).catch((err)=>{
         console.error(err);
-        res.sendStatus(500);
+        res.sendStatus(StatusCodes.INTERNAL_SERVER_ERROR);
     });
 });
 
@@ -124,12 +140,15 @@ postNav.patch('/post/:posthash/save', mult.upload_post.single('imgselect'), (req
 postNav.delete('/post/:posthash/delete', (req, res)=>{ 
     console.log("Request: " + req.socket.remoteAddress + ":" + req.socket.remotePort + " => " + req.url);
     dispatch.deletePost(req.body['postHash']).then((result)=>{
-        console.log(result);
-        file.deletePostImg(req.body['postHash']);
-        res.sendStatus(200);
+        if(result.acknowledged){
+            file.deletePostImg(req.body['postHash']);
+            res.sendStatus(StatusCodes.OK);
+        }else{
+            res.sendStatus(StatusCodes.EXPECTATION_FAILED);
+        }
     }).catch((error)=>{
         console.error(error);
-        res.sendStatus(500);
+        res.sendStatus(StatusCodes.INTERNAL_SERVER_ERROR);
     });
 });
 
@@ -143,6 +162,8 @@ postNav.post('/post/new', mult.upload_post.single('imgselect'), (req, res)=>{
      * CHECK IF USER IS LOGGED IN. 
      * IF SO, THEN RENDER THE PAGE BELOW, ELSE THEN REDIRECT BACK TO LOGIN.
      * 
+     * REDIRECT TO ERROR 401 IF NOT LOGGED IN
+     * 
      */
     console.log("Request: " + req.socket.remoteAddress + ":" + req.socket.remotePort + " => " + req.url);
     req.body["postHash"] = newPostHash();
@@ -150,21 +171,36 @@ postNav.post('/post/new', mult.upload_post.single('imgselect'), (req, res)=>{
     req.body["datetime"] = new Date();
     try{
         dbPost.addPost(req.body).then((p)=>{
-            file.renamePostImg(req.file.originalname, req.body["postHash"]);
-            res.sendStatus(200);
+            if(p.acknowledged==true){
+                file.renamePostImg(req.file.originalname, req.body["postHash"]);
+                res.sendStatus(StatusCodes.OK);
+            }else{
+                res.sendStatus(StatusCodes.EXPECTATION_FAILED);
+            }
         }).catch((err)=>{
             console.error(err);
-            res.sendStatus(500);
+            res.sendStatus(StatusCodes.INTERNAL_SERVER_ERROR);
         });
     }catch(e){
         res.statusMessage = e;
-        res.sendStatus(400);
+        res.sendStatus(StatusCodes.INTERNAL_SERVER_ERROR);
     }
 });
 
-/** Like Post */
+/**
+ * @todo
+ * Like Post
+ */
 postNav.post('/post/like', (req, res)=>{ 
     console.log("Request: " + req.socket.remoteAddress + ":" + req.socket.remotePort + " => " + req.url);
+    /**
+     * 
+     * CHECK IF USER IS LOGGED IN. 
+     * IF SO, THEN RENDER THE PAGE BELOW, ELSE THEN REDIRECT BACK TO LOGIN.
+     * 
+     * REDIRECT TO ERROR 401 IF NOT LOGGED IN
+     * 
+     */
     try{
         console.log(req.body);
         /**
@@ -197,7 +233,7 @@ postNav.post('/post/like', (req, res)=>{
         });
     }catch(e){
         res.statusMessage = e;
-        res.sendStatus(400);
+        res.sendStatus(StatusCodes.INTERNAL_SERVER_ERROR);
     }
 });
 
@@ -221,36 +257,63 @@ function updateCounter(res, counter, increment){
     res.json({btn:btn,count:count});
 }
 
-/** Report Post */
-postNav.post('/post/report', (req, res)=>{ 
+/**
+ * @todo
+ * Report Post
+ */
+postNav.post('/post/report', (req, res)=>{
     console.log("Request: " + req.socket.remoteAddress + ":" + req.socket.remotePort + " => " + req.url);
+    /**
+     * 
+     * CHECK IF USER IS LOGGED IN. 
+     * IF SO, THEN RENDER THE PAGE BELOW, ELSE THEN REDIRECT BACK TO LOGIN.
+     * 
+     * REDIRECT TO ERROR 401 IF NOT LOGGED IN
+     * 
+     */
     try{
         console.log(req.body);
         //SAMPLE BODY: { userId: 1, postHash: '42069', datetime: '2022-05-31T07:01:37.495Z' }
-        dbReport.blotterReport(req.body).catch((error)=>{
+        dbReport.blotterReport(req.body).then((result)=>{
+            if(result.acknowledged == true)
+                res.sendStatus(StatusCodes.OK);
+            else
+                res.sendStatus(StatusCodes.EXPECTATION_FAILED);
+        }).catch((error)=>{
             console.error(error);
         });
-        res.sendStatus(200);
+        res.sendStatus(StatusCodes.OK);
     }catch(e){
         res.statusMessage = e;
-        res.sendStatus(400);
+        res.sendStatus(StatusCodes.INTERNAL_SERVER_ERROR);
     }
 });
 
-/** Comment Post */
+/** 
+ * @todo
+ * Post Comment
+*/
 postNav.post('/post/comment', (req, res)=>{ 
     console.log("Request: " + req.socket.remoteAddress + ":" + req.socket.remotePort + " => " + req.url);
+    /**
+     * 
+     * CHECK IF USER IS LOGGED IN. 
+     * IF SO, THEN RENDER THE PAGE BELOW, ELSE THEN REDIRECT BACK TO LOGIN.
+     * 
+     * REDIRECT TO ERROR 401 IF NOT LOGGED IN
+     * 
+     */
     try{
         dbComment.newComment(req.body).then((val)=>{
-            console.log("newComment: " + val.acknowledged);
+            if(val.acknowledged == true)
+                res.sendStatus(StatusCodes.OK)
+            else
+                res.sendStatus(StatusCodes.EXPECTATION_FAILED);
         }).catch((error)=>{
-            console.log()
-            console.error(error);
-        })
-        res.sendStatus(200);
+            res.sendStatus(StatusCodes.INTERNAL_SERVER_ERROR);
+        });
     }catch(e){
-        res.statusMessage = e;
-        res.sendStatus(400);
+        res.sendStatus(StatusCodes.INTERNAL_SERVER_ERROR);
     }
 });
 

@@ -77,7 +77,6 @@ export function getPostByUserID(userId, search, category){
  * @returns Promise of one post document from the database as specified by postHash.
  */
 export function getPostByPostHash(postHash){
-    console.log('postHash: ' + postHash);
     return postCollection.findOne({'postHash':postHash});
 }
 

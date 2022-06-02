@@ -17,6 +17,10 @@ import bcrypt from 'bcrypt';
 //DB
 import * as db from '../db/controller/userController.js';
 
+//Error management
+import { StatusCodes } from 'http-status-codes';
+import {redirectError} from '../middleware/errordispatch.js';
+
 const signupNav = express.Router();
 signupNav.use(express.json());
 
@@ -31,19 +35,16 @@ signupNav.post('/signup/save', mult.upload_dp.single('profilepic-select'), (req,
     console.log("Request: " + req.socket.remoteAddress + ":" + req.socket.remotePort + " => " + req.url);
     db.userExists(req.body['username']).then((f)=>{
         var exists = false;
-        console.log("f:");
-        console.log(f);
-        if(f){
+        if(f)
             if(f.username == req.body['username'])
                 exists = true;
-        }
         if(exists){
-            res.sendStatus(403);
+            res.sendStatus(StatusCodes.FORBIDDEN);
         }else{
             req.body['password_b'] = null;
             bcrypt.hash(req.body['password_a'], Number(process.env.SALT_ROUNDS), function(err, hash) {
                 if(err != null){
-                    res.sendStatus(500);
+                    res.sendStatus(StatusCodes.INTERNAL_SERVER_ERROR);
                 }else{
                     req.body["password_a"] = null;
                     req.body["passhash"] = hash;
@@ -55,17 +56,17 @@ signupNav.post('/signup/save', mult.upload_dp.single('profilepic-select'), (req,
                             console.log("New user save to DB successful!");
                             //Renames DP image
                             file.renameDP(req.file.originalname,req.body["userId"]);
-                            res.sendStatus(200);
+                            res.sendStatus(StatusCodes.OK);
                         });
                     }catch(e){
                         res.statusMessage = e;
-                        res.sendStatus(400);
+                        res.sendStatus(StatusCodes.INTERNAL_SERVER_ERROR);
                     }
                 }
             });
         }
     }).catch((e)=>{
-        console.error(e);
+        res.sendStatus(StatusCodes.INTERNAL_SERVER_ERROR);
     });
 });
 

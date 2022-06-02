@@ -64,15 +64,24 @@ export async function getEditPost(userId, postHash){
  */
 export async function getSinglePost(userId, postHash){
     reset();
-        
-    const users = await dbUser.getUserByUserID(userId);
+    
+    var users = null
+    if(userId != null || userId != "")
+        users = await dbUser.getUserByUserID(userId);
+
     const posts = await dbPost.getPostByPostHash(postHash);
-    const likes = await dbLike.getLikeByPostHash(postHash);
-    const comments = await dbComment.getCommentByPostHash(postHash);
-
     var user = users;
-    var post = posts[0];
+    var post = null;
+    var likes = [];
+    var comments = [];
 
+    if(posts != null){
+        post = posts;
+        post['user'] = await dbUser.getUserByUserID(post.userId);
+        likes = await dbLike.getLikeByPostHash(postHash);
+        comments  = await dbComment.getCommentByPostHash(postHash);
+    }
+        
     return new Promise((resolve, reject)=>{
         resolve([user, post, likes, comments]);
         reject("Error retrieving post.");

@@ -3,9 +3,15 @@ import express from 'express';
 const logNav = express.Router();
 logNav.use(express.json());
 
-//import * as hs from '../middleware/bcrypt.js'; //TEMPORARY ONLY
+//Encryption
 import bcrypt from 'bcrypt';
+
+//DB
 import * as db from '../db/controller/userController.js';
+
+//Error handling
+import { StatusCodes } from 'http-status-codes';
+import {redirectError} from '../middleware/errordispatch.js';
 
 /** Login */
 logNav.get('/login', (req,res)=>{
@@ -23,7 +29,7 @@ logNav.post('/login/in',(req, res)=>{
                 if(u['username'] == body['username']){
                     bcrypt.compare(String(body['password']),u.passhash,(err,same)=>{
                         if(err != null)
-                            res.sendStatus(500);
+                            res.sendStatus(StatusCodes.INTERNAL_SERVER_ERROR);
                         /***
                          * 
                          * 
@@ -43,7 +49,7 @@ logNav.post('/login/in',(req, res)=>{
         })
     } catch(e) {
         res.statusMessage = e;
-        res.sendStatus(400);
+        res.sendStatus(StatusCodes.INTERNAL_SERVER_ERROR);
     }
 });
 
@@ -71,10 +77,10 @@ logNav.post('/logout/out',(req, res)=>{
          * 
          */
         console.log(req.body);
-        res.sendStatus(200); //NOT SURE IF NEEDED
+        res.sendStatus(StatusCodes.ACCEPTED); //NOT SURE IF NEEDED
     } catch(e) {
         res.statusMessage = e;
-        res.sendStatus(400);
+        res.sendStatus(StatusCodes.INTERNAL_SERVER_ERROR);
     }
 });
 

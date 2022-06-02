@@ -6,9 +6,7 @@ $( document ).ready((e)=>{
     fetch("/logout/out",{
         method: "POST",
         body: JSON.stringify(logoutRequest),
-        headers:{
-            "Content-Type": "application/json"
-        }
+        headers:{"Content-Type": "application/json"}
     }).then((res) => {
         if (res.status >= 200 && res.status < 300) {// SUCCESS
             window.location.href = '/';
