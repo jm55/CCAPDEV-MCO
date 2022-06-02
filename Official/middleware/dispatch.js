@@ -17,6 +17,52 @@ function reset(){
 }
 
 /**
+ * Retrieves data for home page.
+ * @param {String} userId User currently logged in. 
+ */
+export async function getHome(userId){
+    if(userId == null  || userId == ""){
+        return new Promise((resolve, reject)=>{
+            resolve(null);
+            reject('Error resolving promise');
+        });
+    }
+    const user = await dbUser.getUserByUserID(userId);
+    var post = null;
+    if(user != null){
+        const posts = await dbPost.getPosts("","");
+        const comments = await dbComment.getComments();
+        const likes = await dbLike.getLikes();
+        const users = await dbUser.getUsers();
+
+        postHolder = pushVals(posts);
+        commentHolder = pushVals(comments);
+        likeHolder = pushVals(likes);
+        usersHolder = pushVals(users);
+        
+        console.log('Dispatch.getHomePost(): ');
+        console.log('Dispatch.postHolder: ' + postHolder.length);
+        console.log("Dispatch.commentHolder: " + commentHolder.length);
+        console.log("Dispatch.likeHolder: " + likeHolder.length);
+        console.log("Dispatch.userHolder: " + usersHolder.length);
+
+        appendUsernameToComments();
+        appendUserToPost();
+        appendCommentToPost();
+        appendLikesToPost();
+
+        return new Promise((resolve,reject)=>{
+            resolve([user, postHolder]);
+            reject("Error retrieving posts for Home");
+        });
+    }else
+        return new Promise((resolve, reject)=>{
+            resolve(null);
+            reject('Error retrieving user');
+        });
+}
+
+/**
  * @todo
  * Delegates the deletion of an entire account and all related objects 
  * to it.
@@ -249,40 +295,6 @@ export async function getProfileById(userId){
         reject("Error retrieving posts of user");
     });
     return promise;
-}
-
-/**
- * Gets all posts from the database.
- * @returns Promise of all posts from DB.
- */
-export async function getHomePost(){
-    reset();
-
-    const posts = await dbPost.getPosts("","");
-    const comments = await dbComment.getComments();
-    const likes = await dbLike.getLikes();
-    const users = await dbUser.getUsers();
-
-    postHolder = pushVals(posts);
-    commentHolder = pushVals(comments);
-    likeHolder = pushVals(likes);
-    usersHolder = pushVals(users);
-    
-    console.log('Dispatch.getHomePost(): ');
-    console.log('Dispatch.postHolder: ' + postHolder.length);
-    console.log("Dispatch.commentHolder: " + commentHolder.length);
-    console.log("Dispatch.likeHolder: " + likeHolder.length);
-    console.log("Dispatch.userHolder: " + usersHolder.length);
-
-    appendUsernameToComments();
-    appendUserToPost();
-    appendCommentToPost();
-    appendLikesToPost();
-
-    return new Promise((resolve,reject)=>{
-        resolve(postHolder);
-        reject("Error retrieving posts for Home");
-    });
 }
 
 /**
