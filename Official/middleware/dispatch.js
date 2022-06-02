@@ -105,6 +105,13 @@ export async function getUserPair(currentUserId, targetUserName){
     var currentUser = (await dbUser.getUserByUserID(currentUserId));
     var targetUser = (await dbUser.getUserByUserName(targetUserName));
 
+    if(targetUser == null){
+        return new Promise((resolve, reject)=>{
+            resolve([currentUser,null]);
+            reject('Error retrieving user pairs.');
+        });
+    }
+
     var currentUserReportCount = (await dbReport.reportByPostOwnerId(currentUser.userId)).length;
     var targetUserReportCount = (await dbReport.reportByPostOwnerId(targetUser.userId)).length;
 

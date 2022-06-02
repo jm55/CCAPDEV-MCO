@@ -33,39 +33,72 @@ profileNav.get('/user/:username', (req, res)=>{
     const targetUserName = req.params['username'];
     
     dispatch.getUserPair(currentUserId, targetUserName).then((userPair)=>{
-        const currentUser = userPair[0];
-        const targetUser = userPair[1];
-        dispatch.getProfileById(targetUser.userId).then((data)=>{
-            const posts = data[1];
-            res.render("viewuser",  {
-                title: format.buildTitle(targetUser.username),
-                currentUser: currentUser,
-                targetUser: targetUser, //PERTAINS TO A TARGET USER'S ACCOUNT
-                posts: posts,
-                postCount: posts.length,
-                reportCount: targetUser['reportCount'],
-                helpers: {
-                    fullName(fname, mname, lname){return format.formalName(fname,mname,lname);},
-                    simpleDateTime(dt){return format.simpleDateTime(dt);},
-                    likes(like){return format.pluralInator('Like',like);},
-                    btnLiked(postHash){
-                        for(var p of posts)
-                            if(p.postHash == postHash)
-                                for(var u of p.likeVals)
-                                    if(u.userId == currentUser.userId)
-                                        return "Liked";
-                        return "Like";
-                    },
-                    editable(postUserId){
-                        if(postUserId == currentUser.userId)
-                            return "block";
-                        else
-                            return "none";
+        if(userPair[1] != null){
+            const currentUser = userPair[0];
+            const targetUser = userPair[1];
+            dispatch.getProfileById(targetUser.userId).then((data)=>{
+                const posts = data[1];
+                res.render("viewuser",  {
+                    title: format.buildTitle(targetUser.username),
+                    currentUser: currentUser,
+                    targetUser: targetUser, //PERTAINS TO A TARGET USER'S ACCOUNT
+                    posts: posts,
+                    postCount: posts.length,
+                    reportCount: targetUser['reportCount'],
+                    helpers: {
+                        fullName(fname, mname, lname){return format.formalName(fname,mname,lname);},
+                        simpleDateTime(dt){return format.simpleDateTime(dt);},
+                        likes(like){return format.pluralInator('Like',like);},
+                        btnLiked(postHash){
+                            for(var p of posts)
+                                if(p.postHash == postHash)
+                                    for(var u of p.likeVals)
+                                        if(u.userId == currentUser.userId)
+                                            return "Liked";
+                            return "Like";
+                        },
+                        editable(postUserId){
+                            if(postUserId == currentUser.userId)
+                                return "block";
+                            else
+                                return "none";
+                        }
                     }
-                }
+                });
             });
-        });
+        }else{
+            res.render("err", {
+                title: "Error - Budol Finds",
+                errID: "404",
+                errMsg: "Nothing to see here..."
+            });
+        }
     });
+});
+
+/**
+ * @todo
+ * User Post Search
+ */
+ profileNav.get('/user/:username/search', (req, res)=>{
+    console.log("Request: " + req.socket.remoteAddress + ":" + req.socket.remotePort + " => " + req.url);
+    /**
+     * 
+     * CHECK WHO'S SESSION IS THIS AND IF LOGGED IN
+     * 
+     * IF LOGGED IN FIND USER IN DB
+     * AND LIST POSTS WHERE AUTHOR IS DB
+     * 
+     *
+     */  
+    
+    /**
+     * 
+     * 
+     * CONDUCT COLLECTION OF POSTS AND RENDER AS PROFILE WITH POSTS FILTERED ACCORDINGLY.
+     * 
+     * 
+     */
 });
 
 /**
@@ -84,7 +117,6 @@ profileNav.get('/profile', (req, res)=>{
      *
      */  
     var userId = '1'; //UPDATE USING SESSION userId VALUE
-
     dispatch.getProfileById(userId).then((data)=>{
         var user = data[0]
         var posts = data[1];
@@ -114,6 +146,31 @@ profileNav.get('/profile', (req, res)=>{
             }
         });
     });
+});
+
+/**
+ * @todo
+ * Profile Search
+ */
+profileNav.get('/profile/search', (req, res)=>{
+    console.log("Request: " + req.socket.remoteAddress + ":" + req.socket.remotePort + " => " + req.url);
+    /**
+     * 
+     * CHECK WHO'S SESSION IS THIS AND IF LOGGED IN
+     * 
+     * IF LOGGED IN FIND USER IN DB
+     * AND LIST POSTS WHERE AUTHOR IS DB
+     * 
+     *
+     */  
+    
+    /**
+     * 
+     * 
+     * CONDUCT COLLECTION OF POSTS AND RENDER AS PROFILE WITH POSTS FILTERED ACCORDINGLY.
+     * 
+     * 
+     */
 });
 
 /** Profile Settings */

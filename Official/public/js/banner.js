@@ -4,6 +4,10 @@ console.log("Public JS: banner.js loaded");
  * @todo ADD FUNCTIONALITIES MISSING
  */
 $(document).ready(()=>{
+    var cat = $("#categories").attr("value");
+    $("#categories").val(cat);
+
+
     $("#home-btn").click(()=>{
         console.log("#home-btn clicked");
         window.location.href = "/home";
@@ -31,29 +35,26 @@ $(document).ready(()=>{
 
     $("#search-btn").click((e)=>{
         console.log("#search-btn");
-        /**
-         * 
-         * 
-         * CONDUCT SEARCH FOR BOTH SEARCH TERMS AND CATEGORIES
-         * ADD SEARCH TEXT AND CATEGORY TO REQ.BODY
-         * USE ROUTE /home/search
-         * 
-         */
+        search();
     });
 
     $("#search-txt").keyup((e)=>{
         e.preventDefault();
         if(e.key=="Enter"){
             console.log("#search-txt");
-            /**
-             * 
-             * 
-             * CONDUCT SEARCH FOR SEARCH
-             * ADD SEARCH TEXT AND CATEGORY TO REQ.BODY
-             * USE ROUTE /home/search
-             * 
-             * 
-             */
+            search();
         }
     });
 });
+
+function search(){
+     /**
+     * 
+     * 
+     * CONDUCT SEARCH FOR SEARCH
+     * ADD SEARCH TEXT AND CATEGORY TO REQ.BODY
+     * USE ROUTE /home/search
+     * 
+     * 
+     */
+}   

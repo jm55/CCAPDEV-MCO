@@ -19,12 +19,14 @@
         <span class="span_banner-title">
             <p class="banner_title"><a id="logo-btn" href="/">Budol Finds</a></p> <!--POINTS TO INDEX-->
         </span>
-        <span class="span_search-bar"><div class="search_bar">
-            <nav class="menu">
-                <input id="search-txt" name="search-txt" class="textfield" />
+        <span class="span_search-bar">
+            <div class="search_bar">
+                <nav class="menu">
+                <input id="search-txt" name="search-txt" class="textfield" value="{{search}}" />
                 {{>menu_categories}}
                 <button id="search-btn" class="menu_button">Search</button>                       
-        </div></span>
+            </div>
+            </span>
     </div>
 </header>
 
@@ -32,6 +34,7 @@
     <div class="card new_post">
         {{>post_form}}
     </div>
+    
     <div class="timeline">
         {{#if posts}}  
         {{#each posts}}
@@ -40,6 +43,9 @@
         {{else}}
             {{>notfound}}
         {{/if}}
+        <div style="width:100%; display:grid; margin: 10px auto 10px auto;">
+            <button style="margin-left: auto; margin-right:auto;" id="load-more-profile" class="menu_button">Load More</button>
+        </div>
     </div> <!--END OF TIMELINE-->
 </div>
 <script>

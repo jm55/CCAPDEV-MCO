@@ -2,7 +2,28 @@
  * THIS JS FILE IS DEPRECATED BUT WILL BE RETAINED IF FEATURES RELATING TO PROFILE ARE NEEDED.
  * @deprecated June 1, 2022
  */
- console.log("Public JS: [DECPRECATED] profile.js');
+ console.log("Public JS: [DECPRECATED] profile.js");
+
+$(document).ready(()=>{
+    $("#profilesearch-btn").click((e)=>{
+        e.preventDefault();
+        var searchString = $("#profilesearch").val();
+        /**
+         * 
+         * FETCH TO /profile/search
+         * 
+         */
+    });
+    $("#usersearch-btn").click((e)=>{
+        e.preventDefault();
+        var searchString = $("#usersearch").val();
+        /**
+         * 
+         * FETCH TO /user/:posthash/search
+         * 
+         */
+    });
+});
 
 // console.log("profile.js");
 

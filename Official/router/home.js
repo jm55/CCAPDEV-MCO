@@ -22,6 +22,8 @@ homeNav.get('/home', (req, res)=>{
                 title: "Home - Budol Finds",
                 currentUser: user,
                 //likes: tempDB.likes,
+                search:"",
+                category:"",
                 posts: posts, //POSTS
                 helpers: {
                     fullName(fname, mname, lname){return format.formalName(fname,mname,lname);},
@@ -53,13 +55,15 @@ homeNav.get('/home', (req, res)=>{
  */
 homeNav.get('/home/search', (req, res)=>{
     console.log("Request: " + req.socket.remoteAddress + ":" + req.socket.remotePort + " => " + req.url);
+    const out = "Home Search Filter: "+req.params['searchVal'];
     /**
      * 
      * GET SEARCH PARAMETERS FROM BODY
+     * RENDER PAGE HERE WITH THE SPECIFIED SEARCH PARAMETERS
+     * 
+     * USE HOME BUT WITH THE SEARCH AND CATEGORY PARAMETERS FROM REQ.BODY
      * 
      */
-    const out = "Home Search Filter: "+req.params['searchVal'];
-    console.log(out);
     res.send(out);
 });
 
