@@ -80,9 +80,9 @@ div.container{
     border-radius: var(--border-radius);
 }
 
-@media screen and (max-width: 1366px) {
+@media screen and (max-height: 800px) {
     div.container{
-        height: 80vh !important;
+        height: 78vh !important;
         width: 90vw !important;
     }
 }
