@@ -113,7 +113,6 @@ profileNav.get('/profile', (req, res)=>{
      * 
      * IF LOGGED IN FIND USER IN DB
      * AND LIST POSTS WHERE AUTHOR IS DB
-     * 
      *
      */  
     var userId = '1'; //UPDATE USING SESSION userId VALUE

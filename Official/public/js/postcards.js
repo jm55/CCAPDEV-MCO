@@ -79,6 +79,7 @@ function submitComment(posthash){
     body['text'] = commentVal;
     body['postHash'] = posthash;
     body['datetime'] = new Date();
+    body['username'] = username;
 
     fetch("/post/comment",{
         method:"POST",

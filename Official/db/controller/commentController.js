@@ -16,7 +16,7 @@ export function newComment(comment){
  * @returns Promise of an array of all comment objects from the database.
  */
 export function getComments(){
-    return commentCollection.find({}).toArray();
+    return commentCollection.find({}).sort({'datetime':-1}).toArray();
 }
 
 /**
@@ -25,7 +25,7 @@ export function getComments(){
  * @returns Promise of an array of all comment objects that is part of the post specified by postHash.
  */
 export function getCommentByPostHash(postHash){
-    return commentCollection.find({'postHash':postHash}).toArray(); 
+    return commentCollection.find({'postHash':postHash}).sort({'datetime':-1}).toArray(); 
 }
 
 /**
