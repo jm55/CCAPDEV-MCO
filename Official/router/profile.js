@@ -200,7 +200,7 @@ profileNav.get('/profile/settings', (req, res)=>{
 
     var userId = '1'; //UPDATE USING SESSION userId VALUE
 
-    dispatch.getCurrentUserByID(userId).then((user)=>{
+    dispatch.getUserByID(userId).then((user)=>{
         res.render("profile_settings", {
             title: "Profile Settings - Budol Finds",
             currentUser: user,

@@ -18,9 +18,10 @@ function reset(){
 
 /**
  * Retrieves data for home page.
+ * 
  * @param {String} userId User currently logged in. 
  */
-export async function getHome(userId){
+export async function getHome(page, userId){
     if(userId == null  || userId == ""){
         return new Promise((resolve, reject)=>{
             resolve(null);
@@ -28,9 +29,10 @@ export async function getHome(userId){
         });
     }
     const user = await dbUser.getUserByUserID(userId);
-    var post = null;
+    delete user['passhash'];
+    console.log(user);
     if(user != null){
-        const posts = await dbPost.getPosts("","");
+        const posts = await dbPost.getPosts(page,2,"",""); /** @todo SYNCHRONIZE LIMIT SIZES AND SKIP COUNT */
         const comments = await dbComment.getComments();
         const likes = await dbLike.getLikes();
         const users = await dbUser.getUsers();
@@ -40,19 +42,13 @@ export async function getHome(userId){
         likeHolder = pushVals(likes);
         usersHolder = pushVals(users);
         
-        // console.log('Dispatch.getHomePost(): ');
-        // console.log('Dispatch.postHolder: ' + postHolder.length);
-        // console.log("Dispatch.commentHolder: " + commentHolder.length);
-        // console.log("Dispatch.likeHolder: " + likeHolder.length);
-        // console.log("Dispatch.userHolder: " + usersHolder.length);
-
         appendUsernameToComments();
         appendUserToPost();
         appendCommentToPost();
         appendLikesToPost();
 
         return new Promise((resolve,reject)=>{
-            resolve([user, postHolder]);
+            resolve([user, postHolder, posts[posts.length-1]._id]);
             reject("Error retrieving posts for Home");
         });
     }else
@@ -96,7 +92,7 @@ export async function deletePost(postHash){
  */
 export async function getEditPost(userId, postHash){
     var post = null;
-    const user = await dbUser.getUserByUserID(userId);
+    const user = await getUserByID(userId);
 
     if(user == null){
         return new Promise((resolve, reject)=>{
@@ -128,7 +124,7 @@ export async function getSinglePost(userId, postHash){
     
     var users = null
     if(userId != null || userId != "")
-        users = await dbUser.getUserByUserID(userId);
+        users = await getUserByID(userId);
 
     const posts = await dbPost.getPostByPostHash(postHash);
     var user = users;
@@ -138,7 +134,7 @@ export async function getSinglePost(userId, postHash){
 
     if(posts != null){
         post = posts;
-        post['user'] = await dbUser.getUserByUserID(post.userId);
+        post['user'] = await getUserByID(post.userId);
         likes = await dbLike.getLikeByPostHash(postHash);
         comments  = await dbComment.getCommentByPostHash(postHash);
     }
@@ -172,8 +168,8 @@ export async function getReportCountByUserId(userId){
  */
 export async function getUserPair(currentUserId, targetUserName){
     reset();
-    var currentUser = (await dbUser.getUserByUserID(currentUserId));
-    var targetUser = (await dbUser.getUserByUserName(targetUserName));
+    var currentUser = (await getUserByID(currentUserId));
+    var targetUser = (await getUserByUserName(targetUserName));
 
     if(targetUser == null){
         return new Promise((resolve, reject)=>{
@@ -202,18 +198,31 @@ export async function getUserPair(currentUserId, targetUserName){
 export async function getTempUser(){
     reset();
     const users = await dbUser.getUsers();
+    var selected = users[Math.floor(Math.random() * users.length)];
+    delete selected['passhash'];
     return new Promise((resolve,reject)=>{
-        resolve(users[Math.floor(Math.random() * users.length)]);
+        resolve(selected);
         reject("Error retrieving temp user!");
     });
 }
 
 /**
- * Gets a user by its username
+ * Gets a list of all users. It strips down the passhashes of each before returning.
+ * @returns List of all users
+ */
+export async function getUsers(){
+    var users = await dbUser.getUsers();
+    for(var i = 0; i < users.length; i++)
+        delete users[i]['passhash']
+    return users;
+}
+
+/**
+ * Gets a user by its username. It strips out the passhash from the output for security reasons.
  * @param {String} username Filter parameter.
  * @returns Promise of a user object as specified by the username.
  */
-export async function getCurrentUserByUserName(username){
+export async function getUserByUserName(username){
     reset();
     var user = null;
 
@@ -227,11 +236,11 @@ export async function getCurrentUserByUserName(username){
 }
 
 /**
- * Gets currentUser as specified by the userId.
+ * Gets currentUser as specified by the userId. It strips out the passhash from the output for security reasons.
  * @param {String} userId Filter parameter.
  * @returns Promise of a user object as specified by the userId.
  */
-export async function getCurrentUserByID(userId){
+export async function getUserByID(userId){
     reset();
 
     var user = null;
@@ -255,7 +264,7 @@ export async function getProfileByUserName(username){
     const user = await dbUser.getUserByUserName(username);
     const posts = await dbPost.getPostByUserID(user[0].userId,"","");
 
-    var userVal = user[0];
+    const userVal = user[0];
     
     postHolder = pushVals(posts);
     

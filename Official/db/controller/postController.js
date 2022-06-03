@@ -1,3 +1,4 @@
+import { ObjectID } from 'mongodb';
 import { getDB } from '../conn.js';
 
 const postCollection = getDB().collection('posts');
@@ -35,22 +36,23 @@ export function deletePost(postHash){
 
 /**
  * Get the posts with the specified filter and sorting parameters.
+ * @param {Number} page last object id retrieved which serves as the current page number
+ * @param {Number} limit Number of non-user specific posts to be retrieved
  * @param {String} search Keyword filters for the posts.
  * @param {String} category Category filters for the posts.
  * @returns Promise of all filtered posts from the posts collection of the database.
  */
-export function getPosts(search, category){
+export function getPosts(page, limit, search, category){
     var filter = {};
+    if(page != null)
+        filter["_id"] = {"$gt": new ObjectID(page)};
     if(search != "" || category != ""){
         if(search != "" || search != null)
             filter['description'] = {$regex: search};
-        
         if(category != "" || category != null)
             filter['category'] = category;
-        
-        return postCollection.find(filter).sort({'datetime':-1}).toArray();
     }
-    return postCollection.find().sort({'datetime':-1}).toArray();
+    return postCollection.find(filter).limit(limit).sort({'datetime':-1}).toArray();
 }
 
 /**

@@ -1,4 +1,4 @@
-import express from 'express';
+import express, { application } from 'express';
 
 const debugTest = express.Router();
 debugTest.use(express.json());
@@ -10,7 +10,7 @@ import * as format from '../middleware/formatting.js'
 import * as dispatch from '../middleware/dispatch.js';
 
 //Error management
-import { StatusCodes } from 'http-status-codes';
+import { RESET_CONTENT, StatusCodes } from 'http-status-codes';
 import {redirectError} from '../middleware/errordispatch.js';
 
 //Root Debug Access
@@ -63,47 +63,69 @@ debugTest.get('/debug/home/search/:searchVal', (req, res)=>{
 });
 
 /** Home */
-// debugTest.get('/debug/home', (req, res)=>{
-//     console.log("Request: " + req.socket.remoteAddress + ":" + req.socket.remotePort + " => " + req.url);
+debugTest.get('/debug/home', (req, res)=>{
+    console.log("Request: " + req.socket.remoteAddress + ":" + req.socket.remotePort + " => " + req.url);
 
-//     var userId = '1'; //UPDATE USING SESSION userId VALUE
+    var userId = '1'; //UPDATE USING SESSION userId VALUE
 
-//     dispatch.getHome(userId).then((data)=>{
-//         if(data != null){
-//             res.render("home", {
-//                 title: "Home - Budol Finds",
-//                 currentUser: data[0],
-//                 //likes: tempDB.likes,
-//                 search:"",
-//                 category:"",
-//                 posts: data[1], //POSTS
-//                 helpers: {
-//                     fullName(fname, mname, lname){return format.formalName(fname,mname,lname);},
-//                     simpleDateTime(dt){return format.simpleDateTime(dt);},
-//                     likes(like){return format.pluralInator('Like',like);},
-//                     btnLiked(postHash){
-//                         for(var p of data[1])
-//                             if(p.postHash == postHash)
-//                                 for(var u of p.likeVals)
-//                                     if(u.userId == data[0].userId)
-//                                         return "Liked";
-//                         return "Like";
-//                     },
-//                     editable(postUserId){
-//                         if(postUserId == data[0].userId)
-//                             return "block";
-//                         else
-//                             return "none";
-//                     }
-//                 }
-//             });
-//         }else{
-//             redirectError(res, StatusCodes.FORBIDDEN);
-//         }
-//     });
-// });
+    dispatch.getHome(null, userId).then((data)=>{
+        if(data != null){
+            res.render("home", {
+                title: "Home - Budol Finds",
+                currentUser: data[0],
+                pageid: data[2],
+                //likes: tempDB.likes,
+                search:"",
+                category:"",
+                posts: data[1], //POSTS
+                helpers: {
+                    fullName(fname, mname, lname){return format.formalName(fname,mname,lname);},
+                    simpleDateTime(dt){return format.simpleDateTime(dt);},
+                    likes(like){return format.pluralInator('Like',like);},
+                    btnLiked(postHash){
+                        for(var p of data[1])
+                            if(p.postHash == postHash)
+                                for(var u of p.likeVals)
+                                    if(u.userId == data[0].userId)
+                                        return "Liked";
+                        return "Like";
+                    },
+                    editable(postUserId){
+                        if(postUserId == data[0].userId)
+                            return "block";
+                        else
+                            return "none";
+                    }
+                }
+            });
+        }else{
+            redirectError(res, StatusCodes.FORBIDDEN);
+        }
+    });
+});
 
+debugTest.put('/debug/home/more',(req, res)=>{
+    console.log("Request: " + req.socket.remoteAddress + ":" + req.socket.remotePort + " => " + req.url);
 
+    /**
+     * 
+     * VALIDATE CONTENTS
+     * 
+     */
+
+    var userId = '1';
+
+    dispatch.getHome(req.body['pageid'], userId).then((data)=>{
+        var dataJSON = {};
+        //dataJSON['user'] = data[0];
+        dataJSON['posts'] = data[1];
+        dataJSON['pageid'] = data[2];
+        res.json(dataJSON);
+    }).catch((error)=>{
+        res.statusMessage = error;
+        res.sendStatus(StatusCodes.INTERNAL_SERVER_ERROR);
+    });
+});
 
 /** Profile */
 // debugTest.get('/debug/profile',(req, res)=>{
@@ -226,7 +248,7 @@ debugTest.get('/debug/post/:posthash', (req, res)=>{
 // debugTest.get('/debug/post/:posthash/edit', (req, res)=>{
 //     var userId = '1'; //UPDATE USING SESSION userId VALUE
 //     //const posthash = req.params['posthash'];
-//     dispatch.getCurrentUserByID(userId).then((user)=>{
+//     dispatch.getUserByID(userId).then((user)=>{
 //         dispatch.getEditPost(userId, req.params['posthash']).then((data)=>{
 //             if(data){
 //                 if(data.userId === userId){
