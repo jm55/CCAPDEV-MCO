@@ -51,18 +51,8 @@ export async function getPosts(page, quantity, search, category, userId){
             posts[i]['user'] = await getUserByID(posts[i].userId);
         }
 
-        postHolder = pushVals(posts);
-        // commentHolder = pushVals(comments);
-        // likeHolder = pushVals(likes);
-        // usersHolder = pushVals(users);
-
-        // appendUsernameToComments();
-        // appendUserToPost();
-        // appendCommentToPost();
-        // appendLikesToPost();
-
         return new Promise((resolve,reject)=>{
-            resolve([user, postHolder, newPage]);
+            resolve([user, posts, newPage]);
             reject("Error retrieving posts for Home");
         });
     }else
@@ -302,21 +292,29 @@ export async function getProfileByUserName(username){
 /**
  * Gets a complete profile list that contains the user and posts by user respectively.
  * @param {String} userId Filter parameter.
- * @returns romise of a complete profile as specified by the userId.
+ * @returns Promise of a complete profile as specified by the userId.
  */
-export async function getProfileById(userId){
+export async function getProfileById(page, quantity, search, userId){
     reset();
-
-    const userVal = await dbUser.getUserByUserID(userId);
-    const posts = await dbPost.getPostByUserID(userId,"","");
+    const userVal = await getUserByID(userId);
+    const posts = await dbPost.getPostByUserID(userId,search,page,quantity);
     const reports = await dbReport.reportByPostOwnerId(userId);
+
+    for(var i = 0; i < posts.length; i++){
+        posts[i]['comments'] = await dbComment.getCommentByPostHash(posts[i].postHash, Number(process.env.COMMENT_LIMIT));
+        posts[i]['likeVals'] = await dbLike.getLikeByPostHash(posts[i].postHash);
+        posts[i]['likes'] = posts[i]['likeVals'].length;
+        posts[i]['user'] = await getUserByID(posts[i].userId);
+    }
+    
+    var newPage = null;
+    if(posts.length > 0)
+        newPage = posts[posts.length-1]['_id'];
 
     if(reports.length == 0)
         userVal['reportCount'] = '0';
     else
         userVal['reportCount'] = reports.length + '';
-    
-    postHolder = pushVals(posts);
     
     for(var i = 0; i < postHolder.length; i++){
         var comments = await dbComment.getCommentByPostHash(postHolder[i]['postHash'], Number(process.env.COMMENT_LIMIT));
@@ -329,7 +327,7 @@ export async function getProfileById(userId){
     }
 
     const promise = new Promise((resolve,reject)=>{
-        resolve([userVal,postHolder]);
+        resolve([userVal,posts,newPage]);
         reject("Error retrieving posts of user");
     });
     return promise;

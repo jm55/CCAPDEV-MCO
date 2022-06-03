@@ -10,6 +10,7 @@ import * as file from '../middleware/fs.js';
 
 //dotenv
 import 'dotenv/config';
+const quantity = Number(process.env.LOAD_LIMIT);
 
 //Encryption
 import bcrypt from 'bcrypt';
@@ -90,7 +91,7 @@ profileNav.get('/user/:username', (req, res)=>{
  * @todo
  * User Post Search
  */
- profileNav.get('/user/:username/search', (req, res)=>{
+ profileNav.get('/user/:username/:search', (req, res)=>{
     console.log("Request: " + req.socket.remoteAddress + ":" + req.socket.remotePort + " => " + req.url);
     /**
      * 
@@ -128,7 +129,7 @@ profileNav.get('/profile', (req, res)=>{
      *
      */  
     var userId = '1'; //UPDATE USING SESSION userId VALUE
-    dispatch.getProfileById(userId).then((data)=>{
+    dispatch.getProfileById(null,quantity,"",userId).then((data)=>{
         var user = data[0]
         var posts = data[1];
         res.render("profile",  {
@@ -136,6 +137,7 @@ profileNav.get('/profile', (req, res)=>{
             currentUser: user, 
             targetUser: user,
             posts: posts,
+            pageid: data[2],
             helpers: {
                 fullName(fname, mname, lname){return format.formalName(fname,mname,lname);},
                 simpleDateTime(dt){return format.simpleDateTime(dt);},
@@ -166,7 +168,62 @@ profileNav.get('/profile', (req, res)=>{
  * @todo
  * Profile Search
  */
-profileNav.get('/profile/search', (req, res)=>{
+profileNav.get('/profile/:search', (req, res)=>{
+    console.log("Request: " + req.socket.remoteAddress + ":" + req.socket.remotePort + " => " + req.url);
+    
+    /**
+     * 
+     * CHECK WHO'S SESSION IS THIS AND IF LOGGED IN
+     * 
+     * IF LOGGED IN FIND USER IN DB
+     * AND LIST POSTS WHERE AUTHOR IS DB
+     * 
+     * IF NOT LOGGED IN ROUTE AS 401 OR RETURN TO INDEX
+     *
+     */ 
+    var userId = '1'; //UPDATE USING SESSION userId VALUE
+
+    dispatch.getProfileById(null,quantity,req.params['search'],userId).then((data)=>{
+        var user = data[0]
+        var posts = data[1];
+        res.render("profile",  {
+            title: format.buildTitle(user.username),
+            currentUser: user, 
+            targetUser: user,
+            posts: posts,
+            pageid: data[2],
+            profilesearch: req.params['search'], 
+            helpers: {
+                fullName(fname, mname, lname){return format.formalName(fname,mname,lname);},
+                simpleDateTime(dt){return format.simpleDateTime(dt);},
+                likes(like){return format.pluralInator('Like',like);},
+                btnLiked(postHash){
+                    for(var p of posts)
+                        if(p.postHash == postHash)
+                            for(var u of p.likeVals)
+                                if(u.userId == user.userId)
+                                    return "Liked";
+                    return "Like";
+                },
+                editable(postUserId){
+                    if(postUserId == user.userId)
+                        return "block";
+                    else
+                        return "none";
+                }
+            }
+        });
+    }).catch((error)=>{
+        res.statusMessage = error;
+        res.sendStatus(StatusCodes.INTERNAL_SERVER_ERROR);
+    });
+});
+
+/**
+ * @todo
+ * Profile Search
+ */
+ profileNav.put('/profile/search/more', (req, res)=>{
     console.log("Request: " + req.socket.remoteAddress + ":" + req.socket.remotePort + " => " + req.url);
     /**
      * 
@@ -176,15 +233,18 @@ profileNav.get('/profile/search', (req, res)=>{
      * AND LIST POSTS WHERE AUTHOR IS DB
      * 
      * IF NOT LOGGED IN ROUTE AS 401 OR RETURN TO INDEX
-     */  
-    
-    /**
-     * 
-     * 
-     * CONDUCT COLLECTION OF POSTS AND RENDER AS PROFILE WITH POSTS FILTERED ACCORDINGLY.
-     * 
-     * 
-     */
+     *
+     */ 
+    var userId = '1'; //UPDATE USING SESSION userId VALUE
+    dispatch.getProfileById(req.body['pageid'],quantity,req.body['search'],userId).then((data)=>{
+        var dataJSON = {};
+        dataJSON['posts'] = data[1];
+        dataJSON['pageid'] = data[2];
+        res.json(dataJSON);
+    }).catch((error)=>{
+        res.statusMessage = error;
+        res.sendStatus(StatusCodes.INTERNAL_SERVER_ERROR);
+    });
 });
 
 /** Profile Settings */

@@ -62,17 +62,18 @@ export function getPosts(page, limit, search, category){
  * Get posts by one user, search words, and category.
  * @param {String} userId Filter parameter.
  * @param {String} search Filter parameter.
- * @param {String} category Filter parameter.
+ * @param {String} page Filter parameter.
+ * @param {Number} limit Filter parameter.
  * @returns Promise of all filtered posts from the posts collection of the database.
  */
-export function getPostByUserID(userId, search, category){
+export function getPostByUserID(userId, search, page, limit){
     var filter = {'userId':userId};
-    /**
-     * 
-     * ADD SEARCH AND CATEGORY IF EITHER OF WHICH ARE !NULL.
-     * 
-     */
-    return postCollection.find(filter).sort({'datetime':-1}).toArray();
+    if(page != null)
+        filter["_id"] = {"$gt": new ObjectID(page)};
+    if(search != "" || search != null)
+        filter['description'] = {$regex: new RegExp(search, 'i')};
+    console.log(filter);
+    return postCollection.find(filter).limit(limit).sort({'datetime':-1}).toArray();
 }
 
 /**

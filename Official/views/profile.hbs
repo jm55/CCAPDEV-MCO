@@ -3,6 +3,8 @@
 
 <script src="/js/banner.js"></script>
 <script src="/js/profile.js"></script>
+<script src="/js/postcards.js"></script>
+<script src="/js/postbuilder.js"></script>
 
 <header class="card brand_banner">
     <div class="banner_left">
@@ -24,7 +26,7 @@
 <div class="card" style="display: flex; width: 90%; margin: 0px auto 20px auto;">
     <span style="width: 30%;"></span>
     <span style="width: 40%;">
-        <input type="text" id="profilesearch" class="textfield" style="margin-left: 10%; width: 60%;" placeholder="Profile Search"/>
+        <input type="text" id="profilesearch" class="textfield" style="margin-left: 10%; width: 60%;" placeholder="Profile Search" value='{{profilesearch}}' />
         <button id="profilesearch-btn" class="menu_button" style="margin-left:10px;">Search</button> 
     </span>
     <span style="width: 30%;"></span>
@@ -39,10 +41,11 @@
         {{>notfound}}
     {{/if}}
 </div> <!--END OF TIMELINE-->
-<div style="width:100%; display:grid; margin: 10px auto 10px auto;">
+<div id='load-more-div' style="width:100%; display:grid; margin: 10px auto 10px auto;">
     <button style="margin-left: auto; margin-right:auto;" id="load-more-profile" class="menu_button">Load More</button>
 </div>
 <script>
     userId = {{currentUser.userId}};
     username = '{{currentUser.username}}';
+    pageid = '{{pageid}}';
 </script>
