@@ -4,6 +4,9 @@ import * as dbLike from '../db/controller/likeController.js';
 import * as dbUser from '../db/controller/userController.js';
 import * as dbReport from '../db/controller/reportController.js';
 
+//dotenv
+import 'dotenv/config';
+
 var postHolder = [];
 var commentHolder = [];
 var likeHolder = [];
@@ -37,23 +40,26 @@ export async function getPosts(page, quantity, search, category, userId){
     delete user['passhash'];
     if(user != null){
         const posts = await dbPost.getPosts(page,quantity,search,category); /** @todo SYNCHRONIZE LIMIT SIZES AND SKIP COUNT */
-        const comments = await dbComment.getComments(); //Must filter only to posts found.
-        const likes = await dbLike.getLikes(); //Must filter only to posts found.
-        const users = await getUsers(); //Must filter only to posts found.
-
         var newPage = null;
         if(posts.length > 0)
             newPage = posts[posts.length-1]['_id'];
 
-        postHolder = pushVals(posts);
-        commentHolder = pushVals(comments);
-        likeHolder = pushVals(likes);
-        usersHolder = pushVals(users);
+        for(var i = 0; i < posts.length; i++){
+            posts[i]['comments'] = await dbComment.getCommentByPostHash(posts[i].postHash, Number(process.env.COMMENT_LIMIT));
+            posts[i]['likeVals'] = await dbLike.getLikeByPostHash(posts[i].postHash);
+            posts[i]['likes'] = posts[i]['likeVals'].length;
+            posts[i]['user'] = await getUserByID(posts[i].userId);
+        }
 
-        appendUsernameToComments();
-        appendUserToPost();
-        appendCommentToPost();
-        appendLikesToPost();
+        postHolder = pushVals(posts);
+        // commentHolder = pushVals(comments);
+        // likeHolder = pushVals(likes);
+        // usersHolder = pushVals(users);
+
+        // appendUsernameToComments();
+        // appendUserToPost();
+        // appendCommentToPost();
+        // appendLikesToPost();
 
         return new Promise((resolve,reject)=>{
             resolve([user, postHolder, newPage]);
@@ -144,7 +150,7 @@ export async function getSinglePost(userId, postHash){
         post = posts;
         post['user'] = await getUserByID(post.userId);
         likes = await dbLike.getLikeByPostHash(postHash);
-        comments  = await dbComment.getCommentByPostHash(postHash);
+        comments  = await dbComment.getCommentByPostHash(postHash,null);
     }
         
     return new Promise((resolve, reject)=>{
@@ -277,7 +283,7 @@ export async function getProfileByUserName(username){
     postHolder = pushVals(posts);
     
     for(var i = 0; i < postHolder.length; i++){
-        var comments = await dbComment.getCommentByPostHash(postHolder[i]['postHash']);
+        var comments = await dbComment.getCommentByPostHash(postHolder[i]['postHash'],Number(process.env.COMMENT_LIMIT));
         //console.log(comments);
         var likes = await dbLike.getLikeByPostHash(postHolder[i]['postHash']);
         postHolder[i]['user'] = user[0];
@@ -313,7 +319,7 @@ export async function getProfileById(userId){
     postHolder = pushVals(posts);
     
     for(var i = 0; i < postHolder.length; i++){
-        var comments = await dbComment.getCommentByPostHash(postHolder[i]['postHash']);
+        var comments = await dbComment.getCommentByPostHash(postHolder[i]['postHash'], Number(process.env.COMMENT_LIMIT));
         //console.log(comments);
         var likes = await dbLike.getLikeByPostHash(postHolder[i]['postHash']);
         postHolder[i]['user'] = userVal;

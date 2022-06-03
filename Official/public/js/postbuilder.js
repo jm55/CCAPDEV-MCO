@@ -198,6 +198,7 @@ function buildPostFooter(singlePost, userId){
                 $(likeBtn).attr('value',"Liked");
         $(shareBtn).attr('value',"Share");
         $(reportBtn).attr('value',"Report");
+        $(editBtn).attr('value',"Edit");
         $(submit).attr('value',"Comment");
 
         //APPENDING
@@ -208,6 +209,7 @@ function buildPostFooter(singlePost, userId){
         $(interact).append(likeBtn);
         $(interact).append(shareBtn);
         $(interact).append(reportBtn);
+        $(interact).append(editBtn);
         $(interact).append(comment);
         $(interact).append(submit);
         $(post_footer).append(likes_div);

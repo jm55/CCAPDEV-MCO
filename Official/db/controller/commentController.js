@@ -22,10 +22,14 @@ export function getComments(){
 /**
  * Gets all comments that belong to the post specified by its postHash.
  * @param {String} postHash postHash filter of the comments.
+ * @param {Number} quantity Quantity of comments to be retrieved.
  * @returns Promise of an array of all comment objects that is part of the post specified by postHash.
  */
-export function getCommentByPostHash(postHash){
-    return commentCollection.find({'postHash':postHash}).sort({'datetime':-1}).toArray(); 
+export function getCommentByPostHash(postHash, quantity){
+    if(quantity == null)
+        return commentCollection.find({'postHash':postHash}).sort({'datetime':-1}).toArray();
+    else
+    return commentCollection.find({'postHash':postHash}).limit(quantity).sort({'datetime':-1}).toArray(); 
 }
 
 /**
