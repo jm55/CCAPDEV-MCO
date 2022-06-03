@@ -40,11 +40,11 @@ export async function getHome(userId){
         likeHolder = pushVals(likes);
         usersHolder = pushVals(users);
         
-        console.log('Dispatch.getHomePost(): ');
-        console.log('Dispatch.postHolder: ' + postHolder.length);
-        console.log("Dispatch.commentHolder: " + commentHolder.length);
-        console.log("Dispatch.likeHolder: " + likeHolder.length);
-        console.log("Dispatch.userHolder: " + usersHolder.length);
+        // console.log('Dispatch.getHomePost(): ');
+        // console.log('Dispatch.postHolder: ' + postHolder.length);
+        // console.log("Dispatch.commentHolder: " + commentHolder.length);
+        // console.log("Dispatch.likeHolder: " + likeHolder.length);
+        // console.log("Dispatch.userHolder: " + usersHolder.length);
 
         appendUsernameToComments();
         appendUserToPost();
