@@ -28,14 +28,14 @@ export async function getHome(page, userId){
             reject('Error resolving promise');
         });
     }
-    const user = await dbUser.getUserByUserID(userId);
+    const user = await getUserByID(userId);
     delete user['passhash'];
     console.log(user);
     if(user != null){
         const posts = await dbPost.getPosts(page,2,"",""); /** @todo SYNCHRONIZE LIMIT SIZES AND SKIP COUNT */
         const comments = await dbComment.getComments();
         const likes = await dbLike.getLikes();
-        const users = await dbUser.getUsers();
+        const users = await getUsers();
 
         postHolder = pushVals(posts);
         commentHolder = pushVals(comments);
