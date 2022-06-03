@@ -36,7 +36,7 @@ export function deletePost(postHash){
 
 /**
  * Get the posts with the specified filter and sorting parameters.
- * @param {Number} page last object id retrieved which serves as the current page number
+ * @param {String} page last object id retrieved which serves as the current page number
  * @param {Number} limit Number of non-user specific posts to be retrieved
  * @param {String} search Keyword filters for the posts.
  * @param {String} category Category filters for the posts.

@@ -29,11 +29,12 @@ homeNav.get('/home', (req, res)=>{
 
     var userId = '1'; //UPDATE USING SESSION userId VALUE
     
-    dispatch.getHome(userId).then((data)=>{
+    dispatch.getPosts(null, userId).then((data)=>{
         if(data != null){
             res.render("home", {
                 title: "Home - Budol Finds",
                 currentUser: data[0],
+                pageid: data[2],
                 //likes: tempDB.likes,
                 search:"",
                 category:"",
@@ -80,6 +81,26 @@ homeNav.get('/home/search', (req, res)=>{
      * 
      */
     res.send(out);
+});
+
+homeNav.put('/home/more',(req, res)=>{
+    console.log("Request: " + req.socket.remoteAddress + ":" + req.socket.remotePort + " => " + req.url);
+    /**
+     * 
+     * VALIDATE IF LOGGEDIN
+     * 
+     */
+    var userId = '1';
+    dispatch.getPosts(req.body['pageid'], userId).then((data)=>{
+        var dataJSON = {};
+        //dataJSON['user'] = data[0];
+        dataJSON['posts'] = data[1];
+        dataJSON['pageid'] = data[2];
+        res.json(dataJSON);
+    }).catch((error)=>{
+        res.statusMessage = error;
+        res.sendStatus(StatusCodes.INTERNAL_SERVER_ERROR);
+    });
 });
 
 export default homeNav;

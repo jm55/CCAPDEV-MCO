@@ -21,7 +21,8 @@ function reset(){
  * 
  * @param {String} userId User currently logged in. 
  */
-export async function getHome(page, userId){
+export async function getPosts(page, userId){
+    reset();
     if(userId == null  || userId == ""){
         return new Promise((resolve, reject)=>{
             resolve(null);
@@ -30,25 +31,28 @@ export async function getHome(page, userId){
     }
     const user = await getUserByID(userId);
     delete user['passhash'];
-    console.log(user);
     if(user != null){
         const posts = await dbPost.getPosts(page,2,"",""); /** @todo SYNCHRONIZE LIMIT SIZES AND SKIP COUNT */
-        const comments = await dbComment.getComments();
-        const likes = await dbLike.getLikes();
-        const users = await getUsers();
+        const comments = await dbComment.getComments(); //Must filter only to posts found.
+        const likes = await dbLike.getLikes(); //Must filter only to posts found.
+        const users = await getUsers(); //Must filter only to posts found.
+
+        var newPage = null;
+        if(posts.length > 0)
+            newPage = posts[posts.length-1]['_id'];
 
         postHolder = pushVals(posts);
         commentHolder = pushVals(comments);
         likeHolder = pushVals(likes);
         usersHolder = pushVals(users);
-        
+
         appendUsernameToComments();
         appendUserToPost();
         appendCommentToPost();
         appendLikesToPost();
 
         return new Promise((resolve,reject)=>{
-            resolve([user, postHolder, posts[posts.length-1]._id]);
+            resolve([user, postHolder, newPage]);
             reject("Error retrieving posts for Home");
         });
     }else

@@ -27,6 +27,19 @@ import {newPostHash} from "../middleware/hashIds.js";
 
 postNav.use(express.json());
 
+/**
+ * @todo
+ */
+postNav.get('/post/category/:category',(req,res)=>{
+    console.log("Request: " + req.socket.remoteAddress + ":" + req.socket.remotePort + " => " + req.url);
+    /**
+     * 
+     * VERIFY WHO'S LOGGEDIN ETC.ETC. THEN RETURN FILTERED POSTS CATEGORY.
+     * 
+     */
+    var userId = -1;
+});
+
 /** 
  *  @todo
  *  View Specific Post
