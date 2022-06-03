@@ -48,12 +48,13 @@ function loadMore(){
          * FOR EACH POST, BUILD A COMPLETE POST CARD AND APPEND TO .timeline
          * 
          */
-        var timeline = document.getElementsByClassName("timeline");
+        
         if(posts.length == 0){
             $('#load-more-home').css('display', 'none');
         }else{
             for(var p of posts){
-                console.log(p);
+                var newPost = buildPostCard(p,p.comments,userId);
+                $(newPost).insertBefore('#load-more-div');
             }
         }
     }).catch((error)=>{

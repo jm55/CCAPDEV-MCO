@@ -87,11 +87,9 @@ function submitComment(posthash){
         body:JSON.stringify(body)
     }).then((res) => {
         if (res.status >= 200 && res.status < 300) {// SUCCESS
-            console.log("Comment " + posthash + " success");
             var parent = document.getElementById('comments_div'+posthash);
-            console.log(parent);
             var comment = buildComment(userId, body['text'], username, body['datetime']);
-            parent.insertBefore(comment, parent.childNodes[2]);
+            parent.insertBefore(comment, parent.childNodes[0]);
             document.getElementById("comment#"+posthash).value = "";
         } else {// ERROR
             console.log("response error: " + res.status);
@@ -117,7 +115,7 @@ function buildComment(id, comment, username, datetime){
 
     var datetimeP = document.createElement('p');
     datetimeP.setAttribute('class', 'comment-timedate');
-    datetimeP.textContent = datetime.toLocaleDateString();
+    datetimeP.textContent = datetime.toISOString();
     div.appendChild(datetimeP);
 
     return div;

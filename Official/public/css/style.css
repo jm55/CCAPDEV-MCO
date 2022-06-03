@@ -160,6 +160,7 @@ table{
 
 td{
     font-size: var(--font-size-normal);
+    align-content:flex-start;
 }
 
 label{
