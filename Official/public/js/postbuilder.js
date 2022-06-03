@@ -49,7 +49,7 @@ function buildPostCard(singlePost, postComments,userId){
 
         //Adding hrefs
         $(username).attr("href","/user/" + singlePost.user.username); //user link of singlePost.user
-        $(category_link_a).attr("href","/posts/category/" + singlePost.category); //link to category
+        $(category_link_a).attr("href","/search/''." + singlePost.category); //link to category
         $(item_link_a).attr('href',singlePost.link);
 
         //Adding inner text

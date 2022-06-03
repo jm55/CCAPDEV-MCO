@@ -88,7 +88,6 @@ searchNav.put('/search/more',(req, res)=>{
      * 
      */
     var userId = '1';
-    var userId = '1';
     dispatch.getPosts(req.body['pageid'], load_limit, req.body['search'], req.body['categories'], userId).then((data)=>{
         var dataJSON = {};
         //dataJSON['user'] = data[0];

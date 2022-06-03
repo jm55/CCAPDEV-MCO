@@ -54,7 +54,6 @@ export function getPosts(page, limit, search, category){
         else
         filter['category'] =  {$regex: new RegExp('None', 'i')};
     }
-    console.log(filter);
     return postCollection.find(filter).limit(limit).sort({'datetime':-1}).toArray();
 }
 

@@ -27,19 +27,6 @@ import {newPostHash} from "../middleware/hashIds.js";
 
 postNav.use(express.json());
 
-/**
- * @todo
- */
-postNav.get('/post/category/:category',(req,res)=>{
-    console.log("Request: " + req.socket.remoteAddress + ":" + req.socket.remotePort + " => " + req.url);
-    /**
-     * 
-     * VERIFY WHO'S LOGGEDIN ETC.ETC. THEN RETURN FILTERED POSTS CATEGORY.
-     * 
-     */
-    var userId = -1;
-});
-
 /** 
  *  @todo
  *  View Specific Post
@@ -47,7 +34,6 @@ postNav.get('/post/category/:category',(req,res)=>{
 postNav.get('/post/:posthash', (req, res)=>{
     console.log("Request: " + req.socket.remoteAddress + ":" + req.socket.remotePort + " => " + req.url);
     var targetPostHash = req.params['posthash'];
-    
     /**
      * 
      * 
@@ -59,8 +45,6 @@ postNav.get('/post/:posthash', (req, res)=>{
      * 
      * 
      */
-
-
     var userId = '1'; //UPDATE USING SESSION userId VALUE LEAVE AS NULL IF NOT LOGGEDIN
 
     dispatch.getSinglePost(userId, targetPostHash).then((data)=>{
