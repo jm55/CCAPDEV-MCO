@@ -50,6 +50,7 @@ import signupNav from './router/signup.js';
 import homeNav from './router/home.js';
 import profileNav from './router/profile.js';
 import debugTest from './router/debug.js';
+import searchNav from './router/search.js';
 
 //Use Routers
 app.use(homeNav);
@@ -58,6 +59,7 @@ app.use(logNav);
 app.use(signupNav);
 app.use(profileNav);
 app.use(debugTest);
+app.use(searchNav);
 
 //Index Route
 app.get('/', (req, res)=>{

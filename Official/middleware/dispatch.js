@@ -17,11 +17,15 @@ function reset(){
 }
 
 /**
- * Retrieves data for home page.
- * 
- * @param {String} userId User currently logged in. 
+ * Retrieves posts by page, quantity, search, and category
+ * @param {String} page 
+ * @param {Number} quantity 
+ * @param {String} search 
+ * @param {String} category 
+ * @param {String} userId 
+ * @returns 
  */
-export async function getPosts(page, userId){
+export async function getPosts(page, quantity, search, category, userId){
     reset();
     if(userId == null  || userId == ""){
         return new Promise((resolve, reject)=>{
@@ -32,7 +36,7 @@ export async function getPosts(page, userId){
     const user = await getUserByID(userId);
     delete user['passhash'];
     if(user != null){
-        const posts = await dbPost.getPosts(page,2,"",""); /** @todo SYNCHRONIZE LIMIT SIZES AND SKIP COUNT */
+        const posts = await dbPost.getPosts(page,quantity,search,category); /** @todo SYNCHRONIZE LIMIT SIZES AND SKIP COUNT */
         const comments = await dbComment.getComments(); //Must filter only to posts found.
         const likes = await dbLike.getLikes(); //Must filter only to posts found.
         const users = await getUsers(); //Must filter only to posts found.

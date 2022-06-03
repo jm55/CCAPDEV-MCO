@@ -32,7 +32,8 @@ $(document).ready(()=>{
 function loadMore(){
     var body = {};
     body['pageid'] = currentPageId;
-    console.log(body);
+    body['search'] = "";
+    body['categories'] = "";
     fetch('/home/more',{
         method: 'PUT',
         body: JSON.stringify(body),
@@ -43,12 +44,6 @@ function loadMore(){
         //var user = data['user'];
         var posts = data['posts'];
         currentPageId = data['pageid'];
-        /**
-         * 
-         * FOR EACH POST, BUILD A COMPLETE POST CARD AND APPEND TO .timeline
-         * 
-         */
-        
         if(posts.length == 0){
             $('#load-more-home').css('display', 'none');
         }else{

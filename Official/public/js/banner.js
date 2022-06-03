@@ -1,5 +1,5 @@
 console.log("Public JS: banner.js loaded");
-
+var currentPageId = null;
 /**
  * @todo ADD FUNCTIONALITIES MISSING
  */
@@ -45,16 +45,51 @@ $(document).ready(()=>{
             search();
         }
     });
+
+    $('#load-more-search').click((e)=>{
+        e.preventDefault();
+        loadMoreSearch();
+    });
+    currentPageId = pageid;
 });
 
 function search(){
-     /**
-     * 
-     * 
-     * CONDUCT SEARCH FOR SEARCH
-     * ADD SEARCH TEXT AND CATEGORY TO REQ.BODY
-     * USE ROUTE /home/search
-     * 
-     * 
-     */
-}   
+    var search = document.getElementById('search-txt').value;
+    var category = document.getElementById('categories').value;
+    if(search=="")
+        search = '\'\'';  
+    if(category=="")
+        category = '\'\'';
+    window.location.href='/search/'+search+'.'+category;
+}
+
+/**
+ * @todo
+ */
+ function loadMoreSearch(){
+    var body = {};
+    body['pageid'] = currentPageId;
+    body['search'] = document.getElementById('search-txt').value;
+    body['categories'] = document.getElementById('categories').value;
+    fetch('/search/more',{
+        method: 'PUT',
+        body: JSON.stringify(body),
+        headers: {'Content-Type': 'application/json'}
+    }).then((data)=>{
+        return data.json();
+    }).then((data)=>{
+        //var user = data['user'];
+        var posts = data['posts'];
+        currentPageId = data['pageid'];
+        if(posts.length == 0){
+            $('#load-more-search').css('display', 'none');
+        }else{
+            for(var p of posts){
+                var newPost = buildPostCard(p,p.comments,userId);
+                $(newPost).insertBefore('#load-more-div');
+            }
+        }
+    }).catch((error)=>{
+        console.error(error);
+    });
+}

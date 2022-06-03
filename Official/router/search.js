@@ -1,47 +1,48 @@
 import express from 'express';
 
-const homeNav = express.Router();
-homeNav.use(express.json());
-
-//Utilities
-import * as format from '../middleware/formatting.js'
+const searchNav = express.Router();
 
 //DB
 import * as dispatch from '../middleware/dispatch.js';
 
-//Error management
-import { StatusCodes } from 'http-status-codes';
-import {redirectError} from '../middleware/errordispatch.js';
-
 //ENV
 import 'dotenv/config';
+import { StatusCodes } from 'http-status-codes';
+import { redirectError } from '../middleware/errordispatch.js';
 const load_limit = Number(process.env.LOAD_LIMIT);
 
-/** 
+//Utilities
+import * as format from '../middleware/formatting.js'
+
+/**
  * @todo
- * Home 
  */
-homeNav.get('/home', (req, res)=>{
+searchNav.get('/search/:search.:category',(req, res)=>{
     console.log("Request: " + req.socket.remoteAddress + ":" + req.socket.remotePort + " => " + req.url);
-    
     /**
      * 
-     * CHECK WHO'S LOGGED IN AND SET USERID
-     * IF !LOGGED IN SET USERID
-     *  
+     * VALIDATE IF LOGGEDIN
+     * 
      */
+    var userId = '1';
 
-    var userId = '1'; //UPDATE USING SESSION userId VALUE
-    
-    dispatch.getPosts(null, load_limit, "", "", userId).then((data)=>{
-        if(data != null){
-            res.render("home", {
+    var search = "";
+    var category = "";
+    if(req.params['search'] != "\'\'")
+        search = req.params['search'];
+    if(req.params['category'] != "\'\'")
+        category = req.params['category'];
+
+    dispatch.getPosts(null, load_limit, search, category, userId).then((data)=>{
+        //console.log(data);
+        if(data!=null){
+            res.render("search", {
                 title: "Home - Budol Finds",
                 currentUser: data[0],
                 pageid: data[2],
                 //likes: tempDB.likes,
-                search:"",
-                category:"",
+                search:search,
+                category:category,
                 posts: data[1], //POSTS
                 helpers: {
                     fullName(fname, mname, lname){return format.formalName(fname,mname,lname);},
@@ -60,6 +61,10 @@ homeNav.get('/home', (req, res)=>{
                             return "block";
                         else
                             return "none";
+                    },
+                    searchval(){
+                        if(search != "")
+                            return 'value=\''+search+'\'';
                     }
                 }
             });
@@ -72,13 +77,17 @@ homeNav.get('/home', (req, res)=>{
     });
 });
 
-homeNav.put('/home/more',(req, res)=>{
+/**
+ * @todo
+ */
+searchNav.put('/search/more',(req, res)=>{
     console.log("Request: " + req.socket.remoteAddress + ":" + req.socket.remotePort + " => " + req.url);
     /**
      * 
      * VALIDATE IF LOGGEDIN
      * 
      */
+    var userId = '1';
     var userId = '1';
     dispatch.getPosts(req.body['pageid'], load_limit, req.body['search'], req.body['categories'], userId).then((data)=>{
         var dataJSON = {};
@@ -92,5 +101,5 @@ homeNav.put('/home/more',(req, res)=>{
     });
 });
 
-export default homeNav;
-console.log("Router: home.js loaded!");
+export default searchNav;
+console.log("Router: search.js loaded!");

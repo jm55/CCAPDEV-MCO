@@ -1,0 +1,42 @@
+<link rel="stylesheet" href="/css/post.css">
+<link rel="stylesheet" href="/css/profile.css">
+
+<script src="/js/banner.js"></script>
+<script src="/js/profile.js"></script>
+<script src="/js/postcards.js"></script>
+<script src="/js/postbuilder.js"></script>
+
+<header class="card brand_banner">
+    <div class="banner_left">
+        {{>bannertitle}}
+        <nav class="menu">
+            <button id="home-btn" class="menu_button">Home</button>
+            {{>menu_categories}}
+            <input id="search-txt" name="search-txt" class="textfield" placeholder="Search" {{{searchval}}}/>
+            <button id="search-btn" class="menu_button">Search</button>
+            <button id="account-settings-btn" class="menu_button">Settings</button>
+            <button id="logout-btn" class="menu_button">Logout</button>
+        </nav>
+    </div>
+    <div class="banner_right">
+        <a id="userbutton"><img onerror="this.src='/img/default/imagenotfound.webp'" loading='lazy'  id="profile-pic" class="profilepic" src='{{#if currentUser.profilepic}}{{currentUser.profilepic}}{{else}}"../img/default/default_dp.webp"{{/if}}'></a>
+    </div>
+</header>
+
+<div class="timeline">
+    {{#if posts}}  
+    {{#each posts}}
+        {{>postcards}}
+    {{/each}}
+    {{else}}
+        {{>notfound}}
+    {{/if}}
+    <div id='load-more-div' style="width:100%; display:grid; margin: 10px auto 10px auto;">
+        <button style="margin-left: auto; margin-right:auto;" id="load-more-search" class="menu_button">Load More</button>
+    </div>
+</div> <!--END OF TIMELINE-->
+<script>
+    userId = {{currentUser.userId}};
+    username = '{{currentUser.username}}';
+    pageid = '{{pageid}}';
+</script>

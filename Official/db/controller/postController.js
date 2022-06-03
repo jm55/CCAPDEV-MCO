@@ -48,10 +48,13 @@ export function getPosts(page, limit, search, category){
         filter["_id"] = {"$gt": new ObjectID(page)};
     if(search != "" || category != ""){
         if(search != "" || search != null)
-            filter['description'] = {$regex: search};
+            filter['description'] = {$regex: new RegExp(search, 'i')};
         if(category != "" || category != null)
-            filter['category'] = category;
+            filter['category'] =  {$regex: new RegExp(category, 'i')};
+        else
+        filter['category'] =  {$regex: new RegExp('None', 'i')};
     }
+    console.log(filter);
     return postCollection.find(filter).limit(limit).sort({'datetime':-1}).toArray();
 }
 
