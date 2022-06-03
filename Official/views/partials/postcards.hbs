@@ -33,6 +33,9 @@
         <div class="likes">
             <p class="likecounter" id='likeCounter{{this.postHash}}'>{{{likes this.likes}}}: {{this.likes}}</p>
             <p class="post_timedate">Posted: {{this.datetime}}</p>
+            {{#if this.editdatetime}}
+            <p class="post_timedate">Edited: {{this.editdatetime}}</p>
+            {{/if}}
         </div>
         <form class="interact" id='interact#{{this.postHash}}' name="interact#{{this.postHash}}" >
             <input type="button" class="button" id="like-button{{this.postHash}}" value={{{btnLiked this.postHash}}} onclick="submitLike('{{this.postHash}}')"> <!--https://stackoverflow.com/a/13645315-->

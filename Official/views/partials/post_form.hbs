@@ -1,15 +1,15 @@
 <form name="form" id="form" class="new_post_form" enctype="multipart/form-data">
     <input id="userId" name="userId" type="text" style="display: none;" value='{{currentUser.userId}}' >
     <label>Post Content:</label>
-    <textarea name="description" id="description" class="new_post_description"></textarea>
+    <textarea name="description" id="description" class="new_post_description" placeholder="Item Description"></textarea>
     <label>Category:</label>
     <select  id="category" name="category" class="menu_categories"> <!--Same categories from Shopee-->
         {{>category_options}}
     </select>
     <label>Link Label:</label>
-    <input id="label" name="label" type="text" class="textfield">
+    <input id="label" name="label" type="text" class="textfield" placeholder="Link Label">
     <label>Link:</label>
-    <input id="link" name="link" type="text" class="textfield">
+    <input id="link" name="link" type="text" class="textfield" placeholder="URL Link or Address">
     <label>Image:</label>
     <img onerror="this.src='/img/default/imagenotfound.webp'" loading='lazy' id="image" class="new_post_image" src="" alt="" style="display:none;">
     <input id="imgselect" name="imgselect" type="file" accept="image/*"/>

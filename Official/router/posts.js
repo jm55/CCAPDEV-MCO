@@ -123,6 +123,7 @@ postNav.get('/post/:posthash/edit', (req, res)=>{
 /** Edit Post */
 postNav.patch('/post/:posthash/save', mult.upload_post.single('imgselect'), (req, res)=>{
     console.log("Request: " + req.socket.remoteAddress + ":" + req.socket.remotePort + " => " + req.url);
+    req.body['editdatetime'] = new Date();
     dbPost.updatePost(req.body).then((result)=>{
         if(result['acknowledged']==true){
             if(req.file)

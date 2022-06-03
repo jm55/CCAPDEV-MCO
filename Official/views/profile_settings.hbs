@@ -19,42 +19,42 @@
             <label>Username*:</label>
             <span class="errorText" id="error-username"></span>
         </span>
-        <input name="username" id="username" type="text" class="textfield" maxlength="50" value={{currentUser.username}} />
+        <input name="username" id="username" type="text" class="textfield" maxlength="50" value={{currentUser.username}} placeholder="Username"/>
         <span> 
             <label>Current Password*:</label>
             <span class="errorText" id="error-password_current"></span>
         </span>
-        <input name="password_current" id="password_current" type="password" class="textfield" maxlength="50" />
+        <input name="password_current" id="password_current" type="password" class="textfield" maxlength="50" placeholder="Current Password"/>
         <span> 
             <label>New Password*:</label>
             <span class="errorText" id="error-password_a"></span>
         </span>
-        <input name="password_a" id="password_a" type="password" class="textfield" maxlength="50" />
+        <input name="password_a" id="password_a" type="password" class="textfield" maxlength="50" placeholder="New Password (Optional)"/>
         <span>
             <label>Repeat New Password*:</label>
             <span class="errorText" id="error-password_b"></span>
         </span>
-        <input name="password_b" id="password_b" type="password" class="textfield" maxlength="50" />
+        <input name="password_b" id="password_b" type="password" class="textfield" maxlength="50" placeholder="Repeat New Password"/>
         <span>
             <label>Email*:</label>
             <span class="errorText" id="error-email"></span>
         </span>
-        <input name="email" id="email" type="email" class="textfield" maxlength="50" value={{currentUser.email}} />
+        <input name="email" id="email" type="email" class="textfield" maxlength="50" value={{currentUser.email}} placeholder="example@mail.com"/>
         <span>
             <label>First Name*:</label>
             <span class="errorText" id="error-fname"></span>
         </span>
-        <input name="fname" id="fname" type="text" class="textfield" maxlength="50" value={{currentUser.fname}} />
+        <input name="fname" id="fname" type="text" class="textfield" maxlength="50" value={{currentUser.fname}} placeholder="First Name"/>
         <span>
             <label>Middle Name:</label>
             <span class="errorText" id="error-mname"></span>
         </span>
-        <input name="mname" id="mname" type="text" class="textfield" maxlength="50" value={{currentUser.mname}} />
+        <input name="mname" id="mname" type="text" class="textfield" maxlength="50" value={{currentUser.mname}} placeholder="Middle Name"/>
         <span>
             <label>Last Name*:</label>
             <span class="errorText" id="error-lname"></span>
         </span>
-        <input name="lname" id="lname" type="text" class="textfield" maxlength="50" value={{currentUser.lname}} />
+        <input name="lname" id="lname" type="text" class="textfield" maxlength="50" value={{currentUser.lname}} placeholder="Last Name"/>
         <span>
             <label>Gender*:</label>
             <span class="errorText" id="error-gender"></span>
@@ -69,7 +69,7 @@
             <label>Bio:</label>
             <span class="errorText" id="error-bio"></span>
         </span>
-        <textarea id="bio" name="bio">{{currentUser.bio}}</textarea>
+        <textarea id="bio" name="bio" placeholder="Tell us about yourself">{{currentUser.bio}}</textarea>
         <label style="text-align:right;" id="bio-counter"></label>
         <input type="submit" value="Save" id="save-btn" class="button" />
         <input type="button" value="Cancel" id="cancel-btn" class="button"/>

@@ -32,13 +32,16 @@
     <div class="post_footer">
         <div class="likes">
             <p class="likecounter" id='likeCounter{{post.postHash}}'>{{{likes post.likes}}}: {{post.likes}}</p>
-            <p class="post_timedate">Posted: {{ datetime}}</p>
+            <p class="post_timedate">Posted: {{ post.datetime}}</p>
+            {{#if post.editdatetime}}
+            <p class="post_timedate">Edited: {{post.editdatetime}}</p>
+            {{/if}}
         </div>
         <form class="interact" id='interact#{{post.postHash}}' name="interact#{{post.postHash}}" >
             <input type="button" class="button" id="like-button{{post.postHash}}" value={{{btnLiked post.postHash}}} onclick="submitLike('{{post.postHash}}')"> <!--https://stackoverflow.com/a/13645315-->
             <input type="button" class="button" id="share-button{{post.postHash}}" value="Share" onclick="showShare('{{post.postHash}}')">
             <input type="button" class="button" id="report-button{{post.postHash}}" value="Report" onclick="submitReport('{{post.postHash}}', '{{post.userId}}')">
-            <input type="button" class="button" id="edit-button{{this.postHash}}" value="Edit" onclick="editForward('{{this.postHash}}')" style="display:{{{editable this.userId}}}">
+            <input type="button" class="button" id="edit-button{{this.postHash}}" value="Edit" onclick="editForward('{{this.postHash}}')" style="display:{{{editable post.userId}}}">
             <input type="text" id="comment#{{post.postHash}}" name="comment#{{post.postHash}}" class="textfield comment_textfield">
             <input type="button" class="button" value="Comment" onclick="submitComment('{{post.postHash}}')"/>
         </form>

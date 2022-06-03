@@ -1,22 +1,23 @@
 @import url('https://fonts.googleapis.com/css2?family=Open+Sans&display=swap');
 
 :root{
-    --background: #C3886D;
-    --background-dark: #BA7656;
-    --background-content-area: #e5d7c4; 
+    --background: #4DB6AC;
+    --background-dark: #26A69A;
+    --background-content-area: #B2DFDB; 
 
-    --primary: rgb(164, 103, 74);
-    --primary-button: #915b42;
-    --primary-hover: #87553e;
-    --primary-select: #65402e;
+    --primary: #009688;
+    --primary-button: #00897B;
+    --primary-hover: #00796B;
+    --primary-select: #00695C;
 
     --warning-background: #e53735;
     --warning-light: #ff6e60;   
     --warning-dark: #ab000d;
 
     --text: #ffffff;
+    --text-subtle: #efefef;
     --text-hover: #080808;
-    --text-select: #65402e;
+    --text-select: #00897B;
 
     --textbox: rgba(255,255,255,30%);
     --textbox-hover: rgba(255,255,255,20%);
@@ -28,6 +29,11 @@
     --font-size-header: 3em;
 
     --border-radius: 10px;
+}
+
+::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+    color: var(--text-subtle);
+    opacity: 1; /* Firefox */
 }
 
 ::-webkit-scrollbar{
