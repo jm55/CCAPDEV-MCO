@@ -111,8 +111,6 @@ profileNav.get('/user/:username', (req, res)=>{
     if(req.params['search'] != "\'\'")
         search = req.params['search'];
 
-    console.log(req.body);
-
     dispatch.getUserPair(currentUserId, targetUserName).then((userPair)=>{
         if(userPair[1] != null){
             const currentUser = userPair[0];

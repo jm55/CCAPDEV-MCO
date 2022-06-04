@@ -5,7 +5,7 @@ import * as conn from '../../db/conn.js';
 
 conn.connectToServer((err)=>{
     if(err){
-        console.log(err);
+        console.error(err);
         process.exit;
     }else{
         const userCollection = conn.getDB().collection('users');    

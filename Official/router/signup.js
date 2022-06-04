@@ -51,9 +51,7 @@ signupNav.post('/signup/save', mult.upload_dp.single('profilepic-select'), (req,
                     req.body["userId"] = newUserId();
                     req.body["profilepic"] = process.env.DP_PUBLIC + req.body['userId'] + ".webp";
                     try{
-                        console.log(req.body); //<= FILTER AND SAVE CONTENTS TO DATABASE
                         db.addUser(req.body).then(()=>{
-                            console.log("New user save to DB successful!");
                             //Renames DP image
                             file.renameDP(req.file.originalname,req.body["userId"]);
                             res.sendStatus(StatusCodes.OK);

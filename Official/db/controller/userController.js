@@ -38,10 +38,7 @@ export function updateUser(user){
     delete user.password_a;
     delete user.password_b;
     delete user.password_current;
-    console.log(user);
-    return userCollection.updateOne({'userId':user.userId}, {$set: user}).then(val=>{
-        console.log(val);
-    }).catch((error)=>{
+    return userCollection.updateOne({'userId':user.userId}, {$set: user}).catch((error)=>{
         console.error(error);
     });
 }

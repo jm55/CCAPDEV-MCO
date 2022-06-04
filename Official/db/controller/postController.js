@@ -18,9 +18,7 @@ export function addPost(post){
  * @returns Promise result of an update on the posts collection of the database.
  */
 export function updatePost(post){
-    return postCollection.updateOne({'postHash':post.postHash}, {$set: post}).then(val=>{
-        console.log(val);
-    }).catch((error)=>{
+    return postCollection.updateOne({'postHash':post.postHash}, {$set: post}).catch((error)=>{
         console.error(error);
     });
 }
@@ -63,7 +61,6 @@ export function getPosts(page, limit, search, category){
  * @returns Promise of a number of documents that belong to the user.
  */
 export function getPostCount(userId){
-    console.log(userId);
     if(userId == null || userId == "")
         return null;
     return postCollection.countDocuments({'userId':userId});

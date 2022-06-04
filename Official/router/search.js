@@ -34,7 +34,6 @@ searchNav.get('/search/:search.:category',(req, res)=>{
         category = req.params['category'];
 
     dispatch.getPosts(null, load_limit, search, category, userId).then((data)=>{
-        //console.log(data);
         if(data!=null){
             res.render("search", {
                 title: "Home - Budol Finds",
