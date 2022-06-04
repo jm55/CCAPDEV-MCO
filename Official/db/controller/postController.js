@@ -58,8 +58,8 @@ export function getPosts(page, limit, search, category){
 }
 
 /**
- * 
- * @param {String} userId 
+ * Counts the number of documents or posts in the database that is associated to the userId specified.
+ * @param {String} userId User filter of the posts.
  * @returns Promise of a number of documents that belong to the user.
  */
 export function getPostCount(userId){
@@ -70,7 +70,6 @@ export function getPostCount(userId){
 }
 
 /**
- * @todo
  * Get posts by one user, search words, and category.
  * @param {String} userId Filter parameter.
  * @param {String} search Filter parameter.

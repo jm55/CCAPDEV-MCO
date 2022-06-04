@@ -8,25 +8,19 @@ import * as dbReport from '../db/controller/reportController.js';
 import 'dotenv/config';
 
 var postHolder = [];
-var commentHolder = [];
-var likeHolder = [];
-var usersHolder = [];
 
 function reset(){
     postHolder = [];
-    commentHolder = [];
-    likeHolder = [];
-    usersHolder = [];
 }
 
 /**
  * Retrieves posts by page, quantity, search, and category
- * @param {String} page 
- * @param {Number} quantity 
- * @param {String} search 
- * @param {String} category 
- * @param {String} userId 
- * @returns 
+ * @param {String} page ObjectId of the latest post retrieved.
+ * @param {Number} quantity Quantity of posts to be returned
+ * @param {String} search Search filter 
+ * @param {String} category Category filter
+ * @param {String} userId User associated to the posts.
+ * @returns Promise of a list containing user, posts, newPage, and postCount respectively.
  */
 export async function getPosts(page, quantity, search, category, userId){
     reset();
@@ -63,19 +57,6 @@ export async function getPosts(page, quantity, search, category, userId){
 }
 
 /**
- * @todo
- * Delegates the deletion of an entire account and all related objects 
- * to it.
- * @param {String} userId
- * @returns Promise that contains true or false if all traces of the account is deleted in the DB. 
- */
-export async function purgeAccount(userId){
-    /**
-     * CONDUCT PURGING OF AN ACCOUNT SPECIFIED BY USERID.
-     */
-}
-
-/**
  * Delegates the deletion of the of a post.
  * @param {String} postHash Post to be deleted.
  * @returns Promise whether the post is deleted or not.
@@ -97,7 +78,6 @@ export async function deletePost(postHash){
 export async function getEditPost(userId, postHash){
     var post = null;
     const user = await getUserByID(userId);
-
     if(user == null){
         return new Promise((resolve, reject)=>{
             resolve('401');
@@ -328,31 +308,15 @@ export async function isLiked(userId, postHash){
  */
 export async function deleteAccount(userId){
     const postList = await dbPost.getPostByUserID(userId, "", null, 0);
-    //const reportResult = await dbReport.deleteByUserID(userId);
-    //const likeResult = await dbLike.deleteAllLikesByUser(userId);
-    //const commentResult = await dbComment.deleteAllCommentsByUser(userId);
-    //const postResult = await dbPost.deleteAllPostsByUser(userId);
-    //const userResult = await dbUser.deleteUser(userId);
+    const reportResult = await dbReport.deleteByUserID(userId);
+    const likeResult = await dbLike.deleteAllLikesByUser(userId);
+    const commentResult = await dbComment.deleteAllCommentsByUser(userId);
+    const postResult = await dbPost.deleteAllPostsByUser(userId);
+    const userResult = await dbUser.deleteUser(userId);
     return new Promise((resolve, reject)=>{
         resolve(postList);
         reject('Error deleting user.');
     });
-}
-
-
-/*
-======================================================
-
-INTERNAL COMPONENTS ZONE
-
-======================================================
-*/
-
-function findUsernameByID(id){
-    for(var u of usersHolder){
-        if(u.userId == id)
-            return u.username;
-    }
 }
 
 console.log("Middleware: dispatch.js loaded!");

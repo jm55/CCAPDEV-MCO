@@ -44,7 +44,6 @@ $(document).ready(()=>{
     }).then((data)=>{
         return data.json();
     }).then((data)=>{
-        //var user = data['user'];
         var posts = data['posts'];
         currentPageId = data['pageid'];
         if(posts.length == 0){
