@@ -37,7 +37,6 @@ export async function getPosts(page, quantity, search, category, userId){
         });
     }
     const user = await getUserByID(userId);
-    delete user['passhash'];
     if(user != null){
         const posts = await dbPost.getPosts(page,quantity,search,category); /** @todo SYNCHRONIZE LIMIT SIZES AND SKIP COUNT */
         var newPage = null;
@@ -255,38 +254,6 @@ export async function getUserByID(userId){
         resolve(user);
         reject("Error retrieving user!");
     });
-}
-
-/**
- * Gets a complete profile list that contains the user and posts by user respectively.
- * @param {String} username Filter parameter.
- * @returns Promise of a complete profile as specified by the username.
- */
-export async function getProfileByUserName(username){
-    reset();
-
-    const user = await dbUser.getUserByUserName(username);
-    const posts = await dbPost.getPostByUserID(user[0].userId,"","");
-
-    const userVal = user[0];
-    
-    postHolder = pushVals(posts);
-    
-    for(var i = 0; i < postHolder.length; i++){
-        var comments = await dbComment.getCommentByPostHash(postHolder[i]['postHash'],Number(process.env.COMMENT_LIMIT));
-        //console.log(comments);
-        var likes = await dbLike.getLikeByPostHash(postHolder[i]['postHash']);
-        postHolder[i]['user'] = user[0];
-        postHolder[i]['comments'] = comments;
-        postHolder[i]['likes'] = likes.length;
-        postHolder[i]['likeVals'] = likes;
-    }
-
-    const promise = new Promise((resolve,reject)=>{
-        resolve([userVal,postHolder]);
-        reject("Error retrieving posts of user");
-    });
-    return promise;
 }
 
 /**

@@ -6,22 +6,26 @@ $(document).ready(()=>{
     $("#profilesearch-btn").click((e)=>{
         e.preventDefault();
         var searchString = $("#profilesearch").val();
-        if(searchString == "")
-            searchString = '\'\'';
         window.location.href='/profile/'+searchString;
     });
-    $("#load-more-profile").click((e)=>{
-        e.preventDefault();
-        loadMoreProfile();
-    });
+    
     $("#usersearch-btn").click((e)=>{
         e.preventDefault();
         var searchString = $("#usersearch").val();
-        /**
-         * 
-         * FETCH TO /user/:posthash/search
-         * 
-         */
+        window.location.href='/user/'+targetUser+'/'+searchString;
+    });
+    
+    $("#load-more-profile").click((e)=>{
+        e.preventDefault();
+        loadMoreProfile('/profile/search/more', $("#profilesearch").val());
+    });
+
+    $("#load-more-user").click((e)=>{
+        e.preventDefault();
+        var searchParam = $("#usersearch").val();
+        if(searchParam == "")
+            searchParam = '\'\'';
+        loadMoreProfile('/user/'+targetUser+'/'+searchParam+'/more', $("#usersearch").val());        
     });
     currentPageId = pageid;
 });
@@ -29,11 +33,11 @@ $(document).ready(()=>{
 /**
  * @todo
  */
- function loadMoreProfile(){
+ function loadMoreProfile(url, searchString){
     var body = {};
     body['pageid'] = currentPageId;
-    body['search'] = document.getElementById('profilesearch').value;
-    fetch('/profile/search/more',{
+    body['search'] = searchString;
+    fetch(url,{
         method: 'PUT',
         body: JSON.stringify(body),
         headers: {'Content-Type': 'application/json'}
@@ -45,6 +49,7 @@ $(document).ready(()=>{
         currentPageId = data['pageid'];
         if(posts.length == 0){
             $('#load-more-profile').css('display', 'none');
+            $('#load-more-user').css('display', 'none');
         }else{
             for(var p of posts){
                 var newPost = buildPostCard(p,p.comments,userId);

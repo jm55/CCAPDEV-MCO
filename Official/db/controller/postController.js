@@ -72,7 +72,6 @@ export function getPostByUserID(userId, search, page, limit){
         filter["_id"] = {"$gt": new ObjectID(page)};
     if(search != "" || search != null)
         filter['description'] = {$regex: new RegExp(search, 'i')};
-    console.log(filter);
     return postCollection.find(filter).limit(limit).sort({'datetime':-1}).toArray();
 }
 
