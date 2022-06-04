@@ -322,6 +322,23 @@ export async function isLiked(userId, postHash){
     });
 }
 
+/**
+ * Delegates the deletion of traces of user from the database.
+ * @param {String} userId 
+ */
+export async function deleteAccount(userId){
+    const postList = await dbPost.getPostByUserID(userId, "", null, 0);
+    //const reportResult = await dbReport.deleteByUserID(userId);
+    //const likeResult = await dbLike.deleteAllLikesByUser(userId);
+    //const commentResult = await dbComment.deleteAllCommentsByUser(userId);
+    //const postResult = await dbPost.deleteAllPostsByUser(userId);
+    //const userResult = await dbUser.deleteUser(userId);
+    return new Promise((resolve, reject)=>{
+        resolve(postList);
+        reject('Error deleting user.');
+    });
+}
+
 
 /*
 ======================================================

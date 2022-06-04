@@ -97,7 +97,7 @@ function validateSignupInputs(){
         }else{
             //CHECK EMAIL IF IT CONTAINS AT LEAST AN @
             if(f[0] == "email"){
-                if(!f[1].includes("@")){
+                if(!validator.isEmail(f[1])){
                     errMessage("validateSignupInputs", "Invalid email");
                     $("#error-" + f[0]).text("* Invalid email address");
                     changeBGColor(f[0], "var(--warning-light)");

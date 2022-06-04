@@ -262,7 +262,7 @@ profileNav.get('/profile', (req, res)=>{
  * @todo
  * Profile Search
  */
-profileNav.get('/profile/:search', (req, res)=>{
+profileNav.get('/profile/search/:search', (req, res)=>{
     console.log("Request: " + req.socket.remoteAddress + ":" + req.socket.remotePort + " => " + req.url);
     
     /**
@@ -352,7 +352,7 @@ profileNav.get('/profile/settings', (req, res)=>{
      * IF NOT LOGGED IN ROUTE AS 401 OR RETURN TO INDEX
      */  
 
-    var userId = '1'; //UPDATE USING SESSION userId VALUE
+    var userId = '3'; //UPDATE USING SESSION userId VALUE
 
     dispatch.getUserByID(userId).then((user)=>{
         res.render("profile_settings", {
@@ -442,19 +442,16 @@ profileNav.delete('/profile/settings/delete', (req, res)=>{
     console.log("Request: " + req.socket.remoteAddress + ":" + req.socket.remotePort + " => " + req.url);
     var body = req.body;
     req.body = null;
-    try{
-        console.log(body);
-        /**
-         * DELETE PROFILE HERE
-         * 
-         * RETURN 200 IF SUCCESSFUL
-         * RETURN 417 IF !SUCCESSFUL
-         */
+    dispatch.deleteAccount(body['userId']).then((data)=>{
+        return JSON.stringify(data);
+    }).then((data)=>{
+        for(var d of JSON.parse(data))
+            file.deletePostImg(d.postHash);
         res.sendStatus(StatusCodes.OK);
-    }catch(e){
-        res.statusMessage = e;
+    }).catch((error)=>{
+        res.statusMessage = error;
         res.sendStatus(StatusCodes.INTERNAL_SERVER_ERROR);
-    }
+    });
 });
 
 /** Validate Password */
@@ -463,7 +460,7 @@ profileNav.post('/validate/password',(req, res)=>{
     
     var replyBody = {};
     dbUser.getHashViaUsername(req.body['username']).then((user)=>{
-        console.log(user);
+        //console.log(user);
         var hash = user[0]['passhash'];
         bcrypt.compare(req.body['password'],hash,(error, same)=>{
             if(error != null)

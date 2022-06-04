@@ -6,7 +6,7 @@ $(document).ready(()=>{
     $("#profilesearch-btn").click((e)=>{
         e.preventDefault();
         var searchString = $("#profilesearch").val();
-        window.location.href='/profile/'+searchString;
+        window.location.href='/profile/search/'+searchString;
     });
     
     $("#usersearch-btn").click((e)=>{

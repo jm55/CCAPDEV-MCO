@@ -21,11 +21,7 @@ $(document).ready(()=>{
     $("#delete-btn").click(()=>{
         console.log("#delete-btn");
         if(confirm("Do you want to close the account?")){
-            /**
-             * 
-             * CHECK ACCOUNT FOR PASSWORD VIA INPUT AND CONFIRM VALIDITY THROUGH
-             * 
-             */
+            checkDeletion();
         }
     });
 
@@ -65,13 +61,16 @@ $(document).ready(()=>{
  * @todo
  */
 function deleteAccount(){
-    /***
-     * 
-     * COMMENCE DELETION VIA /profile/settings/delete
-     * 
-     * SEND USERID AS BODY VALUE
-     * 
-     */
+    fetch('/profile/settings/delete',{
+        method: 'DELETE',
+        body: JSON.stringify({'userId':currentUser.userId}),
+        headers: {'Content-Type':'application/json'},
+    }).then((data)=>{
+        
+    }).catch((error)=>{
+        console.error('Error deleting account on DB');
+        console.error(error);
+    });
 }
 
 function checkDeletion(){
@@ -83,13 +82,13 @@ function checkDeletion(){
         body: JSON.stringify(body),
         headers:{ "Content-Type": "application/json"}        
     }).then((res)=>{
-        console.log('res.json()');
+        //console.log('res.json()');
         return res.json();
     }).then(data=>{
-        console.log("match: " + data['match']);
+        //console.log("match: " + data['match']);
         validCurrentPassword = data['match'];
     }).finally(()=>{
-        console.log('finally: '+ validCurrentPassword);
+        //console.log('finally: '+ validCurrentPassword);
         var a = document.getElementById("password_a").value;
         var b = document.getElementById("password_b").value;
         if(validCurrentPassword){
@@ -98,16 +97,16 @@ function checkDeletion(){
                     newPassMismatch = false;
                     validity = true;
                 }else{
-                    console.log("new pass mismatch");
+                    //console.log("new pass mismatch");
                     newPassMismatch = true;
                     validity = false;
                 }
             }else{
-                console.log("no new password");
+                //console.log("no new password");
                 validity = true;
             }
         }else{
-            console.log("current password wrong");
+            //console.log("current password wrong");
             document.getElementById("password_current").value = "";
             validity = false;
         }
@@ -132,8 +131,8 @@ function sendProfile(){
         if (res.status >= 200 && res.status < 300) {// SUCCESS
             window.location.href = '/profile'; //TODO
         } else {// ERROR
-            console.log(res.statusText);
-            console.log("response error: " + res.status);
+            //console.log(res.statusText);
+            //console.log("response error: " + res.status);
             alert("Error saving your profile, please try again.");
         }
     }).catch((error) => {
@@ -152,9 +151,9 @@ function saveProfile(){
                 validity = false;
             }
         }
-        //CHECK EMAIL IF IT CONTAINS AT LEAST AN @
+        //CHECK EMAIL IF IT IS AN EMAIL
         if(f[0] == "email"){
-            if(!f[1].includes("@")){
+            if(!validator.isEmail(f[1])){
                 errMessage("validateSignupInputs", "Invalid email");
                 validity = false;
             }
