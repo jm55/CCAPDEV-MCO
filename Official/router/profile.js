@@ -38,43 +38,52 @@ profileNav.get('/user/:username', (req, res)=>{
      * IF EXISTS, RENDER PAGE ELSE LET IT RENDER AS EMPTY
      * 
      */
-    const currentUserId = '1'; //UPDATE USING SESSION userId VALUE
-    const targetUserName = req.params['username'];
+    var currentUserId = '1'; //UPDATE USING SESSION userId VALUE
+    var targetUserName = req.params['username'];
     
     dispatch.getUserPair(currentUserId, targetUserName).then((userPair)=>{
         if(userPair[1] != null){
-            const currentUser = userPair[0];
-            const targetUser = userPair[1];
-            dispatch.getProfileById(null, quantity, "", targetUser.userId).then((data)=>{
-                const posts = data[1];
-                res.render("viewuser",  {
-                    title: format.buildTitle(targetUser.username),
-                    currentUser: currentUser,
-                    targetUser: targetUser, //PERTAINS TO A TARGET USER'S ACCOUNT
-                    posts: posts,
-                    postCount: data[3],
-                    reportCount: targetUser['reportCount'],
-                    pageid: data[2],
-                    helpers: {
-                        fullName(fname, mname, lname){return format.formalName(fname,mname,lname);},
-                        simpleDateTime(dt){return format.simpleDateTime(dt);},
-                        likes(like){return format.pluralInator('Like',like);},
-                        btnLiked(postHash){
-                            for(var p of posts)
-                                if(p.postHash == postHash)
-                                    for(var u of p.likeVals)
-                                        if(u.userId == currentUser.userId)
-                                            return "Liked";
-                            return "Like";
-                        },
-                        editable(postUserId){
-                            if(postUserId == currentUser.userId)
-                                return "block";
-                            else
-                                return "none";
-                        }
-                    }
-                });
+            dispatch.getProfileById(null, quantity, "", userPair[1].userId).then((data)=>{
+                renderProfile(res, 'viewuser', userPair[0], userPair[1], data, '');
+            }).catch((err)=>{
+                res.statusMessage = err;
+            res.sendStatus(StatusCodes.INTERNAL_SERVER_ERROR);
+            });
+        }else{
+            redirectError(res, StatusCodes.NOT_FOUND);
+        }
+    }).catch((error)=>{
+        res.statusMessage = error;
+        res.sendStatus(StatusCodes.INTERNAL_SERVER_ERROR);
+    });
+});
+
+/**
+ * @todo
+ * User Post Search
+ */
+ profileNav.get('/user/:username/:search', (req, res)=>{
+    console.log("Request: " + req.socket.remoteAddress + ":" + req.socket.remotePort + " => " + req.url);
+    /**
+     * 
+     * CHECK WHO'S SESSION IS THIS AND IF LOGGED IN
+     * 
+     * IF LOGGED IN FIND USER IN DB
+     * AND LIST POSTS WHERE AUTHOR IS DB
+     * 
+     *
+     */
+    const currentUserId = '1'; //UPDATE USING SESSION userId VALUE
+    const targetUserName = req.params['username'];
+
+    var search = "";
+    if(req.params['search'] != "\'\'")
+        search = req.params['search'];
+
+    dispatch.getUserPair(currentUserId, targetUserName).then((userPair)=>{
+        if(userPair[1] != null){
+            dispatch.getProfileById(null, quantity, search, userPair[1].userId).then((data)=>{
+                renderProfile(res,'viewuser',userPair[0],userPair[1],data,req.params['search']);
             }).catch((err)=>{
                 res.statusMessage = err;
             res.sendStatus(StatusCodes.INTERNAL_SERVER_ERROR);
@@ -104,8 +113,8 @@ profileNav.get('/user/:username', (req, res)=>{
      *
      */
 
-    const currentUserId = '1'; //UPDATE USING SESSION userId VALUE
-    const targetUserName = req.params['username'];
+    var currentUserId = '1'; //UPDATE USING SESSION userId VALUE
+    var targetUserName = req.params['username'];
 
     var search = "";
     if(req.params['search'] != "\'\'")
@@ -113,84 +122,8 @@ profileNav.get('/user/:username', (req, res)=>{
 
     dispatch.getUserPair(currentUserId, targetUserName).then((userPair)=>{
         if(userPair[1] != null){
-            const currentUser = userPair[0];
-            const targetUser = userPair[1];
-            dispatch.getProfileById(req.body['pageid'], quantity,search, targetUser.userId).then((data)=>{
-                var dataJSON = {};
-                dataJSON['posts'] = data[1];
-                dataJSON['pageid'] = data[2];
-                res.json(dataJSON);
-            }).catch((err)=>{
-                res.statusMessage = err;
-            res.sendStatus(StatusCodes.INTERNAL_SERVER_ERROR);
-            });
-        }else{
-            redirectError(res, StatusCodes.NOT_FOUND);
-        }
-    }).catch((error)=>{
-        res.statusMessage = error;
-        res.sendStatus(StatusCodes.INTERNAL_SERVER_ERROR);
-    });
-});
-
-/**
- * @todo
- * User Post Search
- */
- profileNav.get('/user/:username/:search', (req, res)=>{
-    console.log("Request: " + req.socket.remoteAddress + ":" + req.socket.remotePort + " => " + req.url);
-    /**
-     * 
-     * CHECK WHO'S SESSION IS THIS AND IF LOGGED IN
-     * 
-     * IF LOGGED IN FIND USER IN DB
-     * AND LIST POSTS WHERE AUTHOR IS DB
-     * 
-     *
-     */
-
-     const currentUserId = '1'; //UPDATE USING SESSION userId VALUE
-     const targetUserName = req.params['username'];
-
-    var search = "";
-    if(req.params['search'] != "\'\'")
-        search = req.params['search'];
-
-     dispatch.getUserPair(currentUserId, targetUserName).then((userPair)=>{
-        if(userPair[1] != null){
-            const currentUser = userPair[0];
-            const targetUser = userPair[1];
-            dispatch.getProfileById(null, quantity, search, targetUser.userId).then((data)=>{
-                const posts = data[1];
-                res.render("viewuser",  {
-                    title: format.buildTitle(targetUser.username),
-                    currentUser: currentUser,
-                    targetUser: targetUser, //PERTAINS TO A TARGET USER'S ACCOUNT
-                    posts: posts,
-                    postCount: data[3],
-                    reportCount: targetUser['reportCount'],
-                    usersearch: req.params['search'],
-                    pageid: data[2],
-                    helpers: {
-                        fullName(fname, mname, lname){return format.formalName(fname,mname,lname);},
-                        simpleDateTime(dt){return format.simpleDateTime(dt);},
-                        likes(like){return format.pluralInator('Like',like);},
-                        btnLiked(postHash){
-                            for(var p of posts)
-                                if(p.postHash == postHash)
-                                    for(var u of p.likeVals)
-                                        if(u.userId == currentUser.userId)
-                                            return "Liked";
-                            return "Like";
-                        },
-                        editable(postUserId){
-                            if(postUserId == currentUser.userId)
-                                return "block";
-                            else
-                                return "none";
-                        }
-                    }
-                });
+            dispatch.getProfileById(req.body['pageid'], quantity,search, userPair[1].userId).then((data)=>{
+                res.json(buildLoadMoreJSON(data));
             }).catch((err)=>{
                 res.statusMessage = err;
             res.sendStatus(StatusCodes.INTERNAL_SERVER_ERROR);
@@ -222,34 +155,7 @@ profileNav.get('/profile', (req, res)=>{
      */  
     var userId = '1'; //UPDATE USING SESSION userId VALUE
     dispatch.getProfileById(null,quantity,"",userId).then((data)=>{
-        var user = data[0]
-        var posts = data[1];
-        res.render("profile",  {
-            title: format.buildTitle(user.username),
-            currentUser: user, 
-            targetUser: user,
-            posts: posts,
-            pageid: data[2],
-            helpers: {
-                fullName(fname, mname, lname){return format.formalName(fname,mname,lname);},
-                simpleDateTime(dt){return format.simpleDateTime(dt);},
-                likes(like){return format.pluralInator('Like',like);},
-                btnLiked(postHash){
-                    for(var p of posts)
-                        if(p.postHash == postHash)
-                            for(var u of p.likeVals)
-                                if(u.userId == user.userId)
-                                    return "Liked";
-                    return "Like";
-                },
-                editable(postUserId){
-                    if(postUserId == user.userId)
-                        return "block";
-                    else
-                        return "none";
-                }
-            }
-        });
+        renderProfile(res, 'profile', data[0],data[0], data, '');
     }).catch((error)=>{
         res.statusMessage = error;
         res.sendStatus(StatusCodes.INTERNAL_SERVER_ERROR);
@@ -276,35 +182,7 @@ profileNav.get('/profile/search/:search', (req, res)=>{
     var userId = '1'; //UPDATE USING SESSION userId VALUE
 
     dispatch.getProfileById(null,quantity,req.params['search'],userId).then((data)=>{
-        var user = data[0]
-        var posts = data[1];
-        res.render("profile",  {
-            title: format.buildTitle(user.username),
-            currentUser: user, 
-            targetUser: user,
-            posts: posts,
-            pageid: data[2],
-            profilesearch: req.params['search'], 
-            helpers: {
-                fullName(fname, mname, lname){return format.formalName(fname,mname,lname);},
-                simpleDateTime(dt){return format.simpleDateTime(dt);},
-                likes(like){return format.pluralInator('Like',like);},
-                btnLiked(postHash){
-                    for(var p of posts)
-                        if(p.postHash == postHash)
-                            for(var u of p.likeVals)
-                                if(u.userId == user.userId)
-                                    return "Liked";
-                    return "Like";
-                },
-                editable(postUserId){
-                    if(postUserId == user.userId)
-                        return "block";
-                    else
-                        return "none";
-                }
-            }
-        });
+        renderProfile(res, 'profile', data[0], data[0], data, req.params['search']);
     }).catch((error)=>{
         res.statusMessage = error;
         res.sendStatus(StatusCodes.INTERNAL_SERVER_ERROR);
@@ -329,10 +207,7 @@ profileNav.get('/profile/search/:search', (req, res)=>{
      */ 
     var userId = '1'; //UPDATE USING SESSION userId VALUE
     dispatch.getProfileById(req.body['pageid'],quantity,req.body['search'],userId).then((data)=>{
-        var dataJSON = {};
-        dataJSON['posts'] = data[1];
-        dataJSON['pageid'] = data[2];
-        res.json(dataJSON);
+        res.json(buildLoadMoreJSON(data));
     }).catch((error)=>{
         res.statusMessage = error;
         res.sendStatus(StatusCodes.INTERNAL_SERVER_ERROR);
@@ -420,19 +295,6 @@ profileNav.patch('/profile/settings/save', mult.upload_dp.single('profilepic-sel
 });
 
 /**
- * Updates the DP image on the directory by replacing the
- * original filename to the userId and returns the 
- * resulting dp image file path.
- * @param {String} originalname Original filename of the picture
- * @param {String} userid New filename of the picture (associated with the user)
- * @returns Path of the renamed file for use in the user object.
- */
-function dpUpdate(originalname, userid){
-    file.renameDP(originalname,userid);
-    return process.env.DP_PUBLIC + userid + ".webp";
-}
-
-/**
  * @todo
  * Delete Profile
  */
@@ -489,6 +351,74 @@ profileNav.post('/validate/username',(req, res)=>{
         res.sendStatus(StatusCodes.INTERNAL_SERVER_ERROR);
     });
 });
+
+/**
+ * Builds a JSON object for loading more posts containing posts and pageid.
+ * @param {Object} data Data that will be converted into JSON. Must be from dispatch.getProfileById();
+ * @returns JSON object that contains the posts and next pageid.
+ */
+function buildLoadMoreJSON(data){
+    var json = {};
+    json['posts'] = data[1],
+    json['pageid'] = data[2];
+    return json;
+}
+
+/**
+ * Renders the profile page of a given target user (both for search and non-search).
+ * @param {import('express').Response} res Express Response object 
+ * @param {String} view Target view page
+ * @param {Object} currentUser Logged in user
+ * @param {Object} targetUser User being viewed
+ * @param {Object} data List of data that will be used to render the page. Contains the following [userVal,posts,newPage,postCount]
+ * @param {String} search Keyword that was used for search.
+ */
+function renderProfile(res, view, currentUser, targetUser, data, search){
+    res.render(view, {
+        title: format.buildTitle(targetUser.username),
+        currentUser: currentUser,
+        targetUser: targetUser, //PERTAINS TO A TARGET USER'S ACCOUNT
+        posts: data[1],
+        postCount: data[3],
+        reportCount: targetUser['reportCount'],
+        profilesearch: search,
+        usersearch: search,
+        pageid: data[2],
+        helpers: {
+            fullName(fname, mname, lname){return format.formalName(fname,mname,lname);},
+            simpleDateTime(dt){return format.simpleDateTime(dt);},
+            likes(like){return format.pluralInator('Like',like);},
+            btnLiked(postHash){
+                for(var p of data[1])
+                    if(p.postHash == postHash)
+                        for(var u of p.likeVals)
+                            if(u.userId == currentUser.userId)
+                                return "Liked";
+                return "Like";
+            },
+            editable(postUserId){
+                if(postUserId == currentUser.userId)
+                    return "block";
+                else
+                    return "none";
+            }
+        }
+    });
+}
+
+/**
+ * Updates the DP image on the directory by replacing the
+ * original filename to the userId and returns the 
+ * resulting dp image file path.
+ * @param {String} originalname Original filename of the picture
+ * @param {String} userid New filename of the picture (associated with the user)
+ * @returns Path of the renamed file for use in the user object.
+ */
+ function dpUpdate(originalname, userid){
+    file.renameDP(originalname,userid);
+    return process.env.DP_PUBLIC + userid + ".webp";
+}
+
 
 export default profileNav;
 console.log("Router: profile.js loaded!");

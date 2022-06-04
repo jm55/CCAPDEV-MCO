@@ -211,25 +211,6 @@ postNav.post('/post/like', (req, res)=>{
 });
 
 /**
- * Updates the button and counter for like of the post as seen by the user.
- * @param {import('express').Response} res Response Object that called 
- * @param {Number} counter Number of likes
- * @param {Boolean} increment Whether increment or not 
- */
-function updateCounter(res, counter, increment){
-    var countVal = counter;
-    var btn = "Liked";
-    if(increment)
-        countVal++;
-    else{
-        btn = "Like";
-        countVal--;
-    }
-    var count = format.pluralInator("Like", countVal) + ": " + countVal;
-    res.json({btn:btn,count:count});
-}
-
-/**
  * @todo
  * Report Post
  */
@@ -280,6 +261,24 @@ postNav.post('/post/comment', (req, res)=>{
     });
 });
 
+/**
+ * Updates the button and counter for like of the post as seen by the user.
+ * @param {import('express').Response} res Response Object that called 
+ * @param {Number} counter Number of likes
+ * @param {Boolean} increment Whether increment or not 
+ */
+ function updateCounter(res, counter, increment){
+    var countVal = counter;
+    var btn = "Liked";
+    if(increment)
+        countVal++;
+    else{
+        btn = "Like";
+        countVal--;
+    }
+    var count = format.pluralInator("Like", countVal) + ": " + countVal;
+    res.json({btn:btn,count:count});
+}
 
 export default postNav;
 console.log("Router: posts.js loaded!");
