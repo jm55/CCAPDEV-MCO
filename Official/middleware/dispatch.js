@@ -38,6 +38,7 @@ export async function getPosts(page, quantity, search, category, userId){
     }
     const user = await getUserByID(userId);
     if(user != null){
+        const postCount = await dbPost.getPostCount(userId);
         const posts = await dbPost.getPosts(page,quantity,search,category); /** @todo SYNCHRONIZE LIMIT SIZES AND SKIP COUNT */
         var newPage = null;
         if(posts.length > 0)
@@ -51,7 +52,7 @@ export async function getPosts(page, quantity, search, category, userId){
         }
 
         return new Promise((resolve,reject)=>{
-            resolve([user, posts, newPage]);
+            resolve([user, posts, newPage, postCount]);
             reject("Error retrieving posts for Home");
         });
     }else
@@ -266,6 +267,7 @@ export async function getProfileById(page, quantity, search, userId){
     const userVal = await getUserByID(userId);
     const posts = await dbPost.getPostByUserID(userId,search,page,quantity);
     const reports = await dbReport.reportByPostOwnerId(userId);
+    const postCount = await dbPost.getPostCount(userId);
 
     for(var i = 0; i < posts.length; i++){
         posts[i]['comments'] = await dbComment.getCommentByPostHash(posts[i].postHash, Number(process.env.COMMENT_LIMIT));
@@ -294,7 +296,7 @@ export async function getProfileById(page, quantity, search, userId){
     }
 
     const promise = new Promise((resolve,reject)=>{
-        resolve([userVal,posts,newPage]);
+        resolve([userVal,posts,newPage,postCount]);
         reject("Error retrieving posts of user");
     });
     return promise;
@@ -328,71 +330,6 @@ INTERNAL COMPONENTS ZONE
 
 ======================================================
 */
-
-
-function pushVals(object){
-    var temp = [];
-    for(var o of object)
-        temp.push(o);
-    return temp;
-}
-
-function appendUserToPost(){
-    for(var p of postHolder){
-        for(var u of usersHolder){
-            if(p.userId == u.userId){
-                p['user'] = u;
-            }
-        }
-    }
-}
-
-function appendCommentToPost(){
-    var clist = [];
-    for(var p of postHolder){
-        clist = [];
-        for(var c of commentHolder){
-            if(p.postHash == c.postHash){
-                clist.push(c);
-            }
-        }
-        p['comments'] = clist;
-    }
-}
-
-function appendLikesToPostSpecific(posts, likes){
-    var filteredLikes = [];
-    for(var p = 0; p < posts; p++){
-        filteredLikes = [];
-        for(var l = 0; l < likes.length; l++){
-            if(posts[p].postHash == likes[l].postHash)
-                filteredLikes.push(likes[l]);
-        }
-        posts[p]['likeVals'] = filteredLikes;
-        posts[p]['likes'] = filteredLikes.length;
-    }
-    return posts;
-}
-
-function appendLikesToPost(){
-    var filteredLikes = [];
-    for(var p = 0; p < postHolder.length; p++){
-        filteredLikes = [];
-        for(var l = 0; l < likeHolder.length; l++){
-            if(postHolder[p].postHash == likeHolder[l].postHash)
-                filteredLikes.push(likeHolder[l]);
-        }
-        postHolder[p]['likeVals'] = filteredLikes;
-        postHolder[p]['likes'] = filteredLikes.length;
-    }
-}
-
-function appendUsernameToComments(){
-    var commentLength = commentHolder.length;
-    for(var i = 0; i < commentLength; i++){
-        commentHolder[i]['username'] = findUsernameByID(commentHolder[i].userId);
-    }
-}
 
 function findUsernameByID(id){
     for(var u of usersHolder){

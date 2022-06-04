@@ -52,7 +52,7 @@ profileNav.get('/user/:username', (req, res)=>{
                     currentUser: currentUser,
                     targetUser: targetUser, //PERTAINS TO A TARGET USER'S ACCOUNT
                     posts: posts,
-                    postCount: posts.length,
+                    postCount: data[3],
                     reportCount: targetUser['reportCount'],
                     pageid: data[2],
                     helpers: {
@@ -162,14 +162,14 @@ profileNav.get('/user/:username', (req, res)=>{
         if(userPair[1] != null){
             const currentUser = userPair[0];
             const targetUser = userPair[1];
-            dispatch.getProfileById(null, quantity,search, targetUser.userId).then((data)=>{
+            dispatch.getProfileById(null, quantity, search, targetUser.userId).then((data)=>{
                 const posts = data[1];
                 res.render("viewuser",  {
                     title: format.buildTitle(targetUser.username),
                     currentUser: currentUser,
                     targetUser: targetUser, //PERTAINS TO A TARGET USER'S ACCOUNT
                     posts: posts,
-                    postCount: posts.length,
+                    postCount: data[3],
                     reportCount: targetUser['reportCount'],
                     usersearch: req.params['search'],
                     pageid: data[2],

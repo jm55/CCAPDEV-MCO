@@ -58,6 +58,18 @@ export function getPosts(page, limit, search, category){
 }
 
 /**
+ * 
+ * @param {String} userId 
+ * @returns Promise of a number of documents that belong to the user.
+ */
+export function getPostCount(userId){
+    console.log(userId);
+    if(userId == null || userId == "")
+        return null;
+    return postCollection.countDocuments({'userId':userId});
+}
+
+/**
  * @todo
  * Get posts by one user, search words, and category.
  * @param {String} userId Filter parameter.
