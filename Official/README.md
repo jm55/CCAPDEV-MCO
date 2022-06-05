@@ -1,17 +1,21 @@
 # CCAPDEV-MCO
+
 ## Description
 The machine project for this course is to make a web application of your choice based on the specification required.
+
 ## Specifications
 The web application must have the capabilities of a CRUDS application.
 ### Features required for all web applications:
 1. Log-in and Log-out
 2. Register
+
 ### CRUDS (Simplified)
 1. Create - Create web content
 2. Read - Read web content
 3. Update - Update web content
 4. Delete - Delete web content
 5. Search - Search web content
+
 ### Web App Description
 The web application was inspired by a private Facebook group called Home Buddies, which at the time of the web app's creation has over 3 million members. The Facebook group’s posts cover
 different topics and purposes, however, the group decided to take on the idea of
@@ -27,10 +31,48 @@ able to share their finds. The user can then create a post containing what they 
 where to find it, and a media attachment of the item. The website would have a user
 page, home page/timeline, and different pages organized by item category (e.g.:
 ‘Women’s Clothing’, ‘Men’s Clothing’, ‘Home’, ‘Pet Supplies’, etc.).
+
 ## Installation
-1. Clone the git repo
-2. Locate Official
-3. Run `npm install` on terminal.
+* Prerequisite - Clone the git repo
+* Automated (Full Install) - Run `run_install.bat` to automatically build the database and install the npm modules needed for by the web and server application.
+* Manual
+    1. Clone the git repo
+    2. Locate Official
+    3. On Command Prompt enter the following (on `/Official`)
+        1. `node install_data.js`
+        2. `npm install`
+
 ## Execution
-1. Normal Mode: `node app.js` or `npm start`
-2. Dev Mode: `npx nodemon app.js` or `npm run devmode`
+1. Normal Mode: Run `node app.js` or `npm start`, or Open `run_app.bat`
+2. Dev Mode: Run `npx nodemon app.js` or `npm run devmode`, or Open `run_dev.bat`
+
+## Technologies used:
+* Frontend
+    * Vanilla JS
+    * JQuery (via Cloudflare CDN)
+    * Express-Handlebars
+* Backend
+    * NodeJS (v16.15.0)
+    * Express
+    * MongoDB (v5.0.3)
+    * NPM (v8.11.0)
+* Dependencies (Extracted from package.json)
+    * bcrypt
+    * cookier-parser
+    * crypto-random-string
+    * dotenv
+    * express
+    * express-handlebars
+    * express-session
+    * hashids
+    * https-status-codes
+    * mongodb
+    * multer
+    * nocache
+    * path
+    * server-favicon
+    * url
+* External Dependencies
+    * validator.js (via unpkg.com)
+
+### [More Documentation](https://github.com/jm55DLSU/CCAPDEV-MCO/blob/main/Documentation/MCO%20Design%20-%20PDF.pdf)
