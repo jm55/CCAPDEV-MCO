@@ -47,6 +47,9 @@ page, home page/timeline, and different pages organized by item category (e.g.:
 1. Normal Mode: Run `node app.js` or `npm start`, or Open `run_app.bat`
 2. Dev Mode: Run `npx nodemon app.js` or `npm run devmode`, or Open `run_dev.bat`
 
+## Demonstration Credentials
+Please refer to the [documentation's](https://github.com/jm55DLSU/CCAPDEV-MCO/blob/main/Documentation/MCO%20Design%20-%20PDF.pdf) **Demonstration User Credentials** segment at the last page.
+
 ## Technologies used:
 * Frontend
     * Vanilla JS
