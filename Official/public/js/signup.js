@@ -33,7 +33,6 @@ var submitClicked = false;
     });
 
     $("#profilepic-select").on("change", ()=>{
-        console.log("image change");
         refreshDP();
     });
 
@@ -85,11 +84,11 @@ function refreshDP(){
 
 function validateSignupInputs(){    
     var form = new FormData(document.forms.signupform);
-    console.log(form);
+    //console.log(form);
     var validity = true;
     var prevHash = "";
     for(var f of form){
-        if(f[1].length == 0){
+        if(String(f[1]).length == 0){
             if(f[0] != "bio" && f[0] != "profilepic-select"){
                 errMessage("validateSignupInputs",  f[0] + " not filled")
                 validity = false;
@@ -107,10 +106,10 @@ function validateSignupInputs(){
             
             //CHECK PASSWORD IF SAME, RECOMMENDED TO BE HASHED BEFORE COMPARING
             if(f[0] == "password_a"){
-                prevHash = hash(f[1]);
+                prevHash = String(f[1]);
             }
             if(f[0] == "password_b"){
-                if(prevHash != hash(f[1])){
+                if(!prevHash===String(f[1])){
                     errMessage("validateSignupInputs", "Mismatched passwords");
                     $("#error-" + f[0]).text("* Passwords do not match");
                     changeBGColor(f[0], "var(--warning-light)");

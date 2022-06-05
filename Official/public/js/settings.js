@@ -4,14 +4,14 @@ var validCurrentPassword = false, validity = true, newPassMismatch = false;
 
 var submitClicked = false;
 $(document).ready(()=>{
-    //console.log(currentUser);
+    ////console.log(currentUser);
     var gender = $("#gender").attr("value");
     $("#gender").val(gender);
 
     $("#bio-counter").text("0/255"); //default max value for bio characters
 
     $("#cancel-btn").click(()=>{
-        console.log("#cancel-btn");
+        //console.log("#cancel-btn");
         homeRedirect();
     });
 
@@ -19,7 +19,7 @@ $(document).ready(()=>{
      * @todo
      */
     $("#delete-btn").click(()=>{
-        console.log("#delete-btn");
+        //console.log("#delete-btn");
         if(confirm("Do you want to close the account?")){
             checkDeletion();
         }
@@ -39,7 +39,7 @@ $(document).ready(()=>{
     });
 
     $("#gender").on("change",(e)=>{
-        console.log("#gender");
+        //console.log("#gender");
     });
 
     $("select").on("change",(e)=>{
@@ -63,10 +63,13 @@ $(document).ready(()=>{
 function deleteAccount(){
     fetch('/profile/settings/delete',{
         method: 'DELETE',
-        body: JSON.stringify({'userId':currentUser.userId}),
+        body: JSON.stringify({'userId': currentUser.userId}),
         headers: {'Content-Type':'application/json'},
     }).then((data)=>{
-        
+        if(data.status == 200){
+            alert('Account successfully deleted!\nYou\'ll be redirected to the login page.');
+            window.location.href = '/';
+        }
     }).catch((error)=>{
         console.error('Error deleting account on DB');
         console.error(error);
@@ -82,13 +85,13 @@ function checkDeletion(){
         body: JSON.stringify(body),
         headers:{ "Content-Type": "application/json"}        
     }).then((res)=>{
-        //console.log('res.json()');
+        ////console.log('res.json()');
         return res.json();
     }).then(data=>{
-        //console.log("match: " + data['match']);
+        ////console.log("match: " + data['match']);
         validCurrentPassword = data['match'];
     }).finally(()=>{
-        //console.log('finally: '+ validCurrentPassword);
+        ////console.log('finally: '+ validCurrentPassword);
         var a = document.getElementById("password_a").value;
         var b = document.getElementById("password_b").value;
         if(validCurrentPassword){
@@ -97,16 +100,16 @@ function checkDeletion(){
                     newPassMismatch = false;
                     validity = true;
                 }else{
-                    //console.log("new pass mismatch");
+                    ////console.log("new pass mismatch");
                     newPassMismatch = true;
                     validity = false;
                 }
             }else{
-                //console.log("no new password");
+                ////console.log("no new password");
                 validity = true;
             }
         }else{
-            //console.log("current password wrong");
+            ////console.log("current password wrong");
             document.getElementById("password_current").value = "";
             validity = false;
         }
@@ -131,8 +134,8 @@ function sendProfile(){
         if (res.status >= 200 && res.status < 300) {// SUCCESS
             window.location.href = '/profile'; //TODO
         } else {// ERROR
-            //console.log(res.statusText);
-            //console.log("response error: " + res.status);
+            ////console.log(res.statusText);
+            ////console.log("response error: " + res.status);
             alert("Error saving your profile, please try again.");
         }
     }).catch((error) => {
@@ -173,13 +176,13 @@ function saveProfile(){
         body: JSON.stringify(body),
         headers:{ "Content-Type": "application/json"}        
     }).then((res)=>{
-        console.log('res.json()');
+        //console.log('res.json()');
         return res.json();
     }).then(data=>{
-        console.log("match: " + data['match']);
+        //console.log("match: " + data['match']);
         validCurrentPassword = data['match'];
     }).finally(()=>{
-        console.log('finally: '+ validCurrentPassword);
+        //console.log('finally: '+ validCurrentPassword);
         var a = document.getElementById("password_a").value;
         var b = document.getElementById("password_b").value;
         if(validCurrentPassword){
@@ -188,16 +191,16 @@ function saveProfile(){
                     newPassMismatch = false;
                     validity = true;
                 }else{
-                    console.log("new pass mismatch");
+                    //console.log("new pass mismatch");
                     newPassMismatch = true;
                     validity = false;
                 }
             }else{
-                console.log("no new password");
+                //console.log("no new password");
                 validity = true;
             }
         }else{
-            console.log("current password wrong");
+            //console.log("current password wrong");
             document.getElementById("password_current").value = "";
             validity = false;
         }
@@ -342,7 +345,7 @@ function getTempURL(file){
  * @param {string} msg Details of error
  */
 function errMessage(functionName, msg){
-    console.log(functionName + "(): ", msg);
+    //console.log(functionName + "(): ", msg);
 }
 
 /**

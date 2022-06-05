@@ -24,7 +24,7 @@ searchNav.get('/search/:search.:category',(req, res)=>{
      * VALIDATE IF LOGGEDIN
      * 
      */
-    var userId = '1';
+    var userId = '9QoOG2nLvY';
 
     var search = "";
     var category = "";
@@ -86,7 +86,7 @@ searchNav.put('/search/more',(req, res)=>{
      * VALIDATE IF LOGGEDIN
      * 
      */
-    var userId = '1';
+    var userId = '9QoOG2nLvY';
     dispatch.getPosts(req.body['pageid'], load_limit, req.body['search'], req.body['categories'], userId).then((data)=>{
         var dataJSON = {};
         //dataJSON['user'] = data[0];

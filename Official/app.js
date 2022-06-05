@@ -33,9 +33,8 @@ app.set("views", "./views");
 app.set("view cache", false);
 
 //Further disable caching
-if(Number(process.env.PRODUCTION) == 0){
+if(Number(process.env.PRODUCTION) == 0)
     app.use(nocache());
-}
 
 //Enable JSON reading capability
 app.use(express.json());
@@ -90,12 +89,22 @@ db.connectToServer((err, callback)=>{
         console.error("db.connectToServer: Error occured connecting to server!");
         console.error("db.connectToServer: Please check if you have installed MongoDB or have internet connection.");
         console.error("db.connectToServer: " + err);
-        process.exit;
+        process.exit(0);
     }
-
-    //DB is accessible
-    db.checkDB();
-    app.listen(PORT, ()=>{
-        console.log("Budol Finds Server Listening @ " + PORT);
+    
+    db.checkDB().then((stats)=>{
+        if(Number(stats.collections) == Number(process.env.COLLECTION_COUNT)){
+            app.listen(PORT, ()=>{
+                console.log("Budol Finds Server Listening @ " + PORT);
+            });
+        }else{
+            console.error('Database server is online but the database does not exist nor configured correctly.');
+            process.exit(0);
+        }
+    
+    }).catch((error)=>{
+        console.error("Error confirming database configuration.");
+        console.error(error);
+        process.exit(0);
     });
 });

@@ -1,145 +1,19 @@
 [{
   "_id": {
-    "$oid": "6296f9ba16c483beb7785d76"
+    "$oid": "629cb10ba417c43ee4647609"
   },
-  "userId": "1",
-  "text": "Hi, this is a nice speaker!",
-  "postHash": "12345",
-  "datetime": "2022-05-31T04:26:30.532Z",
-  "username": "dlsu"
+  "userId": "7YWgnMK3aY",
+  "text": "I'll buy one if campus is accessible :)",
+  "postHash": "Y9eVdd7p90CJ7l",
+  "datetime": "2022-06-05T13:35:07.128Z",
+  "username": "momotetsu_nene"
 },{
   "_id": {
-    "$oid": "6296f9ba16c483beb7785d77"
+    "$oid": "629cb3b7aef8491ac34c9c4f"
   },
-  "userId": "3",
-  "text": "A cheap phone, nice!",
-  "postHash": "42069",
-  "datetime": "2022-05-31T04:26:30.532Z",
-  "username": "skinner_thomas"
-},{
-  "_id": {
-    "$oid": "6296f9ba16c483beb7785d78"
-  },
-  "userId": "2",
-  "text": "I'd like to buy 1",
-  "postHash": "61619112",
-  "datetime": "2022-05-31T04:26:30.532Z",
-  "username": "dijkstra_boro"
-},{
-  "_id": {
-    "$oid": "6296f9ba16c483beb7785d79"
-  },
-  "userId": "3",
-  "text": "Take my moneyyyy",
-  "postHash": "61619111",
-  "datetime": "2022-05-31T04:26:30.532Z",
-  "username": "skinner_thomas"
-},{
-  "_id": {
-    "$oid": "6296f9ba16c483beb7785d7a"
-  },
-  "userId": "4",
-  "text": "Ahhhhhh",
-  "postHash": "61619111",
-  "datetime": "2022-05-31T04:26:30.532Z",
-  "username": "morita_haruka"
-},{
-  "_id": {
-    "$oid": "6296f9ba16c483beb7785d7b"
-  },
-  "userId": "5",
-  "text": "DLSU Animo Lasalle",
-  "postHash": "61619111",
-  "datetime": "2022-05-31T04:26:30.532Z",
-  "username": "bogomolov_natalya"
-},{
-  "_id": {
-    "$oid": "6296f9ba16c483beb7785d7c"
-  },
-  "userId": "2",
-  "text": "Animo Lasalle",
-  "postHash": "61619112",
-  "datetime": "2022-05-31T04:26:30.532Z",
-  "username": "dijkstra_boro"
-},{
-  "_id": {
-    "$oid": "6296f9ba16c483beb7785d7d"
-  },
-  "userId": "3",
-  "text": "WHOOOOOOO Finally!!!!",
-  "postHash": "61619112",
-  "datetime": "2022-05-31T04:26:30.532Z",
-  "username": "skinner_thomas"
-},{
-  "_id": {
-    "$oid": "6296f9ba16c483beb7785d7e"
-  },
-  "userId": "3",
-  "text": "Time to beat the summer heat for my kids!",
-  "postHash": "74547",
-  "datetime": "2022-05-31T04:26:30.532Z",
-  "username": "skinner_thomas"
-},{
-  "_id": {
-    "$oid": "6296f9ba16c483beb7785d7f"
-  },
-  "userId": "4",
-  "text": "Mine broke after just a few uses :(",
-  "postHash": "78695",
-  "datetime": "2022-05-31T04:26:30.532Z",
-  "username": "morita_haruka"
-},{
-  "_id": {
-    "$oid": "6296f9ba16c483beb7785d80"
-  },
-  "userId": "3",
-  "text": "The seller was rude when I was trying to place an order",
-  "postHash": "78695",
-  "datetime": "2022-05-31T04:26:30.532Z",
-  "username": "skinner_thomas"
-},{
-  "_id": {
-    "$oid": "6296f9ba16c483beb7785d81"
-  },
-  "userId": "5",
-  "text": "Just placed an order for this! TY",
-  "postHash": "16334",
-  "datetime": "2022-05-31T04:26:30.532Z",
-  "username": "bogomolov_natalya"
-},{
-  "_id": {
-    "$oid": "6296f9ba16c483beb7785d82"
-  },
-  "userId": "2",
-  "text": "Is this really better than the OG frying with oil???",
-  "postHash": "16334",
-  "datetime": "2022-05-31T04:26:30.532Z",
-  "username": "dijkstra_boro"
-},{
-  "_id": {
-    "$oid": "6296f9ba16c483beb7785d83"
-  },
-  "userId": "3",
-  "text": "Aw man, the black one is sold out...",
-  "postHash": "16334",
-  "datetime": "2022-05-31T04:26:30.532Z",
-  "username": "skinner_thomas"
-},{
-  "_id": {
-    "$oid": "62983563afc0ad721133a483"
-  },
-  "userId": 1,
-  "text": "SORRY BUT THIS ITEM IT NOT AVAILABLE ANYMORE",
-  "postHash": "61619111",
-  "datetime": "2022-06-02T03:58:27.482Z",
-  "username": "dlsu"
-},{
-  "_id": {
-    "$oid": "629ac32f361f0da65c19ea43"
-  },
-  "userId": "1",
-  "text": "waiting for samsung a03",
-  "postHash": "42069",
-  "datetime": "2022-06-04T02:27:59.533Z",
-  "username": "dlsu"
+  "userId": "7YWgnMK3aY",
+  "text": "Hopefully this comes really cheap given that it is 2nd generation.",
+  "postHash": "eo2pQP9BE3CqWvJ",
+  "datetime": "2022-06-05T13:46:31.938Z",
+  "username": "momotetsu_nene"
 }]

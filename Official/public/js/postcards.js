@@ -89,7 +89,7 @@ function submitComment(posthash){
         if (res.status >= 200 && res.status < 300) {// SUCCESS
             var parent = document.getElementById('comments_div'+posthash);
             var comment = buildComment(userId, body['text'], username, body['datetime']);
-            parent.insertBefore(comment, parent.childNodes[0]);
+            $(comment).insertAfter(parent.childNodes[1]);
             document.getElementById("comment#"+posthash).value = "";
         } else {// ERROR
             console.log("response error: " + res.status);

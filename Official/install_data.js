@@ -1,8 +1,8 @@
 import * as mongodb from 'mongodb';
 import fs from 'fs';
+import 'dotenv/config';
 
-const mongoURI = 'mongodb://localhost:27017'
-const client = new mongodb.MongoClient(mongoURI);
+const client = new mongodb.MongoClient(process.env.MONGODB_URI);
 
 function connectToMongo(callback){
     client.connect((err, client)=>{
@@ -52,9 +52,9 @@ async function addData(db, name){
             counter++;
             console.log('Collection ' + name + ' acknowledged: ' + result.acknowledged + ' @ ' + result.insertedCount + ' documents inserted');
             if(counter == list.length){
-                console.log('Data installation completed!')
+                console.log('Full data installation completed!')
                 client.close();
-                process.exit;
+                process.exit();
             }
         });
     }else{
@@ -67,9 +67,9 @@ connectToMongo((err, callback)=>{
     if(err){
         console.error(err);
         console.log('Exiting...');
-        process.exit;
+        process.exit();
     }
-    const DBNAME = 'budolfinds';
+    const DBNAME = process.env.DB_NAME;
 
     const db = getDB(DBNAME);
     console.log('Adding contents to database: ' + DBNAME);

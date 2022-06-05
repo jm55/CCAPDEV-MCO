@@ -314,7 +314,7 @@ export async function deleteAccount(userId){
     const postResult = await dbPost.deleteAllPostsByUser(userId);
     const userResult = await dbUser.deleteUser(userId);
     return new Promise((resolve, reject)=>{
-        resolve(postList);
+        resolve([userId,postList]);
         reject('Error deleting user.');
     });
 }

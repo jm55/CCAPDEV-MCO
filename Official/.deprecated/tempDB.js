@@ -82,7 +82,7 @@
 // }
 
 // function autoFill(){
-//     var user0 = {userId: '1', username:"dlsu", passhash:"237392540", email:"dlsu@mail.com", fname:"De La Salle", mname:"University", lname:"Manila", gender:"M", bio:"Animo La Salle", profilepic:"/img/dp/dlsu_dp.webp"}; //SAMPLE LOGGED IN USER
+//     var user0 = {userId: '9QoOG2nLvY', username:"dlsu", passhash:"237392540", email:"dlsu@mail.com", fname:"De La Salle", mname:"University", lname:"Manila", gender:"M", bio:"Animo La Salle", profilepic:"/img/dp/dlsu_dp.webp"}; //SAMPLE LOGGED IN USER
 //     var user1 = {userId: '2', username:"dijkstra_boro", passhash:hash.hash("dijkstra_boro"), email:"dijkstra.boro@mail.com", fname:"Boro", mname:"Vitek", lname:"Dijkstra", gender:"M", bio:"Food specialist. Music junkie. Reader. Professional tv fanatic. Introvert. Coffee aficionado. Bacon fan. Web advocate.", profilepic:"/img/dp/dijkstra_boro.webp"};
 //     var user2 = {userId: '3', username:"skinner_thomas", passhash:hash.hash("skinner_thomas"), email:"skinner.thomas@mail.com", fname:"Thomas", mname:"Dwain", lname:"Skinner", gender:"M", bio:"Pop culture ninja. Coffee enthusiast. Evil introvert. Social media scholar. Unapologetic internet geek. Tv fan.", profilepic:"/img/dp/skinner_thomas.webp"};
 //     var user3 = {userId: '4', username:"morita_haruka", passhash:hash.hash("morita_haruka"), email:"morita.haruka@mail.com", fname:"Haruka", mname:"Yuzuki", lname:"Morita", gender:"F", bio:"Incurable bacon fan. Food nerd. Award-winning social media expert. Certified zombie maven. Friendly travel geek.", profilepic:"/img/dp/morita_haruka.webp"};

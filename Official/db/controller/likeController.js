@@ -33,7 +33,7 @@ export function like(likeObject){
      * userId: 1,
      * postHash: '08191',
      * datetime: '2022-05-31T04:11:12.381Z',
-     * currentCount: '1'
+     * currentCount: '9QoOG2nLvY'
      */
      likeObject['userId'] = String(likeObject['userId']);
     // @ts-ignore

@@ -1,7 +1,6 @@
 html{
-    background-image: url("../img/default/divisoria.webp");
+    background-image: var(--default_image);
     background-size: cover;
-    background-repeat: no-repeat;
 }
 
 #gender>option{

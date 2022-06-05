@@ -31,7 +31,7 @@ homeNav.get('/home', (req, res)=>{
      *  
      */
 
-    var userId = '1'; //UPDATE USING SESSION userId VALUE
+    var userId = '9QoOG2nLvY'; //UPDATE USING SESSION userId VALUE
     
     dispatch.getPosts(null, load_limit, "", "", userId).then((data)=>{
         if(data != null){
@@ -79,7 +79,7 @@ homeNav.put('/home/more',(req, res)=>{
      * VALIDATE IF LOGGEDIN
      * 
      */
-    var userId = '1';
+    var userId = '9QoOG2nLvY';
     dispatch.getPosts(req.body['pageid'], load_limit, req.body['search'], req.body['categories'], userId).then((data)=>{
         var dataJSON = {};
         //dataJSON['user'] = data[0];

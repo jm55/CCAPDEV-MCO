@@ -44,9 +44,10 @@
             <input type="text" id="comment#{{this.postHash}}" name="comment#{{this.postHash}}" class="textfield comment_textfield">
             <input type="button" class="button" value="Comment" onclick="submitComment('{{this.postHash}}')"/>
         </form>
-        {{#if comments}}
+       
         <div class="comment_list" id="comments_div{{this.postHash}}">
-            <label>Comments:</label>    
+            <label id="comments_label{{this.postHash}}">Comments:</label>
+            {{#if comments}}
                 {{#comments}}
                 <div class="comment_div"> <!--SINGLE COMMENT BLOCK - REPETITIVE-->
                     <a href="/user/{{username}}" class="username">{{username}}</a><!--BUILD HREF VALUE AT JS BASED ON COMMENT OBJECT DATA--->
@@ -54,7 +55,7 @@
                     <p class="comment-timedate">{{datetime}}</p><!--BUILD TEXT VALUE AT JS BASED ON COMMENT DATETIME DATA--->
                 </div>
                 {{/comments}}
+            {{/if}}
         </div>
-        {{/if}}
     </div>
 </div>

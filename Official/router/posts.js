@@ -45,7 +45,7 @@ postNav.get('/post/:posthash', (req, res)=>{
      * 
      * 
      */
-    var userId = '1'; //UPDATE USING SESSION userId VALUE LEAVE AS NULL IF NOT LOGGEDIN
+    var userId = '9QoOG2nLvY'; //UPDATE USING SESSION userId VALUE LEAVE AS NULL IF NOT LOGGEDIN
 
     dispatch.getSinglePost(userId, targetPostHash).then((data)=>{
         const currentUser = data[0];
@@ -96,7 +96,7 @@ postNav.get('/post/:posthash/edit', (req, res)=>{
      * 
      * REDIRECT TO 401 IF NOT AUTHORIZED TO EDIT
      */
-    var userId = '1'; //UPDATE USING SESSION userId VALUE
+    var userId = '9QoOG2nLvY'; //UPDATE USING SESSION userId VALUE
     dispatch.getEditPost(userId, req.params['posthash']).then((data)=>{
         if(data){
             if(data == 403){

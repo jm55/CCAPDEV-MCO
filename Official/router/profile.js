@@ -38,7 +38,7 @@ profileNav.get('/user/:username', (req, res)=>{
      * IF EXISTS, RENDER PAGE ELSE LET IT RENDER AS EMPTY
      * 
      */
-    var currentUserId = '1'; //UPDATE USING SESSION userId VALUE
+    var currentUserId = '9QoOG2nLvY'; //UPDATE USING SESSION userId VALUE
     var targetUserName = req.params['username'];
     
     dispatch.getUserPair(currentUserId, targetUserName).then((userPair)=>{
@@ -73,7 +73,7 @@ profileNav.get('/user/:username', (req, res)=>{
      * 
      *
      */
-    const currentUserId = '1'; //UPDATE USING SESSION userId VALUE
+    const currentUserId = '9QoOG2nLvY'; //UPDATE USING SESSION userId VALUE
     const targetUserName = req.params['username'];
 
     var search = "";
@@ -113,7 +113,7 @@ profileNav.get('/user/:username', (req, res)=>{
      *
      */
 
-    var currentUserId = '1'; //UPDATE USING SESSION userId VALUE
+    var currentUserId = '9QoOG2nLvY'; //UPDATE USING SESSION userId VALUE
     var targetUserName = req.params['username'];
 
     var search = "";
@@ -153,7 +153,7 @@ profileNav.get('/profile', (req, res)=>{
      * IF NOT LOGGED IN ROUTE AS 401 OR RETURN TO INDEX
      *
      */  
-    var userId = '1'; //UPDATE USING SESSION userId VALUE
+    var userId = '9QoOG2nLvY'; //UPDATE USING SESSION userId VALUE
     dispatch.getProfileById(null,quantity,"",userId).then((data)=>{
         renderProfile(res, 'profile', data[0],data[0], data, '');
     }).catch((error)=>{
@@ -179,7 +179,7 @@ profileNav.get('/profile/search/:search', (req, res)=>{
      * IF NOT LOGGED IN ROUTE AS 401 OR RETURN TO INDEX
      *
      */ 
-    var userId = '1'; //UPDATE USING SESSION userId VALUE
+    var userId = '9QoOG2nLvY'; //UPDATE USING SESSION userId VALUE
 
     dispatch.getProfileById(null,quantity,req.params['search'],userId).then((data)=>{
         renderProfile(res, 'profile', data[0], data[0], data, req.params['search']);
@@ -205,7 +205,7 @@ profileNav.get('/profile/search/:search', (req, res)=>{
      * IF NOT LOGGED IN ROUTE AS 401 OR RETURN TO INDEX
      *
      */ 
-    var userId = '1'; //UPDATE USING SESSION userId VALUE
+    var userId = '9QoOG2nLvY'; //UPDATE USING SESSION userId VALUE
     dispatch.getProfileById(req.body['pageid'],quantity,req.body['search'],userId).then((data)=>{
         res.json(buildLoadMoreJSON(data));
     }).catch((error)=>{
@@ -225,7 +225,7 @@ profileNav.get('/profile/settings', (req, res)=>{
      * IF NOT LOGGED IN ROUTE AS 401 OR RETURN TO INDEX
      */  
 
-    var userId = '3'; //UPDATE USING SESSION userId VALUE
+    var userId = '9QoOG2nLvY'; //UPDATE USING SESSION userId VALUE
 
     dispatch.getUserByID(userId).then((user)=>{
         res.render("profile_settings", {
@@ -303,10 +303,16 @@ profileNav.delete('/profile/settings/delete', (req, res)=>{
     var body = req.body;
     req.body = null;
     dispatch.deleteAccount(body['userId']).then((data)=>{
-        return JSON.stringify(data);
+        return data;
     }).then((data)=>{
-        for(var d of JSON.parse(data))
+        file.deleteDP(data[0]);
+        for(var d of data[1])
             file.deletePostImg(d.postHash);
+        /**
+         * 
+         * DELETE COOKIES, SESSION, ETC. ETC.
+         * 
+         */
         res.sendStatus(StatusCodes.OK);
     }).catch((error)=>{
         res.statusMessage = error;

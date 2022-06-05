@@ -28,16 +28,11 @@ export function getDB(name = process.env.DB_NAME){
     return client.db(name);
 }
 
-const dbNames = ['users','reports','comments','posts','likes'];
-
 /**
- * Conducts a check of all collections on the database server.
+ * Checks the DB if it exists.
  */
-export function checkDB(){
-    getDB().stats().then((s)=>{
-        console.log("DB Server Name: " + getDB().databaseName);
-        console.log("DB Collections: " + s.collections);
-    });
+export async function checkDB(){
+    return getDB().stats();
 }
 
 export default {};

@@ -12,7 +12,6 @@ $(document).ready(()=>{
         if(validatePost()){
             submitPost();
             clearInputs();
-            location.reload();
         }else{
             alert("Please check completeness of post content.");
             errMessage("","New Post Data Incomplete");
@@ -23,7 +22,6 @@ $(document).ready(()=>{
         e.preventDefault();
         if(validatePost(true)){
             submitEdit();
-            location.reload();
         }
     });
 
@@ -99,7 +97,7 @@ function submitPost(){
         body: f,
     }).then((res) => {
         if (res.status >= 200 && res.status < 300) {// SUCCESS
-            location.reload();
+            window.location.reload();
         } else {// ERROR
             console.log("response error: " + res.status);
         }
