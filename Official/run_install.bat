@@ -2,7 +2,7 @@
 cls
 
 echo Installing dependencies
-npm install
+call npm install
 
 echo Installing data...
 node install_data.js
