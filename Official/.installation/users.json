@@ -1,0 +1,99 @@
+[{
+  "_id": {
+    "$oid": "628dcdd36dde493d607c46e4"
+  },
+  "userId": "1",
+  "username": "dlsu",
+  "passhash": "$2b$10$6kPQBUMYmLKw0o8.C66pXeyfvsDyZcFsbp8uAiCbXqKqAsII0fDGO",
+  "email": "dlsu@mail.com",
+  "fname": "De",
+  "mname": "University",
+  "lname": "Manila",
+  "gender": "M",
+  "bio": "Animo La Salle\r\n\r\nD L S U \r\n\r\nAnimo La Salle",
+  "profilepic": "/img/dp/1.webp"
+},{
+  "_id": {
+    "$oid": "628dcdd36dde493d607c46e5"
+  },
+  "userId": "2",
+  "username": "dijkstra_boro",
+  "passhash": "51647164",
+  "email": "dijkstra.boro@mail.com",
+  "fname": "Boro",
+  "mname": "Vitek",
+  "lname": "Dijkstra",
+  "gender": "M",
+  "bio": "Food specialist. Music junkie. Reader. Professional tv fanatic. Introvert. Coffee aficionado. Bacon fan. Web advocate.",
+  "profilepic": "/img/dp/2.webp"
+},{
+  "_id": {
+    "$oid": "628dcdd36dde493d607c46e6"
+  },
+  "userId": "3",
+  "username": "skinner_thomas",
+  "passhash": "34907427",
+  "email": "skinner.thomas@mail.com",
+  "fname": "Thomas",
+  "mname": "Dwain",
+  "lname": "Skinner",
+  "gender": "M",
+  "bio": "Pop culture ninja. Coffee enthusiast. Evil introvert. Social media scholar. Unapologetic internet geek. Tv fan.",
+  "profilepic": "/img/dp/3.webp"
+},{
+  "_id": {
+    "$oid": "628dcdd36dde493d607c46e7"
+  },
+  "userId": "4",
+  "username": "morita_haruka",
+  "passhash": "84123013",
+  "email": "morita.haruka@mail.com",
+  "fname": "Haruka",
+  "mname": "Yuzuki",
+  "lname": "Morita",
+  "gender": "F",
+  "bio": "Incurable bacon fan. Food nerd. Award-winning social media expert. Certified zombie maven. Friendly travel geek.",
+  "profilepic": "/img/dp/4.webp"
+},{
+  "_id": {
+    "$oid": "628dcdd36dde493d607c46e8"
+  },
+  "userId": "5",
+  "username": "bogomolov_natalya",
+  "passhash": "60418622",
+  "email": "bogomolov.natalya@mail.com",
+  "fname": "Natalya",
+  "mname": "Yulia",
+  "lname": "Bogomolov",
+  "gender": "F",
+  "bio": "Tv expert. Extreme reader. Pop culture geek. Bacon guru. General explorer. Student. Organizer.",
+  "profilepic": "/img/dp/5.webp"
+},{
+  "_id": {
+    "$oid": "6295767116f15f6e310bf244"
+  },
+  "username": "amelia.watson",
+  "email": "email@mail.com",
+  "fname": "Amelia",
+  "mname": "Holmes",
+  "lname": "Watson",
+  "gender": "F",
+  "bio": "This is Amelia Watson of Hololive EN!",
+  "passhash": "$2b$10$sRFkGkbZMu/rGq8fjOYb8eHW.eKLikUzvMpyiY5lZEkOgkctyWI6K",
+  "userId": "W9qVzg2GGZ",
+  "profilepic": "/img/dp/W9qVzg2GGZ.webp"
+},{
+  "_id": {
+    "$oid": "629ac9eaee7bc59524877cf7"
+  },
+  "username": "malwarebytes",
+  "email": "malware@bytes.com",
+  "fname": "fname",
+  "mname": "mname",
+  "lname": "lanme",
+  "gender": "M",
+  "bio": "this is bio",
+  "passhash": "$2b$10$cMOypdkmGTqGMWgIxwks/OKhsgzKuw6pudQQ8Ho9K.2lBnkCCsnBi",
+  "userId": "r9AmD5kwr9",
+  "profilepic": "/img/dp/r9AmD5kwr9.webp"
+}]

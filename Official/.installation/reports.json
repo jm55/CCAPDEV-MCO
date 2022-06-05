@@ -1,0 +1,32 @@
+[{
+  "_id": {
+    "$oid": "6295be124abaed62ace0e1ca"
+  },
+  "userId": 1,
+  "postHash": "42069",
+  "datetime": "2022-05-31T07:04:50.850Z",
+  "postOwnerId": "2"
+},{
+  "_id": {
+    "$oid": "6295be144abaed62ace0e1cb"
+  },
+  "userId": 1,
+  "postHash": "12345",
+  "datetime": "2022-05-31T07:04:52.974Z",
+  "postOwnerId": "4"
+},{
+  "_id": {
+    "$oid": "6297103432ad99eb3d49f993"
+  },
+  "userId": 1,
+  "postOwnerId": "3",
+  "postHash": "16181",
+  "datetime": "2022-06-01T07:07:32.333Z"
+},{
+  "_id": {
+    "$oid": "6299fec66f94d7d3c0ac32fb"
+  },
+  "userId": 1,
+  "postHash": "08191",
+  "datetime": "2022-06-03T12:29:58.349Z"
+}]
