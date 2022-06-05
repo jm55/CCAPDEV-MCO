@@ -33,14 +33,15 @@ page, home page/timeline, and different pages organized by item category (e.g.:
 ‘Women’s Clothing’, ‘Men’s Clothing’, ‘Home’, ‘Pet Supplies’, etc.).
 
 ## Installation
-* Prerequisite - Clone the git repo
-* Automated (Full Install) - Run `run_install.bat` to automatically build the database and install the npm modules needed for by the web and server application.
-* Manual
-    1. Clone the git repo
-    2. Locate Official
-    3. On Command Prompt enter the following (on `/Official`)
-        1. `node install_data.js`
-        2. `npm install`
+* Prerequisite - Clone the git repo and locate `/Official`
+* Automated (Full Data Install) - Run `run_install_full.bat` to automatically build the database (collection and contents) and install the npm modules needed for by the web and server application.
+* Automated (Minimal Data Install) - Run `run_install_minimal.bat` to automatically build the database (collections only) and install the npm modules needed for by the web and server application.
+* Manual (Full Data) - On Command Prompt enter the following:
+	1. `node install_data.js`
+	2. `npm install`
+* Manual (Full Data) - On Command Prompt enter the following:
+	1. `node install_onlycollections.js`
+	2. `npm install`
 
 ## Execution
 1. Normal Mode: Run `node app.js` or `npm start`, or Open `run_app.bat`
