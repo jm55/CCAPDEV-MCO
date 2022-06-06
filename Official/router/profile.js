@@ -87,10 +87,7 @@ profileNav.get('/user/:username', (req, res)=>{
     } 
 });
 
-/**
- * @todo
- * User Post Search
- */
+/** User Post Search */
  profileNav.put('/user/:username/:search/more', (req, res)=>{
     var reqVal = req;
 	console.log("Request: " + reqVal.socket.remoteAddress + ":" + reqVal.socket.remotePort + " => " + reqVal.url);
@@ -123,10 +120,7 @@ profileNav.get('/user/:username', (req, res)=>{
     }
 });
 
-/**
- * @todo
- * Profile
- */
+/** Profile */
 profileNav.get('/profile', (req, res)=>{
     var reqVal = req;
 	console.log("Request: " + reqVal.socket.remoteAddress + ":" + reqVal.socket.remotePort + " => " + reqVal.url);

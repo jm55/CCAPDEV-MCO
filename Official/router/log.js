@@ -61,10 +61,6 @@ logNav.get('/logout', (req, res)=>{ //TO UPGRADE THAT ALLOWS /post/<posthash> TO
     res.render("logout",{title: "Logging out..."});
 });
 
-/**
- * @todo
- * Confirm Logout
- */
 logNav.post('/logout/out',(req, res)=>{
     var reqVal = req;
 	console.log("Request: " + reqVal.socket.remoteAddress + ":" + reqVal.socket.remotePort + " => " + reqVal.url);

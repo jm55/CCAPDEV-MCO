@@ -1,8 +1,6 @@
 console.log("Public JS: banner.js loaded");
 var currentPageId = null;
-/**
- * @todo ADD FUNCTIONALITIES MISSING
- */
+
 $(document).ready(()=>{
     var cat = $("#categories").attr("value");
     $("#categories").val(cat);
@@ -63,9 +61,6 @@ function search(){
     window.location.href='/search/'+search+'.'+category;
 }
 
-/**
- * @todo
- */
  function loadMoreSearch(){
     var body = {};
     body['pageid'] = currentPageId;

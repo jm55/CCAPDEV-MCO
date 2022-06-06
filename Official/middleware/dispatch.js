@@ -33,7 +33,7 @@ export async function getPosts(page, quantity, search, category, userId){
     const user = await getUserByID(userId);
     if(user != null){
         const postCount = await dbPost.getPostCount(userId);
-        const posts = await dbPost.getPosts(page,quantity,search,category); /** @todo SYNCHRONIZE LIMIT SIZES AND SKIP COUNT */
+        const posts = await dbPost.getPosts(page,quantity,search,category);
         var newPage = null;
         if(posts.length > 0)
             newPage = posts[posts.length-1]['_id'];

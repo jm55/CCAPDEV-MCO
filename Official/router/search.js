@@ -77,9 +77,6 @@ searchNav.get('/search/:search.:category',(req, res)=>{
     }
 });
 
-/**
- * @todo
- */
 searchNav.put('/search/more',(req, res)=>{
     var reqVal = req;
 	console.log("Request: " + reqVal.socket.remoteAddress + ":" + reqVal.socket.remotePort + " => " + reqVal.url);

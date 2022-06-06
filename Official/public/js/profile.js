@@ -30,9 +30,6 @@ $(document).ready(()=>{
     currentPageId = pageid;
 });
 
-/**
- * @todo
- */
  function loadMoreProfile(url, searchString){
     var body = {};
     body['pageid'] = currentPageId;

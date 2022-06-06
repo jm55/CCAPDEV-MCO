@@ -26,9 +26,6 @@ $(document).ready(()=>{
     currentPageId = pageid;
 });
 
-/**
- * @todo
- */
 function loadMore(){
     var body = {};
     body['pageid'] = currentPageId;

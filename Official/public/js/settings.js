@@ -15,9 +15,6 @@ $(document).ready(()=>{
         homeRedirect();
     });
 
-    /**
-     * @todo
-     */
     $("#delete-btn").click(()=>{
         //console.log("#delete-btn");
         if(confirm("Do you want to close the account?")){
@@ -57,9 +54,6 @@ $(document).ready(()=>{
     });
 });
 
-/**
- * @todo
- */
 function deleteAccount(){
     fetch('/profile/settings/delete',{
         method: 'DELETE',
