@@ -3,15 +3,20 @@
     "$oid": "629cac2ba3e8f69d4a303ba0"
   },
   "userId": "9QoOG2nLvY",
-  "description": "This Macbook is for sale now!",
+  "description": "This Macbook is for sale now!\r\n\r\nNow: ₱48,990\r\n\r\nPower Mac Center (DLSU) is part of Apple's Education Store program.",
   "category": "Laptops and Computers",
   "label": "Power Mac Center (DLSU)",
-  "link": "https://www.apple.com/ph/macbook-pro-13/",
+  "link": "https://www.apple.com/ph/macbook-air/",
   "postHash": "Y9eVdd7p90CJ7l",
   "imgurl": "/img/post/Y9eVdd7p90CJ7l.webp",
   "datetime": {
     "$date": {
       "$numberLong": "1654434859837"
+    }
+  },
+  "editdatetime": {
+    "$date": {
+      "$numberLong": "1654487078896"
     }
   }
 },{
@@ -19,7 +24,7 @@
     "$oid": "629cad352aaf379d708170ae"
   },
   "userId": "9QoOG2nLvY",
-  "description": "The 2nd Gen Airpods are now discounted at the DLSU Power Mac Center!",
+  "description": "The 2nd Gen Airpods are now discounted at the DLSU Power Mac Center!\r\n\r\nNow ₱6,690.00!",
   "category": "Audio",
   "label": "PowerMac Center (DLSU)",
   "link": "https://www.apple.com/ph/airpods-2nd-generation/",
@@ -28,6 +33,11 @@
   "datetime": {
     "$date": {
       "$numberLong": "1654435125510"
+    }
+  },
+  "editdatetime": {
+    "$date": {
+      "$numberLong": "1654496037413"
     }
   }
 },{
@@ -44,6 +54,54 @@
   "datetime": {
     "$date": {
       "$numberLong": "1654435348533"
+    }
+  }
+},{
+  "_id": {
+    "$oid": "629d9ba776c535cbfb63aa88"
+  },
+  "userId": "9QoOG2nLvY",
+  "description": "Now available in DLSU Power Mac Center Store: Apple Pencil (2nd Gen) for only ₱5,990.00! ",
+  "category": "Mobiles and Gadgets",
+  "label": "Power Mac Center (DLSU)",
+  "link": "https://www.apple.com/ph/apple-pencil/",
+  "postHash": "mlPg7ezDRnFQJqb",
+  "imgurl": "/img/post/mlPg7ezDRnFQJqb.webp",
+  "datetime": {
+    "$date": {
+      "$numberLong": "1654496167252"
+    }
+  }
+},{
+  "_id": {
+    "$oid": "629d9c609b7768709e2e980b"
+  },
+  "userId": "9QoOG2nLvY",
+  "description": "iPad keyboards provide a great typing experience and lightweight, durable protection for your iPad. And they attach to iPad magnetically — no need for switches, plugs, and pairing. The Magic Keyboard delivers even more with a floating design, backlit keys, and a built‑in trackpad.\r\n\r\n₱9,990",
+  "category": "Mobiles Accessories",
+  "label": "PowerMac Center (DLSU)",
+  "link": "https://www.apple.com/ph/ipad-keyboards/",
+  "postHash": "7BX3QnlLzzsQxL",
+  "imgurl": "/img/post/7BX3QnlLzzsQxL.webp",
+  "datetime": {
+    "$date": {
+      "$numberLong": "1654496352804"
+    }
+  }
+},{
+  "_id": {
+    "$oid": "629da8fe4296de2c7ecdfa13"
+  },
+  "userId": "7YWgnMK3aY",
+  "description": "Not for sale but just wanna share!\r\n\r\nHololive will be auctioning this Gura Statue for charity!",
+  "category": "Toys, Games and Collectibles",
+  "label": "Hololive",
+  "link": "https://en.hololive.tv/portfolio/items/gawr-gura",
+  "postHash": "Nj1v9brGREcgG7",
+  "imgurl": "/img/post/Nj1v9brGREcgG7.webp",
+  "datetime": {
+    "$date": {
+      "$numberLong": "1654499582100"
     }
   }
 }]

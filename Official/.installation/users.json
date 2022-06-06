@@ -5,13 +5,13 @@
   "username": "dlsu",
   "email": "dlsu_budolfinds@dlsu.edu.ph",
   "fname": "De La Salle",
-  "mname": "Manila",
   "lname": "University",
   "gender": "M",
   "bio": "De La Salle University positions itself as a leader in molding human resources who serve the church and the nation. It is a Catholic coeducational institution founded in 1911 by the Brothers of the Christian Schools.",
   "passhash": "$2b$10$jHn36RZ84BE.1ZgJEnyQ1uIJXlfZbcnEidiLHZFq0TDUBqVSTDVtm",
   "userId": "9QoOG2nLvY",
-  "profilepic": "/img/dp/9QoOG2nLvY.webp"
+  "profilepic": "/img/dp/9QoOG2nLvY.webp",
+  "mname": ""
 },{
   "_id": {
     "$oid": "629ca995a1ca9ac4d0776e46"
