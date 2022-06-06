@@ -10,3 +10,5 @@ errorNav.use(express.json());
 errorNav.get('/error',(req,res)=>{
     redirectError(res, req.body['status']);
 });
+
+export default errorNav;

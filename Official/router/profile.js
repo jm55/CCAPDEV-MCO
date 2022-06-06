@@ -23,78 +23,68 @@ import * as dbUser from '../db/controller/userController.js';
 import { StatusCodes } from 'http-status-codes';
 import {redirectError} from '../middleware/errordispatch.js';
 
-/**
- * @todo
- * User (other User Profile)
- */
+//Cookies
+import * as cookie from '../middleware/cookie.js';
+
+/** User (other User Profile) */
 profileNav.get('/user/:username', (req, res)=>{
-    console.log("Request: " + req.socket.remoteAddress + ":" + req.socket.remotePort + " => " + req.url);
-    /**
-     * 
-     * EXTRACT USERNAME FROM URL
-     * 
-     * SEARCH DB FOR USERNAME
-     * 
-     * IF EXISTS, RENDER PAGE ELSE LET IT RENDER AS EMPTY
-     * 
-     */
-    var currentUserId = '9QoOG2nLvY'; //UPDATE USING SESSION userId VALUE
-    var targetUserName = req.params['username'];
+    var reqVal = req;
+	console.log("Request: " + reqVal.socket.remoteAddress + ":" + reqVal.socket.remotePort + " => " + reqVal.url);
     
-    dispatch.getUserPair(currentUserId, targetUserName).then((userPair)=>{
-        if(userPair[1] != null){
-            dispatch.getProfileById(null, quantity, "", userPair[1].userId).then((data)=>{
-                renderProfile(res, 'viewuser', userPair[0], userPair[1], data, '');
-            }).catch((err)=>{
-                res.statusMessage = err;
+    var currentUserId = cookie.getCookieUserId(reqVal.cookies);
+    if(currentUserId == null)
+        res.redirect('/');
+    else{   
+        var targetUserName = req.params['username'];
+        dispatch.getUserPair(currentUserId, targetUserName).then((userPair)=>{
+            if(userPair[1] != null){
+                dispatch.getProfileById(null, quantity, "", userPair[1].userId).then((data)=>{
+                    renderProfile(res, 'viewuser', userPair[0], userPair[1], data, '');
+                }).catch((err)=>{
+                    res.statusMessage = err;
+                res.sendStatus(StatusCodes.INTERNAL_SERVER_ERROR);
+                });
+            }else{
+                redirectError(res, StatusCodes.NOT_FOUND);
+            }
+        }).catch((error)=>{
+            res.statusMessage = error;
             res.sendStatus(StatusCodes.INTERNAL_SERVER_ERROR);
-            });
-        }else{
-            redirectError(res, StatusCodes.NOT_FOUND);
-        }
-    }).catch((error)=>{
-        res.statusMessage = error;
-        res.sendStatus(StatusCodes.INTERNAL_SERVER_ERROR);
-    });
+        });
+    }    
 });
 
-/**
- * @todo
- * User Post Search
- */
+/** User Post Search */
  profileNav.get('/user/:username/:search', (req, res)=>{
-    console.log("Request: " + req.socket.remoteAddress + ":" + req.socket.remotePort + " => " + req.url);
-    /**
-     * 
-     * CHECK WHO'S SESSION IS THIS AND IF LOGGED IN
-     * 
-     * IF LOGGED IN FIND USER IN DB
-     * AND LIST POSTS WHERE AUTHOR IS DB
-     * 
-     *
-     */
-    const currentUserId = '9QoOG2nLvY'; //UPDATE USING SESSION userId VALUE
-    const targetUserName = req.params['username'];
+    var reqVal = req;
+	console.log("Request: " + reqVal.socket.remoteAddress + ":" + reqVal.socket.remotePort + " => " + reqVal.url);
 
-    var search = "";
-    if(req.params['search'] != "\'\'")
-        search = req.params['search'];
+    var currentUserId = cookie.getCookieUserId(reqVal.cookies);
+    if(currentUserId == null)
+        res.redirect('/');
+    else{  
+        const targetUserName = req.params['username'];
 
-    dispatch.getUserPair(currentUserId, targetUserName).then((userPair)=>{
-        if(userPair[1] != null){
-            dispatch.getProfileById(null, quantity, search, userPair[1].userId).then((data)=>{
-                renderProfile(res,'viewuser',userPair[0],userPair[1],data,req.params['search']);
-            }).catch((err)=>{
-                res.statusMessage = err;
+        var search = "";
+        if(req.params['search'] != "\'\'")
+            search = req.params['search'];
+
+        dispatch.getUserPair(currentUserId, targetUserName).then((userPair)=>{
+            if(userPair[1] != null){
+                dispatch.getProfileById(null, quantity, search, userPair[1].userId).then((data)=>{
+                    renderProfile(res,'viewuser',userPair[0],userPair[1],data,req.params['search']);
+                }).catch((err)=>{
+                    res.statusMessage = err;
+                res.sendStatus(StatusCodes.INTERNAL_SERVER_ERROR);
+                });
+            }else{
+                redirectError(res, StatusCodes.NOT_FOUND);
+            }
+        }).catch((error)=>{
+            res.statusMessage = error;
             res.sendStatus(StatusCodes.INTERNAL_SERVER_ERROR);
-            });
-        }else{
-            redirectError(res, StatusCodes.NOT_FOUND);
-        }
-    }).catch((error)=>{
-        res.statusMessage = error;
-        res.sendStatus(StatusCodes.INTERNAL_SERVER_ERROR);
-    });
+        });
+    } 
 });
 
 /**
@@ -102,39 +92,35 @@ profileNav.get('/user/:username', (req, res)=>{
  * User Post Search
  */
  profileNav.put('/user/:username/:search/more', (req, res)=>{
-    console.log("Request: " + req.socket.remoteAddress + ":" + req.socket.remotePort + " => " + req.url);
-    /**
-     * 
-     * CHECK WHO'S SESSION IS THIS AND IF LOGGED IN
-     * 
-     * IF LOGGED IN FIND USER IN DB
-     * AND LIST POSTS WHERE AUTHOR IS DB
-     * 
-     *
-     */
+    var reqVal = req;
+	console.log("Request: " + reqVal.socket.remoteAddress + ":" + reqVal.socket.remotePort + " => " + reqVal.url);
 
-    var currentUserId = '9QoOG2nLvY'; //UPDATE USING SESSION userId VALUE
-    var targetUserName = req.params['username'];
+    var currentUserId = cookie.getCookieUserId(reqVal.cookies);
+    if(currentUserId == null)
+        res.redirect('/');
+    else{
+        var targetUserName = req.params['username'];
 
-    var search = "";
-    if(req.params['search'] != "\'\'")
-        search = req.params['search'];
-
-    dispatch.getUserPair(currentUserId, targetUserName).then((userPair)=>{
-        if(userPair[1] != null){
-            dispatch.getProfileById(req.body['pageid'], quantity,search, userPair[1].userId).then((data)=>{
-                res.json(buildLoadMoreJSON(data));
-            }).catch((err)=>{
-                res.statusMessage = err;
+        var search = "";
+        if(req.params['search'] != "\'\'")
+            search = req.params['search'];
+    
+        dispatch.getUserPair(currentUserId, targetUserName).then((userPair)=>{
+            if(userPair[1] != null){
+                dispatch.getProfileById(req.body['pageid'], quantity,search, userPair[1].userId).then((data)=>{
+                    res.json(buildLoadMoreJSON(data));
+                }).catch((err)=>{
+                    res.statusMessage = err;
+                res.sendStatus(StatusCodes.INTERNAL_SERVER_ERROR);
+                });
+            }else{
+                redirectError(res, StatusCodes.NOT_FOUND);
+            }
+        }).catch((error)=>{
+            res.statusMessage = error;
             res.sendStatus(StatusCodes.INTERNAL_SERVER_ERROR);
-            });
-        }else{
-            redirectError(res, StatusCodes.NOT_FOUND);
-        }
-    }).catch((error)=>{
-        res.statusMessage = error;
-        res.sendStatus(StatusCodes.INTERNAL_SERVER_ERROR);
-    });
+        });
+    }
 });
 
 /**
@@ -142,217 +128,212 @@ profileNav.get('/user/:username', (req, res)=>{
  * Profile
  */
 profileNav.get('/profile', (req, res)=>{
-    console.log("Request: " + req.socket.remoteAddress + ":" + req.socket.remotePort + " => " + req.url);
-    /**
-     * 
-     * CHECK WHO'S SESSION IS THIS AND IF LOGGED IN
-     * 
-     * IF LOGGED IN FIND USER IN DB
-     * AND LIST POSTS WHERE AUTHOR IS DB
-     * 
-     * IF NOT LOGGED IN ROUTE AS 401 OR RETURN TO INDEX
-     *
-     */  
-    var userId = '9QoOG2nLvY'; //UPDATE USING SESSION userId VALUE
-    dispatch.getProfileById(null,quantity,"",userId).then((data)=>{
-        renderProfile(res, 'profile', data[0],data[0], data, '');
-    }).catch((error)=>{
-        res.statusMessage = error;
-        res.sendStatus(StatusCodes.INTERNAL_SERVER_ERROR);
-    });
-});
+    var reqVal = req;
+	console.log("Request: " + reqVal.socket.remoteAddress + ":" + reqVal.socket.remotePort + " => " + reqVal.url);
 
-/**
- * @todo
- * Profile Search
- */
-profileNav.get('/profile/search/:search', (req, res)=>{
-    console.log("Request: " + req.socket.remoteAddress + ":" + req.socket.remotePort + " => " + req.url);
+    var userId = cookie.getCookieUserId(reqVal.cookies);
+    if(userId == null)
+        res.redirect('/');
+    else{
+        dispatch.getProfileById(null,quantity,"",userId).then((data)=>{
+            renderProfile(res, 'profile', data[0],data[0], data, '');
+        }).catch((error)=>{
+            res.statusMessage = error;
+            res.sendStatus(StatusCodes.INTERNAL_SERVER_ERROR);
+        });
+    }
     
-    /**
-     * 
-     * CHECK WHO'S SESSION IS THIS AND IF LOGGED IN
-     * 
-     * IF LOGGED IN FIND USER IN DB
-     * AND LIST POSTS WHERE AUTHOR IS DB
-     * 
-     * IF NOT LOGGED IN ROUTE AS 401 OR RETURN TO INDEX
-     *
-     */ 
-    var userId = '9QoOG2nLvY'; //UPDATE USING SESSION userId VALUE
-
-    dispatch.getProfileById(null,quantity,req.params['search'],userId).then((data)=>{
-        renderProfile(res, 'profile', data[0], data[0], data, req.params['search']);
-    }).catch((error)=>{
-        res.statusMessage = error;
-        res.sendStatus(StatusCodes.INTERNAL_SERVER_ERROR);
-    });
 });
 
-/**
- * @todo
- * Profile Search
- */
+/** Profile Search */
+profileNav.get('/profile/search/:search', (req, res)=>{
+    var reqVal = req;
+	console.log("Request: " + reqVal.socket.remoteAddress + ":" + reqVal.socket.remotePort + " => " + reqVal.url);
+    
+    var userId = cookie.getCookieUserId(reqVal.cookies);
+    if(userId == null)
+        res.redirect('/');
+    else{
+        dispatch.getProfileById(null,quantity,req.params['search'],userId).then((data)=>{
+            renderProfile(res, 'profile', data[0], data[0], data, req.params['search']);
+        }).catch((error)=>{
+            res.statusMessage = error;
+            res.sendStatus(StatusCodes.INTERNAL_SERVER_ERROR);
+        });
+    }
+});
+
+/** Profile Search */
  profileNav.put('/profile/search/more', (req, res)=>{
-    console.log("Request: " + req.socket.remoteAddress + ":" + req.socket.remotePort + " => " + req.url);
-    /**
-     * 
-     * CHECK WHO'S SESSION IS THIS AND IF LOGGED IN
-     * 
-     * IF LOGGED IN FIND USER IN DB
-     * AND LIST POSTS WHERE AUTHOR IS DB
-     * 
-     * IF NOT LOGGED IN ROUTE AS 401 OR RETURN TO INDEX
-     *
-     */ 
-    var userId = '9QoOG2nLvY'; //UPDATE USING SESSION userId VALUE
-    dispatch.getProfileById(req.body['pageid'],quantity,req.body['search'],userId).then((data)=>{
-        res.json(buildLoadMoreJSON(data));
-    }).catch((error)=>{
-        res.statusMessage = error;
-        res.sendStatus(StatusCodes.INTERNAL_SERVER_ERROR);
-    });
+    var reqVal = req;
+	console.log("Request: " + reqVal.socket.remoteAddress + ":" + reqVal.socket.remotePort + " => " + reqVal.url);
+    
+    var userId = cookie.getCookieUserId(reqVal.cookies);
+    if(userId == null)
+        res.redirect('/');
+    else{
+        dispatch.getProfileById(req.body['pageid'],quantity,req.body['search'],userId).then((data)=>{
+            res.json(buildLoadMoreJSON(data));
+        }).catch((error)=>{
+            res.statusMessage = error;
+            res.sendStatus(StatusCodes.INTERNAL_SERVER_ERROR);
+        });
+    }
 });
 
 /** Profile Settings */
 profileNav.get('/profile/settings', (req, res)=>{
-    console.log("Request: " + req.socket.remoteAddress + ":" + req.socket.remotePort + " => " + req.url);
+    var reqVal = req;
+	console.log("Request: " + reqVal.socket.remoteAddress + ":" + reqVal.socket.remotePort + " => " + reqVal.url);
 
-    /**
-     * 
-     * CHECK WHO'S SESSION IS THIS AND IF LOGGED IN
-     * 
-     * IF NOT LOGGED IN ROUTE AS 401 OR RETURN TO INDEX
-     */  
-
-    var userId = '9QoOG2nLvY'; //UPDATE USING SESSION userId VALUE
-
-    dispatch.getUserByID(userId).then((user)=>{
-        res.render("profile_settings", {
-            title: "Profile Settings - Budol Finds",
-            currentUser: user,
-            currentUserJSON: JSON.stringify(user),
+    var userId = cookie.getCookieUserId(reqVal.cookies);
+    if(userId == null)
+        res.redirect('/');
+    else{
+        dispatch.getUserByID(userId).then((user)=>{
+            res.render("profile_settings", {
+                title: "Profile Settings - Budol Finds",
+                currentUser: user,
+                currentUserJSON: JSON.stringify(user),
+            });
+        }).catch((error)=>{
+            res.statusMessage = error;
+            res.sendStatus(StatusCodes.INTERNAL_SERVER_ERROR);
         });
-    }).catch((error)=>{
-        res.statusMessage = error;
-        res.sendStatus(StatusCodes.INTERNAL_SERVER_ERROR);
-    });
+    }
 });
 
 /** Save Profile */
 profileNav.patch('/profile/settings/save', mult.upload_dp.single('profilepic-select'), (req, res)=>{
-    console.log("Request: " + req.socket.remoteAddress + ":" + req.socket.remotePort + " => " + req.url);
-    /**
-     * 
-     * CHECK WHO'S SESSION IS THIS AND IF LOGGED IN
-     * 
-     * IF NOT LOGGED IN ROUTE AS 401 OR RETURN TO INDEX
-     */  
-    var body = req.body;
-    var file = req.file;
-    dbUser.getHash(body['userId']).then((arr)=>{
-        bcrypt.compare(body['password_current'], arr[0]['passhash'], (error, same)=>{
-            if(error != null)
-                res.sendStatus(StatusCodes.INTERNAL_SERVER_ERROR);
-            if(same){
-                if(String(body['password_a']).length > 0 && String(body['password_b']).length){
-                    if(String(body['password_a'])==String(body['password_b'])){ //NEW PASSWORD
-                        bcrypt.hash(req.body['password_b'], Number(process.env.SALT_ROUNDS),(err, enc)=>{
-                            if(err != null)
-                                res.sendStatus(StatusCodes.INTERNAL_SERVER_ERROR);
-                            else{
-                                body['password_current'] = null;
-                                body['password_a'] = null;
-                                body['password_b'] = null;
-                                body['passhash'] = enc;
-                                if(req.file)
-                                    dpUpdate(file.originalname, body['userId']);
-                                dbUser.updateUser(body);
-                                res.sendStatus(StatusCodes.OK);
-                            }
-                        });
-                    }else{
-                        console.log("New Password Mismatch!");
-                        res.sendStatus(400);
+    var reqVal = req;
+	console.log("Request: " + reqVal.socket.remoteAddress + ":" + reqVal.socket.remotePort + " => " + reqVal.url);
+    
+    var userId = cookie.getCookieUserId(reqVal.cookies);
+    if(userId == null)
+        res.redirect('/');
+    else{
+        var body = req.body;
+        var file = req.file;
+        dbUser.getHash(body['userId']).then((arr)=>{
+            bcrypt.compare(body['password_current'], arr[0]['passhash'], (error, same)=>{
+                if(error != null)
+                    res.sendStatus(StatusCodes.INTERNAL_SERVER_ERROR);
+                if(same){
+                    if(String(body['password_a']).length > 0 && String(body['password_b']).length){
+                        if(String(body['password_a'])==String(body['password_b'])){ //NEW PASSWORD
+                            bcrypt.hash(req.body['password_b'], Number(process.env.SALT_ROUNDS),(err, enc)=>{
+                                if(err != null)
+                                    res.sendStatus(StatusCodes.INTERNAL_SERVER_ERROR);
+                                else{
+                                    body['password_current'] = null;
+                                    body['password_a'] = null;
+                                    body['password_b'] = null;
+                                    body['passhash'] = enc;
+                                    if(req.file)
+                                        dpUpdate(file.originalname, body['userId']);
+                                    dbUser.updateUser(body);
+                                    res.sendStatus(StatusCodes.OK);
+                                }
+                            });
+                        }else{
+                            console.log("New Password Mismatch!");
+                            res.sendStatus(400);
+                        }
+                    }else{ //NO NEW PASSWORD
+                        if(file)
+                            dpUpdate(file.originalname, body['userId']);
+                        dbUser.updateUser(body);
+                        res.sendStatus(StatusCodes.OK);
                     }
-                }else{ //NO NEW PASSWORD
-                    if(file)
-                        dpUpdate(file.originalname, body['userId']);
-                    dbUser.updateUser(body);
-                    res.sendStatus(StatusCodes.OK);
+                }else{
+                    console.log("Password not found on DB!");
+                    res.sendStatus(StatusCodes.UNAUTHORIZED);
                 }
-            }else{
-                console.log("Password not found on DB!");
-                res.sendStatus(StatusCodes.UNAUTHORIZED);
-            }
+            });
+        }).catch((error)=>{
+            res.statusMessage = error;
+            res.sendStatus(StatusCodes.INTERNAL_SERVER_ERROR);
         });
-    }).catch((error)=>{
-        res.statusMessage = error;
-        res.sendStatus(StatusCodes.INTERNAL_SERVER_ERROR);
-    });
+    }
+    
 });
 
-/**
- * @todo
- * Delete Profile
- */
+/** Delete Profile */
 profileNav.delete('/profile/settings/delete', (req, res)=>{
-    console.log("Request: " + req.socket.remoteAddress + ":" + req.socket.remotePort + " => " + req.url);
-    var body = req.body;
+    var reqVal = req;
+	console.log("Request: " + reqVal.socket.remoteAddress + ":" + reqVal.socket.remotePort + " => " + reqVal.url);
+    var body = reqVal.body;
     req.body = null;
-    dispatch.deleteAccount(body['userId']).then((data)=>{
-        return data;
-    }).then((data)=>{
-        file.deleteDP(data[0]);
-        for(var d of data[1])
-            file.deletePostImg(d.postHash);
-        /**
-         * 
-         * DELETE COOKIES, SESSION, ETC. ETC.
-         * 
-         */
-        res.sendStatus(StatusCodes.OK);
-    }).catch((error)=>{
-        res.statusMessage = error;
-        res.sendStatus(StatusCodes.INTERNAL_SERVER_ERROR);
-    });
+    
+    var userId = cookie.getCookieUserId(reqVal.cookies);
+    if(userId == null)
+        res.redirect('/');
+    else{
+        dispatch.deleteAccount(body['userId']).then((data)=>{
+            return data;
+        }).then((data)=>{
+            file.deleteDP(data[0]);
+            for(var d of data[1])
+                file.deletePostImg(d.postHash);
+            
+            res.clearCookie("budolfinds");
+            res.sendStatus(StatusCodes.OK);
+        }).catch((error)=>{
+            res.statusMessage = error;
+            res.sendStatus(StatusCodes.INTERNAL_SERVER_ERROR);
+        });
+    }
+    
 });
 
 /** Validate Password */
 profileNav.post('/validate/password',(req, res)=>{
-    console.log("Request: " + req.socket.remoteAddress + ":" + req.socket.remotePort + " => " + req.url);
+    var reqVal = req;
+	console.log("Request: " + reqVal.socket.remoteAddress + ":" + reqVal.socket.remotePort + " => " + reqVal.url);
     
-    var replyBody = {};
-    dbUser.getHashViaUsername(req.body['username']).then((user)=>{
-        var hash = user[0]['passhash'];
-        bcrypt.compare(req.body['password'],hash,(error, same)=>{
-            if(error != null)
-                console.log(error);
-            replyBody['match'] = same;
-            req.body = null;
-            res.json(replyBody);
+    var userId = cookie.getCookieUserId(reqVal.cookies);
+    if(userId == null)
+        res.redirect('/');
+    else{
+        var replyBody = {};
+        dbUser.getHashViaUsername(req.body['username']).then((user)=>{
+            var hash = user[0]['passhash'];
+            bcrypt.compare(req.body['password'],hash,(error, same)=>{
+                if(error != null)
+                    console.log(error);
+                replyBody['match'] = same;
+                req.body = null;
+                res.json(replyBody);
+            });
+        }).catch((error)=>{
+            res.statusMessage = error;
+            res.sendStatus(StatusCodes.INTERNAL_SERVER_ERROR);
         });
-    }).catch((error)=>{
-        res.statusMessage = error;
-        res.sendStatus(StatusCodes.INTERNAL_SERVER_ERROR);
-    });
+    }
 });
 
 /** Validate Username */
 profileNav.post('/validate/username',(req, res)=>{
-    console.log("Request: " + req.socket.remoteAddress + ":" + req.socket.remotePort + " => " + req.url);
-    dbUser.userExists(req.body['username'],{projection: {'username': 1, 'passhash': 1}}).then((result)=>{ //
-        var state = false;
-        if(req.body['username'] == result.username)
-            state = true;
-        var replyBody = {};
-        replyBody['match'] = state; 
-        req.body = null;
-        res.json(replyBody);
-    }).catch((error)=>{
-        res.statusMessage = error;
-        res.sendStatus(StatusCodes.INTERNAL_SERVER_ERROR);
-    });
+    var reqVal = req;
+	console.log("Request: " + reqVal.socket.remoteAddress + ":" + reqVal.socket.remotePort + " => " + reqVal.url);
+    
+    var userId = cookie.getCookieUserId(reqVal.cookies);
+    if(userId == null)
+        res.redirect('/');
+    else{
+        dbUser.userExists(req.body['username'],{projection: {'username': 1, 'passhash': 1}}).then((result)=>{ //
+            var state = false;
+            if(req.body['username'] == result.username)
+                state = true;
+            var replyBody = {};
+            replyBody['match'] = state; 
+            req.body = null;
+            res.json(replyBody);
+        }).catch((error)=>{
+            res.statusMessage = error;
+            res.sendStatus(StatusCodes.INTERNAL_SERVER_ERROR);
+        }); 
+    } 
 });
 
 /**

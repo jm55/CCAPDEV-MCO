@@ -43,7 +43,7 @@ export function deletePost(postHash){
 export function getPosts(page, limit, search, category){
     var filter = {};
     if(page != null)
-        filter["_id"] = {"$gt": new ObjectID(page)};
+        filter["_id"] = {"$lt": new ObjectID(page)};
     if(search != "" || category != ""){
         if(search != "" || search != null)
             filter['description'] = {$regex: new RegExp(search, 'i')};

@@ -46,7 +46,7 @@ function auth(uname, pwrd){
         if(data)
             if(data['success']){
                 //SET SESSION FOR USER
-                window.location.href='/home';
+                window.location.href='/';
             }else{
                 alert("Invalid username or password");
                 window.location.href='/login';

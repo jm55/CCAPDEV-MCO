@@ -26,13 +26,15 @@ signupNav.use(express.json());
 
 /** Signup Page */
 signupNav.get('/signup', (req,res)=>{
-    console.log("Request: " + req.socket.remoteAddress + ":" + req.socket.remotePort + " => " + req.url);
+    var reqVal = req;
+	console.log("Request: " + reqVal.socket.remoteAddress + ":" + reqVal.socket.remotePort + " => " + reqVal.url);
     res.render("signup", {title: "Sign up - Budol Finds"}); 
 });
 
 /** Signup Save */
 signupNav.post('/signup/save', mult.upload_dp.single('profilepic-select'), (req, res, next)=>{ //TO UPGRADE THAT ALLOWS /post/<posthash> TO ACCESS SPECIFIC POSTS;
-    console.log("Request: " + req.socket.remoteAddress + ":" + req.socket.remotePort + " => " + req.url);
+    var reqVal = req;
+	console.log("Request: " + reqVal.socket.remoteAddress + ":" + reqVal.socket.remotePort + " => " + reqVal.url);
     db.userExists(req.body['username'],{projection: {'username': 1, 'passhash': 1}}).then((f)=>{
         var exists = false;
         if(f)

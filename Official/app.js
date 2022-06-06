@@ -17,6 +17,10 @@ import favicon from 'serve-favicon';
 //nocache
 import nocache from  'nocache';
 
+//Cookie-Parser & Session 
+import cookieParser from 'cookie-parser';
+import session from 'express-session';
+
 //localhost:8080 or localhost:3000
 const PORT = process.env.PORT || 3000;
 
@@ -39,6 +43,9 @@ if(Number(process.env.PRODUCTION) == 0)
 //Enable JSON reading capability
 app.use(express.json());
 
+//Enable cookieParser
+app.use(cookieParser());
+
 //Add favicon
 app.use(favicon(__dirname + '/public/img/favicons/favicon.ico'));
 
@@ -50,6 +57,7 @@ import homeNav from './router/home.js';
 import profileNav from './router/profile.js';
 import debugTest from './router/debug.js';
 import searchNav from './router/search.js';
+import errorNav from './router/error.js'
 
 //Use Routers
 app.use(homeNav);
@@ -60,29 +68,33 @@ app.use(profileNav);
 app.use(debugTest);
 app.use(searchNav);
 
+//Cookie.js
+import * as cookie from './middleware/cookie.js';
+
 //Index Route
 app.get('/', (req, res)=>{
-    /**
-     * 
-     *  ROUTE TO HOME PAGE IF LOGGED IN (I.E. HAS SESSION), ELSE THEN ROUTE TO LOGIN PAGE
-     * 
-     */
-    console.log("Request: " + req.socket.remoteAddress + ":" + req.socket.remotePort + " => " + req.url);
-    res.redirect('/login');
+    var reqVal = req;
+	console.log("Request: " + reqVal.socket.remoteAddress + ":" + reqVal.socket.remotePort + " => " + reqVal.url);
+    if(cookie.getCookieUserId(reqVal.cookies) !== null){
+        res.redirect('/home');
+    }else{
+        res.redirect('/login');
+    }
 });
 
 //404 Route
 app.use((req, res, err) => {
     console.log("404: " + req.socket.remoteAddress + "=>" + req.url);
     res.render("err", {
-        title: "Error - Budol Finds",
-        errID: "404",
-        errMsg: "Nothing to see here..."
+        title: "Not Found - Budol Finds",
+        errID: StatusCodes.NOT_FOUND,
+        errMsg: getReasonPhrase(StatusCodes.NOT_FOUND),
     });
 });
 
 //DB Connection
 import * as db from './db/conn.js';
+import { getReasonPhrase, StatusCodes } from 'http-status-codes';
 
 db.connectToServer((err, callback)=>{
     if(err){

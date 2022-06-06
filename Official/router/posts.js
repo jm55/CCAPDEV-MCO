@@ -25,28 +25,18 @@ import {redirectError} from '../middleware/errordispatch.js';
 //Creating postHashes
 import {newPostHash} from "../middleware/hashIds.js";
 
+//Cookies
+import * as cookie from '../middleware/cookie.js';
+
 postNav.use(express.json());
 
-/** 
- *  @todo
- *  View Specific Post
- */
+/**  View Specific Post */
 postNav.get('/post/:posthash', (req, res)=>{
-    console.log("Request: " + req.socket.remoteAddress + ":" + req.socket.remotePort + " => " + req.url);
-    var targetPostHash = req.params['posthash'];
-    /**
-     * 
-     * 
-     * CHECK IF USER IS LOGGED IN OR NOT
-     * 
-     * UPDATE USERID
-     * 
-     * IF NOT LOGGED IN, SET USERID AS NULL
-     * 
-     * 
-     */
-    var userId = '9QoOG2nLvY'; //UPDATE USING SESSION userId VALUE LEAVE AS NULL IF NOT LOGGEDIN
-
+    var reqVal = req;
+	console.log("Request: " + reqVal.socket.remoteAddress + ":" + reqVal.socket.remotePort + " => " + reqVal.url);
+    var targetPostHash = reqVal.params['posthash'];
+    
+    var userId = cookie.getCookieUserId(reqVal.cookies);
     dispatch.getSinglePost(userId, targetPostHash).then((data)=>{
         const currentUser = data[0];
         const currentPost = data[1];
@@ -71,194 +61,197 @@ postNav.get('/post/:posthash', (req, res)=>{
                     return "Like";
                 },
                 editable(postUserId){
-                    if(postUserId == currentUser.userId)
-                        return "block";
-                    else
-                        return "none";
+                    if(currentUser != null){
+                        if(postUserId == currentUser.userId)
+                            return "block";
+                        else
+                            return "none";
+                    }else{
+                        return 'none';
+                    }
                 }
             }
         });
-    });
-});
-
-/**
- * @todo
- * Edit Post
- */
-postNav.get('/post/:posthash/edit', (req, res)=>{
-    console.log("Request: " + req.socket.remoteAddress + ":" + req.socket.remotePort + " => " + req.url);
-    /**
-     * DO USER CHECK HERE FIRST IF USER 'OWNS' THE POST.
-     * 
-     * SET currentPost TO POST IF USER 'OWNS' POST
-     * 
-     * SET currentPost TO NULL IF USER !'OWNS' POST
-     * 
-     * REDIRECT TO 401 IF NOT AUTHORIZED TO EDIT
-     */
-    var userId = '9QoOG2nLvY'; //UPDATE USING SESSION userId VALUE
-    dispatch.getEditPost(userId, req.params['posthash']).then((data)=>{
-        if(data){
-            if(data == 403){
-                redirectError(res, StatusCodes.FORBIDDEN);
-            }else if(data == 401){
-                redirectError(res, StatusCodes.UNAUTHORIZED);
-            }else{
-                res.render("post",  {
-                    title: "Post Edit - Budol Finds",
-                    currentUser: data[0], //SAMPLE USER
-                    currentPost: data[1], //SAMPLE POST
-                    currentPostJSON: JSON.stringify(data[1]), //SAMPLE JSON POST
-                });
-            }
-        }else{
-            redirectError(res, StatusCodes.NOT_FOUND);
-        }
+    }).catch((error)=>{
+        res.statusMessage = error;
+        res.sendStatus(StatusCodes.INTERNAL_SERVER_ERROR);
     });
 });
 
 /** Edit Post */
+postNav.get('/post/:posthash/edit', (req, res)=>{
+    var reqVal = req;
+	console.log("Request: " + reqVal.socket.remoteAddress + ":" + reqVal.socket.remotePort + " => " + reqVal.url);
+
+    var userId = cookie.getCookieUserId(reqVal.cookies);
+    if(userId == null)
+        res.redirect('/');
+    else{
+        dispatch.getEditPost(userId, reqVal.params['posthash']).then((data)=>{
+            if(data){
+                if(data == 403){
+                    redirectError(res, StatusCodes.FORBIDDEN);
+                }else if(data == 401){
+                    redirectError(res, StatusCodes.UNAUTHORIZED);
+                }else{
+                    res.render("post",  {
+                        title: "Post Edit - Budol Finds",
+                        currentUser: data[0], //SAMPLE USER
+                        currentPost: data[1], //SAMPLE POST
+                        currentPostJSON: JSON.stringify(data[1]), //SAMPLE JSON POST
+                    });
+                }
+            }else{
+                redirectError(res, StatusCodes.NOT_FOUND);
+            }
+        }).catch((error)=>{
+            res.statusMessage = error;
+            res.sendStatus(StatusCodes.INTERNAL_SERVER_ERROR);
+        });
+    }
+    
+});
+
+/** Save Edit Post */
 postNav.patch('/post/:posthash/save', mult.upload_post.single('imgselect'), (req, res)=>{
-    console.log("Request: " + req.socket.remoteAddress + ":" + req.socket.remotePort + " => " + req.url);
-    req.body['editdatetime'] = new Date();
-    dbPost.updatePost(req.body).then((result)=>{
-        if(result['acknowledged']==true){
-            if(req.file)
-                file.renamePostImg(req.file.originalname, req.body["postHash"]);
-                res.sendStatus(StatusCodes.OK);
-        }else
-            res.sendStatus(StatusCodes.EXPECTATION_FAILED);
-    }).catch((err)=>{
-        console.error(err);
-        res.sendStatus(StatusCodes.INTERNAL_SERVER_ERROR);
-    });
+    var reqVal = req;
+	console.log("Request: " + reqVal.socket.remoteAddress + ":" + reqVal.socket.remotePort + " => " + reqVal.url);
+    
+    var userId = cookie.getCookieUserId(reqVal.cookies);
+    if(userId == null)
+        res.redirect('/');
+    else{
+        reqVal.body['editdatetime'] = new Date();
+        dbPost.updatePost(reqVal.body).then((result)=>{
+            if(result['acknowledged']==true){
+                if(reqVal.file)
+                    file.renamePostImg(reqVal.file.originalname, reqVal.body["postHash"]);
+                    res.sendStatus(StatusCodes.OK);
+            }else
+                res.sendStatus(StatusCodes.EXPECTATION_FAILED);
+        }).catch((err)=>{
+            console.error(err);
+            res.sendStatus(StatusCodes.INTERNAL_SERVER_ERROR);
+        });
+    }
 });
 
 /** Delete Post */
 postNav.delete('/post/:posthash/delete', (req, res)=>{ 
-    console.log("Request: " + req.socket.remoteAddress + ":" + req.socket.remotePort + " => " + req.url);
-    dispatch.deletePost(req.body['postHash']).then((result)=>{
-        if(result.acknowledged){
-            file.deletePostImg(req.body['postHash']);
-            res.sendStatus(StatusCodes.OK);
-        }else{
-            res.sendStatus(StatusCodes.EXPECTATION_FAILED);
-        }
-    }).catch((error)=>{
-        console.error(error);
-        res.sendStatus(StatusCodes.INTERNAL_SERVER_ERROR);
-    });
-});
-
-/**
- * @todo
- * New Post
- */
-postNav.post('/post/new', mult.upload_post.single('imgselect'), (req, res)=>{ 
-    /**
-     * 
-     * CHECK IF USER IS LOGGED IN. 
-     * IF SO, THEN RENDER THE PAGE BELOW, ELSE THEN REDIRECT BACK TO LOGIN.
-     * 
-     * REDIRECT TO ERROR 401 IF NOT LOGGED IN
-     * 
-     */
-    console.log("Request: " + req.socket.remoteAddress + ":" + req.socket.remotePort + " => " + req.url);
-    req.body["postHash"] = newPostHash();
-    req.body["imgurl"] = '/img/post/' + req.body['postHash'] + ".webp";
-    req.body["datetime"] = new Date();
+    var reqVal = req;
+	console.log("Request: " + reqVal.socket.remoteAddress + ":" + reqVal.socket.remotePort + " => " + reqVal.url);
+    var userId = cookie.getCookieUserId(reqVal.cookies);
+    if(userId == null)
+        res.redirect('/');
+    else{
+        dispatch.deletePost(reqVal.body['postHash']).then((result)=>{
+            if(result.acknowledged){
+                file.deletePostImg(reqVal.body['postHash']);
+                res.sendStatus(StatusCodes.OK);
+            }else{
+                res.sendStatus(StatusCodes.EXPECTATION_FAILED);
+            }
+        }).catch((error)=>{
+            console.error(error);
+            res.sendStatus(StatusCodes.INTERNAL_SERVER_ERROR);
+        });
+    }
     
-    dbPost.addPost(req.body).then((p)=>{
-        if(p.acknowledged==true){
-            file.renamePostImg(req.file.originalname, req.body["postHash"]);
-            res.sendStatus(StatusCodes.OK);
-        }else{
-            res.sendStatus(StatusCodes.EXPECTATION_FAILED);
-        }
-    }).catch((err)=>{
-        res.statusMessage = err;
-        res.sendStatus(StatusCodes.INTERNAL_SERVER_ERROR);
-    });
 });
 
-/**
- * @todo
- * Like Post
- */
+/** New Post */
+postNav.post('/post/new', mult.upload_post.single('imgselect'), (req, res)=>{ 
+    var reqVal = req;
+	console.log("Request: " + reqVal.socket.remoteAddress + ":" + reqVal.socket.remotePort + " => " + reqVal.url);
+    
+    var userId = cookie.getCookieUserId(reqVal.cookies);
+    if(userId == null)
+        res.redirect('/');
+    else{
+        reqVal.body["postHash"] = newPostHash();
+        reqVal.body["imgurl"] = '/img/post/' + reqVal.body['postHash'] + ".webp";
+        reqVal.body["datetime"] = new Date();
+        
+        dbPost.addPost(reqVal.body).then((p)=>{
+            if(p.acknowledged==true){
+                file.renamePostImg(reqVal.file.originalname, reqVal.body["postHash"]);
+                res.sendStatus(StatusCodes.OK);
+            }else{
+                res.sendStatus(StatusCodes.EXPECTATION_FAILED);
+            }
+        }).catch((err)=>{
+            res.statusMessage = err;
+            res.sendStatus(StatusCodes.INTERNAL_SERVER_ERROR);
+        });
+    }
+});
+
+/** Like Post */
 postNav.post('/post/like', (req, res)=>{ 
-    console.log("Request: " + req.socket.remoteAddress + ":" + req.socket.remotePort + " => " + req.url);
-    /**
-     * 
-     * CHECK IF USER IS LOGGED IN. 
-     * IF SO, THEN RENDER THE PAGE BELOW, ELSE THEN REDIRECT BACK TO LOGIN.
-     * 
-     * REDIRECT TO ERROR 401 IF NOT LOGGED IN
-     * 
-     */
-    var currentCount = Number(req.body['currentCount']);
-    dbLike.isLiked(req.body['userId'], req.body['postHash']).then((arr)=>{
-        if(arr != null){
-            dbLike.unlike(req.body['userId'],req.body['postHash']);
-            updateCounter(res,currentCount,false);
-        }else{
-            dbLike.like(req.body);
-            updateCounter(res,currentCount,true);
-        }   
-    }).catch((err)=>{
-        res.statusMessage = err;
-        res.sendStatus(StatusCodes.INTERNAL_SERVER_ERROR);
-    });
+    var reqVal = req;
+	console.log("Request: " + reqVal.socket.remoteAddress + ":" + reqVal.socket.remotePort + " => " + reqVal.url);
+    
+    var userId = cookie.getCookieUserId(reqVal.cookies);
+    if(userId == null)
+        res.redirect('/');
+    else{
+        var currentCount = Number(reqVal.body['currentCount']);
+        dbLike.isLiked(reqVal.body['userId'], reqVal.body['postHash']).then((arr)=>{
+            if(arr != null){
+                dbLike.unlike(reqVal.body['userId'],reqVal.body['postHash']);
+                updateCounter(res,currentCount,false);
+            }else{
+                dbLike.like(reqVal.body);
+                updateCounter(res,currentCount,true);
+            }   
+        }).catch((err)=>{
+            res.statusMessage = err;
+            res.sendStatus(StatusCodes.INTERNAL_SERVER_ERROR);
+        });
+    }
+    
 });
 
-/**
- * @todo
- * Report Post
- */
+/** Report Post */
 postNav.post('/post/report', (req, res)=>{
-    console.log("Request: " + req.socket.remoteAddress + ":" + req.socket.remotePort + " => " + req.url);
-    /**
-     * 
-     * CHECK IF USER IS LOGGED IN. 
-     * IF SO, THEN RENDER THE PAGE BELOW, ELSE THEN REDIRECT BACK TO LOGIN.
-     * 
-     * REDIRECT TO ERROR 401 IF NOT LOGGED IN
-     * 
-     */
-    //SAMPLE BODY: { userId: 1, postHash: '42069', datetime: '2022-05-31T07:01:37.495Z' }
-    dbReport.blotterReport(req.body).then((result)=>{
-        if(result.acknowledged == true)
-            res.sendStatus(StatusCodes.OK);
-        else
-            res.sendStatus(StatusCodes.EXPECTATION_FAILED);
-    }).catch((error)=>{
-        res.statusMessage = error;
-        res.sendStatus(StatusCodes.INTERNAL_SERVER_ERROR);
-    }); 
+    var reqVal = req;
+	console.log("Request: " + reqVal.socket.remoteAddress + ":" + reqVal.socket.remotePort + " => " + reqVal.url);
+    
+    var userId = cookie.getCookieUserId(reqVal.cookies);
+    if(userId == null)
+        res.redirect('/');
+    else{
+        dbReport.blotterReport(req.body).then((result)=>{
+            if(result.acknowledged == true)
+                res.sendStatus(StatusCodes.OK);
+            else
+                res.sendStatus(StatusCodes.EXPECTATION_FAILED);
+        }).catch((error)=>{
+            res.statusMessage = error;
+            res.sendStatus(StatusCodes.INTERNAL_SERVER_ERROR);
+        }); 
+    }
 });
 
-/** 
- * @todo
- * Post Comment
-*/
+/** Post Comment */
 postNav.post('/post/comment', (req, res)=>{ 
-    console.log("Request: " + req.socket.remoteAddress + ":" + req.socket.remotePort + " => " + req.url);
-    /**
-     * 
-     * CHECK IF USER IS LOGGED IN. 
-     * IF SO, THEN RENDER THE PAGE BELOW, ELSE THEN REDIRECT BACK TO LOGIN.
-     * 
-     * REDIRECT TO ERROR 401 IF NOT LOGGED IN
-     * 
-     */
-    dbComment.newComment(req.body).then((val)=>{
-        if(val.acknowledged == true)
-            res.sendStatus(StatusCodes.OK)
-        else
-            res.sendStatus(StatusCodes.EXPECTATION_FAILED);
-    }).catch((error)=>{
-        res.statusMessage = error;
-        res.sendStatus(StatusCodes.INTERNAL_SERVER_ERROR);
-    });
+    var reqVal = req;
+	console.log("Request: " + reqVal.socket.remoteAddress + ":" + reqVal.socket.remotePort + " => " + reqVal.url);
+    
+    var userId = cookie.getCookieUserId(reqVal.cookies);
+    if(userId == null)
+        res.redirect('/');
+    else{
+        dbComment.newComment(req.body).then((val)=>{
+            if(val.acknowledged == true)
+                res.sendStatus(StatusCodes.OK)
+            else
+                res.sendStatus(StatusCodes.EXPECTATION_FAILED);
+        }).catch((error)=>{
+            res.statusMessage = error;
+            res.sendStatus(StatusCodes.INTERNAL_SERVER_ERROR);
+        });
+    }
 });
 
 /**

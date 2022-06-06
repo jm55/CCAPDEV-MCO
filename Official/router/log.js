@@ -13,47 +13,51 @@ import * as db from '../db/controller/userController.js';
 import { StatusCodes } from 'http-status-codes';
 import {redirectError} from '../middleware/errordispatch.js';
 
+//Cookies
+import * as cookie from '../middleware/cookie.js';
+
 /** Login */
 logNav.get('/login', (req,res)=>{
-    console.log("Request: " + req.socket.remoteAddress + ":" + req.socket.remotePort + " => " + req.url);
+    var reqVal = req;
+	console.log("Request: " + reqVal.socket.remoteAddress + ":" + reqVal.socket.remotePort + " => " + reqVal.url);
     res.render("login", {title: "Login - Budol Finds"}); 
 });
 
 /** Confirm Login */
 logNav.post('/login/in',(req, res)=>{
-    console.log("Request: " + req.socket.remoteAddress + ":" + req.socket.remotePort + " => " + req.url);
-    var body = req.body;
-    db.userExists(body['username'],{projection: {'username': 1, 'passhash': 1}}).then((u)=>{
-        if(u!=null){
-            if(u['username'] == body['username']){
-                bcrypt.compare(String(body['password']),u.passhash,(err,same)=>{
-                    if(err != null)
-                        res.sendStatus(StatusCodes.INTERNAL_SERVER_ERROR);
-                    /***
-                     * 
-                     * 
-                     * 
-                     * SET SESSION HERE OR SOMETHING.
-                     * AWAIT FOR LESSONS IN AUTHENTICATION
-                     * AS IT MAY OFFER KNOWLEDGE ON HOW TO DO SO.
-                     * 
-                     * 
-                     */
-                    res.json({success:same});
-                });
+    var reqVal = req;
+	console.log("Request: " + reqVal.socket.remoteAddress + ":" + reqVal.socket.remotePort + " => " + reqVal.url);
+
+    var userId = cookie.getCookieUserId(reqVal.cookies);
+    if(userId != null)
+        res.redirect('/home');
+    else{
+        var body = req.body;
+        db.userExists(body['username'],{projection: {'username': 1, 'passhash': 1, 'userId':1}}).then((u)=>{
+            if(u!=null){
+                if(u['username'] == body['username']){
+                    bcrypt.compare(String(body['password']),u.passhash,(err,same)=>{
+                        if(err != null)
+                            res.sendStatus(StatusCodes.INTERNAL_SERVER_ERROR);
+                        res.cookie('budolfinds',u.userId,{maxAge:30*24*60*60*1000,httpOnly:true}); //30days max
+                        res.json({success:same});
+                    });
+                }else
+                    res.json({success:false}); 
             }else
-                res.json({success:false}); 
-        }else
-            res.json({success:false});
-    }).catch((error)=>{
-        res.statusMessage = error;
-        res.sendStatus(StatusCodes.INTERNAL_SERVER_ERROR);
-    });
+                res.json({success:false});
+        }).catch((error)=>{
+            res.statusMessage = error;
+            res.sendStatus(StatusCodes.INTERNAL_SERVER_ERROR);
+        });
+    }
+    
 });
 
 /** Logout */
 logNav.get('/logout', (req, res)=>{ //TO UPGRADE THAT ALLOWS /post/<posthash> TO ACCESS SPECIFIC POSTS
-    console.log("Request: " + req.socket.remoteAddress + ":" + req.socket.remotePort + " => " + req.url);
+    var reqVal = req;
+	console.log("Request: " + reqVal.socket.remoteAddress + ":" + reqVal.socket.remotePort + " => " + reqVal.url);
     res.render("logout",{title: "Logging out..."});
 });
 
@@ -62,20 +66,16 @@ logNav.get('/logout', (req, res)=>{ //TO UPGRADE THAT ALLOWS /post/<posthash> TO
  * Confirm Logout
  */
 logNav.post('/logout/out',(req, res)=>{
-    console.log("Request: " + req.socket.remoteAddress + ":" + req.socket.remotePort + " => " + req.url);
+    var reqVal = req;
+	console.log("Request: " + reqVal.socket.remoteAddress + ":" + reqVal.socket.remotePort + " => " + reqVal.url);
     try {
-        /***
-         * 
-         * 
-         * 
-         * TERMINATE SESSION HERE
-         * WAIT FOR LECTURE ABOUT AUTHENTICATION AND SESSION
-         * 
-         * 
-         * 
-         */
-        console.log(req.body);
-        res.sendStatus(StatusCodes.ACCEPTED); //NOT SURE IF NEEDED
+        var userId = cookie.getCookieUserId(reqVal.cookies);
+        if(userId == null)
+            res.redirect('/');
+        else{
+            res.clearCookie("budolfinds");
+            res.sendStatus(StatusCodes.ACCEPTED); //NOT SURE IF NEEDED
+        }
     } catch(e) {
         res.statusMessage = e;
         res.sendStatus(StatusCodes.INTERNAL_SERVER_ERROR);

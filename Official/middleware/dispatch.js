@@ -36,7 +36,7 @@ export async function getPosts(page, quantity, search, category, userId){
         const posts = await dbPost.getPosts(page,quantity,search,category); /** @todo SYNCHRONIZE LIMIT SIZES AND SKIP COUNT */
         var newPage = null;
         if(posts.length > 0)
-            newPage = posts[0]['_id'];
+            newPage = posts[posts.length-1]['_id'];
 
         for(var i = 0; i < posts.length; i++){
             posts[i]['comments'] = await dbComment.getCommentByPostHash(posts[i].postHash, Number(process.env.COMMENT_LIMIT),{projection: {'userId':1,'text':1,'datetime':1,'username':1}});

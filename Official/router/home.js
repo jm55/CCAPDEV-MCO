@@ -17,79 +17,79 @@ import {redirectError} from '../middleware/errordispatch.js';
 import 'dotenv/config';
 const load_limit = Number(process.env.LOAD_LIMIT);
 
-/** 
- * @todo
- * Home 
- */
-homeNav.get('/home', (req, res)=>{
-    console.log("Request: " + req.socket.remoteAddress + ":" + req.socket.remotePort + " => " + req.url);
-    
-    /**
-     * 
-     * CHECK WHO'S LOGGED IN AND SET USERID
-     * IF !LOGGED IN SET USERID
-     *  
-     */
+//Cookies
+import * as cookie from '../middleware/cookie.js';
 
-    var userId = '9QoOG2nLvY'; //UPDATE USING SESSION userId VALUE
-    
-    dispatch.getPosts(null, load_limit, "", "", userId).then((data)=>{
-        if(data != null){
-            res.render("home", {
-                title: "Home - Budol Finds",
-                currentUser: data[0],
-                pageid: data[2],
-                //likes: tempDB.likes,
-                search:"",
-                category:"",
-                posts: data[1], //POSTS
-                helpers: {
-                    fullName(fname, mname, lname){return format.formalName(fname,mname,lname);},
-                    simpleDateTime(dt){return format.simpleDateTime(dt);},
-                    likes(like){return format.pluralInator('Like',like);},
-                    btnLiked(postHash){
-                        for(var p of data[1])
-                            if(p.postHash == postHash)
-                                for(var u of p.likeVals)
-                                    if(u.userId == data[0].userId)
-                                        return "Liked";
-                        return "Like";
-                    },
-                    editable(postUserId){
-                        if(postUserId == data[0].userId)
-                            return "block";
-                        else
-                            return "none";
+/** Home */
+homeNav.get('/home', (req, res)=>{
+    var reqVal = req;
+	console.log("Request: " + reqVal.socket.remoteAddress + ":" + reqVal.socket.remotePort + " => " + reqVal.url);
+   
+    var userId = cookie.getCookieUserId(reqVal.cookies);
+    console.log('userId: ' + userId);
+    if(userId == null){
+        console.log('no user');
+        res.redirect('/');
+    }else{
+        dispatch.getPosts(null, load_limit, "", "", userId).then((data)=>{
+            if(data != null){
+                res.render("home", {
+                    title: "Home - Budol Finds",
+                    currentUser: data[0],
+                    pageid: data[2],
+                    //likes: tempDB.likes,
+                    search:"",
+                    category:"",
+                    posts: data[1], //POSTS
+                    helpers: {
+                        fullName(fname, mname, lname){return format.formalName(fname,mname,lname);},
+                        simpleDateTime(dt){return format.simpleDateTime(dt);},
+                        likes(like){return format.pluralInator('Like',like);},
+                        btnLiked(postHash){
+                            for(var p of data[1])
+                                if(p.postHash == postHash)
+                                    for(var u of p.likeVals)
+                                        if(u.userId == data[0].userId)
+                                            return "Liked";
+                            return "Like";
+                        },
+                        editable(postUserId){
+                            if(postUserId == data[0].userId)
+                                return "block";
+                            else
+                                return "none";
+                        }
                     }
-                }
-            });
-        }else{
-            redirectError(res, StatusCodes.FORBIDDEN);
-        }
-    }).catch((error)=>{
-        res.statusMessage = error;
-        res.sendStatus(StatusCodes.INTERNAL_SERVER_ERROR);
-    });
+                });
+            }else{
+                redirectError(res, StatusCodes.FORBIDDEN);
+            }
+        }).catch((error)=>{
+            res.statusMessage = error;
+            res.sendStatus(StatusCodes.INTERNAL_SERVER_ERROR);
+        });
+    }
 });
 
 homeNav.put('/home/more',(req, res)=>{
-    console.log("Request: " + req.socket.remoteAddress + ":" + req.socket.remotePort + " => " + req.url);
-    /**
-     * 
-     * VALIDATE IF LOGGEDIN
-     * 
-     */
-    var userId = '9QoOG2nLvY';
-    dispatch.getPosts(req.body['pageid'], load_limit, req.body['search'], req.body['categories'], userId).then((data)=>{
-        var dataJSON = {};
-        //dataJSON['user'] = data[0];
-        dataJSON['posts'] = data[1];
-        dataJSON['pageid'] = data[2];
-        res.json(dataJSON);
-    }).catch((error)=>{
-        res.statusMessage = error;
-        res.sendStatus(StatusCodes.INTERNAL_SERVER_ERROR);
-    });
+    var reqVal = req;
+	console.log("Request: " + reqVal.socket.remoteAddress + ":" + reqVal.socket.remotePort + " => " + reqVal.url);
+    
+    var userId = cookie.getCookieUserId(reqVal.cookies);
+    if(userId == null)
+        res.redirect('/');
+    else{
+        dispatch.getPosts(reqVal.body['pageid'], load_limit, reqVal.body['search'], req.body['categories'], userId).then((data)=>{
+            var dataJSON = {};
+            //dataJSON['user'] = data[0];
+            dataJSON['posts'] = data[1];
+            dataJSON['pageid'] = data[2];
+            res.json(dataJSON);
+        }).catch((error)=>{
+            res.statusMessage = error;
+            res.sendStatus(StatusCodes.INTERNAL_SERVER_ERROR);
+        });
+    }
 });
 
 export default homeNav;
