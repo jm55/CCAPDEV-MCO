@@ -14,9 +14,12 @@ export function blotterReport(report){
 /**
  * Gets all reports associated with the specified user through the specified userId.
  * @param {String} userId Specified owner of the posts with reports.
+ * @param {import('mongodb').FindOptions} options Filter options.
  * @returns Promise of an array of reports from the database.
  */
-export function reportByPostOwnerId(userId){
+export function reportByPostOwnerId(userId, options=null){
+    if(options!=null)
+        return reportCollection.find({'postOwnerId':userId}, options).toArray();
     return reportCollection.find({'postOwnerId':userId}).toArray();
 }
 

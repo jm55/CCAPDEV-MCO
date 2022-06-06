@@ -39,8 +39,8 @@ export async function getPosts(page, quantity, search, category, userId){
             newPage = posts[0]['_id'];
 
         for(var i = 0; i < posts.length; i++){
-            posts[i]['comments'] = await dbComment.getCommentByPostHash(posts[i].postHash, Number(process.env.COMMENT_LIMIT));
-            posts[i]['likeVals'] = await dbLike.getLikeByPostHash(posts[i].postHash);
+            posts[i]['comments'] = await dbComment.getCommentByPostHash(posts[i].postHash, Number(process.env.COMMENT_LIMIT),{projection: {'userId':1,'text':1,'datetime':1,'username':1}});
+            posts[i]['likeVals'] = await dbLike.getLikeByPostHash(posts[i].postHash, {projection: {'userId':1,'datetime':1}});
             posts[i]['likes'] = posts[i]['likeVals'].length;
             posts[i]['user'] = await getUserByID(posts[i].userId, {projection: {'userId':1,'profilepic':1,'username':1}});
         }
@@ -204,7 +204,7 @@ export async function getUsers(){
 /**
  * Gets a user by its username. It strips out the passhash from the output for security reasons.
  * @param {String} username Filter parameter.
- * @param {Object} options Filter options for retreiving data. 
+ * @param {import('mongodb').FindOptions} options Filter options for retreiving data. 
  * @returns Promise of a user object as specified by the username.
  */
 export async function getUserByUserName(username, options = null){
@@ -223,7 +223,7 @@ export async function getUserByUserName(username, options = null){
 /**
  * Gets currentUser as specified by the userId. It strips out the passhash from the output for security reasons.
  * @param {String} userId Filter parameter.
- * @param {Object} options Filter options for retreiving data. 
+ * @param {import('mongodb').FindOptions} options Filter options for retreiving data. 
  * @returns Promise of a user object as specified by the userId.
  */
 export async function getUserByID(userId, options=null){

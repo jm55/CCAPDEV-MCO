@@ -13,9 +13,12 @@ export function newComment(comment){
 
 /**
  * Gets all comments from the comments collection of the database.
+ * @param {import('mongodb').FindOptions} options Filter options.
  * @returns Promise of an array of all comment objects from the database.
  */
-export function getComments(){
+export function getComments(options = null){
+    if(options != null)
+        return commentCollection.find({}, options).sort({'datetime':-1}).toArray();    
     return commentCollection.find({}).sort({'datetime':-1}).toArray();
 }
 
@@ -23,12 +26,17 @@ export function getComments(){
  * Gets all comments that belong to the post specified by its postHash.
  * @param {String} postHash postHash filter of the comments.
  * @param {Number} quantity Quantity of comments to be retrieved.
+ * @param {import('mongodb').FindOptions} options Options for query/search
  * @returns Promise of an array of all comment objects that is part of the post specified by postHash.
  */
-export function getCommentByPostHash(postHash, quantity){
-    if(quantity == null)
+export function getCommentByPostHash(postHash, quantity, options = null){
+    if(quantity == null){
+        if(options != null)
+        return commentCollection.find({'postHash':postHash}, options).sort({'datetime':-1}).toArray();
         return commentCollection.find({'postHash':postHash}).sort({'datetime':-1}).toArray();
-    else
+    }
+    if(options != null)
+    return commentCollection.find({'postHash':postHash}, options).limit(quantity).sort({'datetime':-1}).toArray(); 
     return commentCollection.find({'postHash':postHash}).limit(quantity).sort({'datetime':-1}).toArray(); 
 }
 

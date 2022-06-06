@@ -84,14 +84,14 @@ export function userExists(username){
  * @returns Promise of a list of all users from the database.
  */
 export function getUsers(options=null){
-    if(options != nul)
+    if(options != null)
     return userCollection.find({}).toArray();
 }
 
 /**
  * Gets a user object given the specified username.
  * @param {String} userName Filter parameter
- * @param {Object} options Filter options
+ * @param {import('mongodb').FindOptions} options Filter options
  * @returns Promise of a single user document of the specified username filter.
  */
 export function getUserByUserName(userName, options=null){
@@ -103,7 +103,7 @@ export function getUserByUserName(userName, options=null){
 /**
  * Gets a user object given the specified userId
  * @param {String} userId Filter parameter.
- * @param {Object} options Filter options
+ * @param {import('mongodb').FindOptions} options Filter options
  * @returns Promise of a single user docuemnt of the specified userId filter.
  */
 export function getUserByUserID(userId, options=null){
