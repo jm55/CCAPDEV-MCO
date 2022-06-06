@@ -27,6 +27,17 @@ import {newPostHash} from "../middleware/hashIds.js";
 
 //Cookies
 import * as cookie from '../middleware/cookie.js';
+import session from 'express-session';
+
+postNav.use(session({
+        secret: process.env.SECRET,
+        resave: false,
+        saveUninitialized: true,
+        cookie: {
+        maxAge:1000*60*60*24*30,
+        httpOnly: true
+    }
+}));
 
 postNav.use(express.json());
 
@@ -36,7 +47,7 @@ postNav.get('/post/:posthash', (req, res)=>{
 	console.log("Request: " + reqVal.socket.remoteAddress + ":" + reqVal.socket.remotePort + " => " + reqVal.url);
     var targetPostHash = reqVal.params['posthash'];
     
-    var userId = cookie.getCookieUserId(reqVal.cookies);
+    var userId = cookie.getCookieUserId(reqVal.session);
     dispatch.getSinglePost(userId, targetPostHash).then((data)=>{
         const currentUser = data[0];
         const currentPost = data[1];
@@ -83,7 +94,7 @@ postNav.get('/post/:posthash/edit', (req, res)=>{
     var reqVal = req;
 	console.log("Request: " + reqVal.socket.remoteAddress + ":" + reqVal.socket.remotePort + " => " + reqVal.url);
 
-    var userId = cookie.getCookieUserId(reqVal.cookies);
+    var userId = cookie.getCookieUserId(reqVal.session);
     if(userId == null)
         res.redirect('/');
     else{
@@ -117,7 +128,7 @@ postNav.patch('/post/:posthash/save', mult.upload_post.single('imgselect'), (req
     var reqVal = req;
 	console.log("Request: " + reqVal.socket.remoteAddress + ":" + reqVal.socket.remotePort + " => " + reqVal.url);
     
-    var userId = cookie.getCookieUserId(reqVal.cookies);
+    var userId = cookie.getCookieUserId(reqVal.session);
     if(userId == null)
         res.redirect('/');
     else{
@@ -140,7 +151,7 @@ postNav.patch('/post/:posthash/save', mult.upload_post.single('imgselect'), (req
 postNav.delete('/post/:posthash/delete', (req, res)=>{ 
     var reqVal = req;
 	console.log("Request: " + reqVal.socket.remoteAddress + ":" + reqVal.socket.remotePort + " => " + reqVal.url);
-    var userId = cookie.getCookieUserId(reqVal.cookies);
+    var userId = cookie.getCookieUserId(reqVal.session);
     if(userId == null)
         res.redirect('/');
     else{
@@ -164,7 +175,7 @@ postNav.post('/post/new', mult.upload_post.single('imgselect'), (req, res)=>{
     var reqVal = req;
 	console.log("Request: " + reqVal.socket.remoteAddress + ":" + reqVal.socket.remotePort + " => " + reqVal.url);
     
-    var userId = cookie.getCookieUserId(reqVal.cookies);
+    var userId = cookie.getCookieUserId(reqVal.session);
     if(userId == null)
         res.redirect('/');
     else{
@@ -191,7 +202,7 @@ postNav.post('/post/like', (req, res)=>{
     var reqVal = req;
 	console.log("Request: " + reqVal.socket.remoteAddress + ":" + reqVal.socket.remotePort + " => " + reqVal.url);
     
-    var userId = cookie.getCookieUserId(reqVal.cookies);
+    var userId = cookie.getCookieUserId(reqVal.session);
     if(userId == null)
         res.redirect('/');
     else{
@@ -217,7 +228,7 @@ postNav.post('/post/report', (req, res)=>{
     var reqVal = req;
 	console.log("Request: " + reqVal.socket.remoteAddress + ":" + reqVal.socket.remotePort + " => " + reqVal.url);
     
-    var userId = cookie.getCookieUserId(reqVal.cookies);
+    var userId = cookie.getCookieUserId(reqVal.session);
     if(userId == null)
         res.redirect('/');
     else{
@@ -238,7 +249,7 @@ postNav.post('/post/comment', (req, res)=>{
     var reqVal = req;
 	console.log("Request: " + reqVal.socket.remoteAddress + ":" + reqVal.socket.remotePort + " => " + reqVal.url);
     
-    var userId = cookie.getCookieUserId(reqVal.cookies);
+    var userId = cookie.getCookieUserId(reqVal.session);
     if(userId == null)
         res.redirect('/');
     else{

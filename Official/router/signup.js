@@ -24,11 +24,30 @@ import {redirectError} from '../middleware/errordispatch.js';
 const signupNav = express.Router();
 signupNav.use(express.json());
 
+//Cookies & Session
+import * as cookie from '../middleware/cookie.js';
+import session from 'express-session';
+
+signupNav.use(session({
+        secret: process.env.SECRET,
+        resave: false,
+        saveUninitialized: true,
+        cookie: {
+        maxAge:1000*60*60*24*30,
+        httpOnly: true
+    }
+}));
+
 /** Signup Page */
 signupNav.get('/signup', (req,res)=>{
     var reqVal = req;
-	console.log("Request: " + reqVal.socket.remoteAddress + ":" + reqVal.socket.remotePort + " => " + reqVal.url);
-    res.render("signup", {title: "Sign up - Budol Finds"}); 
+    var userId = cookie.getCookieUserId(reqVal.session);
+    if(userId != null)
+        res.redirect('/');
+    else{
+        console.log("Request: " + reqVal.socket.remoteAddress + ":" + reqVal.socket.remotePort + " => " + reqVal.url);
+        res.render("signup", {title: "Sign up - Budol Finds"}); 
+    }
 });
 
 /** Signup Save */

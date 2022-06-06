@@ -25,13 +25,24 @@ import {redirectError} from '../middleware/errordispatch.js';
 
 //Cookies
 import * as cookie from '../middleware/cookie.js';
+import session from 'express-session';
+
+profileNav.use(session({
+        secret: process.env.SECRET,
+        resave: false,
+        saveUninitialized: true,
+        cookie: {
+        maxAge:1000*60*60*24*30,
+        httpOnly: true
+    }
+}));
 
 /** User (other User Profile) */
 profileNav.get('/user/:username', (req, res)=>{
     var reqVal = req;
 	console.log("Request: " + reqVal.socket.remoteAddress + ":" + reqVal.socket.remotePort + " => " + reqVal.url);
     
-    var currentUserId = cookie.getCookieUserId(reqVal.cookies);
+    var currentUserId = cookie.getCookieUserId(reqVal.session);
     if(currentUserId == null)
         res.redirect('/');
     else{   
@@ -59,7 +70,7 @@ profileNav.get('/user/:username', (req, res)=>{
     var reqVal = req;
 	console.log("Request: " + reqVal.socket.remoteAddress + ":" + reqVal.socket.remotePort + " => " + reqVal.url);
 
-    var currentUserId = cookie.getCookieUserId(reqVal.cookies);
+    var currentUserId = cookie.getCookieUserId(reqVal.session);
     if(currentUserId == null)
         res.redirect('/');
     else{  
@@ -92,7 +103,7 @@ profileNav.get('/user/:username', (req, res)=>{
     var reqVal = req;
 	console.log("Request: " + reqVal.socket.remoteAddress + ":" + reqVal.socket.remotePort + " => " + reqVal.url);
 
-    var currentUserId = cookie.getCookieUserId(reqVal.cookies);
+    var currentUserId = cookie.getCookieUserId(reqVal.session);
     if(currentUserId == null)
         res.redirect('/');
     else{
@@ -125,7 +136,7 @@ profileNav.get('/profile', (req, res)=>{
     var reqVal = req;
 	console.log("Request: " + reqVal.socket.remoteAddress + ":" + reqVal.socket.remotePort + " => " + reqVal.url);
 
-    var userId = cookie.getCookieUserId(reqVal.cookies);
+    var userId = cookie.getCookieUserId(reqVal.session);
     if(userId == null)
         res.redirect('/');
     else{
@@ -144,7 +155,7 @@ profileNav.get('/profile/search/:search', (req, res)=>{
     var reqVal = req;
 	console.log("Request: " + reqVal.socket.remoteAddress + ":" + reqVal.socket.remotePort + " => " + reqVal.url);
     
-    var userId = cookie.getCookieUserId(reqVal.cookies);
+    var userId = cookie.getCookieUserId(reqVal.session);
     if(userId == null)
         res.redirect('/');
     else{
@@ -162,7 +173,7 @@ profileNav.get('/profile/search/:search', (req, res)=>{
     var reqVal = req;
 	console.log("Request: " + reqVal.socket.remoteAddress + ":" + reqVal.socket.remotePort + " => " + reqVal.url);
     
-    var userId = cookie.getCookieUserId(reqVal.cookies);
+    var userId = cookie.getCookieUserId(reqVal.session);
     if(userId == null)
         res.redirect('/');
     else{
@@ -180,7 +191,7 @@ profileNav.get('/profile/settings', (req, res)=>{
     var reqVal = req;
 	console.log("Request: " + reqVal.socket.remoteAddress + ":" + reqVal.socket.remotePort + " => " + reqVal.url);
 
-    var userId = cookie.getCookieUserId(reqVal.cookies);
+    var userId = cookie.getCookieUserId(reqVal.session);
     if(userId == null)
         res.redirect('/');
     else{
@@ -202,7 +213,7 @@ profileNav.patch('/profile/settings/save', mult.upload_dp.single('profilepic-sel
     var reqVal = req;
 	console.log("Request: " + reqVal.socket.remoteAddress + ":" + reqVal.socket.remotePort + " => " + reqVal.url);
     
-    var userId = cookie.getCookieUserId(reqVal.cookies);
+    var userId = cookie.getCookieUserId(reqVal.session);
     if(userId == null)
         res.redirect('/');
     else{
@@ -259,7 +270,7 @@ profileNav.delete('/profile/settings/delete', (req, res)=>{
     var body = reqVal.body;
     req.body = null;
     
-    var userId = cookie.getCookieUserId(reqVal.cookies);
+    var userId = cookie.getCookieUserId(reqVal.session);
     if(userId == null)
         res.redirect('/');
     else{
@@ -285,7 +296,7 @@ profileNav.post('/validate/password',(req, res)=>{
     var reqVal = req;
 	console.log("Request: " + reqVal.socket.remoteAddress + ":" + reqVal.socket.remotePort + " => " + reqVal.url);
     
-    var userId = cookie.getCookieUserId(reqVal.cookies);
+    var userId = cookie.getCookieUserId(reqVal.session);
     if(userId == null)
         res.redirect('/');
     else{
@@ -311,7 +322,7 @@ profileNav.post('/validate/username',(req, res)=>{
     var reqVal = req;
 	console.log("Request: " + reqVal.socket.remoteAddress + ":" + reqVal.socket.remotePort + " => " + reqVal.url);
     
-    var userId = cookie.getCookieUserId(reqVal.cookies);
+    var userId = cookie.getCookieUserId(reqVal.session);
     if(userId == null)
         res.redirect('/');
     else{

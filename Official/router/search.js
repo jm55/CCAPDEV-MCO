@@ -16,13 +16,24 @@ import * as format from '../middleware/formatting.js'
 
 //Cookies
 import * as cookie from '../middleware/cookie.js';
+import session from 'express-session';
+
+searchNav.use(session({
+        secret: process.env.SECRET,
+        resave: false,
+        saveUninitialized: true,
+        cookie: {
+        maxAge:1000*60*60*24*30,
+        httpOnly: true
+    }
+}));
 
 /** Global Search Posts */
 searchNav.get('/search/:search.:category',(req, res)=>{
     var reqVal = req;
 	console.log("Request: " + reqVal.socket.remoteAddress + ":" + reqVal.socket.remotePort + " => " + reqVal.url);
    
-    var userId = cookie.getCookieUserId(reqVal.cookies);
+    var userId = cookie.getCookieUserId(reqVal.session);
     if(userId == null)
         res.redirect('/');
     else{
@@ -81,7 +92,7 @@ searchNav.put('/search/more',(req, res)=>{
     var reqVal = req;
 	console.log("Request: " + reqVal.socket.remoteAddress + ":" + reqVal.socket.remotePort + " => " + reqVal.url);
     
-    var userId = cookie.getCookieUserId(reqVal.cookies);
+    var userId = cookie.getCookieUserId(reqVal.session);
     if(userId == null)
         res.redirect('/');
     else{

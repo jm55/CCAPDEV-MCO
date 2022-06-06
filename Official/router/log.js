@@ -13,13 +13,24 @@ import * as db from '../db/controller/userController.js';
 import { StatusCodes } from 'http-status-codes';
 import {redirectError} from '../middleware/errordispatch.js';
 
-//Cookies
+//Cookies & Session
 import * as cookie from '../middleware/cookie.js';
+import session from 'express-session';
+
+logNav.use(session({
+        secret: process.env.SECRET,
+        resave: false,
+        saveUninitialized: true,
+        cookie: {
+        maxAge:1000*60*60*24*30,
+        httpOnly: true
+    }
+}));
 
 /** Login */
 logNav.get('/login', (req,res)=>{
     var reqVal = req;
-	console.log("Request: " + reqVal.socket.remoteAddress + ":" + reqVal.socket.remotePort + " => " + reqVal.url);
+	console.log("Request: " + reqVal.socket.remoteAddress + ":" + reqVal.socket.remotePort + " => " + reqVal.url);  
     res.render("login", {title: "Login - Budol Finds"}); 
 });
 
@@ -27,8 +38,7 @@ logNav.get('/login', (req,res)=>{
 logNav.post('/login/in',(req, res)=>{
     var reqVal = req;
 	console.log("Request: " + reqVal.socket.remoteAddress + ":" + reqVal.socket.remotePort + " => " + reqVal.url);
-
-    var userId = cookie.getCookieUserId(reqVal.cookies);
+    var userId = cookie.getCookieUserId(reqVal.session);
     if(userId != null)
         res.redirect('/home');
     else{
@@ -37,9 +47,11 @@ logNav.post('/login/in',(req, res)=>{
             if(u!=null){
                 if(u['username'] == body['username']){
                     bcrypt.compare(String(body['password']),u.passhash,(err,same)=>{
-                        if(err != null)
+                        if(err != null){
                             res.sendStatus(StatusCodes.INTERNAL_SERVER_ERROR);
-                        res.cookie('budolfinds',u.userId,{maxAge:30*24*60*60*1000,httpOnly:true}); //30days max
+                        }
+                        req.session.userId = String(u.userId);
+                        //res.cookie('budolfinds',u.userId,{maxAge:30*24*60*60*1000,httpOnly:true}); //30days max
                         res.json({success:same});
                     });
                 }else
@@ -65,12 +77,19 @@ logNav.post('/logout/out',(req, res)=>{
     var reqVal = req;
 	console.log("Request: " + reqVal.socket.remoteAddress + ":" + reqVal.socket.remotePort + " => " + reqVal.url);
     try {
-        var userId = cookie.getCookieUserId(reqVal.cookies);
+        var userId = cookie.getCookieUserId(reqVal.session);
         if(userId == null)
             res.redirect('/');
         else{
-            res.clearCookie("budolfinds");
-            res.sendStatus(StatusCodes.ACCEPTED); //NOT SURE IF NEEDED
+            req.session.destroy((error)=>{
+                if(error){
+                    res.statusMessage = error;
+                    res.sendStatus(StatusCodes.INTERNAL_SERVER_ERROR);
+                }else
+                    res.sendStatus(StatusCodes.ACCEPTED);
+            });
+            //res.clearCookie("budolfinds");
+            
         }
     } catch(e) {
         res.statusMessage = e;
