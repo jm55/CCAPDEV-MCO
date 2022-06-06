@@ -50,7 +50,7 @@ $(document).ready(()=>{
 
 function submitDelete(){
     console.log("Delete Post");
-    var fetchURL = "/post/" + currentPost.posthash + "/delete";
+    var fetchURL = "/post/" + currentPost.postHash + "/delete";
     var f = {};
     f['postHash'] = currentPost.postHash;
     fetch(fetchURL,{
@@ -71,6 +71,7 @@ function submitDelete(){
 
 function submitEdit(){
     console.log("Edit Post");
+
     var fetchURL = "/post/" + currentPost.postHash + "/save";
     var f = new FormData(document.forms.form);
     f.append('postHash', currentPost.postHash);

@@ -23,7 +23,7 @@ logNav.get('/login', (req,res)=>{
 logNav.post('/login/in',(req, res)=>{
     console.log("Request: " + req.socket.remoteAddress + ":" + req.socket.remotePort + " => " + req.url);
     var body = req.body;
-    db.userExists(body['username']).then((u)=>{
+    db.userExists(body['username'],{projection: {'username': 1, 'passhash': 1}}).then((u)=>{
         if(u!=null){
             if(u['username'] == body['username']){
                 bcrypt.compare(String(body['password']),u.passhash,(err,same)=>{

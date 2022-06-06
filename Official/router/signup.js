@@ -33,7 +33,7 @@ signupNav.get('/signup', (req,res)=>{
 /** Signup Save */
 signupNav.post('/signup/save', mult.upload_dp.single('profilepic-select'), (req, res, next)=>{ //TO UPGRADE THAT ALLOWS /post/<posthash> TO ACCESS SPECIFIC POSTS;
     console.log("Request: " + req.socket.remoteAddress + ":" + req.socket.remotePort + " => " + req.url);
-    db.userExists(req.body['username']).then((f)=>{
+    db.userExists(req.body['username'],{projection: {'username': 1, 'passhash': 1}}).then((f)=>{
         var exists = false;
         if(f)
             if(f.username == req.body['username'])

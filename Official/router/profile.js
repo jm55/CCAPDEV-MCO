@@ -341,7 +341,7 @@ profileNav.post('/validate/password',(req, res)=>{
 /** Validate Username */
 profileNav.post('/validate/username',(req, res)=>{
     console.log("Request: " + req.socket.remoteAddress + ":" + req.socket.remotePort + " => " + req.url);
-    dbUser.userExists(req.body['username']).then((result)=>{ //
+    dbUser.userExists(req.body['username'],{projection: {'username': 1, 'passhash': 1}}).then((result)=>{ //
         var state = false;
         if(req.body['username'] == result.username)
             state = true;

@@ -77,7 +77,7 @@ export async function deletePost(postHash){
  */
 export async function getEditPost(userId, postHash){
     var post = null;
-    const user = await getUserByID(userId);
+    const user = await getUserByID(userId,{projection:{'userId':1, 'profilepic':1}});
     if(user == null){
         return new Promise((resolve, reject)=>{
             resolve('401');

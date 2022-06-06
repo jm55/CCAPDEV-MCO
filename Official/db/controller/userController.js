@@ -73,10 +73,13 @@ export function deleteUser(userId){
 /**
  * Finds a user that fits the specified username parameter.
  * @param {String} username username of the target user to find.
+ * @param {import('mongodb').FindOptions} options Filter options
  * @returns Promise of a single user document of the specified username filter. Contains _id, username, and passhash.
  */
-export function userExists(username){
-    return userCollection.findOne({username: username},{projection: {'username': 1, 'passhash': 1}});
+export function userExists(username, options=null){
+    if(options!=null)
+        return userCollection.findOne({username: username},options);    
+    return userCollection.findOne({username: username},{projection: {'username': 1}});
 }
 
 /**
