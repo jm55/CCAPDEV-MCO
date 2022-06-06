@@ -250,10 +250,8 @@ profileNav.patch('/profile/settings/save', mult.upload_dp.single('profilepic-sel
      */  
     var body = req.body;
     var file = req.file;
-    var currHash = "";
     dbUser.getHash(body['userId']).then((arr)=>{
-        currHash = arr[0]['passhash'];
-        bcrypt.compare(body['password_current'], currHash, (error, same)=>{
+        bcrypt.compare(body['password_current'], arr[0]['passhash'], (error, same)=>{
             if(error != null)
                 res.sendStatus(StatusCodes.INTERNAL_SERVER_ERROR);
             if(same){
@@ -326,7 +324,6 @@ profileNav.post('/validate/password',(req, res)=>{
     
     var replyBody = {};
     dbUser.getHashViaUsername(req.body['username']).then((user)=>{
-        //console.log(user);
         var hash = user[0]['passhash'];
         bcrypt.compare(req.body['password'],hash,(error, same)=>{
             if(error != null)

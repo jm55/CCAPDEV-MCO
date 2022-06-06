@@ -32,7 +32,7 @@ where to find it, and a media attachment of the item. The website would have a u
 page, home page/timeline, and different pages organized by item category (e.g.:
 ‘Women’s Clothing’, ‘Men’s Clothing’, ‘Home’, ‘Pet Supplies’, etc.).
 
-## Installation
+## Installation (Only if hosted via localhost)
 * Prerequisite - Clone the git repo and locate `/Official`
 * Automated (Full Data Install) - Run `run_install_full.bat` to automatically build the database (collection and contents) and install the npm modules needed for by the web and server application.
 * Automated (Minimal Data Install) - Run `run_install_minimal.bat` to automatically build the database (collections only) and install the npm modules needed for by the web and server application.

@@ -32,6 +32,8 @@ export function simpleDateTime(dt){
  * @returns Name formatted as Last, First M.
  */
 export function formalName(fname, mname, lname){
+    if(mname == "" || mname == null)
+        return lname + ", " + fname;
     return lname + ", " + fname + " " + mname.substring(0,1) + ".";
 }
 

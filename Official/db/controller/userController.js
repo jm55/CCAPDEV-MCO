@@ -49,7 +49,7 @@ export function updateUser(user){
  * @returns Promise of an array of users that fits the userId filter.
  */
 export function getHash(userId){
-    return userCollection.find({'userId': String(userId)}).toArray();
+    return userCollection.find({'userId': String(userId)},{projection: {'passhash': 1}}).toArray();
 }
 
 /**
@@ -58,7 +58,7 @@ export function getHash(userId){
  * @returns Promise of an array of users that fits the username filter.
  */
 export function getHashViaUsername(username){
-    return userCollection.find({'username': String(username)}).toArray();
+    return userCollection.find({'username': String(username)},{projection: {'passhash': 1}}).toArray();
 }
 
 /**
@@ -73,35 +73,42 @@ export function deleteUser(userId){
 /**
  * Finds a user that fits the specified username parameter.
  * @param {String} username username of the target user to find.
- * @returns Promise of a single user document of the specified username filter.
+ * @returns Promise of a single user document of the specified username filter. Contains _id, username, and passhash.
  */
 export function userExists(username){
-    return userCollection.findOne({username: username});
+    return userCollection.findOne({username: username},{projection: {'username': 1, 'passhash': 1}});
 }
 
 /**
  * Gets all documents from the users collection of the database.
  * @returns Promise of a list of all users from the database.
  */
-export function getUsers(){
+export function getUsers(options=null){
+    if(options != nul)
     return userCollection.find({}).toArray();
 }
 
 /**
  * Gets a user object given the specified username.
  * @param {String} userName Filter parameter
+ * @param {Object} options Filter options
  * @returns Promise of a single user document of the specified username filter.
  */
-export function getUserByUserName(userName){
+export function getUserByUserName(userName, options=null){
+    if(options != null)
+        return userCollection.findOne({'username':userName}, options);
     return userCollection.findOne({'username':userName});
 }
 
 /**
  * Gets a user object given the specified userId
  * @param {String} userId Filter parameter.
+ * @param {Object} options Filter options
  * @returns Promise of a single user docuemnt of the specified userId filter.
  */
-export function getUserByUserID(userId){
+export function getUserByUserID(userId, options=null){
+    if(options != null)
+        return userCollection.findOne({'userId':userId}, options);
     return userCollection.findOne({'userId':userId});
 }
 

@@ -36,13 +36,13 @@ export async function getPosts(page, quantity, search, category, userId){
         const posts = await dbPost.getPosts(page,quantity,search,category); /** @todo SYNCHRONIZE LIMIT SIZES AND SKIP COUNT */
         var newPage = null;
         if(posts.length > 0)
-            newPage = posts[posts.length-1]['_id'];
+            newPage = posts[0]['_id'];
 
         for(var i = 0; i < posts.length; i++){
             posts[i]['comments'] = await dbComment.getCommentByPostHash(posts[i].postHash, Number(process.env.COMMENT_LIMIT));
             posts[i]['likeVals'] = await dbLike.getLikeByPostHash(posts[i].postHash);
             posts[i]['likes'] = posts[i]['likeVals'].length;
-            posts[i]['user'] = await getUserByID(posts[i].userId);
+            posts[i]['user'] = await getUserByID(posts[i].userId, {projection: {'userId':1,'profilepic':1,'username':1}});
         }
 
         return new Promise((resolve,reject)=>{
@@ -204,14 +204,15 @@ export async function getUsers(){
 /**
  * Gets a user by its username. It strips out the passhash from the output for security reasons.
  * @param {String} username Filter parameter.
+ * @param {Object} options Filter options for retreiving data. 
  * @returns Promise of a user object as specified by the username.
  */
-export async function getUserByUserName(username){
+export async function getUserByUserName(username, options = null){
     reset();
     var user = null;
 
     if(username != "" || username != null)
-        user = await dbUser.getUserByUserName(username);
+        user = await dbUser.getUserByUserName(username, options);
     
         return new Promise((resolve,reject)=>{
         resolve(user);
@@ -222,14 +223,15 @@ export async function getUserByUserName(username){
 /**
  * Gets currentUser as specified by the userId. It strips out the passhash from the output for security reasons.
  * @param {String} userId Filter parameter.
+ * @param {Object} options Filter options for retreiving data. 
  * @returns Promise of a user object as specified by the userId.
  */
-export async function getUserByID(userId){
+export async function getUserByID(userId, options=null){
     reset();
 
     var user = null;
     if(userId != null || userId != "")
-        user = await dbUser.getUserByUserID(userId);
+        user = await dbUser.getUserByUserID(userId, options);
         
     return new Promise((resolve,reject)=>{
         resolve(user);

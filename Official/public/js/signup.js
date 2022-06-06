@@ -89,7 +89,7 @@ function validateSignupInputs(){
     var prevHash = "";
     for(var f of form){
         if(String(f[1]).length == 0){
-            if(f[0] != "bio" && f[0] != "profilepic-select"){
+            if(f[0] != "mname" && f[0] != "bio" && f[0] != "profilepic-select"){
                 errMessage("validateSignupInputs",  f[0] + " not filled")
                 validity = false;
             }
@@ -174,9 +174,6 @@ function setDefaultErrorMessage(id){
         case "fname":
             errorMessage = "* Enter your first name";
             break;
-        case "mname":
-            errorMessage = "* Enter your middle name";
-            break;
         case "lname":
             errorMessage = "* Enter your last name";
             break;
@@ -237,7 +234,7 @@ function hash(s) {
 
  function updateColor(){
     for(f of new FormData(document.forms.signupform)){
-        if(!(f[0]=="profilepic-select") && !(f[0]=="bio")){
+        if(!(f[0]=="mname" && f[0]=="profilepic-select") && !(f[0]=="bio")){
             if(f[1] == ""){
                 changeBGColor(f[0], "var(--warning-light)");
                 setDefaultErrorMessage(f[0]);
