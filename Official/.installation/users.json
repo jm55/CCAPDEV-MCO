@@ -54,4 +54,18 @@
   "passhash": "$2b$10$r6uwfp7N/8Av1v.HrNjqOuSA5IpSdi52e1HmVhjDwNrhtjZnPRNWG",
   "userId": "7YWgnMK3aY",
   "profilepic": "/img/dp/7YWgnMK3aY.webp"
+},{
+  "_id": {
+    "$oid": "629e084bb6ad30e4c148ff9e"
+  },
+  "username": "kronii_ouro",
+  "email": "ouro_kronii@hololive.covercorp.com",
+  "fname": "Kronii",
+  "mname": "",
+  "lname": "Ouro",
+  "gender": "F",
+  "bio": "ご飯にする？お風呂にする？それとも…わ・た・し？",
+  "passhash": "$2b$10$TuzcNctBXJdGeJBG8byybedsonitInYj8EhFLlhJKBl1mboX16CM2",
+  "userId": "ZP14Jw2BzY",
+  "profilepic": "/img/dp/ZP14Jw2BzY.webp"
 }]

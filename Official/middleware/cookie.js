@@ -1,8 +1,8 @@
 import * as dispatch from './dispatch.js';
 
 export function getCookieUserId(cookies){
-    if(cookies.budolfinds != null)
-        return String(cookies.budolfinds);
+    if(cookies.userId != null)
+        return String(cookies.userId);
     return null
 }
 

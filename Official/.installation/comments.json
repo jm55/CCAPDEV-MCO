@@ -34,4 +34,13 @@
   "postHash": "Nj1v9brGREcgG7",
   "datetime": "2022-06-06T07:13:50.480Z",
   "username": "jmescalona_dlsu"
+},{
+  "_id": {
+    "$oid": "629e0869b6ad30e4c148ff9f"
+  },
+  "userId": "ZP14Jw2BzY",
+  "text": "こにちは先輩！",
+  "postHash": "Nj1v9brGREcgG7",
+  "datetime": "2022-06-06T14:00:09.200Z",
+  "username": "kronii_ouro"
 }]

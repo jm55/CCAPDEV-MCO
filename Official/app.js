@@ -68,14 +68,27 @@ app.use(profileNav);
 app.use(debugTest);
 app.use(searchNav);
 
-//Cookie.js
+//Cookie management
 import * as cookie from './middleware/cookie.js';
+
+//HashId
+import * as hashId from './middleware/hashIds.js';
+
+app.use(session({
+    secret: String(process.env.SECRET),
+    resave: false, 
+    saveUninitialized: true,
+    cookie: {
+        maxAge: 1000*60*60*24*7,
+        httpOnly: true
+    }
+}));
 
 //Index Route
 app.get('/', (req, res)=>{
     var reqVal = req;
 	console.log("Request: " + reqVal.socket.remoteAddress + ":" + reqVal.socket.remotePort + " => " + reqVal.url);
-    if(cookie.getCookieUserId(reqVal.cookies) !== null){
+    if(cookie.getCookieUserId(reqVal.session) !== null){
         res.redirect('/home');
     }else{
         res.redirect('/login');

@@ -79,7 +79,6 @@ html{
     font-family: 'Open Sans', sans-serif !important;
     background-size: cover;
     background-repeat: no-repeat;
-    background-size: auto;  
     background-color: var(--background);
     scroll-behavior: smooth;
 }

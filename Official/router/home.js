@@ -17,17 +17,26 @@ import {redirectError} from '../middleware/errordispatch.js';
 import 'dotenv/config';
 const load_limit = Number(process.env.LOAD_LIMIT);
 
-//Cookies
+//Cookies & Session
 import * as cookie from '../middleware/cookie.js';
+import session from 'express-session';
+
+homeNav.use(session({
+        secret: process.env.SECRET,
+        resave: false,
+        saveUninitialized: true,
+        cookie: {
+        maxAge:1000*60*60*24*30,
+        httpOnly: true
+    }
+}));
 
 /** Home */
 homeNav.get('/home', (req, res)=>{
     var reqVal = req;
 	console.log("Request: " + reqVal.socket.remoteAddress + ":" + reqVal.socket.remotePort + " => " + reqVal.url);
-   
-    var userId = cookie.getCookieUserId(reqVal.cookies);
+    var userId = cookie.getCookieUserId(reqVal.session);
     if(userId == null){
-        console.log('no user');
         res.redirect('/');
     }else{
         dispatch.getPosts(null, load_limit, "", "", userId).then((data)=>{
@@ -74,7 +83,7 @@ homeNav.put('/home/more',(req, res)=>{
     var reqVal = req;
 	console.log("Request: " + reqVal.socket.remoteAddress + ":" + reqVal.socket.remotePort + " => " + reqVal.url);
     
-    var userId = cookie.getCookieUserId(reqVal.cookies);
+    var userId = cookie.getCookieUserId(reqVal.session);
     if(userId == null)
         res.redirect('/');
     else{
