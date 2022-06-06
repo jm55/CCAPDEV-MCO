@@ -26,7 +26,6 @@ homeNav.get('/home', (req, res)=>{
 	console.log("Request: " + reqVal.socket.remoteAddress + ":" + reqVal.socket.remotePort + " => " + reqVal.url);
    
     var userId = cookie.getCookieUserId(reqVal.cookies);
-    console.log('userId: ' + userId);
     if(userId == null){
         console.log('no user');
         res.redirect('/');
