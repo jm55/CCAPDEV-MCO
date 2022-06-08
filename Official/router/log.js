@@ -22,9 +22,9 @@ logNav.use(session({
         resave: false,
         saveUninitialized: true,
         cookie: {
-        maxAge:1000*60*60*24*30,
-        httpOnly: true
-    }
+            maxAge:1000*60*60*24*30,
+            httpOnly: true
+        }
 }));
 
 /** Login */
@@ -50,9 +50,13 @@ logNav.post('/login/in',(req, res)=>{
                         if(err != null){
                             res.sendStatus(StatusCodes.INTERNAL_SERVER_ERROR);
                         }
-                        req.session.userId = String(u.userId);
-                        //res.cookie('budolfinds',u.userId,{maxAge:30*24*60*60*1000,httpOnly:true}); //30days max
-                        res.json({success:same});
+                        if(same){
+                            req.session.userId = String(u.userId);
+                            //res.cookie('budolfinds',u.userId,{maxAge:30*24*60*60*1000,httpOnly:true}); //30days max
+                            res.json({success:same});
+                        }else{
+                            res.json({success:false});
+                        }
                     });
                 }else
                     res.json({success:false}); 
