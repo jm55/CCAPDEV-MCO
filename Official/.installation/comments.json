@@ -43,4 +43,31 @@
   "postHash": "Nj1v9brGREcgG7",
   "datetime": "2022-06-06T14:00:09.200Z",
   "username": "kronii_ouro"
+},{
+  "_id": {
+    "$oid": "62a09d9daf46eb5b791a784f"
+  },
+  "userId": "y983WAJRJx",
+  "text": "I have yet to purchase the device, thus my presumptions about its performance and usability is based on paper.",
+  "postHash": "OLJ0qDlwr5i323",
+  "datetime": "2022-06-08T13:01:17.923Z",
+  "username": "jmescalona_dlsu"
+},{
+  "_id": {
+    "$oid": "62a09dcbaf46eb5b791a7852"
+  },
+  "userId": "y983WAJRJx",
+  "text": "test comment to post",
+  "postHash": "bERQ7w00oNF1L74",
+  "datetime": "2022-06-08T13:02:03.606Z",
+  "username": "jmescalona_dlsu"
+},{
+  "_id": {
+    "$oid": "62a09e4fa718e0d0db1ce64f"
+  },
+  "userId": "y983WAJRJx",
+  "text": "Sorry but I'll prefer the Macbook than this",
+  "postHash": "7BX3QnlLzzsQxL",
+  "datetime": "2022-06-08T13:04:15.967Z",
+  "username": "jmescalona_dlsu"
 }]

@@ -75,6 +75,9 @@ searchNav.get('/search/:search.:category',(req, res)=>{
                         searchval(){
                             if(search != "")
                                 return 'value=\''+search+'\'';
+                        },
+                        convertEscapeChar(text){
+                            return format.convertEscapeChar(text);
                         }
                     }
                 });

@@ -36,8 +36,8 @@ const postSchema = new mongoose.Schema({
     },
     editdatetime: {
         type: Date, 
-        required: true,
+        required: false,
     },
 });
 
-export const Post = mongoose.model('Post', postSchema);
+export const Post = mongoose.model('posts', postSchema);

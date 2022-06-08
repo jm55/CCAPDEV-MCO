@@ -104,4 +104,21 @@
       "$numberLong": "1654499582100"
     }
   }
+},{
+  "_id": {
+    "$oid": "62a09ce899a086910d79ea3c"
+  },
+  "userId": "y983WAJRJx",
+  "description": "This is the smartphone that I'm looking for. For less than P10k, it has 4GB RAM, 128GB internal storage, and WiFi 5 capability. The only thing it misses is a fingerprint sensor.\r\n\r\nPrice: Php 7490.00",
+  "category": "Mobiles and Gadgets",
+  "label": "Shopee",
+  "link": "https://shopee.ph/Samsung-Galaxy-A03-Internal-128GB-4GB-RAM-6.5-HD-5000mAh-Batt-FREE-BT-Earphone-Gadget-Organizer-i.136260178.15132311851?sp_atk=4dc21638-4f95-48b2-875f-ef84fc251d11&xptdk=4dc21638-4f95-48b2-875f-ef84fc251d11",
+  "imgurl": "/img/post/OLJ0qDlwr5i323.webp",
+  "postHash": "OLJ0qDlwr5i323",
+  "datetime": {
+    "$date": {
+      "$numberLong": "1654693096433"
+    }
+  },
+  "__v": 0
 }]
