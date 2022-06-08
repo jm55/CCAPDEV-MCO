@@ -1,4 +1,5 @@
 import { MongoClient } from 'MongoDB';
+import mongoose from 'mongoose';
 
 //Connection URL
 const connectionString = process.env.MONGODB_URI
@@ -14,6 +15,16 @@ export function connectToServer(callback){
             return callback(err);
         console.log("conn.connectToServer: Connection to DB established!");
         return callback();
+    });
+}
+
+export const connectMongoose = () => {
+    mongoose.connect(process.env.MONGOOSE_URI).then(()=>{
+        console.log('conn.connectMongoose: Connection to DB established!');
+    }).catch(error=>{
+        console.error('Failed to connect to MongoDB!');
+        console.error(error);
+        process.abort();
     });
 }
 

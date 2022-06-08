@@ -32,9 +32,9 @@ profileNav.use(session({
         resave: false,
         saveUninitialized: true,
         cookie: {
-        maxAge:1000*60*60*24*30,
-        httpOnly: true
-    }
+            maxAge:1000*60*60*24*30,
+            httpOnly: true
+        }
 }));
 
 /** User (other User Profile) */
@@ -390,6 +390,9 @@ function renderProfile(res, view, currentUser, targetUser, data, search){
                     return "block";
                 else
                     return "none";
+            },
+            convertEscapeChar(text){
+                return format.convertEscapeChar(text);
             }
         }
     });

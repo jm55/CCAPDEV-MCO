@@ -13,4 +13,4 @@ const userSchema = new mongoose.Schema({
     profilepic: String,
 });
 
-export const User = mongoose.model('User', userSchema);
+export const User = mongoose.model('users', userSchema);

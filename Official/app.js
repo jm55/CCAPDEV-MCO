@@ -109,6 +109,8 @@ app.use((req, res, err) => {
 import * as db from './db/conn.js';
 import { getReasonPhrase, StatusCodes } from 'http-status-codes';
 
+db.connectMongoose();
+
 db.connectToServer((err, callback)=>{
     if(err){
         console.error("db.connectToServer: Error occured connecting to server!");

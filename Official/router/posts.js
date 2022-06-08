@@ -11,6 +11,7 @@ import * as dbLike from'../db/controller/likeController.js';
 import * as dbComment from'../db/controller/commentController.js';
 import * as dbReport from'../db/controller/reportController.js';
 import * as dispatch from '../middleware/dispatch.js';
+import {Post} from '../model/posts.js';
 
 //Multer
 import * as mult from '../middleware/mult.js';
@@ -34,9 +35,9 @@ postNav.use(session({
         resave: false,
         saveUninitialized: true,
         cookie: {
-        maxAge:1000*60*60*24*30,
-        httpOnly: true
-    }
+            maxAge:1000*60*60*24*30,
+            httpOnly: true
+        }
 }));
 
 postNav.use(express.json());
@@ -80,6 +81,9 @@ postNav.get('/post/:posthash', (req, res)=>{
                     }else{
                         return 'none';
                     }
+                },
+                convertEscapeChar(text){
+                    return format.convertEscapeChar(text);
                 }
             }
         });
@@ -183,16 +187,13 @@ postNav.post('/post/new', mult.upload_post.single('imgselect'), (req, res)=>{
         reqVal.body["imgurl"] = '/img/post/' + reqVal.body['postHash'] + ".webp";
         reqVal.body["datetime"] = new Date();
         
-        dbPost.addPost(reqVal.body).then((p)=>{
-            if(p.acknowledged==true){
+        Post.create(reqVal.body,error=>{
+            if(error){
+                res.sendStatus(StatusCodes.EXPECTATION_FAILED);
+            }else{
                 file.renamePostImg(reqVal.file.originalname, reqVal.body["postHash"]);
                 res.sendStatus(StatusCodes.OK);
-            }else{
-                res.sendStatus(StatusCodes.EXPECTATION_FAILED);
             }
-        }).catch((err)=>{
-            res.statusMessage = err;
-            res.sendStatus(StatusCodes.INTERNAL_SERVER_ERROR);
         });
     }
 });

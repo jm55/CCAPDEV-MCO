@@ -41,7 +41,7 @@
             <label>Link to Account: </label>
             <p><a href="/user/{{targetUser.username}}">{{targetUser.username}}</a></p>
             <label>Bio: </label>
-            <p>{{targetUser.bio}}</p>
+            <p>{{{convertEscapeChar targetUser.bio}}}</p>
         </span> 
         <span style="width: 17%;">
             <div>

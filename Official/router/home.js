@@ -66,6 +66,9 @@ homeNav.get('/home', (req, res)=>{
                                 return "block";
                             else
                                 return "none";
+                        },
+                        convertEscapeChar(text){
+                            return format.convertEscapeChar(text);
                         }
                     }
                 });

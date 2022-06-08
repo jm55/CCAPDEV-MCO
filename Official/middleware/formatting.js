@@ -45,3 +45,13 @@ export function formalName(fname, mname, lname){
 export function buildTitle(username){
     return username + " - Budol Finds"
 }
+
+
+/**
+ * Converts escape characters into html compatible escape characters.
+ * @param {String} text Text value to convert escape characters
+ * @returns text with converted escape characters
+ */
+export function convertEscapeChar(text){
+    return text.replace('\n','<br>');
+}

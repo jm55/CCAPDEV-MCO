@@ -93,7 +93,6 @@ logNav.post('/logout/out',(req, res)=>{
                     res.sendStatus(StatusCodes.ACCEPTED);
             });
             //res.clearCookie("budolfinds");
-            
         }
     } catch(e) {
         res.statusMessage = e;
