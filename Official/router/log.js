@@ -31,7 +31,11 @@ logNav.use(session({
 logNav.get('/login', (req,res)=>{
     var reqVal = req;
 	console.log("Request: " + reqVal.socket.remoteAddress + ":" + reqVal.socket.remotePort + " => " + reqVal.url);  
-    res.render("login", {title: "Login - Budol Finds"}); 
+    var userId = cookie.getCookieUserId(reqVal.session);
+    if(userId != null)
+        res.redirect('/home');
+    else
+        res.render("login", {title: "Login - Budol Finds"}); 
 });
 
 /** Confirm Login */
