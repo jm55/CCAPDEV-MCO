@@ -77,7 +77,7 @@ export function getPostCount(userId){
 export function getPostByUserID(userId, search, page, limit){
     var filter = {'userId':userId};
     if(page != null)
-        filter["_id"] = {"$gt": new ObjectID(page)};
+        filter["_id"] = {"$lt": new ObjectID(page)};
     if(search != "" || search != null)
         filter['description'] = {$regex: new RegExp(search, 'i')};
     return postCollection.find(filter).limit(limit).sort({'datetime':-1}).toArray();

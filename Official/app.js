@@ -57,7 +57,7 @@ import homeNav from './router/home.js';
 import profileNav from './router/profile.js';
 import debugTest from './router/debug.js';
 import searchNav from './router/search.js';
-import errorNav from './router/error.js'
+import errorNav from './router/error.js';
 
 //Use Routers
 app.use(homeNav);
