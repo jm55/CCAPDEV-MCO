@@ -32,7 +32,6 @@ export function simpleDateTime(dt){
  * @returns Name formatted as Last, First M.
  */
 export function formalName(fname, mname, lname){
-    console.log(lname + ' \'' + mname + '\'');
     if(mname == "" || mname == null || mname == '　')
         return lname + ", " + fname;
     return lname + ", " + fname + " " + mname.substring(0,1) + ".";
