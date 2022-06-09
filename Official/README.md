@@ -76,4 +76,4 @@ Please refer to the [documentation's](https://github.com/jm55DLSU/CCAPDEV-MCO/bl
 * External Dependencies
     * validator.js (via unpkg.com)
 
-### [More Documentation](https://github.com/jm55DLSU/CCAPDEV-MCO/blob/main/Documentation/MCO%20Design%20-%20PDF.pdf)
+### [More Documentation](https://github.com/jm55DLSU/CCAPDEV-MCO/blob/main/Documentation/MCO%20Documentation%20-%20PDF.pdf)
