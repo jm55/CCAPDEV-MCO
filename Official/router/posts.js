@@ -12,6 +12,7 @@ import * as dbComment from'../db/controller/commentController.js';
 import * as dbReport from'../db/controller/reportController.js';
 import * as dispatch from '../middleware/dispatch.js';
 import {Post} from '../model/posts.js';
+import { Like } from '../model/likes.js';
 
 //Multer
 import * as mult from '../middleware/mult.js';
@@ -29,6 +30,7 @@ import {newPostHash} from "../middleware/hashIds.js";
 //Cookies
 import * as cookie from '../middleware/cookie.js';
 import session from 'express-session';
+
 
 postNav.use(session({
     secret: process.env.SECRET,
@@ -210,11 +212,23 @@ postNav.post('/post/like', (req, res)=>{
         var currentCount = Number(reqVal.body['currentCount']);
         dbLike.isLiked(reqVal.body['userId'], reqVal.body['postHash']).then((arr)=>{
             if(arr != null){
-                dbLike.unlike(reqVal.body['userId'],reqVal.body['postHash']);
-                updateCounter(res,currentCount,false);
+                Like.deleteOne({userId: reqVal.body['userId'], postHash: reqVal.body['postHash']}, error=>{
+                    if(error){
+                        res.sendStatus(StatusCodes.EXPECTATION_FAILED);
+                    }else{
+                        updateCounter(res,currentCount,false);
+                    }
+                });
+                //dbLike.unlike(reqVal.body['userId'],reqVal.body['postHash']);
             }else{
-                dbLike.like(reqVal.body);
-                updateCounter(res,currentCount,true);
+                Like.create(reqVal.body, error=>{
+                    if(error){
+                        res.sendStatus(StatusCodes.EXPECTATION_FAILED);
+                    }else{
+                        updateCounter(res,currentCount,true);
+                    }
+                });
+                //dbLike.like(reqVal.body);
             }   
         }).catch((err)=>{
             res.statusMessage = err;

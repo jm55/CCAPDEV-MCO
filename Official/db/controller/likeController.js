@@ -36,7 +36,7 @@ export function like(likeObject){
      * datetime: '2022-05-31T04:11:12.381Z',
      * currentCount: '9QoOG2nLvY'
      */
-     likeObject['userId'] = String(likeObject['userId']);
+    likeObject['userId'] = String(likeObject['userId']);
     // @ts-ignore
     delete likeObject.currentCount;
     // @ts-ignore
