@@ -8,18 +8,19 @@ const commentCollection = getDB().collection('comments');
  * @returns Promise of an insert result on the comments collection of the database.
  */
 export function newComment(comment){
-    return commentCollection.insertOne(comment);
+    return commentCollection.insertOne(comment); //Insert one comment object
 }
 
 /**
  * Gets all comments from the comments collection of the database.
+ * Output are sorted in descending order using datetime field of the document.
  * @param {import('mongodb').FindOptions} options Filter options.
  * @returns Promise of an array of all comment objects from the database.
  */
 export function getComments(options = null){
-    if(options != null)
+    if(options != null) //Without custom options
         return commentCollection.find({}, options).sort({'datetime':-1}).toArray();    
-    return commentCollection.find({}).sort({'datetime':-1}).toArray();
+    return commentCollection.find({}).sort({'datetime':-1}).toArray(); //With custom options
 }
 
 /**
@@ -30,14 +31,15 @@ export function getComments(options = null){
  * @returns Promise of an array of all comment objects that is part of the post specified by postHash.
  */
 export function getCommentByPostHash(postHash, quantity, options = null){
-    if(quantity == null){
+    if(quantity == null){ //No specific quantity is set
         if(options != null)
-        return commentCollection.find({'postHash':postHash}, options).sort({'datetime':-1}).toArray();
+            return commentCollection.find({'postHash':postHash}, options).sort({'datetime':-1}).toArray();
         return commentCollection.find({'postHash':postHash}).sort({'datetime':-1}).toArray();
+    }else{ //Specific quantity is set
+        if(options != null)
+            return commentCollection.find({'postHash':postHash}, options).limit(quantity).sort({'datetime':-1}).toArray(); 
+        return commentCollection.find({'postHash':postHash}).limit(quantity).sort({'datetime':-1}).toArray();
     }
-    if(options != null)
-    return commentCollection.find({'postHash':postHash}, options).limit(quantity).sort({'datetime':-1}).toArray(); 
-    return commentCollection.find({'postHash':postHash}).limit(quantity).sort({'datetime':-1}).toArray(); 
 }
 
 /**
@@ -46,7 +48,7 @@ export function getCommentByPostHash(postHash, quantity, options = null){
  * @returns Promise result ofthe deletion of comments in the database.
  */
  export function deleteAllCommentsByUser(userId){
-    return commentCollection.deleteMany({'userId':userId});
+    return commentCollection.deleteMany({'userId':String(userId)}); //Delete comments with user that match the userId
 }
 
 console.log("DB.Controller commentController.js loaded");

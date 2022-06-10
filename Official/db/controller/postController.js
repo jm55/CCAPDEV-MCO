@@ -42,15 +42,15 @@ export function deletePost(postHash){
  */
 export function getPosts(page, limit, search, category){
     var filter = {};
-    if(page != null)
+    if(page != null) //If page was available, use as filter where posts less than it (i.e. previous posts) are queued next.
         filter["_id"] = {"$lt": new ObjectID(page)};
     if(search != "" || category != ""){
-        if(search != "" || search != null)
+        if(search != "" || search != null) //Add search filter if available
             filter['description'] = {$regex: new RegExp(search, 'i')};
-        if(category != "" || category != null)
+        if(category != "" || category != null) //Add category filter if available.
             filter['category'] =  {$regex: new RegExp(category, 'i')};
         else
-        filter['category'] =  {$regex: new RegExp('None', 'i')};
+            filter['category'] =  {$regex: new RegExp('None', 'i')};
     }
     return postCollection.find(filter).limit(limit).sort({'datetime':-1}).toArray();
 }
@@ -77,7 +77,7 @@ export function getPostCount(userId){
 export function getPostByUserID(userId, search, page, limit){
     var filter = {'userId':userId};
     if(page != null)
-        filter["_id"] = {"$lt": new ObjectID(page)};
+        filter["_id"] = {"$lt": new ObjectID(page)}; //If page was available, use as filter where posts less than it (i.e. previous posts) are queued next.
     if(search != "" || search != null)
         filter['description'] = {$regex: new RegExp(search, 'i')};
     return postCollection.find(filter).limit(limit).sort({'datetime':-1}).toArray();

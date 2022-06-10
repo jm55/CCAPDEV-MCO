@@ -35,9 +35,12 @@ export function addUser(user){
  * @returns Promise of an update result on the users collection of the database.
  */
 export function updateUser(user){
+    //Remove the unnecessary password fields
     delete user.password_a;
     delete user.password_b;
     delete user.password_current;
+
+    //Update the current user pointed by the userId
     return userCollection.updateOne({'userId':user.userId}, {$set: user}).catch((error)=>{
         console.error(error);
     });
@@ -49,7 +52,7 @@ export function updateUser(user){
  * @returns Promise of an array of users that fits the userId filter.
  */
 export function getHash(userId){
-    return userCollection.find({'userId': String(userId)},{projection: {'passhash': 1}}).toArray();
+    return userCollection.find({'userId': String(userId)},{projection: {'passhash': 1}}).toArray(); //Find passhash of user pointed by userId.
 }
 
 /**
@@ -58,7 +61,7 @@ export function getHash(userId){
  * @returns Promise of an array of users that fits the username filter.
  */
 export function getHashViaUsername(username){
-    return userCollection.find({'username': String(username)},{projection: {'passhash': 1}}).toArray();
+    return userCollection.find({'username': String(username)},{projection: {'passhash': 1}}).toArray(); //Find passhash of user pointed by username.
 }
 
 /**
@@ -67,7 +70,7 @@ export function getHashViaUsername(username){
  * @returns Promise of a delete result on the users collection of the database.
  */
 export function deleteUser(userId){
-    return userCollection.deleteOne({'userId': String(userId)});
+    return userCollection.deleteOne({'userId': String(userId)}); //Delete user pointed by userId
 }
 
 /**
@@ -78,8 +81,8 @@ export function deleteUser(userId){
  */
 export function userExists(username, options=null){
     if(options!=null)
-        return userCollection.findOne({username: username},options);    
-    return userCollection.findOne({username: username},{projection: {'username': 1}});
+        return userCollection.findOne({username: username},options); //Find user without options
+    return userCollection.findOne({username: username},{projection: {'username': 1}}); //Find user with options
 }
 
 /**
@@ -88,6 +91,7 @@ export function userExists(username, options=null){
  */
 export function getUsers(options=null){
     if(options != null)
+        return userCollection.find(options).toArray();
     return userCollection.find({}).toArray();
 }
 
