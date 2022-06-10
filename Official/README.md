@@ -1,5 +1,7 @@
 # CCAPDEV-MCO
 
+![BudolFinds Homepage](.others/homepage.png)
+
 ## Description
 The machine project for this course is to make a web application of your choice based on the specification required.
 
@@ -8,14 +10,12 @@ The web application must have the capabilities of a CRUDS application.
 ### Features required for all web applications:
 1. Log-in and Log-out
 2. Register
-
 ### CRUDS (Simplified)
 1. Create - Create web content
 2. Read - Read web content
 3. Update - Update web content
 4. Delete - Delete web content
 5. Search - Search web content
-
 ### Web App Description
 The web application was inspired by a private Facebook group called Home Buddies, which at the time of the web app's creation has over 3 million members. The Facebook group’s posts cover
 different topics and purposes, however, the group decided to take on the idea of
@@ -45,7 +45,7 @@ page, home page/timeline, and different pages organized by item category (e.g.:
 2. Dev Mode: Run `npx nodemon app.js` or `npm run devmode`, or Open `run_dev.bat`
 
 ## Demonstration Credentials
-Please refer to the [documentation's](https://github.com/jm55DLSU/CCAPDEV-MCO/blob/main/Documentation/MCO%20Design%20-%20PDF.pdf) **Demonstration User Credentials** segment at the last page.
+Please refer to the [documentation's](https://github.com/jm55DLSU/CCAPDEV-MCO/blob/main/Documentation/MCO%20Documentation%20-%20PDF.pdf) **Demonstration User Credentials** segment at the last page.
 
 ## Technologies used:
 * Frontend
@@ -56,6 +56,7 @@ Please refer to the [documentation's](https://github.com/jm55DLSU/CCAPDEV-MCO/bl
     * NodeJS (v16.15.0)
     * Express
     * MongoDB (v5.0.3)
+    * MongoDB Atlas
     * NPM (v8.11.0)
 * Dependencies (Extracted from package.json)
     * bcrypt
