@@ -174,6 +174,9 @@ function setDefaultErrorMessage(id){
         case "fname":
             errorMessage = "* Enter your first name";
             break;
+        case "mname":
+            errorMessage = "* Enter your middle name";
+            break;
         case "lname":
             errorMessage = "* Enter your last name";
             break;
