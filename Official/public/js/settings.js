@@ -22,6 +22,10 @@ $(document).ready(()=>{
         }
     });
 
+    $("#bio").keyup(()=>{
+        updateTextCount();
+    });
+
     $("#bio").keydown(()=>{
         updateTextCount();
     });
