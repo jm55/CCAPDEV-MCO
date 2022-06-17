@@ -31,8 +31,6 @@ export async function getPosts(page, quantity, search, category, userId){
         });
     }
     const user = await getUserByID(userId);
-    
-    //Check if user is valid such that it the userId exists in the database.
     if(user != null){
         const postCount = await dbPost.getPostCount(userId);
         const posts = await dbPost.getPosts(page,quantity,search,category);
@@ -41,8 +39,7 @@ export async function getPosts(page, quantity, search, category, userId){
             newPage = posts[posts.length-1]['_id'];
 
         for(var i = 0; i < posts.length; i++){
-            posts[i]['comments'] = await dbComment.getCommentByPostHash(posts[i].postHash, Number(process.env.COMMENT_LIMIT),
-                                                                        {projection: {'userId':1,'text':1,'datetime':1,'username':1}});
+            posts[i]['comments'] = await dbComment.getCommentByPostHash(posts[i].postHash, Number(process.env.COMMENT_LIMIT),{projection: {'userId':1,'text':1,'datetime':1,'username':1}});
             posts[i]['likeVals'] = await dbLike.getLikeByPostHash(posts[i].postHash, {projection: {'userId':1,'datetime':1}});
             posts[i]['likes'] = posts[i]['likeVals'].length;
             posts[i]['user'] = await getUserByID(posts[i].userId, {projection: {'userId':1,'profilepic':1,'username':1}});
@@ -174,6 +171,22 @@ export async function getUserPair(currentUserId, targetUserName){
     return new Promise((resolve, reject)=>{
         resolve([currentUser,targetUser]);
         reject('Error retrieving user pairs.');
+    });
+}
+
+/**
+ * Gets a random user from database.
+ * @deprecated
+ * @returns Promise of a random user object. 
+ */
+export async function getTempUser(){
+    reset();
+    const users = await dbUser.getUsers();
+    var selected = users[Math.floor(Math.random() * users.length)];
+    delete selected['passhash'];
+    return new Promise((resolve,reject)=>{
+        resolve(selected);
+        reject("Error retrieving temp user!");
     });
 }
 

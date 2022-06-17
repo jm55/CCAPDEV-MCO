@@ -61,7 +61,7 @@ postNav.get('/post/:posthash', (req, res)=>{
             currentUser: currentUser,
             comments: currentComments,
             likes: currentLikes.length,
-            post: currentPost,
+            post: currentPost, //SAMPLE POST
             postJSON: JSON.stringify(currentPost),
             helpers: {
                 fullName(fname, mname, lname){return format.formalName(fname,mname,lname);},
@@ -139,7 +139,7 @@ postNav.patch('/post/:posthash/save', mult.upload_post.single('imgselect'), (req
         res.redirect('/');
     else{
         reqVal.body['editdatetime'] = new Date();
-        Post.updateOne(reqVal.body).then((result)=>{
+        dbPost.updatePost(reqVal.body).then((result)=>{
             if(result['acknowledged']==true){
                 if(reqVal.file)
                     file.renamePostImg(reqVal.file.originalname, reqVal.body["postHash"]);
