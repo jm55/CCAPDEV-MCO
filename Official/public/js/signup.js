@@ -104,12 +104,21 @@ function validateSignupInputs(){
                 }
             } 
             
-            //CHECK PASSWORD IF SAME, RECOMMENDED TO BE HASHED BEFORE COMPARING
             if(f[0] == "password_a"){
-                prevHash = String(f[1]);
+                if(f[1].length < 6 || f[1].length > 20){
+                    errMessage("validateSignupInputs", "Invalid password length");
+                    $("#error-" + f[0]).text("* Passwords must be between 6 and 20 characters");
+                    changeBGColor(f[0], "var(--warning-light)");
+                    validity = false;
+                }
+                else{
+                    prevHash = String(f[1]);
+                }
             }
-            if(f[0] == "password_b"){
-                if(!prevHash===String(f[1])){
+
+            //CHECK PASSWORD IF SAME, RECOMMENDED TO BE HASHED BEFORE COMPARING
+            if(f[0] == "password_b" && prevHash){
+                if(f[1] != prevHash){
                     errMessage("validateSignupInputs", "Mismatched passwords");
                     $("#error-" + f[0]).text("* Passwords do not match");
                     changeBGColor(f[0], "var(--warning-light)");
@@ -125,7 +134,6 @@ function validateSignupInputs(){
                 }
             }
 
-            //TODO: add the username and password policy here or make new function
             if(f[0] == "username"){
                 if(!validator.isAlphanumeric(f[1])){
                     errMessage("validateSignupInputs", "Non-alphanumeric characters in username");
