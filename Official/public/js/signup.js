@@ -257,9 +257,18 @@ function hash(s) {
 }
 
  function updateColor(){
+    var passA = "";
     for(f of new FormData(document.forms.signupform)){
         if(!(f[0]=="mname" && f[0]=="profilepic-select") && !(f[0]=="bio")){
-            if(f[1] == ""){
+            if(f[0] == "password_a"){
+                passA = f[1];
+            }
+
+            if(f[0] == "password_b" && (passA == "" || passA.length < 6 || passA.length > 20)){
+                changeBGColor(f[0], "var(--textbox)");
+                $("#error-" + f[0]).text("");
+            }
+            else if(f[1] == ""){
                 changeBGColor(f[0], "var(--warning-light)");
                 setDefaultErrorMessage(f[0]);
             }
