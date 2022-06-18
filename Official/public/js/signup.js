@@ -124,6 +124,22 @@ function validateSignupInputs(){
                     validity = false;
                 }
             }
+
+            //TODO: add the username and password policy here or make new function
+            if(f[0] == "username"){
+                if(!validator.isAlphanumeric(f[1])){
+                    errMessage("validateSignupInputs", "Non-alphanumeric characters in username");
+                    $("#error-" + f[0]).text("* Username may only contain alphanumeric characters");
+                    changeBGColor(f[0], "var(--warning-light)");
+                    validity = false;
+                }
+                else if(f[1].length < 6 || f[1].length > 20){
+                    errMessage("validateSignupInputs", "Invalid username length");
+                    $("#error-" + f[0]).text("* Usernames must be between 6 and 20 characters");
+                    changeBGColor(f[0], "var(--warning-light)");
+                    validity = false;
+                }
+            }
         }   
     }
     return validity;
