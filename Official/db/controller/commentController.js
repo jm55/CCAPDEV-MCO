@@ -1,4 +1,5 @@
 import { getDB } from '../conn.js';
+import xss from 'xss';
 
 const commentCollection = getDB().collection('comments');
 
@@ -8,6 +9,7 @@ const commentCollection = getDB().collection('comments');
  * @returns Promise of an insert result on the comments collection of the database.
  */
 export function newComment(comment){
+    comment.text = xss(comment.text);
     return commentCollection.insertOne(comment);
 }
 

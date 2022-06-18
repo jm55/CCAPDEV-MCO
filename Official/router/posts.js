@@ -1,4 +1,5 @@
 import express from 'express';
+import xss from 'xss';
 
 const postNav = express.Router();
 
@@ -147,7 +148,7 @@ postNav.patch('/post/:posthash/save', mult.upload_post.single('imgselect'), (req
             }else
                 res.sendStatus(StatusCodes.EXPECTATION_FAILED);
         }).catch((err)=>{
-            console.error(err);
+            res.statusMessage = err;
             res.sendStatus(StatusCodes.INTERNAL_SERVER_ERROR);
         });
     }
@@ -188,14 +189,15 @@ postNav.post('/post/new', mult.upload_post.single('imgselect'), (req, res)=>{
         reqVal.body["postHash"] = newPostHash();
         reqVal.body["imgurl"] = '/img/post/' + reqVal.body['postHash'] + ".webp";
         reqVal.body["datetime"] = new Date();
-        
-        Post.create(reqVal.body,error=>{
-            if(error){
-                res.sendStatus(StatusCodes.EXPECTATION_FAILED);
-            }else{
+
+        dbPost.addPost(reqVal.body).then((result)=>{
+            if(result['acknowledged'] == true){
                 file.renamePostImg(reqVal.file.originalname, reqVal.body["postHash"]);
                 res.sendStatus(StatusCodes.OK);
             }
+        }).catch((error)=>{
+            res.statusMessage = error;
+            res.sendStatus(StatusCodes.EXPECTATION_FAILED);
         });
     }
 });

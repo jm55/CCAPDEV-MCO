@@ -1,4 +1,5 @@
 import { getDB } from '../conn.js';
+import xss from 'xss';
 
 const userCollection = getDB().collection('users');
 
@@ -25,6 +26,15 @@ export function addUser(user){
      */
     delete user.password_a; //REMOVES PASSWORD A (NOT TO USE)
     delete user.password_b; //REMOVES PASSWORD B (NOT TO USE)
+    
+    //XSS prevention
+    user.username = xss(user.username);
+    user.email = xss(user.email);
+    user.fname = xss(user.fname);
+    user.mname = xss(user.mname);
+    user.lname = xss(user.lname);
+    user.bio = xss(user.bio);
+
     return userCollection.insertOne(user);
 }
 
@@ -38,6 +48,14 @@ export function updateUser(user){
     delete user.password_a;
     delete user.password_b;
     delete user.password_current;
+
+    user.username = xss(user.username);
+    user.email = xss(user.email);
+    user.fname = xss(user.fname);
+    user.mname = xss(user.mname);
+    user.lname = xss(user.lname);
+    user.bio = xss(user.bio);
+
     return userCollection.updateOne({'userId':user.userId}, {$set: user}).catch((error)=>{
         console.error(error);
     });
@@ -77,6 +95,7 @@ export function deleteUser(userId){
  * @returns Promise of a single user document of the specified username filter. Contains _id, username, and passhash.
  */
 export function userExists(username, options=null){
+    username = xss(username);
     if(options!=null)
         return userCollection.findOne({username: username},options);    
     return userCollection.findOne({username: username},{projection: {'username': 1}});

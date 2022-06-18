@@ -1,5 +1,6 @@
 import { ObjectID } from 'mongodb';
 import { getDB } from '../conn.js';
+import xss from 'xss';
 
 const postCollection = getDB().collection('posts');
 
@@ -9,6 +10,9 @@ const postCollection = getDB().collection('posts');
  * @returns Promise result of an insert on the posts collection of the database.
  */
 export function addPost(post){
+    post.description = xss(post.description);
+    post.label = xss(post.label);
+    post.link = xss(post.link);
     return postCollection.insertOne(post);
 }
 
@@ -18,6 +22,9 @@ export function addPost(post){
  * @returns Promise result of an update on the posts collection of the database.
  */
 export function updatePost(post){
+    post.description = xss(post.description);
+    post.label = xss(post.label);
+    post.link = xss(post.link);
     return postCollection.updateOne({'postHash':post.postHash}, {$set: post}).catch((error)=>{
         console.error(error);
     });
