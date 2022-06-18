@@ -165,6 +165,17 @@ function saveProfile(){
                 errMessage("validateSignupInputs", "Bio char limit exceeded");
                 validity = false;
             }
+        //CHECK USERNAME VALIDITY
+        if(f[0] == "username"){
+            if(!validator.isAlphanumeric(f[1])){
+                errMessage("validateSignupInputs", "Non-alphanumeric characters in username");
+                validity = false;
+            }
+            else if(f[1].length < 6 || f[1].length > 20){
+                errMessage("validateSignupInputs", "Invalid username length");
+                validity = false;
+            }
+        }
     }
     var body = {};
     body['username'] = currentUser.username;
@@ -203,14 +214,15 @@ function saveProfile(){
             validity = false;
         }
         updateColor();
-        if(validity)
-            sendProfile();
-        else
-            alert("Please check inputs again");
     }).catch((error)=>{
         console.error("Error checking password on DB");
         console.error(error);
     });
+
+    if(validity)
+        sendProfile();
+    else
+        alert("Please check inputs again");
 }
 
 /**
@@ -226,7 +238,7 @@ function saveProfile(){
 
 /**
  * Sets the error message with the passed id back to its default value.
- * @param id ID of the error message to change, minue the "error-" part.
+ * @param id ID of the error message to change, minus the "error-" part.
  */
  function setDefaultErrorMessage(id){
     let errorMessage;
@@ -259,10 +271,10 @@ function saveProfile(){
             errorMessage = "* Enter a bio";
             break;
         case "password_a":
-            errorMessage = "*Check if this matches the second password";
+            errorMessage = "* Check if this matches the second password";
             break;
         case "password_b":
-            errorMessage = "*Check if this matches the first password";
+            errorMessage = "* Check if this matches the first password";
             break;
     }
     $("#error-" + id).text(errorMessage);
@@ -359,7 +371,20 @@ function errMessage(functionName, msg){
             else if(f[1] == "" && f[0] != "password_b"){
                 changeBGColor(f[0], "var(--warning-light)");
                 setDefaultErrorMessage(f[0]);
-            }else{
+            }
+            else if(f[0] == "username" && !validator.isAlphanumeric(f[1])){
+                changeBGColor(f[0], "var(--warning-light)");
+                $("#error-" + f[0]).text("* Username may only contain alphanumeric characters");
+            }
+            else if(f[0] == "username" && (f[1].length < 6 || f[1].length > 20)){
+                changeBGColor(f[0], "var(--warning-light)");
+                $("#error-" + f[0]).text("* Usernames must be between 6 and 20 characters");
+            }
+            else if(f[0] == "email" && !validator.isEmail(f[1])){
+                changeBGColor(f[0], "var(--warning-light)");
+                $("#error-" + f[0]).text("* Invalid email address");
+            }
+            else{
                 changeBGColor(f[0], "var(--textbox)");
                 $("#error-" + f[0]).text("");
             }
