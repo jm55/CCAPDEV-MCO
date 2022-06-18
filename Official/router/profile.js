@@ -280,9 +280,13 @@ profileNav.delete('/profile/settings/delete', (req, res)=>{
             file.deleteDP(data[0]);
             for(var d of data[1])
                 file.deletePostImg(d.postHash);
-            
-            res.clearCookie("budolfinds");
-            res.sendStatus(StatusCodes.OK);
+            req.session.destroy((error)=>{
+                if(error){
+                    res.statusMessage = error;
+                    res.sendStatus(StatusCodes.INTERNAL_SERVER_ERROR);
+                }else
+                    res.sendStatus(StatusCodes.ACCEPTED);
+            });
         }).catch((error)=>{
             res.statusMessage = error;
             res.sendStatus(StatusCodes.INTERNAL_SERVER_ERROR);

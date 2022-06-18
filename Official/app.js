@@ -88,7 +88,8 @@ app.use(session({
 app.get('/', (req, res)=>{
     var reqVal = req;
 	console.log("Request: " + reqVal.socket.remoteAddress + ":" + reqVal.socket.remotePort + " => " + reqVal.url);
-    if(cookie.getCookieUserId(reqVal.session) !== null){
+    var auth = cookie.getCookieUserId(reqVal.session);
+    if(auth != null){
         res.redirect('/home');
     }else{
         res.redirect('/login');

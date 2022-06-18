@@ -64,7 +64,7 @@ function deleteAccount(){
         body: JSON.stringify({'userId': currentUser.userId}),
         headers: {'Content-Type':'application/json'},
     }).then((data)=>{
-        if(data.status == 200){
+        if(data.status == 202){
             alert('Account successfully deleted!\nYou\'ll be redirected to the login page.');
             window.location.href = '/';
         }
