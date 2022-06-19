@@ -176,6 +176,14 @@ function saveProfile(){
                 validity = false;
             }
         }
+
+        if(f[0] == "password_a"){
+            if((f[1].length > 0 && f[1].length < 6) || f[1].length > 20){
+                errMessage("validateSignupInputs", "Invalid new password length");
+                console.log("invalid password length");
+                validity = false;
+            }
+        }
     }
     var body = {};
     body['username'] = currentUser.username;
@@ -192,24 +200,8 @@ function saveProfile(){
         validCurrentPassword = data['match'];
     }).finally(()=>{
         //console.log('finally: '+ validCurrentPassword);
-        var a = document.getElementById("password_a").value;
-        var b = document.getElementById("password_b").value;
-        if(validCurrentPassword){
-            if(a.length > 0 && b.length > 0){
-                if(String(a)===(String(b))){
-                    newPassMismatch = false;
-                    validity = true;
-                }else{
-                    //console.log("new pass mismatch");
-                    newPassMismatch = true;
-                    validity = false;
-                }
-            }else{
-                //console.log("no new password");
-                validity = true;
-            }
-        }else{
-            //console.log("current password wrong");
+
+        if(!validCurrentPassword){
             document.getElementById("password_current").value = "";
             validity = false;
         }
@@ -218,6 +210,13 @@ function saveProfile(){
         console.error("Error checking password on DB");
         console.error(error);
     });
+
+    var a = document.getElementById("password_a").value;
+    var b = document.getElementById("password_b").value;
+
+    if(a && b != a){
+        validity = false;
+    }
 
     if(validity)
         sendProfile();
@@ -272,9 +271,6 @@ function saveProfile(){
             break;
         case "password_a":
             errorMessage = "* Check if this matches the second password";
-            break;
-        case "password_b":
-            errorMessage = "* Check if this matches the first password";
             break;
     }
     $("#error-" + id).text(errorMessage);
@@ -359,18 +355,18 @@ function errMessage(functionName, msg){
  * Carried over from HO3 trigges a scan of the form specified (unfortunately, it is hardcoded)
  */
  function updateColor(){
-    var newPasswordA = false; //TO BE USED IF TO FLAG PASSWORD_B
+    var newPasswordA = ""; //TO BE USED IF TO FLAG PASSWORD_B
     for(var f of new FormData(document.forms.profileform)){
         if(f[0] == "password_a" && f[1].length > 0) //NEW PASSWORD_A WAS SET
-            newPasswordA = true;
-        if(!(f[0]=="mname" || f[0]=="bio" || f[0]=="profilepic-select" || f[0]=="password_a")){
-            if(newPasswordA && f[1] == ""){
+            newPasswordA = f[1];
+        if(!(f[0]=="mname" || f[0]=="bio" || f[0]=="profilepic-select")){
+            if(newPasswordA && f[0] == "password_b" && f[1] != newPasswordA && (newPasswordA.length >= 6 && newPasswordA.length <= 20)){
                 changeBGColor(f[0], "var(--warning-light)");
                 setDefaultErrorMessage(f[0]);
             }
-            else if(f[1] == "" && f[0] != "password_b"){
+            else if(f[0] == "password_a" && newPasswordA && (newPasswordA.length < 6 || newPasswordA.length > 20)){
                 changeBGColor(f[0], "var(--warning-light)");
-                setDefaultErrorMessage(f[0]);
+                $("#error-" + f[0]).text("* Password must be between 6 and 20 characters");
             }
             else if(f[0] == "username" && !validator.isAlphanumeric(f[1])){
                 changeBGColor(f[0], "var(--warning-light)");
@@ -378,7 +374,7 @@ function errMessage(functionName, msg){
             }
             else if(f[0] == "username" && (f[1].length < 6 || f[1].length > 20)){
                 changeBGColor(f[0], "var(--warning-light)");
-                $("#error-" + f[0]).text("* Usernames must be between 6 and 20 characters");
+                $("#error-" + f[0]).text("* Username must be between 6 and 20 characters");
             }
             else if(f[0] == "email" && !validator.isEmail(f[1])){
                 changeBGColor(f[0], "var(--warning-light)");

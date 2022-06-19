@@ -98,8 +98,6 @@ function validateSignupInputs(){
             if(f[0] == "email"){
                 if(!validator.isEmail(f[1])){
                     errMessage("validateSignupInputs", "Invalid email");
-                    $("#error-" + f[0]).text("* Invalid email address");
-                    changeBGColor(f[0], "var(--warning-light)");
                     validity = false;
                 }
             } 
@@ -107,8 +105,6 @@ function validateSignupInputs(){
             if(f[0] == "password_a"){
                 if(f[1].length < 6 || f[1].length > 20){
                     errMessage("validateSignupInputs", "Invalid password length");
-                    $("#error-" + f[0]).text("* Passwords must be between 6 and 20 characters");
-                    changeBGColor(f[0], "var(--warning-light)");
                     validity = false;
                 }
                 else{
@@ -120,8 +116,6 @@ function validateSignupInputs(){
             if(f[0] == "password_b" && prevHash){
                 if(f[1] != prevHash){
                     errMessage("validateSignupInputs", "Mismatched passwords");
-                    $("#error-" + f[0]).text("* Passwords do not match");
-                    changeBGColor(f[0], "var(--warning-light)");
                     validity = false;
                 }
             }
@@ -129,7 +123,6 @@ function validateSignupInputs(){
             if(f[0] == "profilepic-select"){
                 if(getInputFile("profilepic-select") == null){
                     errMessage("validateSignupInputs", "No Profile Picture Set");
-                    $("#error-" + f[0]).text("* No Profile Picture set");
                     validity = false;
                 }
             }
@@ -137,14 +130,10 @@ function validateSignupInputs(){
             if(f[0] == "username"){
                 if(!validator.isAlphanumeric(f[1])){
                     errMessage("validateSignupInputs", "Non-alphanumeric characters in username");
-                    $("#error-" + f[0]).text("* Username may only contain alphanumeric characters");
-                    changeBGColor(f[0], "var(--warning-light)");
                     validity = false;
                 }
                 else if(f[1].length < 6 || f[1].length > 20){
                     errMessage("validateSignupInputs", "Invalid username length");
-                    $("#error-" + f[0]).text("* Usernames must be between 6 and 20 characters");
-                    changeBGColor(f[0], "var(--warning-light)");
                     validity = false;
                 }
             }
@@ -267,6 +256,29 @@ function hash(s) {
             if(f[0] == "password_b" && (passA == "" || passA.length < 6 || passA.length > 20)){
                 changeBGColor(f[0], "var(--textbox)");
                 $("#error-" + f[0]).text("");
+            }
+            else if(f[0] == "email" && !validator.isEmail(f[1])){
+                changeBGColor(f[0], "var(--warning-light)");
+                $("#error-" + f[0]).text("* Invalid email address");
+            }
+            else if(f[0] == "password_b" && f[1] != passA){
+                changeBGColor(f[0], "var(--warning-light)");
+                $("#error-" + f[0]).text("* Passwords do not match");
+            }
+            else if(f[0] == "password_a" && f[1] && (f[1].length < 6 || f[1].length > 20)){
+                changeBGColor(f[0], "var(--warning-light)");
+                $("#error-" + f[0]).text("* Passwords must be between 6 and 20 characters");
+            }
+            else if(f[0] == "username" && !validator.isAlphanumeric(f[1])){
+                changeBGColor(f[0], "var(--warning-light)");
+                $("#error-" + f[0]).text("* Username may only contain alphanumeric characters");
+            }
+            else if(f[0] == "username" && (f[1].length < 6 || f[1].length > 20)){
+                changeBGColor(f[0], "var(--warning-light)");
+                $("#error-" + f[0]).text("* Usernames must be between 6 and 20 characters");  
+            }
+            else if(f[0] == "profilepic-select" && getInputFile("profilepic-select") == null){
+                $("#error-" + f[0]).text("* No Profile Picture set");
             }
             else if(f[1] == ""){
                 changeBGColor(f[0], "var(--warning-light)");
