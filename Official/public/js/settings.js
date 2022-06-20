@@ -71,7 +71,7 @@ $(document).ready(()=>{
         if(!change_pass){ //press "change password"
             $("#change_password").css("display", "block"); //show things
             change_pass = true;
-            $("#change-pass-btn").val("Cancel"); //change button label to 'cancel'
+            $("#change-pass-btn").val("Cancel Password Change"); //change button label to 'cancel'
         }
         else{ //press "cancel"
             $("#change_password").css("display", "none"); //hide things
