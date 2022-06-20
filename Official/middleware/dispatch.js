@@ -45,8 +45,15 @@ export async function getPosts(page, quantity, search, category, userId){
             posts[i]['user'] = await getUserByID(posts[i].userId, {projection: {'userId':1,'profilepic':1,'username':1}});
         }
 
+        var reserves = false;
+        // @ts-ignore
+        var reservePosts = await dbPost.getPostCountByPage(newPage,search,category,null);
+        console.log('reservePosts: ' + reservePosts);
+        if(reservePosts > 0)
+            reserves = true;
+
         return new Promise((resolve,reject)=>{
-            resolve([user, posts, newPage, postCount]);
+            resolve([user, posts, newPage, postCount, reserves]);
             reject("Error retrieving posts for Home");
         });
     }else
@@ -277,8 +284,15 @@ export async function getProfileById(page, quantity, search, userId){
         postHolder[i]['likeVals'] = likes;
     }
 
+    var reserves = false;
+    // @ts-ignore
+    var reservePosts = await dbPost.getPostCountByPage(newPage,search,null,userId);
+    console.log('reservePosts: ' + reservePosts);
+    if(reservePosts > 0)
+        reserves = true;
+
     const promise = new Promise((resolve,reject)=>{
-        resolve([userVal,posts,newPage,postCount]);
+        resolve([userVal,posts,newPage,postCount,reserves]);
         reject("Error retrieving posts of user");
     });
     return promise;
@@ -310,11 +324,11 @@ export async function isLiked(userId, postHash){
  */
 export async function deleteAccount(userId){
     const postList = await dbPost.getPostByUserID(userId, "", null, 0);
-    const reportResult = await dbReport.deleteByUserID(userId);
-    const likeResult = await dbLike.deleteAllLikesByUser(userId);
-    const commentResult = await dbComment.deleteAllCommentsByUser(userId);
-    const postResult = await dbPost.deleteAllPostsByUser(userId);
-    const userResult = await dbUser.deleteUser(userId);
+    // const reportResult = await dbReport.deleteByUserID(userId);
+    // const likeResult = await dbLike.deleteAllLikesByUser(userId);
+    // const commentResult = await dbComment.deleteAllCommentsByUser(userId);
+    // const postResult = await dbPost.deleteAllPostsByUser(userId);
+    // const userResult = await dbUser.deleteUser(userId);
     return new Promise((resolve, reject)=>{
         resolve([userId,postList]);
         reject('Error deleting user.');

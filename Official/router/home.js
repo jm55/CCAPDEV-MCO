@@ -95,6 +95,7 @@ homeNav.put('/home/more',(req, res)=>{
             //dataJSON['user'] = data[0];
             dataJSON['posts'] = data[1];
             dataJSON['pageid'] = data[2];
+            dataJSON['reserves'] = data[4];
             res.json(dataJSON);
         }).catch((error)=>{
             res.statusMessage = error;

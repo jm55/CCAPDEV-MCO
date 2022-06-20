@@ -43,14 +43,15 @@ $(document).ready(()=>{
     }).then((data)=>{
         var posts = data['posts'];
         currentPageId = data['pageid'];
-        if(posts.length == 0){
-            $('#load-more-profile').css('display', 'none');
-            $('#load-more-user').css('display', 'none');
-        }else{
+        if(posts.length != 0){
             for(var p of posts){
                 var newPost = buildPostCard(p,p.comments,userId);
                 $(newPost).insertBefore('#load-more-div');
             }
+        }
+        if(!data['reserves']){
+            $('#load-more-profile').css('display', 'none');
+            $('#load-more-user').css('display', 'none');
         }
     }).catch((error)=>{
         console.error(error);

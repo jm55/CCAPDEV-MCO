@@ -74,6 +74,27 @@ export function getPostCount(userId){
 }
 
 /**
+ * Count documents beyond the page indicated.
+ * @param {String} page 
+ * @param {String} search 
+ * @param {String} category 
+ * @param {String} userId
+ */
+export function getPostCountByPage(page, search, category, userId){
+    if(page == null || page == "")
+        return 0;
+    var filter = {};
+    filter['_id'] = {"$lt": new ObjectID(page)};
+    if(search != "" || search != null)
+        filter['description'] = {$regex: new RegExp(search, 'i')};
+    if(category != "" || category != null)
+        filter['category'] =  {$regex: new RegExp(category, 'i')};
+    if(userId != null)
+        filter['userId'] =  userId;
+    return postCollection.countDocuments(filter);
+}
+
+/**
  * Get posts by one user, search words, and category.
  * @param {String} userId Filter parameter.
  * @param {String} search Filter parameter.

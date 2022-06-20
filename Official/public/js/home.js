@@ -38,16 +38,16 @@ function loadMore(){
     }).then((data)=>{
         return data.json();
     }).then((data)=>{
-        //var user = data['user'];
         var posts = data['posts'];
         currentPageId = data['pageid'];
-        if(posts.length == 0){
-            $('#load-more-home').css('display', 'none');
-        }else{
+        if(posts.length != 0){
             for(var p of posts){
                 var newPost = buildPostCard(p,p.comments,userId);
                 $(newPost).insertBefore('#load-more-div');
             }
+        }
+        if(!data['reserves']){
+            $('#load-more-home').css('display', 'none');
         }
     }).catch((error)=>{
         console.error(error);
