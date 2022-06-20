@@ -2,20 +2,16 @@ html{
     background-image: var(--default_image);
 }
 
-#gender>option{
-    background-color: var(--primary);
-}
-
-#gender{
+.gender{
     min-height: 40px;
     border-radius: 16px;
 }
 
-#profile-info{ /*Same CSS code from login.css*/
+.profile{
     background-color: var(--primary);
-    color: var(--text);
+    color: white;
     position: relative;
-    font-size: 12px;
+    font-size: 14px;
     max-width: 30em;
     position: relative;
     margin-left: auto;
@@ -23,7 +19,7 @@ html{
     height: max-content;
 }
 
-#profileform{  /*Same CSS code from login.css*/
+.profileform{
     display: grid;
     margin-bottom: 2%;
     row-gap: 10px;
@@ -32,6 +28,7 @@ html{
 #profilepic{
     width: 128px;
     height: 128px;
+    background-color: white;
 }
 
 #bio{
@@ -43,4 +40,32 @@ html{
     display: grid;
     row-gap: 10px;
     margin-top: 4%;
+}
+
+.banner_title{
+    font-family: inherit;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+}
+
+.section_title{
+    text-align: center;
+}
+
+.errorText{
+    font-size: 12px;
+    color: red;
+    float: right;
+}
+
+#change_password{
+    display: none;
+}
+
+.textfield#password_a, .textfield#password_b{
+    width: 100%;
+    box-sizing: border-box;
+    margin-top: 10px;
+    margin-bottom: 10px;
 }

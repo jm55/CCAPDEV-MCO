@@ -1,4 +1,4 @@
-<link rel="stylesheet" href="/css/signup.css">
+<link rel="stylesheet" href="/css/profile_settings.css">
 
 <script src="/js/settings.js"></script>
 
@@ -25,16 +25,6 @@
             <span class="errorText" id="error-password_current"></span>
         </span>
         <input name="password_current" id="password_current" type="password" class="textfield" maxlength="50" placeholder="Current Password"/>
-        <span> 
-            <label>New Password*:</label>
-            <span class="errorText" id="error-password_a"></span>
-        </span>
-        <input name="password_a" id="password_a" type="password" class="textfield" maxlength="50" placeholder="New Password (Optional)"/>
-        <span>
-            <label>Repeat New Password*:</label>
-            <span class="errorText" id="error-password_b"></span>
-        </span>
-        <input name="password_b" id="password_b" type="password" class="textfield" maxlength="50" placeholder="Repeat New Password"/>
         <span>
             <label>Email*:</label>
             <span class="errorText" id="error-email"></span>
@@ -71,6 +61,20 @@
         </span>
         <textarea id="bio" name="bio" placeholder="Tell us about yourself" maxlength="255">{{currentUser.bio}}</textarea>
         <label style="text-align:right;" id="bio-counter"></label>
+
+        <input type="button" value="Change Password" id="change-pass-btn" class="button"/>
+        <div id="change_password">
+            <span> 
+                <label>New Password*:</label> 
+                <span class="errorText" id="error-password_a"></span>
+            </span>
+            <input name="password_a" id="password_a" type="password" class="textfield" maxlength="50" placeholder="New Password (Optional)"/>
+            <span>
+                <label>Repeat New Password*:</label> 
+                <span class="errorText" id="error-password_b"></span>
+            </span>
+            <input name="password_b" id="password_b" type="password" class="textfield" maxlength="50" placeholder="Repeat New Password"/>
+        </div>
         <input type="submit" value="Save" id="save-btn" class="button" />
         <input type="button" value="Cancel" id="cancel-btn" class="button"/>
         <input type="button" value="Delete Account" id="delete-btn" class="button"/>

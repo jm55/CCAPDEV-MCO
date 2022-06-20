@@ -6,6 +6,8 @@ var submitClicked = false;
 $(document).ready(()=>{
     ////console.log(currentUser);
     var gender = $("#gender").attr("value");
+    var change_pass = false;
+
     $("#gender").val(gender);
 
     $("#bio-counter").text("0/255"); //default max value for bio characters
@@ -56,6 +58,27 @@ $(document).ready(()=>{
         e.preventDefault();
         saveProfile();
     });
+
+    $("#change-pass-btn").click(() => {
+        //remove error texts and values in textfields, also change back text field color to default
+        $("#error-password_a").text("");
+        $("#error-password_b").text("");
+        $("#password_a").val("");
+        $("#password_b").val("");
+        changeBGColor("password_a", "var(--textbox)");
+        changeBGColor("password_b", "var(--textbox)");
+
+        if(!change_pass){ //press "change password"
+            $("#change_password").css("display", "block"); //show things
+            change_pass = true;
+            $("#change-pass-btn").val("Cancel"); //change button label to 'cancel'
+        }
+        else{ //press "cancel"
+            $("#change_password").css("display", "none"); //hide things
+            change_pass = false;
+            $("#change-pass-btn").val("Change Password"); //change button label back to 'change password'        
+        }
+    })
 });
 
 function deleteAccount(){
