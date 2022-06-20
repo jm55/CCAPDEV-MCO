@@ -180,7 +180,7 @@ function saveProfile(){
         if(f[0] == "password_a"){
             if((f[1].length > 0 && f[1].length < 6) || f[1].length > 20){
                 errMessage("validateSignupInputs", "Invalid new password length");
-                console.log("invalid password length");
+                //console.log("invalid password length");
                 validity = false;
             }
         }
@@ -204,6 +204,7 @@ function saveProfile(){
         if(!validCurrentPassword){
             document.getElementById("password_current").value = "";
             validity = false;
+            alert('Please verify current password to save changes.');
         }
         updateColor();
     }).catch((error)=>{
@@ -221,7 +222,7 @@ function saveProfile(){
     if(validity)
         sendProfile();
     else
-        alert("Please check inputs again");
+        alert('Please check for missing inputs.');
 }
 
 /**
