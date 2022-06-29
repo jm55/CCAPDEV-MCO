@@ -2,6 +2,13 @@
 
 ![BudolFinds Homepage](.others/homepage.png)
 
+## Authors
+**CCAPDEV Group 10** 
+1. Batista, R.E. (https://github.com/ri-zer)
+2. Escalona, J.M. (https://github.com/jm55DLSU)
+3. Fontanilla, C.E.
+4. Romero, A. (https://github.com/iannn1022)
+
 ## Description
 The machine project for this course is to make a web application of your choice based on the specification required.
 
