@@ -1,23 +1,26 @@
-# CCAPDEV-MCO Project
+# CCAPDEV-MCO
 
-# Please proceed to the ['Official'](https://github.com/jm55DLSU/CCAPDEV-MCO/tree/main/Official) folder for the actual web application
+![BudolFinds Homepage](.others/homepage.png)
 
-## Directory
-1. Phase One via `.phase_one` - Contains the initial mockup of the frontend which was submitted as part of the Phase 1 of the project.
-2. Deliverables - Contains the zipped version of the project files submitted.
-3. Documentation - Contains the documents related to the development of the web application including instructions (Phase specifications), project proposal, and MCO design.
-4. **Official** - Contains the final product of the project. An executable server application for the web application.
+## Description
+The machine project for this course is to make a web application of your choice based on the specification required.
 
-## Budol Finds
-
-Our proposed web application is for shoppers to share their bought items to
-recommend to fellow shoppers. The idea was taken from the private Facebook group,
-Home Buddies, with over 3 million members. The Facebook group’s posts cover
+## Specifications
+The web application must have the capabilities of a CRUDS application.
+### Features required for all web applications:
+1. Log-in and Log-out
+2. Register
+### CRUDS (Simplified)
+1. Create - Create web content
+2. Read - Read web content
+3. Update - Update web content
+4. Delete - Delete web content
+5. Search - Search web content
+### Web App Description
+The web application was inspired by a private Facebook group called Home Buddies, which at the time of the web app's creation has over 3 million members. The Facebook group’s posts cover
 different topics and purposes, however, the group decided to take on the idea of
 sharing “budol finds”, which are items that were bought and enjoyed by home
-shoppers. 
-
-The web application’s main aim is to provide a platform of consolidated
+shoppers. The web application’s main aim is to provide a platform of consolidated
 “budol finds” for shoppers to make sharing and finding items easier, rather than a
 general Facebook group page. Through the web application, shoppers are given a
 better shopping experience as items they wish to buy are items suggested by fellow
@@ -29,10 +32,49 @@ where to find it, and a media attachment of the item. The website would have a u
 page, home page/timeline, and different pages organized by item category (e.g.:
 ‘Women’s Clothing’, ‘Men’s Clothing’, ‘Home’, ‘Pet Supplies’, etc.).
 
-## Authors
-**CCAPDEV Group 10** 
-1. Batista, R.E. (https://github.com/ri-zer)
-2. Escalona, J.M. (https://github.com/jm55DLSU)
-3. Fontanilla, C.E.
-4. Romero, A. (https://github.com/iannn1022)
+## Installation (Only if hosted via localhost)
+* Automated Prerequisite: Clone the git repo and locate `/Official`.
+    * Automated (Full Data Install) - Run `run_install_full.bat` to automatically build the database (collection and contents) and install the npm modules needed for by the web and server application.
+    * Automated (Minimal Data Install) - Run `run_install_minimal.bat` to automatically build the database (collections only) and install the npm modules needed for by the web and server application.
+* Manual Installation Prerequisite: Execute `npm install`
+    * Manual (Full Data) - On Command Prompt enter: `node install_data.js`
+    * Manual (Minimal Data) - On Command Prompt enter: `node install_onlycollections.js`
 
+## Execution
+1. Normal Mode: Run `node app.js` or `npm start`, or Open `run_app.bat`
+2. Dev Mode: Run `npx nodemon app.js` or `npm run devmode`, or Open `run_dev.bat`
+
+## Demonstration Credentials
+Please refer to the [documentation's](https://github.com/jm55DLSU/CCAPDEV-MCO/blob/main/Documentation/MCO%20Documentation%20-%20PDF.pdf) **Demonstration User Credentials** segment at the last page.
+
+## Technologies used:
+* Frontend
+    * Vanilla JS
+    * JQuery (via Cloudflare CDN)
+    * Express-Handlebars
+* Backend
+    * NodeJS (v16.15.0)
+    * Express
+    * MongoDB (v5.0.3)
+    * MongoDB Atlas
+    * NPM (v8.11.0)
+* Dependencies (Extracted from package.json)
+    * bcrypt
+    * cookier-parser
+    * crypto-random-string
+    * dotenv
+    * express
+    * express-handlebars
+    * express-session
+    * hashids
+    * https-status-codes
+    * mongodb
+    * multer
+    * nocache
+    * path
+    * server-favicon
+    * url
+* External Dependencies
+    * validator.js (via unpkg.com)
+
+### [More Documentation](https://github.com/jm55DLSU/CCAPDEV-MCO/blob/main/Documentation/MCO%20Documentation%20-%20PDF.pdf)
