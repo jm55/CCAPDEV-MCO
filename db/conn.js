@@ -1,4 +1,4 @@
-import { MongoClient } from 'MongoDB';
+import { MongoClient } from 'mongodb';
 import mongoose from 'mongoose';
 
 //Connection URL
@@ -19,7 +19,7 @@ export function connectToServer(callback){
 }
 
 export const connectMongoose = () => {
-    mongoose.connect(process.env.MONGOOSE_URI).then(()=>{
+    mongoose.connect(connectionString).then(()=>{
         console.log('conn.connectMongoose: Connection to DB established!');
     }).catch(error=>{
         console.error('Failed to connect to MongoDB!');
