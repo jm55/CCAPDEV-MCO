@@ -1,7 +1,7 @@
 {
-  "name": "express",
+  "name": "Budolfinds",
   "version": "1.0.0",
-  "description": "Practice for Express JS",
+  "description": "CCAPDEV-MCO",
   "main": "app.js",
   "scripts": {
     "start": "node app.js",

@@ -22,7 +22,7 @@ import cookieParser from 'cookie-parser';
 import session from 'express-session';
 
 //localhost:8080 or localhost:3000
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || '3000';
 
 //Express instance
 const app = express();
