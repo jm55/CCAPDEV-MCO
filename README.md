@@ -56,7 +56,7 @@ page, home page/timeline, and different pages organized by item category (e.g.:
 2. Dev Mode: Run `npx nodemon app.js` or `npm run devmode`, or Open `run_dev.bat`
 
 ## Demonstration Credentials
-Please refer to the [documentation's]([https://github.com/jm55DLSU/CCAPDEV-MCO/blob/main/Documentation/MCO%20Documentation%20-%20PDF.pdf](https://github.com/jm55DLSU/CCAPDEV-MCO/blob/main/.others/.documentation/MCO%20Documentation%20-%20PDF.pdf)) **Demonstration User Credentials** segment at the last page.
+Please refer to the [documentation's](https://github.com/jm55DLSU/CCAPDEV-MCO/blob/main/.others/.documentation/MCO%20Documentation%20-%20PDF.pdf) **Demonstration User Credentials** segment at the last page.
 
 ## Technologies used:
 * Frontend
@@ -88,4 +88,4 @@ Please refer to the [documentation's]([https://github.com/jm55DLSU/CCAPDEV-MCO/b
 * External Dependencies
     * validator.js (via unpkg.com)
 
-### [More Documentation]([https://github.com/jm55DLSU/CCAPDEV-MCO/blob/main/Documentation/MCO%20Documentation%20-%20PDF.pdf](https://github.com/jm55DLSU/CCAPDEV-MCO/blob/main/.others/.documentation/MCO%20Documentation%20-%20PDF.pdf))
+### [More Documentation](https://github.com/jm55DLSU/CCAPDEV-MCO/blob/main/.others/.documentation/MCO%20Documentation%20-%20PDF.pdf)
