@@ -404,6 +404,10 @@ function errMessage(functionName, msg){
                 changeBGColor(f[0], "var(--warning-light)");
                 $("#error-" + f[0]).text("* Invalid email address");
             }
+            else if((f[0] == "fname" || f[0] == "lname") && f[1] == ""){
+                changeBGColor(f[0], "var(--warning-light)");
+                setDefaultErrorMessage(f[0]);
+            }
             else{
                 changeBGColor(f[0], "var(--textbox)");
                 $("#error-" + f[0]).text("");
