@@ -248,7 +248,7 @@ function hash(s) {
  function updateColor(){
     var passA = "";
     for(f of new FormData(document.forms.signupform)){
-        if(!(f[0]=="mname" && f[0]=="profilepic-select") && !(f[0]=="bio")){
+        if(!(f[0]=="mname") && !(f[0]=="profilepic-select") && !(f[0]=="bio")){
             if(f[0] == "password_a"){
                 passA = f[1];
             }
